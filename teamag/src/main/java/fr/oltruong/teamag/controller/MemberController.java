@@ -26,8 +26,6 @@ public class MemberController
 
     private List<Member> memberList = new ArrayList<Member>();
 
-    private String nutrients;
-
     @PostConstruct
     private void initList()
     {
@@ -69,13 +67,4 @@ public class MemberController
         this.memberList = memberList;
     }
 
-    public String getNutrients()
-    {
-        return nutrients;
-    }
-
-    public void setNutrients( String nutrients )
-    {
-        this.nutrients = nutrients;
-    }
 }

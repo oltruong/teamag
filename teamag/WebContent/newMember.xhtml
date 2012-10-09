@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Create a new member</title>
+</h:head>
+<h:body>
+	<h1>Create a new member</h1>
+	<hr />
+	<h:form>
+		<table border="0">
+			<tr>
+				<td><h:outputLabel value="Name :" /></td>
+				<td><h:inputText value="#{memberController.member.name}" /></td>
+			</tr>
+		</table>
+		<h:commandButton value="Create a member"
+			action="#{memberController.doCreateMember}" />
+	</h:form>
+	<hr />
+	<h1>My market</h1>
+	<h:dataTable value="#{memberController.memberList}" var="bk" border="1">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="ID" />
+			</f:facet>
+			<h:outputText value="#{bk.id}" />
+		</h:column>
+
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Name" />
+			</f:facet>
+			<h:outputText value="#{bk.name}" />
+		</h:column>
+
+	</h:dataTable>
+	<hr />
+	<i>Test</i>
+
+</h:body>
+</html>
+
