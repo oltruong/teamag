@@ -40,23 +40,23 @@ public class MemberTest
     public void testNamedQuery()
     {
 
-        Member legume = createMember();
+        Member member = createMember();
 
         // Gets an entity manager and a transaction
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "testPersistence" );
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
-        // Persists legume to the database
+        // Persists member to the database
         tx.begin();
-        em.persist( legume );
+        em.persist( member );
 
         tx.commit();
         @SuppressWarnings( "unchecked" )
-        List<Member> listLegumes = em.createNamedQuery( "findMembers" ).getResultList();
+        List<Member> listMembers = em.createNamedQuery( "findMembers" ).getResultList();
 
-        assertNotNull( listLegumes );
-        assertFalse( listLegumes.isEmpty() );
+        assertNotNull( listMembers );
+        assertFalse( listMembers.isEmpty() );
 
         em.close();
         emf.close();
@@ -68,6 +68,7 @@ public class MemberTest
         Member member = new Member();
 
         member.setName( "Carot" );
+        member.setCompany( "my company" );
 
         return member;
     }

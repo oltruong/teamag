@@ -59,6 +59,7 @@ public class MemberEJBTest
         Member member = new Member();
 
         member.setName( "Carot" );
+        member.setCompany( "My company" );
 
         // Looks up for the EJB
         MemberEJB memberEJB = (MemberEJB) ctx.lookup( "java:global/classes/MemberEJB" );

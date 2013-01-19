@@ -4,3 +4,8 @@ teamag/.project
 *.DS_Store
 *.bak
 *.prefs
+.DS_Store
+
+*.log
+
+.DS_Store

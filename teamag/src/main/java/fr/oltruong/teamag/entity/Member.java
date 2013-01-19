@@ -18,6 +18,12 @@ public class Member
     @Column( nullable = false )
     private String name;
 
+    @Column( nullable = false )
+    private String company;
+
+    @Column( nullable = false )
+    private Float productivity = 1f;
+
     public Long getId()
     {
         return id;
@@ -36,6 +42,16 @@ public class Member
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public String getCompany()
+    {
+        return company;
+    }
+
+    public void setCompany( String company )
+    {
+        this.company = company;
     }
 
 }
