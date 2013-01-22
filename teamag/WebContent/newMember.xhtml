@@ -16,6 +16,10 @@
 				<td><h:outputLabel value="Name :" /></td>
 				<td><h:inputText value="#{memberController.member.name}" /></td>
 			</tr>
+			<tr>
+				<td><h:outputLabel value="Company :" /></td>
+				<td><h:inputText value="#{memberController.member.company}" /></td>
+			</tr>
 		</table>
 		<h:commandButton value="Create a member"
 			action="#{memberController.doCreateMember}" />
@@ -37,6 +41,12 @@
 				<h:outputText value="Name" />
 			</f:facet>
 			<h:outputText value="#{user.name}" />
+		</h:column>
+				<h:column>
+			<f:facet name="header">
+				<h:outputText value="Company" />
+			</f:facet>
+			<h:outputText value="#{user.company}" />
 		</h:column>
 
 	</h:dataTable>

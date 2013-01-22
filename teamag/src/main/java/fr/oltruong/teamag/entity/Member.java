@@ -1,10 +1,16 @@
 package fr.oltruong.teamag.entity;
 
+import java.util.Calendar;
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @NamedQuery( name = "findMembers", query = "SELECT m from Member m order by m.name" )
@@ -23,6 +29,10 @@ public class Member
 
     @Column( nullable = false )
     private Float productivity = 1f;
+
+    @ElementCollection
+    @Temporal( TemporalType.DATE )
+    private List<Calendar> daysOff;
 
     public Long getId()
     {
