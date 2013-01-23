@@ -26,6 +26,22 @@ public class MemberEJB
         return query.getResultList();
     }
 
+    public Member findByName( String name )
+    {
+        Query query = em.createNamedQuery( "findByName" );
+        query.setParameter( "fname", name );
+        @SuppressWarnings( "unchecked" )
+        List<Member> liste = query.getResultList();
+        if ( liste == null || liste.isEmpty() )
+        {
+            return null;
+        }
+        else
+        {
+            return liste.get( 0 );
+        }
+    }
+
     public Member createMember( Member member )
     {
         em.persist( member );

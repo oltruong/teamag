@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Welcom to Teamag</title>
@@ -22,7 +23,7 @@
             <p:separator />  
         </p:submenu>  
         
-        <p:menuitem value="Quitter" url="javascript:window.close()" icon="ui-icon-close" />  
+        <p:menuitem value="Quitters" onclick="window.close()"  icon="ui-icon-close" />  
           
           
         <p:submenu label="Edit" icon="ui-icon-pencil">  
@@ -53,13 +54,7 @@
 
     </p:menubar>  
   
-    <h3>Click Trigger</h3>  
-    <p:menubar autoDisplay="false">  
-        //same content as default menubar  
-    </p:menubar>  
-  
 </h:form>  
-
 
 
 
@@ -79,9 +74,7 @@
 		<h:commandButton value="Create a member"
 			action="#{memberController.doCreateMember}" />
 	</h:form>
-	<hr />This is a test
-	<p:spinner />  
-	  <p:editor />
+
 
 	<h1>User list</h1>
 	<h:dataTable value="#{memberController.memberList}" var="user" border="1">

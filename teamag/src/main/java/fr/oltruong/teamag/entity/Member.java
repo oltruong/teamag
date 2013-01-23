@@ -8,12 +8,14 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@NamedQuery( name = "findMembers", query = "SELECT m from Member m order by m.name" )
+@NamedQueries( { @NamedQuery( name = "findMembers", query = "SELECT m from Member m order by m.name" ),
+    @NamedQuery( name = "findByName", query = "SELECT m from Member m where m.name=:fname" ) } )
 public class Member
 {
 
