@@ -61,12 +61,14 @@ public class LoginController
         if ( member != null )
         {
             loggedIn = true;
-            msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username + " " + member.getCompany() );
+            msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username );
         }
         else
         {
             loggedIn = false;
-            msg = new FacesMessage( FacesMessage.SEVERITY_WARN, "Erreur", "Mauvais login/mot de passe" );
+            msg =
+                new FacesMessage( FacesMessage.SEVERITY_WARN, "Erreur",
+                                  "Nom inconnu, merci de contacter l'administrateur." );
 
         }
 

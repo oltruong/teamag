@@ -5,12 +5,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Welcom to Teamag</title>
+	<title>Bienvenue</title>
 </h:head>
 <h:body>
 <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">     
 
-<p:button outcome="newMember" value="Connexion" icon="ui-icon-star" />  
+ <p:graphicImage value="/images/login.png" />  
 </h:outputLink>  
   
 <p:growl id="growl" showDetail="true" life="3000" />  
@@ -19,13 +19,9 @@
     <h:form>  
   
         <h:panelGrid columns="2" cellpadding="5">  
-            <h:outputLabel for="username" value="Utilisateur :" />  
+            <h:outputLabel for="username" value="Prénom :" />  
             <p:inputText value="#{loginBean.username}"   
                     id="username" required="true" label="username" />  
-              
-            <h:outputLabel for="password" value="Mot de passe :" />  
-            <h:inputSecret value="#{loginBean.password}"   
-                    id="password" required="true" label="password" />  
               
             <f:facet name="footer">  
                 <p:commandButton id="loginButton" value="Connexion" update=":growl"   
@@ -43,7 +39,8 @@
             jQuery('#dialog').effect("shake", { times:3 }, 100);  
         } else {  
             dlg.hide();  
-            jQuery('#loginLink').fadeOut();  
+            jQuery('#loginLink').fadeOut();
+            window.location = "newMember.faces";
         }  
     }  
 </script>
