@@ -20,6 +20,8 @@ public class LoginController
     @EJB
     private MemberEJB memberEJB;
 
+    private Member member;
+
     private String username;
 
     private String password;
@@ -46,8 +48,17 @@ public class LoginController
 
     public String doLoginForm()
     {
-        System.out.println( "heyyyy" );
         return "login.xhtml";
+    }
+
+    public Member getMember()
+    {
+        return member;
+    }
+
+    public void setMember( Member member )
+    {
+        this.member = member;
     }
 
     public void login( ActionEvent actionEvent )
@@ -62,6 +73,7 @@ public class LoginController
         {
             loggedIn = true;
             msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username );
+            this.member = member;
         }
         else
         {

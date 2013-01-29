@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.entity;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.persistence.TemporalType;
 @NamedQueries( { @NamedQuery( name = "findMembers", query = "SELECT m from Member m order by m.name" ),
     @NamedQuery( name = "findByName", query = "SELECT m from Member m where m.name=:fname" ) } )
 public class Member
+    implements Serializable
 {
 
     @Id

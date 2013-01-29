@@ -1,14 +1,23 @@
 package fr.oltruong.teamag.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 @Entity
+@NamedQueries( {
+    @NamedQuery( name = "findWorkDaysByMember", query = "SELECT w from WorkDay w where w.member=:fmember order by w.day " ),
+    @NamedQuery( name = "findWorkDaysByName", query = "SELECT m from Member m where m.name=:fname" ) } )
 public class WorkDay
 {
 
@@ -17,11 +26,16 @@ public class WorkDay
     private Long id;
 
     @Temporal( TemporalType.DATE )
+    private Calendar month;
+
+    @Temporal( TemporalType.DATE )
     private Calendar day;
 
     private Member member;
 
-    private Float workRate = 1f;
+    private Float absenceRate = 0f;
+
+    private List<Work> works = new ArrayList<Work>();
 
     public Long getId()
     {
@@ -43,6 +57,16 @@ public class WorkDay
         this.day = day;
     }
 
+    public Calendar getMonth()
+    {
+        return month;
+    }
+
+    public void setMonth( Calendar month )
+    {
+        this.month = month;
+    }
+
     public Member getMember()
     {
         return member;
@@ -53,14 +77,35 @@ public class WorkDay
         this.member = member;
     }
 
-    public Float getWorkRate()
+    public void addWork( Work work )
     {
-        return workRate;
+        this.works.add( work );
     }
 
-    public void setWorkRate( Float workRate )
+    public Float getAbsenceRate()
     {
-        this.workRate = workRate;
+        return absenceRate;
+    }
+
+    public void setAbsenceRate( Float absenceRate )
+    {
+        this.absenceRate = absenceRate;
+    }
+
+    public String getDayStr()
+    {
+        return DateFormatUtils.format( getDay(), "dd/MM" );
+    }
+
+    public List<Work> getWorks()
+    {
+        System.err.println( "AAAAAAAAAAAAAAAA" );
+        return works;
+    }
+
+    public void setWorks( List<Work> works )
+    {
+        this.works = works;
     }
 
 }

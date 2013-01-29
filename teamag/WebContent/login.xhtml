@@ -8,14 +8,15 @@
 	<title>Bienvenue</title>
 </h:head>
 <h:body>
+<h1>Outil de saisie de réalisé</h1>
 <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">     
 
- <p:graphicImage value="/images/login.png" />  
+ <p:graphicImage value="/images/login.png" alt="S'identifier" />  
 </h:outputLink>  
   
 <p:growl id="growl" showDetail="true" life="3000" />  
   
-<p:dialog id="dialog" header="Authentification" widgetVar="dlg">  
+<p:dialog id="dialog" header="Identification" widgetVar="dlg">  
     <h:form>  
   
         <h:panelGrid columns="2" cellpadding="5">  
@@ -40,7 +41,7 @@
         } else {  
             dlg.hide();  
             jQuery('#loginLink').fadeOut();
-            window.location = "newMember.faces";
+            window.location = "realized.faces";
         }  
     }  
 </script>

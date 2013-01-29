@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.WorkDay;
 
 @Stateless
 public class MemberEJB
@@ -45,6 +47,25 @@ public class MemberEJB
     public Member createMember( Member member )
     {
         em.persist( member );
+
+        // Creation des workdays
+
+        Calendar month = Calendar.getInstance();
+
+        // Génération des activités pour janvier
+        month.set( 2013, Calendar.JANUARY, 1 );
+        for ( int i = 1; i <= 31; i++ )
+        {
+            WorkDay workDay = new WorkDay();
+            Calendar day = (Calendar) month.clone();
+            day.set( Calendar.DAY_OF_MONTH, i );
+            workDay.setDay( day );
+            workDay.setMember( member );
+            workDay.setMonth( month );
+
+            em.persist( workDay );
+        }
+
         return member;
     }
 
