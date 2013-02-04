@@ -53,17 +53,23 @@ public class MemberEJB
         Calendar month = Calendar.getInstance();
 
         // Génération des activités pour janvier
-        month.set( 2013, Calendar.JANUARY, 1 );
-        for ( int i = 1; i <= 31; i++ )
+        month.set( 2013, Calendar.FEBRUARY, 1 );
+        for ( int i = 1; i <= 28; i++ )
         {
-            WorkDay workDay = new WorkDay();
             Calendar day = (Calendar) month.clone();
             day.set( Calendar.DAY_OF_MONTH, i );
-            workDay.setDay( day );
-            workDay.setMember( member );
-            workDay.setMonth( month );
 
-            em.persist( workDay );
+            if ( day.get( Calendar.DAY_OF_WEEK ) != Calendar.SUNDAY
+                && day.get( Calendar.DAY_OF_WEEK ) != Calendar.SATURDAY )
+            {
+                WorkDay workDay = new WorkDay();
+                workDay.setDay( day );
+                workDay.setMember( member );
+                workDay.setMonth( month );
+
+                em.persist( workDay );
+
+            }
         }
 
         return member;

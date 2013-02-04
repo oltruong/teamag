@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.entity.WorkDay;
 
@@ -32,24 +32,24 @@ public class WorkEJB
         this.member = member;
     }
 
-    public List<Activity> findMemberActivities()
+    public List<Task> findMemberActivities()
     {
-        Query query = em.createNamedQuery( "findAllActivities" );
+        Query query = em.createNamedQuery( "findAllTasks" );
 
         @SuppressWarnings( "unchecked" )
-        List<Activity> allActivities = query.getResultList();
+        List<Task> allTasks = query.getResultList();
 
-        List<Activity> activities = new ArrayList<Activity>();
+        List<Task> tasks = new ArrayList<Task>();
 
-        for ( Activity activity : allActivities )
+        for ( Task task : allTasks )
         {
-            if ( activity.getMembers().contains( member ) )
+            if ( task.getMembers().contains( member ) )
             {
-                activities.add( activity );
+                tasks.add( task );
             }
         }
 
-        return activities;
+        return tasks;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -61,7 +61,7 @@ public class WorkEJB
         return (List<WorkDay>) query.getResultList();
     }
 
-    public Activity createActivity( Activity activity )
+    public Task createActivity( Task activity )
     {
         em.persist( activity );
         for ( Member member : activity.getMembers() )
@@ -89,7 +89,7 @@ public class WorkEJB
         return activity;
     }
 
-    public void deleteActivity( Activity activity )
+    public void deleteActivity( Task activity )
     {
         em.remove( em.merge( activity ) );
     }

@@ -26,7 +26,7 @@ public class Work
 
     private Member member;
 
-    private Activity activity;
+    private Task task;
 
     private Float total = 0f;
 
@@ -70,14 +70,14 @@ public class Work
         this.member = member;
     }
 
-    public Activity getActivity()
+    public Task getActivity()
     {
-        return activity;
+        return task;
     }
 
-    public void setActivity( Activity activity )
+    public void setActivity( Task activity )
     {
-        this.activity = activity;
+        this.task = activity;
     }
 
     public Float getTotal()

@@ -12,12 +12,12 @@ import javax.persistence.Persistence;
 
 import org.junit.Test;
 
-public class ActivityTest
+public class TaskTest
 {
     @Test
     public void testCreation()
     {
-        Activity activity = createActivity();
+        Task task = createTask();
         // Gets an entity manager and a transaction
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "testPersistence" );
         EntityManager em = emf.createEntityManager();
@@ -26,22 +26,22 @@ public class ActivityTest
         // Persists activity to the database
         tx.begin();
 
-        em.persist( activity.getMembers().get( 0 ) );
-        em.persist( activity );
+        em.persist( task.getMembers().get( 0 ) );
+        em.persist( task );
 
         tx.commit();
 
         em.close();
         emf.close();
 
-        assertNotNull( "Activity should have an id", activity.getId() );
+        assertNotNull( "Activity should have an id", task.getId() );
     }
 
     @Test
     public void testNamedQuery()
     {
 
-        Activity activity = createActivity();
+        Task activity = createTask();
 
         // Gets an entity manager and a transaction
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "testPersistence" );
@@ -55,7 +55,7 @@ public class ActivityTest
 
         tx.commit();
         @SuppressWarnings( "unchecked" )
-        List<Activity> listActivitys = em.createNamedQuery( "findAllActivities" ).getResultList();
+        List<Task> listActivitys = em.createNamedQuery( "findAllActivities" ).getResultList();
 
         assertNotNull( listActivitys );
         assertFalse( listActivitys.isEmpty() );
@@ -65,18 +65,18 @@ public class ActivityTest
 
     }
 
-    private Activity createActivity()
+    private Task createTask()
     {
-        Activity activity = new Activity();
+        Task task = new Task();
 
-        activity.setName( "Activity" );
-        activity.setProject( "my project" );
+        task.setName( "Task" );
+        task.setProject( "my project" );
 
         Member myMember = new Member();
         myMember.setName( "Bob" );
         myMember.setCompany( "my Company" );
-        activity.addMember( myMember );
+        task.addMember( myMember );
 
-        return activity;
+        return task;
     }
 }

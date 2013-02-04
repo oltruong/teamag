@@ -49,9 +49,9 @@ public class WorkTest
         return member;
     }
 
-    private Activity createActivity()
+    private Task createActivity()
     {
-        Activity activity = new Activity();
+        Task activity = new Task();
 
         activity.setName( "Activity" );
         activity.setProject( "my project" );

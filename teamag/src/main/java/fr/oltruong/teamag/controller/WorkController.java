@@ -13,8 +13,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 
 import fr.oltruong.teamag.ejb.WorkEJB;
-import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.WorkDay;
 
 @ManagedBean
@@ -25,7 +25,7 @@ public class WorkController
     @ManagedProperty( value = "#{loginBean.member}" )
     private Member member;
 
-    private Activity newActivity = new Activity();
+    private Task newActivity = new Task();
 
     private List<WorkDay> workDayList = new ArrayList<WorkDay>();
 
@@ -34,9 +34,11 @@ public class WorkController
 
     public String doRealizedForm()
     {
-        FacesContext context = FacesContext.getCurrentInstance();
 
-        context.addMessage( null, new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", member.getName() ) );
+        if ( member == null )
+        {
+            return "index.html";
+        }
 
         return "realized.xhtml";
     }
@@ -75,12 +77,12 @@ public class WorkController
         this.member = member;
     }
 
-    public Activity getNewActivity()
+    public Task getNewActivity()
     {
         return newActivity;
     }
 
-    public void setNewActivity( Activity newActivity )
+    public void setNewActivity( Task newActivity )
     {
         this.newActivity = newActivity;
     }

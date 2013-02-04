@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
-@NamedQuery( name = "findAllActivities", query = "SELECT a from Activity a order by a.name, a.project" )
+@Table( name = "TeamagTask" )
+@NamedQuery( name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project" )
 @Entity
-public class Activity
+public class Task
 {
     @Id
     @GeneratedValue
