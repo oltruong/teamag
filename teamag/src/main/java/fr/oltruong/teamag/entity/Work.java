@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 @Entity
 @Table( name = "Teamag_work" )
 public class Work
@@ -87,7 +89,14 @@ public class Work
 
     public void setTotal( Float total )
     {
+
+        System.out.println( "totalllll " + total );
         this.total = total;
+    }
+
+    public String getDayStr()
+    {
+        return DateFormatUtils.format( getDay(), "E dd/MM" );
     }
 
 }

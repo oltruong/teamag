@@ -25,7 +25,7 @@
 
 	<h1>
 		Saisie du réalisé de
-		<h:outputText value="#{workController.member.name}" />
+		<!--  <h:outputText value="#{workController.member.name}" />-->
 	</h1>
 
 
@@ -46,7 +46,59 @@
 			action="#{workController.doCreateActivity}" />
 	</h:form>
 
+	<h:form>
+	    		<h:commandButton value="Ajouter"
+			action="#{workController.update}" />
+    <p:dataTable id="tbl" var="taskMonth" value="#{workController.taskMonthList}" resizableColumns="true" >  
 
+        <p:column headerText="Name">  
+            <h:outputText value="#{taskMonth.task.name}" />  
+        </p:column>  
+  
+        <p:column headerText="Color2">  
+            <h:inputText value="#{taskMonth.task.name}" />  
+        </p:column>  
+        
+        
+        <p:columns value="#{taskMonth.works}" var="work"
+				columnIndexVar="colIndex">
+
+				<f:facet name="header">  
+                #{work.dayStr}
+            </f:facet>
+      <h:inputText value="#{work.total}" />  
+
+			</p:columns>
+        
+        
+    </p:dataTable>  
+ 
+
+trop cool <br/>
+
+
+    <p:panel header="Export All Data">  
+        <h:commandLink>  
+            <p:graphicImage value="/images/excel.png" />  
+            <p:dataExporter type="xls" target="tbl" fileName="cars" />  
+        </h:commandLink>  
+  
+        <h:commandLink>  
+            <p:graphicImage value="/images/pdf.png" />  
+            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>  
+        </h:commandLink>  
+          
+        <h:commandLink>  
+            <p:graphicImage value="/images/csv.png" />  
+            <p:dataExporter type="csv" target="tbl" fileName="cars" />  
+        </h:commandLink>  
+          
+        <h:commandLink>  
+            <p:graphicImage value="/images/xml.png" />  
+            <p:dataExporter type="xml" target="tbl" fileName="cars" />  
+        </h:commandLink>  
+    </p:panel>  
+   	</h:form>
 	<h:form id="form2">
 		<p:growl id="messages" showDetail="true" />
 
@@ -85,7 +137,7 @@
 
 
 			<p:columns value="#{workDay.works}" var="work"
-				columnIndexVar="colIndex" styleClass="ui-editable-column">
+				columnIndexVar="colIndex" styleClass="ui-editable-column" style="width:5px;">
 
 				<f:facet name="header">  
                 #{work.activity.project} - #{work.activity.name}
