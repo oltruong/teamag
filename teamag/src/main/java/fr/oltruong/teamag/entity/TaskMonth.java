@@ -37,7 +37,7 @@ public class TaskMonth
 
     public List<Work> getWorks()
     {
-        System.out.println( "get worksss " + works.size() );
+        System.out.println( "Calling getWorks " + works.size() );
         return works;
     }
 

@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.event.RowEditEvent;
 
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
@@ -33,26 +30,34 @@ public class WorkController
 
     private List<WorkDay> workDayList = new ArrayList<WorkDay>();
 
-    private List<TaskMonth> taskMonthList = new ArrayList<TaskMonth>();
+    private List<TaskMonth> taskMonthList;
+
+    private Calendar currentDay = Calendar.getInstance();
 
     @EJB
     private WorkEJB workEJB;
 
-    public String doRealizedForm()
+    // public String doRealizedForm()
+    // {
+    //
+    // System.out.println( "Calling doRealizedForm" );
+    // buildDummy();
+    //
+    // return "realized.xhtml";
+    // }
+
+    public String doCreateActivity()
     {
 
-        if ( false && member == null )
-        {
-            return "index.html";
-        }
+        System.out.println( "Calling doCreateActivity" );
+        buildDummy();
 
         return "realized.xhtml";
     }
 
-    @PostConstruct
     private void buildDummy()
     {
-
+        taskMonthList = new ArrayList<TaskMonth>();
         Task task = new Task();
 
         task.setName( "TaskTest" );
@@ -61,19 +66,19 @@ public class WorkController
 
         taskMonth.setTask( task );
 
-        Calendar month = Calendar.getInstance();
+        Calendar currentDay = Calendar.getInstance();
 
-        // Génération des activités pour janvier
-        month.set( 2013, Calendar.FEBRUARY, 1 );
+        // int weekNumber = week.get( Calendar.DAY_OF_WEEK );
 
-        taskMonth.setMonth( month );
-        for ( int i = 1; i <= 28; i++ )
+        // week.set( 2013, Calendar.FEBRUARY, 1 );
+
+        taskMonth.setMonth( currentDay );
+        for ( int i = 2; i <= 6; i++ )
         {
-            Calendar day = (Calendar) month.clone();
-            day.set( Calendar.DAY_OF_MONTH, i );
+            Calendar day = (Calendar) currentDay.clone();
+            day.set( Calendar.DAY_OF_WEEK, i );
 
-            if ( day.get( Calendar.DAY_OF_WEEK ) != Calendar.SUNDAY
-                && day.get( Calendar.DAY_OF_WEEK ) != Calendar.SATURDAY )
+            if ( day.get( Calendar.MONTH ) == currentDay.get( Calendar.MONTH ) )
             {
                 Work work = new Work();
                 work.setDay( day );
@@ -81,47 +86,40 @@ public class WorkController
 
                 work.setActivity( task );
 
-                System.out.println( "coucou" );
-
+                System.out.println( "Add work local" );
                 taskMonth.addWork( work );
 
             }
         }
 
-        System.out.println( "yeeeah" );
-        taskMonthList.add( taskMonth );
         taskMonthList.add( taskMonth );
     }
 
-    public String doCreateActivity()
+    public String previousWeek()
     {
-        newActivity.addMember( member );
-        newActivity = workEJB.createActivity( newActivity );
-        workDayList = workEJB.getWorkDayList( member );
+        System.out.println( "PREVIOUSSSSSSSSSS" );
+        currentDay.add( Calendar.WEEK_OF_YEAR, -1 );
+        buildDummy();
+        return "realized.xhtml";
+    }
+
+    public String doNextWeek()
+    {
+        currentDay.add( Calendar.WEEK_OF_YEAR, 1 );
         return "realized.xhtml";
     }
 
     public String update()
     {
 
-        System.out.println( "cool " + taskMonthList.get( 0 ).getTask().getName() );
+        System.out.println( "Calling update method" );
+        buildDummy();
+        buildDummy();
+        FacesMessage msg = null;
+        msg =
+            new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Merci " + member.getName() + " !" );
+        FacesContext.getCurrentInstance().addMessage( null, msg );
         return "realized.xhtml";
-    }
-
-    public void onEdit( RowEditEvent event )
-    {
-        System.out.println( "ON EDITTTTTTTTTTTTTT" );
-        FacesMessage msg = new FacesMessage( "Car Edited", "yahoo" );
-
-        FacesContext.getCurrentInstance().addMessage( null, msg );
-    }
-
-    public void onCancel( RowEditEvent event )
-    {
-        System.out.println( "ON CANCELLED" );
-        FacesMessage msg = new FacesMessage( "Car Cancelled", "yahoo" );
-
-        FacesContext.getCurrentInstance().addMessage( null, msg );
     }
 
     public Member getMember()

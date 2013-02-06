@@ -89,14 +89,12 @@ public class Work
 
     public void setTotal( Float total )
     {
-
-        System.out.println( "totalllll " + total );
         this.total = total;
     }
 
     public String getDayStr()
     {
-        return DateFormatUtils.format( getDay(), "E dd/MM" );
+        return DateFormatUtils.format( getDay(), "E dd" );
     }
 
 }

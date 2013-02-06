@@ -99,7 +99,6 @@ public class WorkDay
 
     public List<Work> getWorks()
     {
-        System.err.println( "AAAAAAAAAAAAAAAA" );
         return works;
     }
 

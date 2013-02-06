@@ -21,141 +21,69 @@
   
 </h:form>  
  -->
-	<p:growl id="growl" showDetail="true" life="3000" />
+	<p:growl id="growl" showDetail="true" life="2000" />
 
 	<h1>
-		Saisie du réalisé de
-		<!--  <h:outputText value="#{workController.member.name}" />-->
+		Saisie du réalisé de <h:outputText value="#{workController.member.name}" />
 	</h1>
 
+	<p:panel header="Nouvelle activité">
+		<h:form>
+			<table border="0">
+				<tr>
+					<td><h:outputLabel value="Projet/Appli :" /></td>
+					<td><h:inputText value="#{workController.newActivity.project}" /></td>
+					<td><h:outputLabel value="Nom :" /></td>
+					<td><h:inputText value="#{workController.newActivity.name}" /></td>
 
-	<h2>Nouvelle activité</h2>
-	<hr />
-	<h:form>
-		<table border="0">
-			<tr>
-				<td><h:outputLabel value="Nom :" /></td>
-				<td><h:inputText value="#{workController.newActivity.name}" /></td>
-			</tr>
-			<tr>
-				<td><h:outputLabel value="Projet/Appli :" /></td>
-				<td><h:inputText value="#{workController.newActivity.project}" /></td>
-			</tr>
-		</table>
-		<h:commandButton value="Ajouter"
-			action="#{workController.doCreateActivity}" />
-	</h:form>
+				</tr>
+			</table>
+			<h:commandButton value="Ajouter"
+				action="#{workController.doCreateActivity}" />
+		</h:form>
+	</p:panel>
+<br/>
 
-	<h:form>
-	    		<h:commandButton value="Ajouter"
-			action="#{workController.update}" />
-    <p:dataTable id="tbl" var="taskMonth" value="#{workController.taskMonthList}" resizableColumns="true" >  
 
-        <p:column headerText="Name">  
-            <h:outputText value="#{taskMonth.task.name}" />  
-        </p:column>  
-  
-        <p:column headerText="Color2">  
-            <h:inputText value="#{taskMonth.task.name}" />  
-        </p:column>  
-        
-        
-        <p:columns value="#{taskMonth.works}" var="work"
-				columnIndexVar="colIndex">
+		<h:form>
+	<p:panel header="Réalisé de la semaine">
 
-				<f:facet name="header">  
+	<p:button actionListener="#{workController.previousWeek}" value="Semaine précédente" icon="ui-icon-arrowreturnthick-1-w" />
+	<p:button action="#{workController.nextWeek}" value="Semaine suivante" icon="ui-icon-arrowreturnthick-1-e" />  
+
+
+			<p:dataTable id="tbl" var="taskMonth"
+				value="#{workController.taskMonthList}"
+				frozenRows="#{workController.taskMonthList}">
+
+				<p:column headerText="Tâche">
+					<h:outputText value="#{taskMonth.task.name}" />
+				</p:column>
+
+
+				<p:columns value="#{taskMonth.works}" var="work"
+					columnIndexVar="colIndex">
+
+					<f:facet name="header">  
                 #{work.dayStr}
             </f:facet>
-      <h:inputText value="#{work.total}" />  
+					<h:inputText value="#{work.total}" size="1" />
 
-			</p:columns>
-        
-        
-    </p:dataTable>  
- 
-
-trop cool <br/>
+				</p:columns>
 
 
-    <p:panel header="Export All Data">  
-        <h:commandLink>  
-            <p:graphicImage value="/images/excel.png" />  
-            <p:dataExporter type="xls" target="tbl" fileName="cars" />  
-        </h:commandLink>  
-  
-        <h:commandLink>  
-            <p:graphicImage value="/images/pdf.png" />  
-            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>  
-        </h:commandLink>  
-          
-        <h:commandLink>  
-            <p:graphicImage value="/images/csv.png" />  
-            <p:dataExporter type="csv" target="tbl" fileName="cars" />  
-        </h:commandLink>  
-          
-        <h:commandLink>  
-            <p:graphicImage value="/images/xml.png" />  
-            <p:dataExporter type="xml" target="tbl" fileName="cars" />  
-        </h:commandLink>  
-    </p:panel>  
-   	</h:form>
-	<h:form id="form2">
-		<p:growl id="messages" showDetail="true" />
+			</p:dataTable>
+		<br/>
+			<h:commandButton value="Mettre à jour"
+				action="#{workController.update}" />
+				<br/>
+		<h:commandLink>
+			<p:graphicImage value="/images/excel.gif" />
+			<p:dataExporter type="xls" target="tbl" fileName="realise.xls" />
+		</h:commandLink>
+	</p:panel>
 
-		<p:dataTable var="workDay" value="#{workController.workDayList}"
-			resizableColumns="true" id="wdList2" editable="true">
-
-
-		</p:dataTable>
 	</h:form>
-	<hr />
 
-	<h:form id="form">
-		<p:growl id="messages" showDetail="true" />
-		<p:dataTable var="workDay" value="#{workController.workDayList}" id="wdList" editable="true">
-
-			<p:ajax event="rowEdit" listener="#{workController2.onEdit}"
-				update=":form:messages" />
-			<p:ajax event="rowEditCancel" listener="#{workController.onCancel}"
-				update=":form:messages" />
-
-			<p:column headerText="Jour" style="width:125px">  
-				#{workDay.dayStr}
-        </p:column>
-
-
-			<p:column headerText="Absence" style="width:125px">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{workDay.absenceRate}" />
-					</f:facet>
-					<f:facet name="input">
-						<h:inputText value="#{workDay.absenceRate}" style="width:100%" />
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
-
-
-			<p:columns value="#{workDay.works}" var="work"
-				columnIndexVar="colIndex" styleClass="ui-editable-column" style="width:5px;">
-
-				<f:facet name="header">  
-                #{work.activity.project} - #{work.activity.name}
-            </f:facet>
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{work.total}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText value="#{work.total}" size="5" />
-					</f:facet>
-				</p:cellEditor>
-
-			</p:columns>
-			<p:column headerText="Options">
-				<p:rowEditor />
-			</p:column>
-		</p:dataTable>
-	</h:form>
 </h:body>
 </html>
