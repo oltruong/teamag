@@ -4,15 +4,36 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Table
+@NamedQuery( name = "findTaskMonth", query = "SELECT t from TaskMonth t where t.member=:fmember and t.month=:fmonth" )
+@Entity
 public class TaskMonth
 {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @JoinColumn( nullable = false )
     private Task task;
 
+    @Temporal( TemporalType.DATE )
+    @Column( nullable = false )
     private Calendar month;
 
     private List<Work> works = new ArrayList<Work>();
 
+    @JoinColumn( nullable = false )
     private Member member;
 
     public Task getTask()
@@ -37,7 +58,6 @@ public class TaskMonth
 
     public List<Work> getWorks()
     {
-        System.out.println( "Calling getWorks " + works.size() );
         return works;
     }
 

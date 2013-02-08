@@ -2,9 +2,11 @@ package fr.oltruong.teamag.entity;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,14 +22,18 @@ public class Work
     @GeneratedValue
     private Long id;
 
+    @Column( nullable = false )
     @Temporal( TemporalType.DATE )
     private Calendar month;
 
+    @Column( nullable = false )
     @Temporal( TemporalType.DATE )
     private Calendar day;
 
+    @JoinColumn( nullable = false )
     private Member member;
 
+    @JoinColumn( nullable = false )
     private Task task;
 
     private Float total = 0f;
@@ -72,14 +78,14 @@ public class Work
         this.member = member;
     }
 
-    public Task getActivity()
+    public Task getTask()
     {
         return task;
     }
 
-    public void setActivity( Task activity )
+    public void setTask( Task task )
     {
-        this.task = activity;
+        this.task = task;
     }
 
     public Float getTotal()

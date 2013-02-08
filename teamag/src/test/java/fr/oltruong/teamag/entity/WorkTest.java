@@ -26,8 +26,8 @@ public class WorkTest
         tx.begin();
 
         em.persist( work.getMember() );
-        em.persist( work.getActivity().getMembers().get( 0 ) );
-        em.persist( work.getActivity() );
+        em.persist( work.getTask().getMembers().get( 0 ) );
+        em.persist( work.getTask() );
 
         em.persist( work );
 
@@ -45,20 +45,20 @@ public class WorkTest
 
         member.setName( "Carot" );
         member.setCompany( "my company" );
-
+        member.setEmail( "email@dummy.com" );
         return member;
     }
 
-    private Task createActivity()
+    private Task createTask()
     {
-        Task activity = new Task();
+        Task task = new Task();
 
-        activity.setName( "Activity" );
-        activity.setProject( "my project" );
+        task.setName( "Activity" );
+        task.setProject( "my project" );
 
-        activity.addMember( createMember() );
+        task.addMember( createMember() );
 
-        return activity;
+        return task;
     }
 
     private Work createWork()
@@ -67,7 +67,7 @@ public class WorkTest
 
         work.setMember( createMember() );
         work.setDay( Calendar.getInstance() );
-        work.setActivity( createActivity() );
+        work.setTask( createTask() );
         work.setMonth( Calendar.getInstance() );
         return work;
     }

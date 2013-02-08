@@ -21,6 +21,11 @@ public class Member
     implements Serializable
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -30,6 +35,9 @@ public class Member
 
     @Column( nullable = false )
     private String company;
+
+    @Column( nullable = false )
+    private String email;
 
     @Column( nullable = false )
     private Float productivity = 1f;
@@ -66,6 +74,16 @@ public class Member
     public void setCompany( String company )
     {
         this.company = company;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String email )
+    {
+        this.email = email;
     }
 
 }

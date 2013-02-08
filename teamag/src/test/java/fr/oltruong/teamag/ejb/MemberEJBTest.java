@@ -60,7 +60,7 @@ public class MemberEJBTest
 
         member.setName( "Carot" );
         member.setCompany( "My company" );
-
+        member.setEmail( "dummy@email.com" );
         // Looks up for the EJB
         MemberEJB memberEJB = (MemberEJB) ctx.lookup( "java:global/classes/MemberEJB" );
 

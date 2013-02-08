@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 
 import org.junit.Test;
 
@@ -34,6 +35,26 @@ public class MemberTest
         emf.close();
 
         assertNotNull( "Member should have an id", member.getId() );
+    }
+
+    @Test( expected = RollbackException.class )
+    public void testException()
+    {
+        Member member = createMember();
+        member.setEmail( null );
+        // Gets an entity manager and a transaction
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory( "testPersistence" );
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        // Persists member to the database
+        tx.begin();
+        em.persist( member );
+
+        tx.commit();
+        em.close();
+        emf.close();
+
     }
 
     @Test
@@ -69,6 +90,7 @@ public class MemberTest
 
         member.setName( "Carot" );
         member.setCompany( "my company" );
+        member.setEmail( "dummy@email.com" );
 
         return member;
     }

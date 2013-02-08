@@ -7,11 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table( name = "TeamagTask" )
-@NamedQuery( name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project" )
+@Table( name = "Task_Teamag" )
+@NamedQueries( { @NamedQuery( name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project" ),
+    @NamedQuery( name = "findTaskByName", query = "SELECT t from Task t where t.name=:fname" ) } )
 @Entity
 public class Task
 {
@@ -24,9 +26,6 @@ public class Task
 
     private String project;
 
-    // @OneToMany
-    // @JoinTable( name = "jnd_activity_member", joinColumns = @JoinColumn( name = "activity_fk" ), inverseJoinColumns =
-    // @JoinColumn( name = "member_fk" ) )
     private List<Member> members = new ArrayList<Member>( 1 );
 
     public Long getId()

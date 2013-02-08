@@ -34,11 +34,13 @@ public class MemberController
 
     public String doNewMemberForm()
     {
+        System.out.println( "Do New Member Form" );
         return "newMember.xhtml";
     }
 
     public String doCreateMember()
     {
+        System.out.println( "Do Create Member" );
         member = memberEJB.createMember( member );
         memberList = memberEJB.findMembers();
         return "newMember.xhtml";

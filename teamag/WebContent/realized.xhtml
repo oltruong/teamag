@@ -24,64 +24,65 @@
 	<p:growl id="growl" showDetail="true" life="2000" />
 
 	<h1>
-		Saisie du réalisé de <h:outputText value="#{workController.member.name}" />
+		Saisie du réalisé de
+		<h:outputText value="#{workController.member.name}" />
 	</h1>
 
 	<p:panel header="Nouvelle activité">
 		<h:form>
 			<table border="0">
 				<tr>
+					<td><h:outputLabel value="Nom* :" /></td>
+					<td><h:inputText value="#{workController.newTask.name}"
+							required="true" /></td>
 					<td><h:outputLabel value="Projet/Appli :" /></td>
-					<td><h:inputText value="#{workController.newActivity.project}" /></td>
-					<td><h:outputLabel value="Nom :" /></td>
-					<td><h:inputText value="#{workController.newActivity.name}" /></td>
-
+					<td><h:inputText value="#{workController.newTask.project}" /></td>
 				</tr>
 			</table>
 			<h:commandButton value="Ajouter"
 				action="#{workController.doCreateActivity}" />
 		</h:form>
 	</p:panel>
-<br/>
+	<br />
 
 
-		<h:form>
-	<p:panel header="Réalisé de la semaine">
+	<h:form>
+		<p:panel header="Réalisé de la semaine">
 
-	<p:button actionListener="#{workController.previousWeek}" value="Semaine précédente" icon="ui-icon-arrowreturnthick-1-w" />
-	<p:button action="#{workController.nextWeek}" value="Semaine suivante" icon="ui-icon-arrowreturnthick-1-e" />  
+			<p:button action="#{workController.previousWeek}"
+				value="Semaine précédente" icon="ui-icon-arrowreturnthick-1-w" />
+			<p:button action="#{workController.nextWeek}"
+				value="Semaine suivante" icon="ui-icon-arrowreturnthick-1-e" />
 
 
-			<p:dataTable id="tbl" var="taskMonth"
-				value="#{workController.taskMonthList}"
-				frozenRows="#{workController.taskMonthList}">
+			<p:dataTable id="tbl" var="taskWeek"
+				value="#{workController.taskWeekList}">
 
 				<p:column headerText="Tâche">
-					<h:outputText value="#{taskMonth.task.name}" />
+					<h:outputText value="#{taskWeek.task.name}" />
 				</p:column>
 
 
-				<p:columns value="#{taskMonth.works}" var="work"
-					columnIndexVar="colIndex">
+				<p:columns value="#{taskWeek.works}" var="work"	columnIndexVar="colIndex">
 
-					<f:facet name="header">  
-                #{work.dayStr}
-            </f:facet>
-					<h:inputText value="#{work.total}" size="1" />
+				<f:facet name="header">  
+                	#{work.dayStr}
+	            </f:facet>
+					<h:inputText value="#{work.total}" size="2"/>
 
 				</p:columns>
 
 
 			</p:dataTable>
-		<br/>
+			<br />
 			<h:commandButton value="Mettre à jour"
 				action="#{workController.update}" />
-				<br/>
-		<h:commandLink>
-			<p:graphicImage value="/images/excel.gif" />
-			<p:dataExporter type="xls" target="tbl" fileName="realise.xls" />
-		</h:commandLink>
-	</p:panel>
+			<br />
+			<h:commandLink>
+				<p:graphicImage value="/images/excel.gif" />
+				<p:dataExporter type="xls" target="tbl" fileName="realise.xls" />
+			</h:commandLink>
+		</p:panel>
 
 	</h:form>
 

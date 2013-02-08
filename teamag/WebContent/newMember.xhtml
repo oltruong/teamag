@@ -61,17 +61,22 @@
 	<h1>Nouveau membre</h1>
 	<hr />
 	<h:form>
+	<h:messages style="color:red"/>
 		<table border="0">
 			<tr>
 				<td><h:outputLabel value="Nom :" /></td>
-				<td><h:inputText value="#{memberController.member.name}" /></td>
+				<td><h:inputText value="#{memberController.member.name}" required="true" /></td>
 			</tr>
 			<tr>
 				<td><h:outputLabel value="Entreprise :" /></td>
-				<td><h:inputText value="#{memberController.member.company}" /></td>
+				<td><h:inputText value="#{memberController.member.company}"  required="true" /></td>
+			</tr>
+						<tr>
+				<td><h:outputLabel value="Email :" /></td>
+				<td><h:inputText value="#{memberController.member.email}"  required="true" /></td>
 			</tr>
 		</table>
-		<h:commandButton value="Create a member"
+		<h:commandButton value="Ajout de membre"
 			action="#{memberController.doCreateMember}" />
 	</h:form>
 
@@ -96,6 +101,12 @@
 				<h:outputText value="Company" />
 			</f:facet>
 			<h:outputText value="#{user.company}" />
+		</h:column>
+					<h:column>
+			<f:facet name="header">
+				<h:outputText value="Email" />
+			</f:facet>
+			<h:outputText value="#{user.email}" />
 		</h:column>
 
 	</h:dataTable>

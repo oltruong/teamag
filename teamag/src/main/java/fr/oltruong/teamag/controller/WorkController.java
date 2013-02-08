@@ -5,107 +5,97 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.SessionScoped;
 
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.TaskMonth;
 import fr.oltruong.teamag.entity.Work;
-import fr.oltruong.teamag.entity.WorkDay;
+import fr.oltruong.teamag.webbean.TaskWeekBean;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class WorkController
 {
 
     @ManagedProperty( value = "#{loginBean.member}" )
     private Member member;
 
-    private Task newActivity = new Task();
-
-    private List<WorkDay> workDayList = new ArrayList<WorkDay>();
+    private Task newTask = new Task();
 
     private List<TaskMonth> taskMonthList;
 
-    private Calendar currentDay = Calendar.getInstance();
+    private List<TaskWeekBean> taskWeekList;
+
+    private Calendar currentDay;
 
     @EJB
     private WorkEJB workEJB;
 
-    // public String doRealizedForm()
-    // {
-    //
-    // System.out.println( "Calling doRealizedForm" );
-    // buildDummy();
-    //
-    // return "realized.xhtml";
-    // }
+    public String init()
+    {
+        currentDay = Calendar.getInstance();
+        taskMonthList = workEJB.findTasksMonth( member, Calendar.getInstance() );
+
+        initTaskWeek();
+        return "realized.xhtml";
+    }
+
+    private void initTaskWeek()
+    {
+        if ( taskMonthList != null )
+        {
+
+            taskWeekList = new ArrayList<TaskWeekBean>( taskMonthList.size() );
+            for ( TaskMonth taskMonth : taskMonthList )
+            {
+                TaskWeekBean taskWeek = new TaskWeekBean();
+                taskWeek.setTask( taskMonth.getTask() );
+                for ( Work work : taskMonth.getWorks() )
+                {
+                    System.out.println( "work " + work.getDayStr() );
+
+                    if ( work.getDay().get( Calendar.WEEK_OF_MONTH ) == currentDay.get( Calendar.WEEK_OF_MONTH ) )
+                    {
+                        System.out.println( "cool" );
+                        taskWeek.addWork( work );
+                    }
+                }
+                System.out.println( "adddddd" );
+                taskWeekList.add( taskWeek );
+            }
+        }
+        else
+        {
+            System.out.println( "Aucune taskMonth :'(" );
+        }
+
+    }
 
     public String doCreateActivity()
     {
 
         System.out.println( "Calling doCreateActivity" );
-        buildDummy();
 
-        return "realized.xhtml";
-    }
-
-    private void buildDummy()
-    {
-        taskMonthList = new ArrayList<TaskMonth>();
-        Task task = new Task();
-
-        task.setName( "TaskTest" );
-
-        TaskMonth taskMonth = new TaskMonth();
-
-        taskMonth.setTask( task );
-
-        Calendar currentDay = Calendar.getInstance();
-
-        // int weekNumber = week.get( Calendar.DAY_OF_WEEK );
-
-        // week.set( 2013, Calendar.FEBRUARY, 1 );
-
-        taskMonth.setMonth( currentDay );
-        for ( int i = 2; i <= 6; i++ )
-        {
-            Calendar day = (Calendar) currentDay.clone();
-            day.set( Calendar.DAY_OF_WEEK, i );
-
-            if ( day.get( Calendar.MONTH ) == currentDay.get( Calendar.MONTH ) )
-            {
-                Work work = new Work();
-                work.setDay( day );
-                work.setMember( member );
-
-                work.setActivity( task );
-
-                System.out.println( "Add work local" );
-                taskMonth.addWork( work );
-
-            }
-        }
-
-        taskMonthList.add( taskMonth );
+        return "realized";
     }
 
     public String previousWeek()
     {
-        System.out.println( "PREVIOUSSSSSSSSSS" );
-        currentDay.add( Calendar.WEEK_OF_YEAR, -1 );
-        buildDummy();
+        System.out.println( "Click previous week" );
+        // currentDay.add( Calendar.WEEK_OF_YEAR, -1 );
+        // initTaskWeek();
         return "realized.xhtml";
     }
 
-    public String doNextWeek()
+    public String nextWeek()
     {
+        System.out.println( "Click next week" );
         currentDay.add( Calendar.WEEK_OF_YEAR, 1 );
+        initTaskWeek();
         return "realized.xhtml";
     }
 
@@ -113,12 +103,10 @@ public class WorkController
     {
 
         System.out.println( "Calling update method" );
-        buildDummy();
-        buildDummy();
-        FacesMessage msg = null;
-        msg =
-            new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Merci " + member.getName() + " !" );
-        FacesContext.getCurrentInstance().addMessage( null, msg );
+        // FacesMessage msg = null;
+        // msg =
+        // new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Merci " + member.getName() + " !" );
+        // FacesContext.getCurrentInstance().addMessage( null, msg );
         return "realized.xhtml";
     }
 
@@ -132,24 +120,14 @@ public class WorkController
         this.member = member;
     }
 
-    public Task getNewActivity()
+    public Task getNewTask()
     {
-        return newActivity;
+        return newTask;
     }
 
-    public void setNewActivity( Task newActivity )
+    public void setNewTask( Task newActivity )
     {
-        this.newActivity = newActivity;
-    }
-
-    public List<WorkDay> getWorkDayList()
-    {
-        return workDayList;
-    }
-
-    public void setWorkDayList( List<WorkDay> workDayList )
-    {
-        this.workDayList = workDayList;
+        this.newTask = newActivity;
     }
 
     public List<TaskMonth> getTaskMonthList()
@@ -160,6 +138,17 @@ public class WorkController
     public void setTaskMonthList( List<TaskMonth> taskMonthList )
     {
         this.taskMonthList = taskMonthList;
+    }
+
+    public List<TaskWeekBean> getTaskWeekList()
+    {
+        System.out.println( "Get  " + taskWeekList.get( 0 ).getWorks().size() );
+        return taskWeekList;
+    }
+
+    public void setTaskWeekList( List<TaskWeekBean> taskWeekList )
+    {
+        this.taskWeekList = taskWeekList;
     }
 
 }

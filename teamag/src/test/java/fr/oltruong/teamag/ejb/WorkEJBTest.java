@@ -10,8 +10,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.Task;
 
 public class WorkEJBTest
 {
@@ -58,6 +58,7 @@ public class WorkEJBTest
 
         member.setName( "Carot" );
         member.setCompany( "My company" );
+        member.setEmail( "dyummy@email.com" );
 
         // Looks up for the EJB
         MemberEJB memberEJB = (MemberEJB) ctx.lookup( "java:global/classes/MemberEJB" );
@@ -67,7 +68,7 @@ public class WorkEJBTest
         assertNotNull( "ID should not be null", member.getId() );
 
         Task task = new Task();
-        task.setName( "my activity!!!" );
+        task.setName( "my task!!!" );
 
         task.setProject( "my project" );
 
@@ -75,7 +76,7 @@ public class WorkEJBTest
 
         WorkEJB workEJB = (WorkEJB) ctx.lookup( "java:global/classes/WorkEJB" );
 
-        workEJB.createActivity( task );
+        workEJB.createTask( task );
 
         assertNotNull( "ID should not be null", task.getId() );
     }

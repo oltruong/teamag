@@ -9,13 +9,15 @@
 </h:head>
 <h:body>
 <h1>Outil de saisie de réalisé</h1>
+
+<div id="welcome">
  Cliquer sur l'image pour vous identifier 
 <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">     
 
 <p:graphicImage value="/images/login.png" alt="S'identifier" />  
 </h:outputLink>  
-  
-<p:growl id="growl" showDetail="true" life="3000" />  
+  </div>
+<p:growl id="growl" showDetail="true" life="2000" />  
   
 <p:dialog id="dialog" header="Identification" widgetVar="dlg">  
     <h:form>  
@@ -35,14 +37,20 @@
     </h:form>  
 </p:dialog>  
   
+  
+ <h:outputLink id="loginIn" style="display:none">     
+                <p:commandButton value="Mon réalisé" action="#{workController.init}"/>  
+</h:outputLink>  
+  
+  
 <script type="text/javascript">  
     function handleLoginRequest(xhr, status, args) {  
         if(args.validationFailed || !args.loggedIn) {  
             jQuery('#dialog').effect("shake", { times:3 }, 100);  
         } else {  
             dlg.hide();  
-            jQuery('#loginLink').fadeOut();
-            window.location = "realized.faces";
+            jQuery('#welcome').fadeOut();
+            jQuery('#loginIn').fadeIn();
         }  
     }  
 </script>
