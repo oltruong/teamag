@@ -11,7 +11,7 @@ import javax.naming.NamingException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import fr.oltruong.teamag.entity.Member;
 
@@ -50,7 +50,7 @@ public class MemberEJBTest
     // = Unit tests =
     // ======================================
 
-    @Test
+    @Ignore
     public void createMember()
         throws NamingException
     {

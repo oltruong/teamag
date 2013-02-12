@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.webbean;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
@@ -12,9 +12,7 @@ public class TaskWeekBean
 
     private Task task;
 
-    private Calendar month;
-
-    private List<Work> works = new ArrayList<Work>();
+    private Map<String, Work> mapWorks = new HashMap<String, Work>( 5 );
 
     public Task getTask()
     {
@@ -26,30 +24,45 @@ public class TaskWeekBean
         this.task = task;
     }
 
-    public Calendar getMonth()
+    public Collection<Work> getWorks()
     {
-        return month;
+        return mapWorks.values();
     }
 
-    public void setMonth( Calendar month )
+    private Work getWork( String columnDay )
     {
-        this.month = month;
+
+        return mapWorks.get( columnDay );
     }
 
-    public List<Work> getWorks()
+    public void addWork( String column, Work work )
     {
-        System.out.println( "gett " + works.size() );
-        return works;
+        mapWorks.put( column, work );
     }
 
-    public void setWorks( List<Work> works )
+    public Work getDay6()
     {
-        this.works = works;
+        return getWork( "day6" );
     }
 
-    public void addWork( Work work )
+    public Work getDay2()
     {
-        works.add( work );
+        return getWork( "day2" );
+    }
+
+    public Work getDay3()
+    {
+        return getWork( "day3" );
+    }
+
+    public Work getDay4()
+    {
+        return getWork( "day4" );
+    }
+
+    public Work getDay5()
+    {
+        return getWork( "day5" );
     }
 
 }

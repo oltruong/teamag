@@ -2,7 +2,9 @@ package fr.oltruong.teamag.ejb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,8 +13,8 @@ import javax.persistence.Query;
 
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
-import fr.oltruong.teamag.entity.TaskMonth;
 import fr.oltruong.teamag.entity.Work;
+import fr.oltruong.teamag.exception.TaskExistingException;
 import fr.oltruong.teamag.utils.CalendarUtils;
 
 @Stateless
@@ -22,41 +24,60 @@ public class WorkEJB
     @PersistenceContext( unitName = "ejbPU" )
     private EntityManager em;
 
-    public List<TaskMonth> findTasksMonth( Member member, Calendar month )
+    public Map<Task, List<Work>> findWorks( Member member, Calendar month )
     {
 
-        Query query = em.createNamedQuery( "findTaskMonth" );
-        query.setParameter( "fmember", member );
-        query.setParameter( "fmonth", CalendarUtils.getFirstDayOfMonth( month ) );
+        Map<Task, List<Work>> worksByTask = new HashMap<Task, List<Work>>();
+
+        Query query = em.createNamedQuery( "findWorksByMember" );
+        query.setParameter( "fmemberName", member.getName() );
+        query.setParameter( "fmonth", month );
 
         @SuppressWarnings( "unchecked" )
-        List<TaskMonth> listTaskMonth = query.getResultList();
+        List<Work> listWorks = query.getResultList();
 
-        if ( listTaskMonth == null || listTaskMonth.isEmpty() )
+        if ( listWorks == null || listWorks.isEmpty() )
         {
-            System.out.println( "Creating a new task month for member " + member.getName() );
-            listTaskMonth = createTasksMonth( member, month );
+            System.out.println( "Creating new works for member " + member.getName() );
+            listWorks = createWorks( member, month );
         }
 
-        return listTaskMonth;
+        worksByTask = transformWorkList( listWorks );
+
+        return worksByTask;
     }
 
-    private List<TaskMonth> createTasksMonth( Member member, Calendar month )
+    private Map<Task, List<Work>> transformWorkList( List<Work> listWorks )
     {
-        List<TaskMonth> listTaskMonths = null;
+
+        Map<Task, List<Work>> worksByTask = new HashMap<Task, List<Work>>();
+
+        for ( Work work : listWorks )
+        {
+            if ( !worksByTask.containsKey( work.getTask() ) )
+            {
+                worksByTask.put( work.getTask(), new ArrayList<Work>() );
+            }
+            worksByTask.get( work.getTask() ).add( work );
+        }
+
+        return worksByTask;
+    }
+
+    private List<Work> createWorks( Member member, Calendar month )
+    {
+
+        List<Work> works = null;
+
         List<Task> tasks = findMemberTasks( member );
         if ( tasks != null && !tasks.isEmpty() )
         {
-            listTaskMonths = new ArrayList<TaskMonth>( tasks.size() );
 
             List<Calendar> workingDays = CalendarUtils.getWorkingDays( month );
+
+            works = new ArrayList<Work>( tasks.size() * workingDays.size() );
             for ( Task task : tasks )
             {
-                TaskMonth taskMonth = new TaskMonth();
-                taskMonth.setMonth( CalendarUtils.getFirstDayOfMonth( month ) );
-                taskMonth.setTask( task );
-                taskMonth.setMember( member );
-
                 for ( Calendar day : workingDays )
                 {
                     Work work = new Work();
@@ -64,13 +85,11 @@ public class WorkEJB
                     work.setMember( member );
                     work.setMonth( month );
                     work.setTask( task );
+
                     em.persist( work );
-                    taskMonth.addWork( work );
-                    System.out.println( "Creation Work pour tache " + task.getName() + " jour " + work.getDayStr() );
+
+                    works.add( work );
                 }
-                em.persist( taskMonth );
-                System.out.println( "Creation taskMonth pour tache " + task.getName() );
-                listTaskMonths.add( taskMonth );
             }
 
         }
@@ -78,7 +97,7 @@ public class WorkEJB
         {
             System.out.println( "Aucune activite" );
         }
-        return listTaskMonths;
+        return works;
 
     }
 
@@ -99,17 +118,9 @@ public class WorkEJB
             System.out.println( "tache Id" + task.getMembers().get( 0 ).getId() );
             System.out.println( "Member id" + member.getId() );
 
-            boolean trouve = false;
-            for ( Member memberT : task.getMembers() )
+            if ( task.getMembers().contains( member ) )
             {
-                if ( memberT.getId().equals( member.getId() ) )
-                {
-                    trouve = true;
-                }
-            }
-            if ( trouve )
-            {
-                System.out.println( "youpi" );
+                System.out.println( "la tâche a bien comme member " + member.getName() );
                 tasks.add( task );
             }
         }
@@ -117,10 +128,67 @@ public class WorkEJB
         return tasks;
     }
 
-    public Task createTask( Task task )
+    public void createTask( Calendar month, Member member, Task task )
+        throws TaskExistingException
     {
+        Query query = em.createNamedQuery( "findTaskByName" );
+        query.setParameter( "fname", task.getName() );
+        query.setParameter( "fproject", task.getProject() );
+
+        @SuppressWarnings( "unchecked" )
+        List<Task> allTasks = query.getResultList();
+
+        if ( allTasks != null && !allTasks.isEmpty() )
+        {
+
+            // La tâche existe déjà
+            Task myTask = allTasks.get( 0 );
+            if ( myTask.getMembers().contains( member ) )
+            {
+                throw new TaskExistingException();
+            }
+            else
+            {
+                myTask.addMember( member );
+                em.merge( myTask );
+            }
+        }
+        else
+        // Création de la tâche
+        {
+            // Reset task ID
+            task.setId( null );
+
+            task.addMember( member );
+            em.persist( task );
+
+        }
+
+        // Création des objets Work
+
         em.persist( task );
-        return task;
+
+        List<Calendar> workingDays = CalendarUtils.getWorkingDays( month );
+        for ( Calendar day : workingDays )
+        {
+            Work work = new Work();
+            work.setDay( day );
+            work.setMember( member );
+            work.setMonth( month );
+            work.setTask( task );
+
+            em.persist( work );
+        }
+
+    }
+
+    public void updateWorks( List<Work> works )
+    {
+        for ( Work work : works )
+        {
+            work.setTotal( work.getTotalEdit() );
+            em.merge( work );
+        }
     }
 
 }

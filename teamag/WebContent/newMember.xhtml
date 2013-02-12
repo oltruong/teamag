@@ -56,12 +56,11 @@
   
 </h:form>   -->
 
+<p:growl id="messages" life="2000" showDetail="true" />  
 
-
-	<h1>Nouveau membre</h1>
+<p:panel header="Ajouter un nouveau membre">
 	<hr />
 	<h:form>
-	<h:messages style="color:red"/>
 		<table border="0">
 			<tr>
 				<td><h:outputLabel value="Nom :" /></td>
@@ -72,47 +71,34 @@
 				<td><h:inputText value="#{memberController.member.company}"  required="true" /></td>
 			</tr>
 						<tr>
-				<td><h:outputLabel value="Email :" /></td>
+				<td><h:outputLabel value="e-mail :" /></td>
 				<td><h:inputText value="#{memberController.member.email}"  required="true" /></td>
 			</tr>
 		</table>
-		<h:commandButton value="Ajout de membre"
-			action="#{memberController.doCreateMember}" />
+		<p:commandButton value="Ajout de membre" action="#{memberController.doCreateMember}" ajax="false" />
 	</h:form>
+</p:panel>
 
-
-	<h1>User list</h1>
-	<h:dataTable value="#{memberController.memberList}" var="user" border="1">
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="ID" />
-			</f:facet>
+<p:panel header="Liste des membres">
+	<p:dataTable value="#{memberController.memberList}" var="user" border="1">
+		<p:column headerText="ID">
 			<h:outputText value="#{user.id}" />
-		</h:column>
+		</p:column>
 
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="Name" />
-			</f:facet>
+		<p:column headerText="Nom">
 			<h:outputText value="#{user.name}" />
-		</h:column>
-				<h:column>
-			<f:facet name="header">
-				<h:outputText value="Company" />
-			</f:facet>
+		</p:column>
+
+		<p:column headerText="Entreprise">
 			<h:outputText value="#{user.company}" />
-		</h:column>
-					<h:column>
-			<f:facet name="header">
-				<h:outputText value="Email" />
-			</f:facet>
+		</p:column>
+		
+		<p:column headerText="e-mail">
 			<h:outputText value="#{user.email}" />
-		</h:column>
+		</p:column>
 
-	</h:dataTable>
-	<hr />
-
-
+	</p:dataTable>
+	</p:panel>
 </h:body>
 </html>
 

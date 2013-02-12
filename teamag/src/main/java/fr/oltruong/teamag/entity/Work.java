@@ -7,14 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+@Table( name = "TM_WORK" )
 @Entity
-@Table( name = "Teamag_work" )
+@NamedQuery( name = "findWorksByMember", query = "SELECT w from Work w where w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day" )
 public class Work
 {
 
@@ -37,6 +40,9 @@ public class Work
     private Task task;
 
     private Float total = 0f;
+
+    @Transient
+    private Float totalEdit = null;
 
     public Long getId()
     {
@@ -96,11 +102,32 @@ public class Work
     public void setTotal( Float total )
     {
         this.total = total;
+        this.totalEdit = total;
+    }
+
+    public Float getTotalEdit()
+    {
+        if ( totalEdit == null )
+        {
+            totalEdit = total;
+        }
+        return totalEdit;
+    }
+
+    public void setTotalEdit( Float totalEdit )
+    {
+
+        this.totalEdit = totalEdit;
     }
 
     public String getDayStr()
     {
         return DateFormatUtils.format( getDay(), "E dd" );
+    }
+
+    public boolean hasChanged()
+    {
+        return total.floatValue() != totalEdit.floatValue();
     }
 
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -61,7 +62,6 @@ public class TaskTest
 
         assertNotNull( listTasks );
         assertFalse( listTasks.isEmpty() );
-        assertEquals( "list should only have one element", 1, listTasks.size() );
         assertNotNull( listTasks.get( 0 ).getMembers() );
         assertFalse( listTasks.get( 0 ).getMembers().isEmpty() );
         em.close();
@@ -82,6 +82,8 @@ public class TaskTest
         task1.setMembers( null );
         task2.setMembers( null );
 
+        task2.setProject( "" );
+
         // Gets an entity manager and a transaction
         EntityManagerFactory emf = Persistence.createEntityManagerFactory( "testPersistence" );
         EntityManager em = emf.createEntityManager();
@@ -96,6 +98,7 @@ public class TaskTest
 
         Query query = em.createNamedQuery( "findTaskByName" );
         query.setParameter( "fname", name );
+        query.setParameter( "fproject", "" );
 
         @SuppressWarnings( "unchecked" )
         List<Task> listTasks = query.getResultList();
@@ -104,6 +107,18 @@ public class TaskTest
         assertFalse( "list should not be empty", listTasks.isEmpty() );
         assertEquals( "list should only have one item", 1, listTasks.size() );
         assertEquals( "it should be task2", task2, listTasks.get( 0 ) );
+
+        Query query2 = em.createNamedQuery( "findTaskByName" );
+        query2.setParameter( "fname", task1.getName() );
+        query2.setParameter( "fproject", task1.getProject() );
+
+        @SuppressWarnings( "unchecked" )
+        List<Task> listTasks2 = query2.getResultList();
+
+        assertNotNull( listTasks2 );
+        assertFalse( "list should not be empty", listTasks2.isEmpty() );
+        assertEquals( "list should only have one item", 1, listTasks2.size() );
+        assertEquals( "it should be task1", task1, listTasks2.get( 0 ) );
 
         em.close();
         emf.close();
@@ -114,11 +129,11 @@ public class TaskTest
     {
         Task task = new Task();
 
-        task.setName( "Task" );
+        task.setName( "createTask" );
         task.setProject( "my project" );
 
         Member myMember = new Member();
-        myMember.setName( "Bob" );
+        myMember.setName( "Bob" + Calendar.getInstance().getTimeInMillis() );
         myMember.setCompany( "my Company" );
         myMember.setEmail( "email@dummy.com" );
         task.addMember( myMember );

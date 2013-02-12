@@ -11,9 +11,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table( name = "Task_Teamag" )
+@Table( name = "TM_TASK" )
 @NamedQueries( { @NamedQuery( name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project" ),
-    @NamedQuery( name = "findTaskByName", query = "SELECT t from Task t where t.name=:fname" ) } )
+    @NamedQuery( name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)" ) } )
 @Entity
 public class Task
 {
@@ -24,17 +24,19 @@ public class Task
     @Column( nullable = false )
     private String name;
 
-    private String project;
+    private String project = "";
 
     private List<Member> members = new ArrayList<Member>( 1 );
 
     public Long getId()
     {
+        System.out.println( "GGGET IDDDDD" + id );
         return id;
     }
 
     public void setId( Long id )
     {
+        System.out.println( "SET IDDDDD" + id );
         this.id = id;
     }
 

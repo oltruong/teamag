@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
@@ -48,7 +48,7 @@ public class WorkEJBTest
     // = Unit tests =
     // ======================================
 
-    @Test
+    @Ignore
     public void createMember()
         throws NamingException
     {
@@ -76,7 +76,7 @@ public class WorkEJBTest
 
         WorkEJB workEJB = (WorkEJB) ctx.lookup( "java:global/classes/WorkEJB" );
 
-        workEJB.createTask( task );
+        // workEJB.createTask( task );
 
         assertNotNull( "ID should not be null", task.getId() );
     }

@@ -43,12 +43,14 @@ public class MemberEJB
         }
     }
 
+    @SuppressWarnings( "unchecked" )
     public Member createMember( Member member )
     {
 
         // Adding default task
         Query query = em.createNamedQuery( "findTaskByName" );
         query.setParameter( "fname", "Absence" );
+        query.setParameter( "fproject", "" );
 
         Task task = null;
         List<Task> tasks = query.getResultList();

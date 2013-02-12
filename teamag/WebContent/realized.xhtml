@@ -6,27 +6,17 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Welcom to Teamag</title>
+	<title>Mon réalisé</title>
 </h:head>
 <h:body>
 
 
-	<!-- <h:form>  
-  
-  
-    <p:menubar>  
-        <p:menuitem value="Retour Accueil" url="login.faces"  icon="ui-icon-home" />  
-        <p:menuitem value="Réalisé" url="login.faces" icon="ui-icon-star" />
-    </p:menubar>  
-  
-</h:form>  
- -->
 	<p:growl id="growl" showDetail="true" life="2000" />
-
 	<h1>
 		Saisie du réalisé de
 		<h:outputText value="#{workController.member.name}" />
 	</h1>
+
 
 	<p:panel header="Nouvelle activité">
 		<h:form>
@@ -39,52 +29,54 @@
 					<td><h:inputText value="#{workController.newTask.project}" /></td>
 				</tr>
 			</table>
-			<h:commandButton value="Ajouter"
-				action="#{workController.doCreateActivity}" />
+			<p:commandButton value="Ajouter"
+				action="#{workController.doCreateActivity}" ajax="false" />
 		</h:form>
 	</p:panel>
 	<br />
+	<h:form id="idForm">
+		<p:panel header="Réalisé de #{workController.realizedBean.currentMonthStr}" id="idPanel">
+			<p:commandButton value="Semaine précédente" ajax="false" 
+				action="#{workController.previousWeek}" disabled="#{workController.realizedBean.isFirstWeek}" />
+			<p:commandButton value="Semaine suivante"
+				action="#{workController.nextWeek}" ajax="false" disabled="#{workController.realizedBean.isLastWeek}"/>
 
 
-	<h:form>
-		<p:panel header="Réalisé de la semaine">
-
-			<p:button action="#{workController.previousWeek}"
-				value="Semaine précédente" icon="ui-icon-arrowreturnthick-1-w" />
-			<p:button action="#{workController.nextWeek}"
-				value="Semaine suivante" icon="ui-icon-arrowreturnthick-1-e" />
-
-
-			<p:dataTable id="tbl" var="taskWeek"
-				value="#{workController.taskWeekList}">
-
-				<p:column headerText="Tâche">
-					<h:outputText value="#{taskWeek.task.name}" />
-				</p:column>
-
-
-				<p:columns value="#{taskWeek.works}" var="work"	columnIndexVar="colIndex">
+			<p:dataTable id="idTable" var="taskWeek"
+				value="#{workController.realizedBean.taskWeeks}">
 
 				<f:facet name="header">  
-                	#{work.dayStr}
-	            </f:facet>
-					<h:inputText value="#{work.total}" size="2"/>
+           Semaine #{workController.realizedBean.weekNumber}
+        </f:facet>
+
+				<p:column headerText="Tâche" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" >
+					<h:outputText value="#{taskWeek.task.project}-#{taskWeek.task.name}" size="35" />
+				</p:column>
+
+				<p:columns value="#{workController.realizedBean.columnsDay}"
+					var="column">
+					<f:facet name="header" size="2">  
+                #{column.dayHeader}  
+            		</f:facet>
+					<h:inputText value="#{taskWeek[column.dayNumber].totalEdit}" size="2" />
 
 				</p:columns>
 
 
 			</p:dataTable>
 			<br />
-			<h:commandButton value="Mettre à jour"
-				action="#{workController.update}" />
+			<p:commandButton value="Enregistrer"
+				action="#{workController.update}" ajax="false" />
+
 			<br />
 			<h:commandLink>
 				<p:graphicImage value="/images/excel.gif" />
-				<p:dataExporter type="xls" target="tbl" fileName="realise.xls" />
+				<p:dataExporter type="xls" target="idTable" fileName="realise.xls" />
 			</h:commandLink>
 		</p:panel>
 
 	</h:form>
+
 
 </h:body>
 </html>

@@ -3,6 +3,7 @@ package fr.oltruong.teamag.entity;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -88,7 +89,7 @@ public class MemberTest
     {
         Member member = new Member();
 
-        member.setName( "Carot" );
+        member.setName( "Carot" + Calendar.getInstance().getTimeInMillis() );
         member.setCompany( "my company" );
         member.setEmail( "dummy@email.com" );
 
