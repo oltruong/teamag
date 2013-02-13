@@ -135,47 +135,54 @@ public class WorkEJB
         query.setParameter( "fname", task.getName() );
         query.setParameter( "fproject", task.getProject() );
 
+        Task taskDB = null;
         @SuppressWarnings( "unchecked" )
         List<Task> allTasks = query.getResultList();
 
         if ( allTasks != null && !allTasks.isEmpty() )
         {
-
+            System.out.println( "La tâche existe déjà" );
             // La tâche existe déjà
             Task myTask = allTasks.get( 0 );
             if ( myTask.getMembers().contains( member ) )
             {
+                System.out.println( "Déjà affectée à la personne" );
                 throw new TaskExistingException();
             }
             else
             {
+                System.out.println( "Affectation à la personne " + member.getId() );
                 myTask.addMember( member );
                 em.merge( myTask );
+                taskDB = myTask;
             }
         }
         else
         // Création de la tâche
         {
+            System.out.println( "Création d'une nouvelle tâche" );
+
             // Reset task ID
             task.setId( null );
-
             task.addMember( member );
             em.persist( task );
+            taskDB = task;
 
         }
 
+        em.flush();
+
         // Création des objets Work
-
-        em.persist( task );
-
+        System.out.println( "Création des objets WORK" );
         List<Calendar> workingDays = CalendarUtils.getWorkingDays( month );
+
         for ( Calendar day : workingDays )
         {
             Work work = new Work();
             work.setDay( day );
             work.setMember( member );
             work.setMonth( month );
-            work.setTask( task );
+            work.setTask( taskDB );
 
             em.persist( work );
         }

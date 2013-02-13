@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import fr.oltruong.teamag.utils.CalendarUtils;
-
 public class RealizedFormWebBean
 {
     private Calendar dayCursor;
+
+    private int weekNumberMonth;
 
     private Calendar currentMonth;
 
@@ -20,12 +20,14 @@ public class RealizedFormWebBean
 
     public boolean getIsFirstWeek()
     {
-        return CalendarUtils.isFirstWeek( dayCursor );
+        return weekNumberMonth == 0;
+        // return CalendarUtils.isFirstWeek( dayCursor );
     }
 
     public boolean getIsLastWeek()
     {
-        return CalendarUtils.isLastWeek( dayCursor );
+        return weekNumberMonth == 4;
+        // return CalendarUtils.isLastWeek( dayCursor );
     }
 
     public void addColumnDay( ColumnDayBean columnDay )
@@ -38,8 +40,9 @@ public class RealizedFormWebBean
         return columnsDay;
     }
 
-    public Integer getWeekNumber()
+    public int getWeekNumber()
     {
+
         return dayCursor.get( Calendar.WEEK_OF_YEAR );
     }
 
@@ -55,12 +58,14 @@ public class RealizedFormWebBean
 
     public void incrementWeek()
     {
+        weekNumberMonth += 1;
         dayCursor.add( Calendar.WEEK_OF_MONTH, 1 );
 
     }
 
     public void decrementWeek()
     {
+        weekNumberMonth -= 1;
         dayCursor.add( Calendar.WEEK_OF_MONTH, -1 );
     }
 
@@ -82,6 +87,7 @@ public class RealizedFormWebBean
     public void setDayCursor( Calendar dayCursor )
     {
         this.dayCursor = dayCursor;
+        this.weekNumberMonth = dayCursor.get( Calendar.WEEK_OF_MONTH );
     }
 
 }

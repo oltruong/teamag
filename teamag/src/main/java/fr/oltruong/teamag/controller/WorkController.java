@@ -2,6 +2,8 @@ package fr.oltruong.teamag.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,62 +41,6 @@ public class WorkController
     @EJB
     private WorkEJB workEJB;
 
-    public String init()
-    {
-        realizedBean = new RealizedFormWebBean();
-        realizedBean.setDayCursor( Calendar.getInstance() );
-        realizedBean.setCurrentMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-        works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-
-        initTaskWeek();
-        return "realized.xhtml";
-    }
-
-    private void initTaskWeek()
-    {
-        if ( works != null )
-        {
-            Integer weekNumber = realizedBean.getWeekNumber();
-            realizedBean.getColumnsDay().clear();
-
-            boolean initColumnBean = true;
-
-            List<TaskWeekBean> taskWeekList = new ArrayList<TaskWeekBean>( works.keySet().size() );
-            for ( Task task : works.keySet() )
-            {
-                TaskWeekBean taskWeek = new TaskWeekBean();
-                taskWeek.setTask( task );
-                for ( Work work : works.get( task ) )
-                {
-
-                    if ( work.getDay().get( Calendar.WEEK_OF_YEAR ) == weekNumber )
-                    {
-
-                        ColumnDayBean columnDay = new ColumnDayBean();
-                        columnDay.setDay( work.getDay() );
-                        taskWeek.addWork( columnDay.getDayNumber(), work );
-                        if ( initColumnBean )
-                        {
-                            realizedBean.addColumnDay( columnDay );
-                        }
-                    }
-                }
-                System.out.println( "adddddd " );
-                taskWeekList.add( taskWeek );
-
-                initColumnBean = false;
-
-            }
-            realizedBean.setTaskWeeks( taskWeekList );
-
-        }
-        else
-        {
-            System.out.println( "Aucune taskMonth :'(" );
-        }
-
-    }
-
     public String doCreateActivity()
     {
 
@@ -103,6 +49,7 @@ public class WorkController
         try
         {
             workEJB.createTask( realizedBean.getCurrentMonth(), member, newTask );
+
             works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
             initTaskWeek();
 
@@ -156,9 +103,85 @@ public class WorkController
             msg =
                 new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Merci " + member.getName()
                     + " !" );
+            initTaskWeek();
         }
         FacesContext.getCurrentInstance().addMessage( null, msg );
         return "realized.xhtml";
+    }
+
+    public String init()
+    {
+        realizedBean = new RealizedFormWebBean();
+        realizedBean.setDayCursor( Calendar.getInstance() );
+        realizedBean.setCurrentMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+        works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+
+        initTaskWeek();
+        return "realized.xhtml";
+    }
+
+    public String logout()
+    {
+        System.out.println( "Logging out" );
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "index.html";
+    }
+
+    private void initTaskWeek()
+    {
+        if ( works != null )
+        {
+            Integer weekNumber = realizedBean.getWeekNumber();
+
+            Map<String, ColumnDayBean> mapColumns = new HashMap<String, ColumnDayBean>( 5 );
+
+            List<TaskWeekBean> taskWeekList = new ArrayList<TaskWeekBean>( works.keySet().size() );
+            for ( Task task : works.keySet() )
+            {
+                TaskWeekBean taskWeek = new TaskWeekBean();
+                taskWeek.setTask( task );
+                for ( Work work : works.get( task ) )
+                {
+
+                    if ( work.getDay().get( Calendar.WEEK_OF_YEAR ) == weekNumber )
+                    {
+
+                        ColumnDayBean columnDay = new ColumnDayBean();
+                        columnDay.setDay( work.getDay() );
+                        taskWeek.addWork( columnDay.getDayNumber(), work );
+
+                        if ( mapColumns.get( work.getDayStr() ) == null )
+                        {
+                            columnDay.addTotal( work.getTotal() );
+                            mapColumns.put( work.getDayStr(), columnDay );
+                        }
+                        else
+                        {
+                            mapColumns.get( work.getDayStr() ).addTotal( work.getTotal() );
+                        }
+
+                    }
+                }
+                taskWeekList.add( taskWeek );
+
+            }
+
+            realizedBean.getColumnsDay().clear();
+            for ( ColumnDayBean col : mapColumns.values() )
+            {
+                realizedBean.addColumnDay( col );
+
+            }
+            Collections.sort( realizedBean.getColumnsDay() );
+            realizedBean.setTaskWeeks( taskWeekList );
+            Collections.sort( realizedBean.getTaskWeeks() );
+
+        }
+        else
+        {
+            System.out.println( "Aucune taskMonth :'(" );
+        }
+
     }
 
     private List<Work> findChangedWorks( List<TaskWeekBean> taskWeeks )

@@ -34,22 +34,6 @@ public class CalendarUtils
         return null;
     }
 
-    public static boolean isFirstWeek( Calendar date )
-    {
-        Calendar dateTest = (Calendar) date.clone();
-        dateTest.set( Calendar.DAY_OF_WEEK, Calendar.FRIDAY );
-        dateTest.add( Calendar.WEEK_OF_YEAR, -1 );
-        return dateTest.get( Calendar.MONTH ) != date.get( Calendar.MONTH ) || isDayOff( dateTest );
-    }
-
-    public static boolean isLastWeek( Calendar date )
-    {
-        Calendar dateTest = (Calendar) date.clone();
-        dateTest.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
-        dateTest.add( Calendar.WEEK_OF_YEAR, 1 );
-        return dateTest.get( Calendar.MONTH ) != date.get( Calendar.MONTH ) || isDayOff( dateTest );
-    }
-
     private static boolean isDayOff( Calendar day )
     {
         boolean verdict = false;
@@ -105,4 +89,5 @@ public class CalendarUtils
         return listWorkingDays;
 
     }
+
 }

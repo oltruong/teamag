@@ -12,8 +12,9 @@
 
 
 	<p:growl id="growl" showDetail="true" life="2000" />
+
 	<h1>
-		Saisie du réalisé de
+		Saisie de
 		<h:outputText value="#{workController.member.name}" />
 	</h1>
 
@@ -27,10 +28,11 @@
 							required="true" /></td>
 					<td><h:outputLabel value="Projet/Appli :" /></td>
 					<td><h:inputText value="#{workController.newTask.project}" /></td>
+					<td>			<p:commandButton value="Ajouter"
+				action="#{workController.doCreateActivity}" ajax="false" /></td>
 				</tr>
 			</table>
-			<p:commandButton value="Ajouter"
-				action="#{workController.doCreateActivity}" ajax="false" />
+
 		</h:form>
 	</p:panel>
 	<br />
@@ -43,22 +45,26 @@
 
 
 			<p:dataTable id="idTable" var="taskWeek"
-				value="#{workController.realizedBean.taskWeeks}">
+				value="#{workController.realizedBean.taskWeeks}" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" sortOrder="ascending">
 
 				<f:facet name="header">  
            Semaine #{workController.realizedBean.weekNumber}
-        </f:facet>
+        	</f:facet>
 
-				<p:column headerText="Tâche" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" >
+				<p:column headerText="Tâche" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" footerText="Total">
 					<h:outputText value="#{taskWeek.task.project}-#{taskWeek.task.name}" size="35" />
 				</p:column>
 
 				<p:columns value="#{workController.realizedBean.columnsDay}"
-					var="column">
+					var="column" style="align:center;">
 					<f:facet name="header" size="2">  
                 #{column.dayHeader}  
             		</f:facet>
-					<h:inputText value="#{taskWeek[column.dayNumber].totalEdit}" size="2" />
+					<h:inputText value="#{taskWeek[column.dayNumber].totalEdit}" size="2"  />
+
+					<f:facet name="footer" size="2">  
+	                #{column.total}  
+            		</f:facet>
 
 				</p:columns>
 
@@ -68,13 +74,17 @@
 			<p:commandButton value="Enregistrer"
 				action="#{workController.update}" ajax="false" />
 
+
+		</p:panel>
 			<br />
-			<h:commandLink>
+
+
+		<p:panel header="Export Excel">
+					<h:commandLink>
 				<p:graphicImage value="/images/excel.gif" />
 				<p:dataExporter type="xls" target="idTable" fileName="realise.xls" />
 			</h:commandLink>
-		</p:panel>
-
+				</p:panel>
 	</h:form>
 
 

@@ -73,7 +73,7 @@ public class TaskTest
     public void testNamedQueryFindByName()
     {
 
-        String name = "myName";
+        String name = "myName" + Calendar.getInstance().getTimeInMillis();
 
         Task task1 = createTask();
         Task task2 = createTask();
@@ -94,6 +94,7 @@ public class TaskTest
 
         em.persist( task1 );
         em.persist( task2 );
+
         tx.commit();
 
         Query query = em.createNamedQuery( "findTaskByName" );
@@ -104,8 +105,8 @@ public class TaskTest
         List<Task> listTasks = query.getResultList();
 
         assertNotNull( listTasks );
-        assertFalse( "list should not be empty", listTasks.isEmpty() );
-        assertEquals( "list should only have one item", 1, listTasks.size() );
+        assertFalse( "list1 should not be empty", listTasks.isEmpty() );
+        assertEquals( "list1 should only have one item", 1, listTasks.size() );
         assertEquals( "it should be task2", task2, listTasks.get( 0 ) );
 
         Query query2 = em.createNamedQuery( "findTaskByName" );
@@ -116,8 +117,8 @@ public class TaskTest
         List<Task> listTasks2 = query2.getResultList();
 
         assertNotNull( listTasks2 );
-        assertFalse( "list should not be empty", listTasks2.isEmpty() );
-        assertEquals( "list should only have one item", 1, listTasks2.size() );
+        assertFalse( "list2 should not be empty", listTasks2.isEmpty() );
+        assertEquals( "list2 should only have one item", 1, listTasks2.size() );
         assertEquals( "it should be task1", task1, listTasks2.get( 0 ) );
 
         em.close();
@@ -129,7 +130,7 @@ public class TaskTest
     {
         Task task = new Task();
 
-        task.setName( "createTask" );
+        task.setName( "createTask" + Calendar.getInstance().getTimeInMillis() );
         task.setProject( "my project" );
 
         Member myMember = new Member();

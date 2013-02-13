@@ -8,6 +8,7 @@ import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
 
 public class TaskWeekBean
+    implements Comparable<TaskWeekBean>
 {
 
     private Task task;
@@ -63,6 +64,13 @@ public class TaskWeekBean
     public Work getDay5()
     {
         return getWork( "day5" );
+    }
+
+    @Override
+    public int compareTo( TaskWeekBean otherTask )
+    {
+
+        return task.compareTo( otherTask.getTask() );
     }
 
 }

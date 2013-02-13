@@ -30,13 +30,11 @@ public class Task
 
     public Long getId()
     {
-        System.out.println( "GGGET IDDDDD" + id );
         return id;
     }
 
     public void setId( Long id )
     {
-        System.out.println( "SET IDDDDD" + id );
         this.id = id;
     }
 
@@ -76,6 +74,12 @@ public class Task
         {
             this.members.add( member );
         }
+    }
+
+    public int compareTo( Task task )
+    {
+
+        return ( project + name ).compareTo( task.project + task.name );
     }
 
 }

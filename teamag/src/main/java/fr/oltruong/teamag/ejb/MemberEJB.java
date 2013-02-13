@@ -47,6 +47,8 @@ public class MemberEJB
     public Member createMember( Member member )
     {
 
+        System.out.println( "Recherche de la tâche absence" );
+
         // Adding default task
         Query query = em.createNamedQuery( "findTaskByName" );
         query.setParameter( "fname", "Absence" );
@@ -55,13 +57,15 @@ public class MemberEJB
         Task task = null;
         List<Task> tasks = query.getResultList();
 
-        if ( task != null && !tasks.isEmpty() )
+        if ( tasks != null && !tasks.isEmpty() )
         {
+            System.out.println( "Tâche trouvée." );
             task = tasks.get( 0 );
         }
 
         if ( task == null )
         {
+            System.out.println( "Tâche non trouvée. Elle est créée" );
             Task newTask = new Task();
             newTask.setName( "Absence" );
             em.persist( newTask );
