@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 @Table( name = "TM_WORK" )
@@ -112,6 +113,32 @@ public class Work
             totalEdit = total;
         }
         return totalEdit;
+    }
+
+    public String getTotalEditStr()
+    {
+        Float value = getTotalEdit();
+        System.out.println( "get valuueeee " + value.toString() );
+        if ( value.floatValue() == 0f )
+        {
+            return "";
+        }
+        return value.toString();
+    }
+
+    public void setTotalEditStr( String totalEdit )
+    {
+        if ( !StringUtils.isBlank( totalEdit ) )
+        {
+            try
+            {
+                this.totalEdit = Float.valueOf( totalEdit );
+            }
+            catch ( NumberFormatException ex )
+            {
+
+            }
+        }
     }
 
     public void setTotalEdit( Float totalEdit )

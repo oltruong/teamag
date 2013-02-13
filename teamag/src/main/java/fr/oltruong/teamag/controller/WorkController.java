@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
@@ -46,23 +48,36 @@ public class WorkController
 
         System.out.println( "Calling doCreateActivity" );
 
-        try
+        if ( StringUtils.isBlank( newTask.getName() ) )
         {
-            workEJB.createTask( realizedBean.getCurrentMonth(), member, newTask );
-
-            works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-            initTaskWeek();
-
             FacesMessage msg = null;
-            msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Tâche créée", "" );
+            msg =
+                new FacesMessage( FacesMessage.SEVERITY_ERROR, "Ajout impossible",
+                                  "Merci de fournir un nom à la tâche !" );
             FacesContext.getCurrentInstance().addMessage( null, msg );
 
         }
-        catch ( TaskExistingException e )
+        else
         {
-            FacesMessage msg = null;
-            msg = new FacesMessage( FacesMessage.SEVERITY_WARN, "Tâche existante", "Aucune modification" );
-            FacesContext.getCurrentInstance().addMessage( null, msg );
+
+            try
+            {
+                workEJB.createTask( realizedBean.getCurrentMonth(), member, newTask );
+
+                works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+                initTaskWeek();
+
+                FacesMessage msg = null;
+                msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Tâche créée", "" );
+                FacesContext.getCurrentInstance().addMessage( null, msg );
+
+            }
+            catch ( TaskExistingException e )
+            {
+                FacesMessage msg = null;
+                msg = new FacesMessage( FacesMessage.SEVERITY_WARN, "Tâche existante", "Aucune modification" );
+                FacesContext.getCurrentInstance().addMessage( null, msg );
+            }
         }
 
         return "realized.xhtml";
@@ -100,9 +115,7 @@ public class WorkController
         else
         {
             System.out.println( changedWorks.size() + " changements trouvés" );
-            msg =
-                new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Merci " + member.getName()
-                    + " !" );
+            msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "" );
             initTaskWeek();
         }
         FacesContext.getCurrentInstance().addMessage( null, msg );
