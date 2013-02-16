@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gestion des Business Cases</title>
+</h:head>
+<h:body>
+
+<!-- <h:form>  
+  
+    <p:growl id="messages"/>  
+  
+    <p:menubar>  
+                <p:menuitem value="Réalisé" url="#" icon="ui-icon-star" />  
+                <p:menuitem value="Absences" url="#" icon="ui-icon-home" />  
+                   
+        <p:submenu label="Administration" icon="ui-icon-document">  
+            <p:menuitem value="Utilisateurs" url="#" />  
+            <p:separator />  
+        </p:submenu>  
+        
+        <p:menuitem value="Quitters" onclick="window.close()"  icon="ui-icon-close" />  
+          
+          
+        <p:submenu label="Edit" icon="ui-icon-pencil">  
+            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />  
+            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />  
+        </p:submenu>  
+  
+        <p:submenu label="Help" icon="ui-icon-help">  
+            <p:menuitem value="Contents" url="#" />  
+            <p:submenu label="Search" icon="ui-icon-search">  
+                <p:submenu label="Text">  
+                    <p:menuitem value="Workspace" url="#" />  
+                </p:submenu>  
+                <p:menuitem value="File" url="#" />  
+            </p:submenu>  
+        </p:submenu>  
+  
+        <p:submenu label="Actions" icon="ui-icon-gear">  
+            <p:submenu label="Ajax" icon="ui-icon-refresh">  
+                <p:menuitem value="Save" actionListener="#{menuBean.save}" icon="ui-icon-disk" update="messages"/>  
+                <p:menuitem value="Update" actionListener="#{menuBean.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>  
+            </p:submenu>  
+            <p:submenu label="Non-Ajax" icon="ui-icon-newwin">  
+                <p:menuitem value="Delete" actionListener="#{menuBean.delete}" icon="ui-icon-close" update="messages" ajax="false"/>  
+            </p:submenu>  
+        </p:submenu>  
+  
+
+    </p:menubar>  
+  
+</h:form>   -->
+
+<p:growl id="messages" life="2000" showDetail="true" />  
+
+<p:panel header="Nouveau BC">
+	<hr />
+	<h:form>
+		<table border="0">
+			<tr>
+				<td><h:outputLabel value="Numero :" /></td>
+				<td><h:inputText value="#{bcController.businesscase.number}" required="true" /></td>
+			</tr>
+			<tr>
+				<td><h:outputLabel value="Nom :" /></td>
+				<td><h:inputText value="#{bcController.businesscase.name}"  required="true" /></td>
+			</tr>
+		</table>
+		<p:commandButton value="Ajouter" action="#{bcController.doCreateBC}" ajax="false" />
+	</h:form>
+</p:panel>
+
+<p:panel header="Liste des BC">
+	<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
+		<p:column headerText="Numero">
+			<h:outputText value="#{bc.number}" />
+		</p:column>
+
+		<p:column headerText="Nom">
+			<h:outputText value="#{bc.name}" />
+		</p:column>
+
+
+	</p:dataTable>
+	</p:panel>
+</h:body>
+</html>
+
