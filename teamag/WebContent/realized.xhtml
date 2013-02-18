@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='ISO-8859-1' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Mon rÃ©alisÃ©</title>
+	<title>Mon réalisé</title>
 </h:head>
 <h:body>
 
@@ -19,7 +19,7 @@
 	</h1>
 
 
-	<p:panel header="Nouvelle tÃ¢che">
+	<p:panel header="Nouvelle tâche">
 		<h:form>
 			<table border="0">
 				<tr>
@@ -35,9 +35,9 @@
 		</h:form>
 	</p:panel>
 	<br />
-	<h:form id="idForm">
-		<p:panel header="RÃ©alisÃ© de #{workController.realizedBean.currentMonthStr}" id="idPanel">
-			<p:commandButton value="Semaine prÃ©cÃ©dente" ajax="false" 
+	<h:form id="idForm" action="#{workController.update}">
+		<p:panel header="Réalisé de #{workController.realizedBean.currentMonthStr}" id="idPanel">
+			<p:commandButton value="Semaine précédente" ajax="false" 
 				action="#{workController.previousWeek}" disabled="#{workController.realizedBean.isFirstWeek}" />
 			<p:commandButton value="Semaine suivante"
 				action="#{workController.nextWeek}" ajax="false" disabled="#{workController.realizedBean.isLastWeek}"/>
@@ -50,7 +50,7 @@
            Semaine #{workController.realizedBean.weekNumber}
         	</f:facet>
 
-				<p:column headerText="TÃ¢che" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" footerText="Total">
+				<p:column headerText="Tâche" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" footerText="Total">
 					<h:outputText value="#{taskWeek.task.project}-#{taskWeek.task.name}" size="35" />
 				</p:column>
 

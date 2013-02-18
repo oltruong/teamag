@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='ISO-8859-1' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -8,7 +8,7 @@
 	<title>Bienvenue</title>
 </h:head>
 <h:body>
-<h1>Outil de saisie de rÃ©alisÃ©</h1>
+<h1>Outil de saisie de réalisé</h1>
 
 <div id="welcome">
  Cliquer sur l'image pour vous identifier 
@@ -23,7 +23,7 @@
     <h:form>  
   
         <h:panelGrid columns="2" cellpadding="5">  
-            <h:outputLabel for="username" value="PrÃ©nom :" />  
+            <h:outputLabel for="username" value="Prénom :" />  
             <p:inputText value="#{loginBean.username}"   
                     id="username" required="true" label="username" />  
               
@@ -39,7 +39,7 @@
   
   
  <h:outputLink id="loginIn" style="display:none">     
-                <p:commandButton value="Mon rÃ©alisÃ©" action="#{workController.init}"/>  
+                <p:commandButton value="Mon réalisé" action="#{workController.init}"/>  
 </h:outputLink>  
   
   

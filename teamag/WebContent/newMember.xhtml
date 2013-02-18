@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='ISO-8859-1' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -15,7 +15,7 @@
     <p:growl id="messages"/>  
   
     <p:menubar>  
-                <p:menuitem value="RÃ©alisÃ©" url="#" icon="ui-icon-star" />  
+                <p:menuitem value="Réalisé" url="#" icon="ui-icon-star" />  
                 <p:menuitem value="Absences" url="#" icon="ui-icon-home" />  
                    
         <p:submenu label="Administration" icon="ui-icon-document">  
@@ -64,15 +64,15 @@
 		<table border="0">
 			<tr>
 				<td><h:outputLabel value="Nom :" /></td>
-				<td><h:inputText value="#{memberController.member.name}" required="true" /></td>
+				<td><p:inputText value="#{memberController.member.name}" required="true" /></td>
 			</tr>
 			<tr>
 				<td><h:outputLabel value="Entreprise :" /></td>
-				<td><h:inputText value="#{memberController.member.company}"  required="true" /></td>
+				<td><p:inputText value="#{memberController.member.company}"  required="true" /></td>
 			</tr>
 						<tr>
 				<td><h:outputLabel value="e-mail :" /></td>
-				<td><h:inputText value="#{memberController.member.email}"  required="true" /></td>
+				<td><p:inputText value="#{memberController.member.email}"  required="true" /></td>
 			</tr>
 		</table>
 		<p:commandButton value="Ajout de membre" action="#{memberController.doCreateMember}" ajax="false" />

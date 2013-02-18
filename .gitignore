@@ -1,11 +1,9 @@
 teamag/target
+teamag/.settings
 teamag/.classpath
 teamag/.project
-*.DS_Store
+**/*.DS_Store
 *.bak
 *.prefs
 .DS_Store
-
-*.log
-
-.DS_Store
+**/*.log
