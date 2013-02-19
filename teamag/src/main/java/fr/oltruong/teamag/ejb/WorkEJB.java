@@ -14,7 +14,7 @@ import javax.persistence.Query;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
-import fr.oltruong.teamag.exception.TaskExistingException;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
 
 @Stateless
@@ -129,7 +129,7 @@ public class WorkEJB
     }
 
     public void createTask( Calendar month, Member member, Task task )
-        throws TaskExistingException
+        throws ExistingDataException
     {
         Query query = em.createNamedQuery( "findTaskByName" );
         query.setParameter( "fname", task.getName() );
@@ -147,7 +147,7 @@ public class WorkEJB
             if ( myTask.getMembers().contains( member ) )
             {
                 System.out.println( "Déjà affectée à la personne" );
-                throw new TaskExistingException();
+                throw new ExistingDataException();
             }
             else
             {

@@ -23,12 +23,12 @@
 		<h:form>
 			<table border="0">
 				<tr>
-					<td><h:outputLabel value="Nom* :" /></td>
-					<td><p:inputText value="#{workController.newTask.name}" /></td>
 					<td><h:outputLabel value="Projet/Appli :" /></td>
 					<td><p:inputText value="#{workController.newTask.project}" /></td>
-					<td>			<p:commandButton value="Ajouter"
-				action="#{workController.doCreateActivity}" ajax="false" /></td>
+					<td><h:outputLabel value="Nom* :" /></td>
+					<td><p:inputText value="#{workController.newTask.name}" /></td>
+					<td><p:commandButton value="Ajouter"
+							action="#{workController.doCreateActivity}" ajax="false" /></td>
 				</tr>
 			</table>
 
@@ -36,22 +36,31 @@
 	</p:panel>
 	<br />
 	<h:form id="idForm" action="#{workController.update}">
-		<p:panel header="Réalisé de #{workController.realizedBean.currentMonthStr}" id="idPanel">
-			<p:commandButton value="Semaine précédente" ajax="false" 
-				action="#{workController.previousWeek}" disabled="#{workController.realizedBean.isFirstWeek}" />
+		<p:panel
+			header="Réalisé de #{workController.realizedBean.currentMonthStr}"
+			id="idPanel">
+			<p:commandButton value="Semaine précédente" ajax="false"
+				action="#{workController.previousWeek}"
+				disabled="#{workController.realizedBean.isFirstWeek}" />
 			<p:commandButton value="Semaine suivante"
-				action="#{workController.nextWeek}" ajax="false" disabled="#{workController.realizedBean.isLastWeek}"/>
+				action="#{workController.nextWeek}" ajax="false"
+				disabled="#{workController.realizedBean.isLastWeek}" />
 
 
 			<p:dataTable id="idTable" var="taskWeek"
-				value="#{workController.realizedBean.taskWeeks}" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" sortOrder="ascending">
+				value="#{workController.realizedBean.taskWeeks}"
+				sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}"
+				sortOrder="ascending">
 
 				<f:facet name="header">  
            Semaine #{workController.realizedBean.weekNumber}
         	</f:facet>
 
-				<p:column headerText="Tâche" sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}" footerText="Total">
-					<h:outputText value="#{taskWeek.task.project}-#{taskWeek.task.name}" size="35" />
+				<p:column headerText="Tâche"
+					sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}"
+					footerText="Total">
+					<h:outputText
+						value="#{taskWeek.task.project}-#{taskWeek.task.name}" size="35" />
 				</p:column>
 
 				<p:columns value="#{workController.realizedBean.columnsDay}"
@@ -59,7 +68,8 @@
 					<f:facet name="header" size="2">  
                 #{column.dayHeader}  
             		</f:facet>
-					<p:inputText value="#{taskWeek[column.dayNumber].totalEditStr}" size="2"  />
+					<p:inputText value="#{taskWeek[column.dayNumber].totalEditStr}"
+						size="2" />
 
 					<f:facet name="footer" size="2">  
 	                #{column.total}  
@@ -75,10 +85,10 @@
 
 
 		</p:panel>
-			<br />
+		<br />
 
 
-<!-- 		<p:panel header="Export Excel">
+		<!-- 		<p:panel header="Export Excel">
 					<h:commandLink>
 				<p:graphicImage value="/images/excel.gif" />
 				<p:dataExporter type="xls" target="idTable" fileName="realise.xls" />

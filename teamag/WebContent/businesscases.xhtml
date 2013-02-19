@@ -10,84 +10,114 @@
 </h:head>
 <h:body>
 
-<!-- <h:form>  
-  
-    <p:growl id="messages"/>  
-  
-    <p:menubar>  
-                <p:menuitem value="Réalisé" url="#" icon="ui-icon-star" />  
-                <p:menuitem value="Absences" url="#" icon="ui-icon-home" />  
-                   
-        <p:submenu label="Administration" icon="ui-icon-document">  
-            <p:menuitem value="Utilisateurs" url="#" />  
-            <p:separator />  
-        </p:submenu>  
-        
-        <p:menuitem value="Quitters" onclick="window.close()"  icon="ui-icon-close" />  
-          
-          
-        <p:submenu label="Edit" icon="ui-icon-pencil">  
-            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />  
-            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />  
-        </p:submenu>  
-  
-        <p:submenu label="Help" icon="ui-icon-help">  
-            <p:menuitem value="Contents" url="#" />  
-            <p:submenu label="Search" icon="ui-icon-search">  
-                <p:submenu label="Text">  
-                    <p:menuitem value="Workspace" url="#" />  
-                </p:submenu>  
-                <p:menuitem value="File" url="#" />  
-            </p:submenu>  
-        </p:submenu>  
-  
-        <p:submenu label="Actions" icon="ui-icon-gear">  
-            <p:submenu label="Ajax" icon="ui-icon-refresh">  
-                <p:menuitem value="Save" actionListener="#{menuBean.save}" icon="ui-icon-disk" update="messages"/>  
-                <p:menuitem value="Update" actionListener="#{menuBean.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>  
-            </p:submenu>  
-            <p:submenu label="Non-Ajax" icon="ui-icon-newwin">  
-                <p:menuitem value="Delete" actionListener="#{menuBean.delete}" icon="ui-icon-close" update="messages" ajax="false"/>  
-            </p:submenu>  
-        </p:submenu>  
-  
 
-    </p:menubar>  
-  
-</h:form>   -->
-
-<p:growl id="messages" life="2000" showDetail="true" />  
-
-<p:panel header="Nouveau BC">
-	<hr />
 	<h:form>
-		<table border="0">
-			<tr>
-				<td><h:outputLabel value="Numero :" /></td>
-				<td><h:inputText value="#{bcController.businesscase.number}" required="true" /></td>
-			</tr>
-			<tr>
-				<td><h:outputLabel value="Nom :" /></td>
-				<td><h:inputText value="#{bcController.businesscase.name}"  required="true" /></td>
-			</tr>
-		</table>
-		<p:commandButton value="Ajouter" action="#{bcController.doCreateBC}" ajax="false" />
+
+		<p:menubar>
+			<p:menuitem value="Mon équipe" url="newMember.faces"
+				icon="ui-icon-star" />
+			<p:menuitem value="Budget" url="businesscases.faces" />
+
+
+		</p:menubar>
+
 	</h:form>
-</p:panel>
 
-<p:panel header="Liste des BC">
-	<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
-		<p:column headerText="Numero">
-			<h:outputText value="#{bc.number}" />
-		</p:column>
+	<p:growl id="messages" life="2000" showDetail="true" />
+	<br />
+	<br />
 
-		<p:column headerText="Nom">
-			<h:outputText value="#{bc.name}" />
-		</p:column>
+	<p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
+		<p:tab title="Business Cases">
+			<p:panel header="Nouveau BC">
+
+				<hr />
+				<h:form>
+					<table border="0">
+						<tr>
+							<td><h:outputLabel value="Numéro* :" /></td>
+							<td><h:inputText value="#{bcController.bc.number}" /></td>
+							<td><h:outputLabel value="Nom :" /></td>
+							<td><h:inputText value="#{bcController.bc.name}" /></td>
+							<td><p:commandButton value="Ajouter"
+									action="#{bcController.doCreateBC}" ajax="false" /></td>
+						</tr>
+					</table>
+
+				</h:form>
+			</p:panel>
+			<br />
+			<br />
+			<p:panel header="Liste des BC">
+				<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
+					<p:column headerText="Numéro" sortBy="#{bc.number}">
+						<h:outputText value="#{bc.number}" />
+					</p:column>
+
+					<p:column headerText="Nom">
+						<h:outputText value="#{bc.name}" />
+					</p:column>
 
 
-	</p:dataTable>
-	</p:panel>
+				</p:dataTable>
+			</p:panel>
+
+		</p:tab>
+		<p:tab title="Activités">
+
+
+			<p:panel header="Nouvelle activité">
+
+				<hr />
+				<h:form>
+					<table border="0">
+						<tr>
+							<td><h:outputLabel value="Nom* :" /></td>
+							<td><h:inputText value="#{bcController.activity.name}" /></td>
+							<td><h:outputLabel value="BC :" /></td>
+							<td><p:selectOneListbox id="basic"
+									value="#{bcController.activity.bc.number}" >
+									<f:selectItems value="#{bcController.bcList}" var="bc"
+										itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}" />
+								</p:selectOneListbox>
+								
+								
+					
+								
+								</td>
+							<td><p:commandButton value="Ajouter"
+									action="#{bcController.doCreateActivity}" ajax="false" /></td>
+						</tr>
+					</table>
+
+				</h:form>
+			</p:panel>
+			<br />
+			<br />
+			<p:panel header="Liste des Activités">
+				<p:dataTable value="#{bcController.activityList}" var="activity"
+					border="1">
+					<p:column headerText="Nom" sortBy="#{activity.name}">
+						<h:outputText value="#{activity.name}" />
+					</p:column>
+
+					<p:column headerText="Numéro BC" sortBy="#{activity.bc.number}">
+						<h:outputText value="#{activity.bc.number}" />
+					</p:column>
+
+					<p:column headerText="Nom BC" sortBy="#{activity.bc.name}">
+						<h:outputText value="#{activity.bc.name}" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:panel>
+
+		</p:tab>
+	</p:tabView>
+
+
+
 </h:body>
 </html>
 

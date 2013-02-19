@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.exception;
 
-public class TaskExistingException
+public class ExistingDataException
     extends Exception
 {
     /**

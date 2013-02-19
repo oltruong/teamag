@@ -10,67 +10,33 @@
 </h:head>
 <h:body>
 
-<!-- <h:form>  
+<h:form>  
   
     <p:growl id="messages"/>  
   
     <p:menubar>  
-                <p:menuitem value="Réalisé" url="#" icon="ui-icon-star" />  
-                <p:menuitem value="Absences" url="#" icon="ui-icon-home" />  
-                   
-        <p:submenu label="Administration" icon="ui-icon-document">  
-            <p:menuitem value="Utilisateurs" url="#" />  
-            <p:separator />  
-        </p:submenu>  
-        
-        <p:menuitem value="Quitters" onclick="window.close()"  icon="ui-icon-close" />  
-          
-          
-        <p:submenu label="Edit" icon="ui-icon-pencil">  
-            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />  
-            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />  
-        </p:submenu>  
-  
-        <p:submenu label="Help" icon="ui-icon-help">  
-            <p:menuitem value="Contents" url="#" />  
-            <p:submenu label="Search" icon="ui-icon-search">  
-                <p:submenu label="Text">  
-                    <p:menuitem value="Workspace" url="#" />  
-                </p:submenu>  
-                <p:menuitem value="File" url="#" />  
-            </p:submenu>  
-        </p:submenu>  
-  
-        <p:submenu label="Actions" icon="ui-icon-gear">  
-            <p:submenu label="Ajax" icon="ui-icon-refresh">  
-                <p:menuitem value="Save" actionListener="#{menuBean.save}" icon="ui-icon-disk" update="messages"/>  
-                <p:menuitem value="Update" actionListener="#{menuBean.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>  
-            </p:submenu>  
-            <p:submenu label="Non-Ajax" icon="ui-icon-newwin">  
-                <p:menuitem value="Delete" actionListener="#{menuBean.delete}" icon="ui-icon-close" update="messages" ajax="false"/>  
-            </p:submenu>  
-        </p:submenu>  
+                <p:menuitem value="Mon équipe" url="newMember.faces" icon="ui-icon-star" />  
+ 
+		<p:menuitem value="Budget" url="businesscases.faces" />
+
   
 
     </p:menubar>  
   
-</h:form>   -->
+</h:form>  
 
 <p:growl id="messages" life="2000" showDetail="true" />  
-
+	<br /><br />
 <p:panel header="Ajouter un nouveau membre">
-	<hr />
+
+	
 	<h:form>
 		<table border="0">
 			<tr>
 				<td><h:outputLabel value="Nom :" /></td>
 				<td><p:inputText value="#{memberController.member.name}" required="true" /></td>
-			</tr>
-			<tr>
 				<td><h:outputLabel value="Entreprise :" /></td>
 				<td><p:inputText value="#{memberController.member.company}"  required="true" /></td>
-			</tr>
-						<tr>
 				<td><h:outputLabel value="e-mail :" /></td>
 				<td><p:inputText value="#{memberController.member.email}"  required="true" /></td>
 			</tr>
@@ -78,7 +44,7 @@
 		<p:commandButton value="Ajout de membre" action="#{memberController.doCreateMember}" ajax="false" />
 	</h:form>
 </p:panel>
-
+	<br /><br />
 <p:panel header="Liste des membres">
 	<p:dataTable value="#{memberController.memberList}" var="user" border="1">
 		<p:column headerText="ID">
@@ -89,7 +55,7 @@
 			<h:outputText value="#{user.name}" />
 		</p:column>
 
-		<p:column headerText="Entreprise">
+		<p:column headerText="Entreprise" sortBy="#{user.company}">
 			<h:outputText value="#{user.company}" />
 		</p:column>
 		

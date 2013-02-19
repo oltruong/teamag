@@ -5,9 +5,12 @@
 	<persistence-unit name="testPersistence"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>fr.oltruong.teamag.entity.Task</class>
+		<class>fr.oltruong.teamag.entity.Activity</class>
+		<class>fr.oltruong.teamag.entity.BusinessCase</class>
 		<class>fr.oltruong.teamag.entity.Member</class>
+		<class>fr.oltruong.teamag.entity.Task</class>
 		<class>fr.oltruong.teamag.entity.Work</class>
+
 		<properties>
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
@@ -23,9 +26,12 @@
 	<persistence-unit name="ejbPU" transaction-type="JTA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<jta-data-source>jdbc/teamag</jta-data-source>
-		<class>fr.oltruong.teamag.entity.Task</class>
+		<class>fr.oltruong.teamag.entity.Activity</class>
+		<class>fr.oltruong.teamag.entity.BusinessCase</class>
 		<class>fr.oltruong.teamag.entity.Member</class>
+		<class>fr.oltruong.teamag.entity.Task</class>
 		<class>fr.oltruong.teamag.entity.Work</class>
+
 		<properties>
 			<property name="eclipselink.ddl-generation" value="create-tables" />
 			<property name="eclipselink.logging.level" value="INFO" />
