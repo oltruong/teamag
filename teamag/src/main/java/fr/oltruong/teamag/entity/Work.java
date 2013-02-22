@@ -126,18 +126,23 @@ public class Work
         return value.toString();
     }
 
-    public void setTotalEditStr( String totalEdit )
+    public void setTotalEditStr( String totalEditStr )
     {
-        if ( !StringUtils.isBlank( totalEdit ) )
+        if ( !StringUtils.isBlank( totalEditStr ) )
         {
             try
             {
-                this.totalEdit = Float.valueOf( totalEdit );
+                this.totalEdit = Float.valueOf( totalEditStr );
             }
             catch ( NumberFormatException ex )
             {
-
+                System.out.println( "Valeur incorrecte " + totalEditStr );
             }
+        }
+        else
+        // Blank means 0
+        {
+            this.totalEdit = 0f;
         }
     }
 

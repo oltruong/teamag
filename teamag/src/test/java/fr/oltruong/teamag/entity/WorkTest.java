@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.entity;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -79,6 +80,25 @@ public class WorkTest
 
         em.close();
         emf.close();
+
+    }
+
+    @Test
+    public void testSetTotalStr()
+    {
+        Work work = new Work();
+        work.setTotal( 1.1f );
+
+        assertEquals( "Total is incorrect", Float.valueOf( 1.1f ), work.getTotalEdit() );
+
+        work.setTotalEditStr( "5" );
+        assertEquals( "Total is incorrect", Float.valueOf( 5f ), work.getTotalEdit() );
+
+        work.setTotalEditStr( "sdqsd" );
+        assertEquals( "Total is incorrect", Float.valueOf( 5f ), work.getTotalEdit() );
+
+        work.setTotalEditStr( " " );
+        assertEquals( "Total is incorrect", Float.valueOf( 0f ), work.getTotalEdit() );
 
     }
 
