@@ -51,14 +51,17 @@ public class WorkEJB
     {
 
         Map<Task, List<Work>> worksByTask = new HashMap<Task, List<Work>>();
-
-        for ( Work work : listWorks )
+        if ( listWorks != null )
         {
-            if ( !worksByTask.containsKey( work.getTask() ) )
+            for ( Work work : listWorks )
             {
-                worksByTask.put( work.getTask(), new ArrayList<Work>() );
+                if ( !worksByTask.containsKey( work.getTask() ) )
+                {
+                    worksByTask.put( work.getTask(), new ArrayList<Work>() );
+                }
+                worksByTask.get( work.getTask() ).add( work );
             }
-            worksByTask.get( work.getTask() ).add( work );
+
         }
 
         return worksByTask;
@@ -99,6 +102,37 @@ public class WorkEJB
         }
         return works;
 
+    }
+
+    public void removeTask( Task task, Member member, Calendar month )
+    {
+        Query query = em.createNamedQuery( "deleteWorksByMemberTaskMonth" );
+        query.setParameter( "fmemberId", member.getId() );
+        query.setParameter( "ftaskId", task.getId() );
+        query.setParameter( "fmonth", month );
+
+        int rowsNumberDeleted = query.executeUpdate();
+
+        System.out.println( "Works supprimés : " + rowsNumberDeleted );
+
+        // Suppression pour la tâche de l'utilisateur
+
+        Task taskDb = em.find( Task.class, task.getId() );
+
+        Member memberDb = em.find( Member.class, member.getId() );
+
+        taskDb.getMembers().remove( memberDb );
+
+        if ( taskDb.getMembers().isEmpty() )
+        {
+            System.out.println( "Suppression de la tâche" );
+            em.remove( taskDb );
+        }
+        else
+        {
+            System.out.println( "Mise à jour de la tâche" );
+            em.persist( taskDb );
+        }
     }
 
     public List<Task> findMemberTasks( Member member )

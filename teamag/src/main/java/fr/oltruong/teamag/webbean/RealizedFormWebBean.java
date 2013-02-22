@@ -18,6 +18,8 @@ public class RealizedFormWebBean
 
     private List<TaskWeekBean> taskWeeks = new ArrayList<TaskWeekBean>();
 
+    private TaskWeekBean selectedTaskWeek;
+
     public boolean getIsFirstWeek()
     {
         return weekNumberMonth == 0;
@@ -54,6 +56,16 @@ public class RealizedFormWebBean
     public void setTaskWeeks( List<TaskWeekBean> taskWeeks )
     {
         this.taskWeeks = taskWeeks;
+    }
+
+    public TaskWeekBean getSelectedTaskWeek()
+    {
+        return selectedTaskWeek;
+    }
+
+    public void setSelectedTaskWeek( TaskWeekBean selectedTaskWeek )
+    {
+        this.selectedTaskWeek = selectedTaskWeek;
     }
 
     public void incrementWeek()

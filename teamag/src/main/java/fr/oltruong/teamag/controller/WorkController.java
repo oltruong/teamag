@@ -83,6 +83,15 @@ public class WorkController
         return "realized.xhtml";
     }
 
+    public String deleteTask()
+    {
+        System.out.println( "Click deleteTask " + realizedBean.getSelectedTaskWeek().getTask().getName() );
+
+        workEJB.removeTask( realizedBean.getSelectedTaskWeek().getTask(), member, realizedBean.getCurrentMonth() );
+        init();
+        return "realized.xhtml";
+    }
+
     public String previousWeek()
     {
         System.out.println( "Click previous week" );

@@ -47,10 +47,15 @@
 				disabled="#{workController.realizedBean.isLastWeek}" />
 
 
+   <p:contextMenu for="idTable">  
+        <p:menuitem value="Supprimer la tâche" update="idTable" icon="ui-icon-close" action="#{workController.deleteTask}" onconfirm="alert('are you sure?');"/>  
+    </p:contextMenu> 
+
+
 			<p:dataTable id="idTable" var="taskWeek"
 				value="#{workController.realizedBean.taskWeeks}"
 				sortBy="#{taskWeek.task.project}-#{taskWeek.task.name}"
-				sortOrder="ascending">
+				sortOrder="ascending" selection="#{workController.realizedBean.selectedTaskWeek}" selectionMode="single" rowKey="#{taskWeek.task.id}"  >
 
 				<f:facet name="header">  
            Semaine #{workController.realizedBean.weekNumber}
@@ -82,6 +87,8 @@
 			<br />
 			<p:commandButton value="Enregistrer"
 				action="#{workController.update}" ajax="false" />
+			<br /><br />
+	<b>Pour supprimer une tâche, clic droit sur la ligne. Attention ceci supprime la tâche et tout réalisé éventuel pour tout le mois !</b>
 
 
 		</p:panel>

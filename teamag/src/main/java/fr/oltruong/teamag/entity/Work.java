@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,7 +19,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 @Table( name = "TM_WORK" )
 @Entity
-@NamedQuery( name = "findWorksByMember", query = "SELECT w from Work w where w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day" )
+@NamedQueries( {
+    @NamedQuery( name = "findWorksByMember", query = "SELECT w from Work w where w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day" ),
+    @NamedQuery( name = "deleteWorksByMemberTaskMonth", query = "DELETE from Work w where w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth" ) } )
 public class Work
 {
 
@@ -118,7 +121,6 @@ public class Work
     public String getTotalEditStr()
     {
         Float value = getTotalEdit();
-        System.out.println( "get valuueeee " + value.toString() );
         if ( value.floatValue() == 0f )
         {
             return "";
