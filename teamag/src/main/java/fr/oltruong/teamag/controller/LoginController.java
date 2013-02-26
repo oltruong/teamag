@@ -63,6 +63,7 @@ public class LoginController
 
     public void login( ActionEvent actionEvent )
     {
+
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
         boolean loggedIn = false;
@@ -87,4 +88,12 @@ public class LoginController
         FacesContext.getCurrentInstance().addMessage( null, msg );
         context.addCallbackParam( "loggedIn", loggedIn );
     }
+
+    public String logout()
+    {
+        System.out.println( "LOGGGGOUT" );
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login.xhtml";
+    }
+
 }

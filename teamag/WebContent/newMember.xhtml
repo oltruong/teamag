@@ -10,22 +10,18 @@
 </h:head>
 <h:body>
 
-<h:form>  
-  
-    <p:growl id="messages"/>  
-  
-    <p:menubar>  
-                <p:menuitem value="Mon équipe" url="newMember.faces" icon="ui-icon-star" />  
- 
-		<p:menuitem value="Budget" url="businesscases.faces" />
+	<h:form>
 
-  
+		<p:menubar>
+			<p:menuitem value="Mon équipe" url="newMember.faces"
+				icon="ui-icon-star" />
+			<p:menuitem value="Budget" url="businesscases.faces" />
+			<p:menuitem value="Reporting" url="reporting.faces" />
+		</p:menubar>
 
-    </p:menubar>  
-  
-</h:form>  
+	</h:form>
 
-<p:growl id="messages" life="2000" showDetail="true" />  
+	<p:growl id="messages" life="2000" showDetail="true" />
 	<br /><br />
 <p:panel header="Ajouter un nouveau membre">
 

@@ -9,8 +9,20 @@
 	<title>Mon réalisé</title>
 </h:head>
 <h:body>
+<ui:remove>
+	<h:form>
+
+		<p:menubar>
+			<p:menuitem value="Déconnexion" outcome="login.xhtml" actionListener="#{loginBean.logout}"
+				icon="ui-icon-close" ajax="false"/>
 
 
+		</p:menubar>
+
+	</h:form>
+  </ui:remove>
+  
+  
 	<p:growl id="growl" showDetail="true" life="2000" />
 
 	<h1>

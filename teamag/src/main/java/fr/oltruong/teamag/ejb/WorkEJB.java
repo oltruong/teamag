@@ -232,4 +232,13 @@ public class WorkEJB
         }
     }
 
+    @SuppressWarnings( "unchecked" )
+    public List<Work> getWorksMonth( Calendar month )
+    {
+        Query query = em.createNamedQuery( "findWorksMonth" );
+        query.setParameter( "fmonth", month );
+
+        return query.getResultList();
+    }
+
 }

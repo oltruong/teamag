@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table( name = "TM_TASK" )
 @NamedQueries( { @NamedQuery( name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project" ),
@@ -27,6 +28,9 @@ public class Task
     private String project = "";
 
     private List<Member> members = new ArrayList<Member>( 1 );
+
+    @Transient
+    private Float total;
 
     public Long getId()
     {
@@ -76,10 +80,50 @@ public class Task
         }
     }
 
+    public Float getTotal()
+    {
+        return total;
+    }
+
+    public void setTotal( Float total )
+    {
+        this.total = total;
+    }
+
+    public void addTotal( Float value )
+    {
+        if ( total == null )
+        {
+            total = value;
+        }
+        else
+        {
+            total += value;
+        }
+    }
+
     public int compareTo( Task task )
     {
 
         return ( project + name ).compareTo( task.project + task.name );
+    }
+
+    @Override
+    public boolean equals( Object arg0 )
+    {
+        Task member0 = (Task) arg0;
+        return this.id.equals( member0.getId() );
+    }
+
+    @Override
+    public Task clone()
+    {
+        Task cloneTask = new Task();
+        cloneTask.setId( id );
+        cloneTask.setName( name );
+        cloneTask.setProject( project );
+        return cloneTask;
+
     }
 
 }

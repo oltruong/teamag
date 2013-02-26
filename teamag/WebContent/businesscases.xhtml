@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='ISO-8859-1' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -14,10 +14,10 @@
 	<h:form>
 
 		<p:menubar>
-			<p:menuitem value="Mon Ã©quipe" url="newMember.faces"
+			<p:menuitem value="Mon équipe" url="newMember.faces"
 				icon="ui-icon-star" />
 			<p:menuitem value="Budget" url="businesscases.faces" />
-
+		<p:menuitem value="Reporting" url="reporting.faces" />
 
 		</p:menubar>
 
@@ -35,7 +35,7 @@
 				<h:form>
 					<table border="0">
 						<tr>
-							<td><h:outputLabel value="NumÃ©ro* :" /></td>
+							<td><h:outputLabel value="Numéro* :" /></td>
 							<td><h:inputText value="#{bcController.bc.number}" /></td>
 							<td><h:outputLabel value="Nom :" /></td>
 							<td><h:inputText value="#{bcController.bc.name}" /></td>
@@ -50,7 +50,7 @@
 			<br />
 			<p:panel header="Liste des BC">
 				<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
-					<p:column headerText="NumÃ©ro" sortBy="#{bc.number}">
+					<p:column headerText="Numéro" sortBy="#{bc.number}">
 						<h:outputText value="#{bc.number}" />
 					</p:column>
 
@@ -63,10 +63,10 @@
 			</p:panel>
 
 		</p:tab>
-		<p:tab title="ActivitÃ©s">
+		<p:tab title="Activités">
 
 
-			<p:panel header="Nouvelle activitÃ©">
+			<p:panel header="Nouvelle activité">
 
 				<hr />
 				<h:form>
@@ -94,14 +94,14 @@
 			</p:panel>
 			<br />
 			<br />
-			<p:panel header="Liste des ActivitÃ©s">
+			<p:panel header="Liste des Activités">
 				<p:dataTable value="#{bcController.activityList}" var="activity"
 					border="1">
 					<p:column headerText="Nom" sortBy="#{activity.name}">
 						<h:outputText value="#{activity.name}" />
 					</p:column>
 
-					<p:column headerText="NumÃ©ro BC" sortBy="#{activity.bc.number}">
+					<p:column headerText="Numéro BC" sortBy="#{activity.bc.number}">
 						<h:outputText value="#{activity.bc.number}" />
 					</p:column>
 

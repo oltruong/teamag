@@ -20,8 +20,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 @Table( name = "TM_WORK" )
 @Entity
 @NamedQueries( {
-    @NamedQuery( name = "findWorksByMember", query = "SELECT w from Work w where w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day" ),
-    @NamedQuery( name = "deleteWorksByMemberTaskMonth", query = "DELETE from Work w where w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth" ) } )
+    @NamedQuery( name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day" ),
+    @NamedQuery( name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth" ),
+    @NamedQuery( name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.company, w.member.id, w.task.id" ) } )
 public class Work
 {
 

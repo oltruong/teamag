@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Visualisation du réalisé</title>
+</h:head>
+<h:body>
+
+
+	<h:form>
+
+		<p:menubar>
+			<p:menuitem value="Mon équipe" url="newMember.faces"
+				icon="ui-icon-star" />
+			<p:menuitem value="Budget" url="businesscases.faces" />
+			<p:menuitem value="Reporting" url="reporting.faces" />
+
+		</p:menubar>
+
+	</h:form>
+
+	<p:growl id="messages" life="2000" showDetail="true" />
+	<br />
+	<br />
+
+
+	<p:tabView orientation="top">
+		<p:tab title="Par personne">
+			<h:form>
+				<p:dataTable id="realizedPerson"
+					value="#{reportingController.realizedPersons}" var="person"
+					border="1" sortBy="#{person.name}">
+
+
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Membre" sortBy="#{person.name}" />
+							<p:column headerText="Réalisé" />
+						</p:row>
+
+					</p:columnGroup>
+
+					<p:subTable var="task" value="#{person.tasks}">
+						<f:facet name="header">  
+              #{person.name}   
+            </f:facet>
+
+						<p:column>  
+                #{task.project}-#{task.name}  
+            </p:column>
+
+						<p:column>
+							<h:outputText value="#{task.total}">
+								<f:convertNumber maxFractionDigits="3" />
+							</h:outputText>
+
+						</p:column>
+
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column footerText="Total: " style="text-align:right" />
+								<p:column
+									footerText="#{person.totalRealized} dont #{person.totalWorkRealized} travaillés" />
+							</p:row>
+						</p:columnGroup>
+					</p:subTable>
+
+				</p:dataTable>
+
+				<p:panel header="Export Excel">
+					<h:commandLink>
+						<p:graphicImage value="/images/excel.gif" />
+						<p:dataExporter type="xls" target="realizedPerson"
+							fileName="realizedPerson" />
+					</h:commandLink>
+				</p:panel>
+			</h:form>
+		</p:tab>
+		<p:tab title="Par entreprise">
+			<h:form>
+				<p:dataTable id="realizedCompany"
+					value="#{reportingController.realizedCompanies}" var="company"
+					border="1" sortBy="#{company.name}">
+
+
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Entreprise" sortBy="#{company.name}" />
+							<p:column headerText="Réalisé" />
+						</p:row>
+
+					</p:columnGroup>
+
+					<p:subTable var="task" value="#{company.tasks}">
+						<f:facet name="header">  
+              #{company.name}   
+            </f:facet>
+
+						<p:column>  
+                #{task.project}-#{task.name}  
+            </p:column>
+
+						<p:column>
+							<h:outputText value="#{task.total}">
+								<f:convertNumber maxFractionDigits="3" />
+							</h:outputText>
+						</p:column>
+
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column footerText="Total: " style="text-align:right" />
+								<p:column
+									footerText="#{company.totalRealized} dont #{company.totalWorkRealized} travaillés" />
+							</p:row>
+						</p:columnGroup>
+					</p:subTable>
+
+				</p:dataTable>
+				<p:panel header="Export Excel">
+					<h:commandLink>
+						<p:graphicImage value="/images/excel.gif" />
+						<p:dataExporter type="xls" target="realizedCompany"
+							fileName="realizedCompanies" />
+					</h:commandLink>
+				</p:panel>
+			</h:form>
+		</p:tab>
+	</p:tabView>
+
+
+</h:body>
+</html>
+
