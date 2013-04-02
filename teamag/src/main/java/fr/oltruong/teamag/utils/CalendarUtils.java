@@ -34,6 +34,17 @@ public class CalendarUtils
         return null;
     }
 
+    public static Calendar getPreviousMonth( Calendar date )
+    {
+        if ( date != null )
+        {
+            Calendar newDate = (Calendar) date.clone();
+            newDate.add( Calendar.MONTH, -1 );
+            return newDate;
+        }
+        return null;
+    }
+
     private static boolean isDayOff( Calendar day )
     {
         boolean verdict = false;

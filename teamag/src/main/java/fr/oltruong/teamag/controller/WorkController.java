@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.oltruong.teamag.ejb.MailEJB;
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
@@ -42,6 +43,12 @@ public class WorkController
 
     @EJB
     private WorkEJB workEJB;
+
+    @EJB
+    private MailEJB mailEJB;
+
+    // FIXME
+    private String adminEmail = "TODEFINE";
 
     public String doCreateActivity()
     {
@@ -125,10 +132,66 @@ public class WorkController
         {
             System.out.println( changedWorks.size() + " changements trouvés" );
             msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "" );
+            sendNotification();
             initTaskWeek();
         }
         FacesContext.getCurrentInstance().addMessage( null, msg );
+
         return "realized.xhtml";
+    }
+
+    public List<String> completeProject( String query )
+    {
+        List<Task> tasks = workEJB.findAllTasks();
+
+        List<String> results = new ArrayList<String>( tasks.size() );
+        if ( !StringUtils.isBlank( query ) && query.length() > 1 )
+        {
+
+            for ( Task task : tasks )
+            {
+                if ( StringUtils.containsIgnoreCase( task.getProject(), query )
+                    && !results.contains( task.getProject() ) )
+                {
+                    results.add( task.getProject() );
+                }
+
+            }
+        }
+        return results;
+    }
+
+    public List<String> completeName( String query )
+    {
+        List<Task> tasks = workEJB.findAllTasks();
+
+        List<String> results = new ArrayList<String>( tasks.size() );
+        if ( !StringUtils.isBlank( query ) && query.length() > 1 )
+        {
+            for ( Task task : tasks )
+            {
+                // Do not propose task that the member already has
+                if ( !task.getMembers().contains( member ) )
+                {
+                    if ( StringUtils.containsIgnoreCase( task.getName(), query ) && !results.contains( task.getName() ) )
+                    {
+                        results.add( task.getName() );
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
+    private void sendNotification()
+    {
+        int total = workEJB.getSumWorks( member, realizedBean.getCurrentMonth() );
+
+        int nbWorkingDays = CalendarUtils.getWorkingDays( realizedBean.getCurrentMonth() ).size();
+        if ( total == nbWorkingDays )
+        {
+            mailEJB.sendEmail( "TEAMAG", adminEmail, "Réalisé complet pour " + member.getName(), "Il l'a fait" );
+        }
     }
 
     public String init()
@@ -222,6 +285,8 @@ public class WorkController
 
         return worksChanged;
     }
+
+    // Getters and setters
 
     public RealizedFormWebBean getRealizedBean()
     {

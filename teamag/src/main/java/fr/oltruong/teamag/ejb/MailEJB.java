@@ -1,5 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.Stateless;
@@ -14,23 +16,30 @@ import javax.mail.internet.MimeMessage;
 @Stateless
 public class MailEJB
 {
-    public void main()
+
+    // FIXME
+    private String smtphost = "TODEFINE";
+
+    public void sendEmail( String from, String recipient, String subject, String content )
+    {
+        List<String> recipientsList = new ArrayList<String>( 1 );
+        recipientsList.add( recipient );
+
+        sendEmail( from, recipientsList, null, null, subject, content );
+
+    }
+
+    public void sendEmail( String from, List<String> recipients, List<String> recipientsCC, List<String> recipientsBCC,
+                           String subject, String content )
     {
 
-        // Recipient's email ID needs to be mentioned.
-        String to = "";
-
         // Sender's email ID needs to be mentioned
-        String from = "TEAMAG <web@gmail.com>";
-
-        // Assuming you are sending email from localhost
-        String host = "";// smtp
 
         // Get system properties
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.setProperty( "mail.smtp.host", host );
+        properties.setProperty( "mail.smtp.host", smtphost );
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance( properties );
@@ -44,15 +53,39 @@ public class MailEJB
             message.setFrom( new InternetAddress( from ) );
 
             // Set To: header field of the header.
-            message.addRecipient( Message.RecipientType.TO, new InternetAddress( to ) );
 
-            message.addRecipient( Message.RecipientType.BCC, new InternetAddress( "" ) );
+            if ( recipients != null )
+            {
+                for ( String recipient : recipients )
+                {
+                    message.addRecipient( Message.RecipientType.TO, new InternetAddress( recipient ) );
+                }
+
+            }
+
+            if ( recipientsCC != null )
+            {
+                for ( String recipient : recipientsCC )
+                {
+                    message.addRecipient( Message.RecipientType.CC, new InternetAddress( recipient ) );
+                }
+
+            }
+
+            if ( recipientsBCC != null )
+            {
+                for ( String recipient : recipientsBCC )
+                {
+                    message.addRecipient( Message.RecipientType.BCC, new InternetAddress( recipient ) );
+                }
+
+            }
 
             // Set Subject: header field
-            message.setSubject( "This is the Subject Line!" );
+            message.setSubject( subject );
 
             // Send the actual HTML message, as big as you like
-            message.setContent( "<h1>This is actual message</h1>", "text/html" );
+            message.setContent( content, "text/plain" );
 
             // Send message
             Transport.send( message );

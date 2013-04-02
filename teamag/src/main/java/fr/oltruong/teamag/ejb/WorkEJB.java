@@ -47,6 +47,22 @@ public class WorkEJB
         return worksByTask;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public List<Task> findAllTasks()
+    {
+        return em.createNamedQuery( "findAllTasks" ).getResultList();
+    }
+
+    public int getSumWorks( Member member, Calendar month )
+    {
+        Query query = em.createNamedQuery( "countWorksMemberMonth" );
+        query.setParameter( "fmemberId", member.getId() );
+        query.setParameter( "fmonth", month );
+        Number sumOfPrice = (Number) query.getSingleResult();
+        System.out.println( "total " + sumOfPrice );
+        return sumOfPrice.intValue();
+    }
+
     private Map<Task, List<Work>> transformWorkList( List<Work> listWorks )
     {
 
@@ -123,9 +139,9 @@ public class WorkEJB
 
         taskDb.getMembers().remove( memberDb );
 
-        if ( taskDb.getMembers().isEmpty() )
+        if ( taskDb.getMembers().isEmpty() && taskHasNoWorks( taskDb ) )
         {
-            System.out.println( "Suppression de la tâche" );
+            System.out.println( "La tâche n'a aucun objet attaché dessus. Suppression de la tâche" );
             em.remove( taskDb );
         }
         else
@@ -133,6 +149,15 @@ public class WorkEJB
             System.out.println( "Mise à jour de la tâche" );
             em.persist( taskDb );
         }
+    }
+
+    private boolean taskHasNoWorks( Task taskDb )
+    {
+
+        Query query = em.createNamedQuery( "countWorksTask" );
+        query.setParameter( "fTaskId", taskDb.getId() );
+        int total = ( (Number) query.getSingleResult() ).intValue();
+        return total == 0;
     }
 
     public List<Task> findMemberTasks( Member member )

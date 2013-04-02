@@ -34,10 +34,15 @@ public class ReportingController
     private void initLists()
     {
 
-        month = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
+        month = CalendarUtils.getPreviousMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+        // month = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
 
+        long beginTime = System.currentTimeMillis();
         List<Work> works = workEJB.getWorksMonth( month );
+
+        System.out.println( "aaa " + ( System.currentTimeMillis() - beginTime ) + " ms" );
         initRealizedPersons( works );
+
         initRealizedCompanies( works );
 
     }
@@ -59,8 +64,9 @@ public class ReportingController
             }
             else
             {
-                work.getTask().setTotal( work.getTotal() );
-                tasks.add( work.getTask() );
+                Task newTask = work.getTask().clone();
+                newTask.setTotal( work.getTotal() );
+                tasks.add( newTask );
             }
 
         }

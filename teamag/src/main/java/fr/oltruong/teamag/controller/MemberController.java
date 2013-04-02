@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
 
@@ -53,6 +55,29 @@ public class MemberController
         FacesContext.getCurrentInstance().addMessage( null, msg );
 
         return "newMember.xhtml";
+    }
+
+    public List<String> completeCompany( String query )
+    {
+        List<Member> members = memberEJB.findMembers();
+
+        List<String> results = new ArrayList<String>( members.size() );
+
+        if ( !StringUtils.isBlank( query ) && query.length() > 1 )
+        {
+
+            for ( Member member : members )
+            {
+                if ( StringUtils.containsIgnoreCase( member.getCompany(), query )
+                    && !results.contains( member.getCompany() ) )
+                {
+                    results.add( member.getCompany() );
+                }
+
+            }
+        }
+        return results;
+
     }
 
     // ======================================

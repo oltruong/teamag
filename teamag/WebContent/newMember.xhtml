@@ -9,35 +9,36 @@
 	<title>Gestion des membres</title>
 </h:head>
 <h:body>
-
 	<h:form>
 
 		<p:menubar>
 			<p:menuitem value="Mon équipe" url="newMember.faces"
-				icon="ui-icon-star" />
-			<p:menuitem value="Budget" url="businesscases.faces" />
-			<p:menuitem value="Reporting" url="reporting.faces" />
+				icon="ui-icon-person" />
+			<p:menuitem value="Budget" url="businesscases.faces" icon="ui-icon-folder-open" />
+			<p:menuitem value="Reporting" url="reporting.faces" icon="ui-icon-calculator"/>
 		</p:menubar>
 
 	</h:form>
 
 	<p:growl id="messages" life="2000" showDetail="true" />
 	<br /><br />
-<p:panel header="Ajouter un nouveau membre">
+<p:panel header="Nouveau membre">
 
 	
 	<h:form>
 		<table border="0">
 			<tr>
-				<td><h:outputLabel value="Nom :" /></td>
+				<td><h:outputLabel value="Nom " /></td>
 				<td><p:inputText value="#{memberController.member.name}" required="true" /></td>
-				<td><h:outputLabel value="Entreprise :" /></td>
-				<td><p:inputText value="#{memberController.member.company}"  required="true" /></td>
-				<td><h:outputLabel value="e-mail :" /></td>
+					<td><h:outputLabel value="Entreprise :" for="acCompany" /> <p:autoComplete
+							id="acCompany" value="#{memberController.member.company}"
+							completeMethod="#{memberController.completeCompany}" /></td>
+				<td><h:outputLabel value="e-mail " /></td>
 				<td><p:inputText value="#{memberController.member.email}"  required="true" /></td>
+			<td><p:commandButton value="Ajouter" action="#{memberController.doCreateMember}" ajax="false" icon="ui-icon-plusthick"/></td>
 			</tr>
 		</table>
-		<p:commandButton value="Ajout de membre" action="#{memberController.doCreateMember}" ajax="false" />
+		
 	</h:form>
 </p:panel>
 	<br /><br />
@@ -47,7 +48,7 @@
 			<h:outputText value="#{user.id}" />
 		</p:column>
 
-		<p:column headerText="Nom">
+		<p:column headerText="Nom" >
 			<h:outputText value="#{user.name}" />
 		</p:column>
 
