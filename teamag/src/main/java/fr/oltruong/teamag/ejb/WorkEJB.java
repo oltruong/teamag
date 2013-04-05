@@ -173,14 +173,18 @@ public class WorkEJB
         {
             System.out.println( "tache " + task.getId() );
 
-            System.out.println( "tache Name" + task.getMembers().get( 0 ).getName() );
-            System.out.println( "tache Id" + task.getMembers().get( 0 ).getId() );
-            System.out.println( "Member id" + member.getId() );
-
-            if ( task.getMembers().contains( member ) )
+            if ( task.getMembers() != null && !task.getMembers().isEmpty() )
             {
-                System.out.println( "la tâche a bien comme member " + member.getName() );
-                tasks.add( task );
+
+                System.out.println( "tache Name" + task.getMembers().get( 0 ).getName() );
+                System.out.println( "tache Id" + task.getMembers().get( 0 ).getId() );
+                System.out.println( "Member id" + member.getId() );
+
+                if ( task.getMembers().contains( member ) )
+                {
+                    System.out.println( "la tâche a bien comme member " + member.getName() );
+                    tasks.add( task );
+                }
             }
         }
 

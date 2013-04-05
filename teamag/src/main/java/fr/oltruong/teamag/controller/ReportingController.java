@@ -34,8 +34,8 @@ public class ReportingController
     private void initLists()
     {
 
-        month = CalendarUtils.getPreviousMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-        // month = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
+        // month = CalendarUtils.getPreviousMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+        month = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
 
         long beginTime = System.currentTimeMillis();
         List<Work> works = workEJB.getWorksMonth( month );

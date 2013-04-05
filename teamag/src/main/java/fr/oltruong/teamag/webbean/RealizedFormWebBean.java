@@ -22,13 +22,19 @@ public class RealizedFormWebBean
 
     public boolean getIsFirstWeek()
     {
-        return weekNumberMonth == 0;
+
+        // FIXME quick hack
+        System.out.println( "day cursot" + dayCursor.get( Calendar.DAY_OF_MONTH ) );
+        System.out.println( "weekNumberMonth" + weekNumberMonth );
+        return weekNumberMonth == 1;
         // return CalendarUtils.isFirstWeek( dayCursor );
     }
 
     public boolean getIsLastWeek()
     {
-        return weekNumberMonth == 4;
+        System.out.println( "day cursot" + dayCursor.get( Calendar.DAY_OF_MONTH ) );
+        System.out.println( "weekNumberMonth" + weekNumberMonth );
+        return weekNumberMonth == 5;
         // return CalendarUtils.isLastWeek( dayCursor );
     }
 
