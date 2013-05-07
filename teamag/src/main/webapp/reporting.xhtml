@@ -10,14 +10,15 @@
 </h:head>
 <h:body>
 
-
 	<h:form>
 
 		<p:menubar>
-			<p:menuitem value="Mon équipe" url="newMember.faces"
+			<p:menuitem value="Mon équipe" url="newMember.xhtml"
 				icon="ui-icon-person" />
-			<p:menuitem value="Budget" url="businesscases.faces" icon="ui-icon-folder-open" />
-			<p:menuitem value="Reporting" url="reporting.faces" icon="ui-icon-calculator"/>
+			<p:menuitem value="Budget" url="businesscases.xhtml"
+				icon="ui-icon-folder-open" />
+			<p:menuitem value="Reporting" url="reporting.xhtml"
+				icon="ui-icon-calculator" />
 		</p:menubar>
 
 	</h:form>
@@ -72,13 +73,6 @@
 
 				</p:dataTable>
 
-				<p:panel header="Export Excel">
-					<h:commandLink>
-						<p:graphicImage value="/images/excel.gif" />
-						<p:dataExporter type="xls" target="realizedPerson"
-							fileName="realizedPerson" />
-					</h:commandLink>
-				</p:panel>
 			</h:form>
 		</p:tab>
 		<p:tab title="Par entreprise">
@@ -122,13 +116,6 @@
 					</p:subTable>
 
 				</p:dataTable>
-				<p:panel header="Export Excel">
-					<h:commandLink>
-						<p:graphicImage value="/images/excel.gif" />
-						<p:dataExporter type="xls" target="realizedCompany"
-							fileName="realizedCompanies" />
-					</h:commandLink>
-				</p:panel>
 			</h:form>
 		</p:tab>
 	</p:tabView>
