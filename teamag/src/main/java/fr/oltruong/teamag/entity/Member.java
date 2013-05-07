@@ -80,10 +80,13 @@ public class Member
     }
 
     @Override
-    public boolean equals( Object arg0 )
+    public boolean equals( Object otherMember )
     {
-        Member member0 = (Member) arg0;
+        if ( !( otherMember instanceof Member ) )
+        {
+            return false;
+        }
+        Member member0 = (Member) otherMember;
         return this.id.equals( member0.getId() );
     }
-
 }

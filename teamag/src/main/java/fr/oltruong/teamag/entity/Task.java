@@ -109,9 +109,13 @@ public class Task
     }
 
     @Override
-    public boolean equals( Object arg0 )
+    public boolean equals( Object otherTask )
     {
-        Task member0 = (Task) arg0;
+        if ( !( otherTask instanceof Task ) )
+        {
+            return false;
+        }
+        Task member0 = (Task) otherTask;
         return this.id.equals( member0.getId() );
     }
 

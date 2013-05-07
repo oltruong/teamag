@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class CalendarUtils
+public final class CalendarUtils
 {
 
     private CalendarUtils()

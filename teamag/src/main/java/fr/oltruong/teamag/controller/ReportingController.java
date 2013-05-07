@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -71,11 +72,13 @@ public class ReportingController
 
         }
         realizedCompanies = new ArrayList<RealizedReportBean>( map.size() );
-        for ( String company : map.keySet() )
+
+        final Set<Map.Entry<String, List<Task>>> entries = map.entrySet();
+        for ( Map.Entry<String, List<Task>> entry : entries )
         {
             RealizedReportBean report = new RealizedReportBean();
-            report.setName( company );
-            report.setTasks( map.get( company ) );
+            report.setName( entry.getKey() );
+            report.setTasks( entry.getValue() );
             realizedCompanies.add( report );
         }
     }
@@ -104,11 +107,14 @@ public class ReportingController
 
         }
         realizedPersons = new ArrayList<RealizedReportBean>( map.size() );
-        for ( Member member : map.keySet() )
+
+        final Set<Map.Entry<Member, List<Task>>> entries = map.entrySet();
+
+        for ( Map.Entry<Member, List<Task>> entry : entries )
         {
             RealizedReportBean report = new RealizedReportBean();
-            report.setName( member.getName() );
-            report.setTasks( map.get( member ) );
+            report.setName( entry.getKey().getName() );
+            report.setTasks( entry.getValue() );
             realizedPersons.add( report );
         }
 
