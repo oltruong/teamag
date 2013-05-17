@@ -1,32 +1,15 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Visualisation du réalisé</title>
-</h:head>
-<h:body>
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
 
-	<h:form>
+	<ui:define name="title">Visualisation du réalisé</ui:define>
 
-		<p:menubar>
-			<p:menuitem value="Mon équipe" url="newMember.xhtml"
-				icon="ui-icon-person" />
-			<p:menuitem value="Budget" url="businesscases.xhtml"
-				icon="ui-icon-folder-open" />
-			<p:menuitem value="Reporting" url="reporting.xhtml"
-				icon="ui-icon-calculator" />
-		</p:menubar>
 
-	</h:form>
-
-	<p:growl id="messages" life="2000" showDetail="true" />
-
-	<br />
-	<br />
+	<ui:define name="content">
 
 
 	<p:tabView orientation="top">
@@ -121,6 +104,5 @@
 	</p:tabView>
 
 
-</h:body>
-</html>
-
+</ui:define>
+</ui:composition>

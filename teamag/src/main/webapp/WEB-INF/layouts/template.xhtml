@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -8,23 +6,49 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-    <h:head>
-        <title>
-            <ui:insert name="title">TEAMAG</ui:insert>
-        </title>
+<h:head>
+	<title><ui:insert name="title">TEAMAG</ui:insert></title>
+<h:outputStylesheet name="css/mycustom.css" />
+</h:head>
 
-    </h:head>
+<h:body>
 
-    <h:body>
 	<h:form>
 
 		<p:menubar>
-			<p:menuitem value="Mon equipe" url="newMember.xhtml" icon="ui-icon-person" />
+			<p:menuitem rendered="true" value="Mon équipe" url="newMember.xhtml" icon="ui-icon-person" />
 			<p:menuitem value="Budget" url="businesscases.xhtml" icon="ui-icon-folder-open" />
 			<p:menuitem value="Reporting" url="reporting.xhtml" icon="ui-icon-calculator"/>
+		
+        <p:submenu label="?">  
+            <p:menuitem value="A propos" url="about.xhtml"/>  
+        </p:submenu>  
+  
+
+		 <p:menuitem rendered="true" style="position: absolute; right: 4px;" value="Déconnexion" url="." icon="ui-icon-power" />  
+		
 		</p:menubar>
 
 	</h:form>
 
-    </h:body>
+    <p:growl id="growl" showDetail="true" life="2000" />  
+	<p:growl id="messages" life="2000" showDetail="true" />
+	<br />
+	<br />
+	
+	
+	<div class="container">
+		<ui:insert name="content"></ui:insert>
+	</div>
+	
+	
+	
+	<footer class="text-center">
+	<br/>
+		<h:outputLabel value="&#169;Teamag 2013" />
+	</footer>
+	
+
+
+</h:body>
 </html>

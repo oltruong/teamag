@@ -1,39 +1,28 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Gestion des membres</title>
-</h:head>
-<h:body>
-	<h:form>
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
 
-		<p:menubar>
-			<p:menuitem value="Mon équipe" url="newMember.faces"
-				icon="ui-icon-person" />
-			<p:menuitem value="Budget" url="businesscases.faces" icon="ui-icon-folder-open" />
-			<p:menuitem value="Reporting" url="reporting.faces" icon="ui-icon-calculator"/>
-		</p:menubar>
+	<ui:define name="title">New member</ui:define>
 
-	</h:form>
 
-	<p:growl id="messages" life="2000" showDetail="true" />
-	<br /><br />
+	<ui:define name="content">
+
 <p:panel header="Nouveau membre">
 
 	
 	<h:form>
 		<table border="0">
 			<tr>
-				<td><h:outputLabel value="Nom " /></td>
+				<td><h:outputLabel value="Nom&#160;" /></td>
 				<td><p:inputText value="#{memberController.member.name}" required="true" /></td>
-					<td><h:outputLabel value="Entreprise :" for="acCompany" /> <p:autoComplete
+					<td><h:outputLabel value="Entreprise&#160;" for="acCompany" /> <p:autoComplete
 							id="acCompany" value="#{memberController.member.company}"
 							completeMethod="#{memberController.completeCompany}" /></td>
-				<td><h:outputLabel value="e-mail " /></td>
+				<td><h:outputLabel value="Adresse électronique&#160;" /></td>
 				<td><p:inputText value="#{memberController.member.email}"  required="true" /></td>
 			<td><p:commandButton value="Ajouter" action="#{memberController.doCreateMember}" ajax="false" icon="ui-icon-plusthick"/></td>
 			</tr>
@@ -62,6 +51,6 @@
 
 	</p:dataTable>
 	</p:panel>
-</h:body>
-</html>
+</ui:define>
+</ui:composition>
 

@@ -5,25 +5,20 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Bienvenue22</title>
+	<title>Bienvenue</title>
 </h:head>
 <h:body>
 <h1>Outil de saisie de réalisé</h1>
 
-<div id="welcome">
- Cliquer sur l'image pour vous identifier 
-<h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">     
-
-<p:graphicImage value="resources/images/login.png" alt="S'identifier" />  
+ <h:outputLink id="loginIn" style="display:none">     
+                <p:commandButton value="Mon réalisé" action="#{workController.init}"/>  
 </h:outputLink>  
-  </div>
-<p:growl id="growl" showDetail="true" life="2000" />  
-  
-<p:dialog id="dialog" header="Identification" widgetVar="dlg">  
-    <h:form>  
+<div id="welcome">
+
+      <h:form>  
   
         <h:panelGrid columns="2" cellpadding="5">  
-            <h:outputLabel for="username" value="Prénom :" />  
+            <p:outputLabel for="username" value="Prénom :" />  
             <p:inputText value="#{loginBean.username}"   
                     id="username" required="true" label="username" />  
               
@@ -35,12 +30,12 @@
         </h:panelGrid>  
           
     </h:form>  
-</p:dialog>  
+
+  </div>
+<p:growl id="growl" showDetail="true" life="2000" />  
   
   
- <h:outputLink id="loginIn" style="display:none">     
-                <p:commandButton value="Mon réalisé" action="#{workController.init}"/>  
-</h:outputLink>  
+
   
   
 <script type="text/javascript">  
@@ -48,9 +43,9 @@
         if(args.validationFailed || !args.loggedIn) {  
             jQuery('#dialog').effect("shake", { times:3 }, 100);  
         } else {  
-            dlg.hide();  
-            jQuery('#welcome').fadeOut();
             jQuery('#loginIn').fadeIn();
+            jQuery('#welcome').fadeOut();
+
         }  
     }  
 </script>

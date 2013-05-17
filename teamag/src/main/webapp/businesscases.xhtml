@@ -1,123 +1,98 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Gestion des Business Cases</title>
-</h:head>
-<h:body>
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
+
+	<ui:define name="title">Gestion des business case</ui:define>
 
 
-	<h:form>
+	<ui:define name="content">
 
-		<p:menubar>
-			<p:menuitem value="Mon équipe" url="newMember.faces"
-				icon="ui-icon-person" />
-			<p:menuitem value="Budget" url="businesscases.faces" icon="ui-icon-folder-open" />
-			<p:menuitem value="Reporting" url="reporting.faces" icon="ui-icon-calculator"/>
-		</p:menubar>
+		<p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
+			<p:tab title="Business Cases">
+				<p:panel header="Nouveau BC">
 
-	</h:form>
+					<hr />
+					<h:form>
+						<table border="0">
+							<tr>
+								<td><h:outputLabel value="Numéro* :" /></td>
+								<td><h:inputText value="#{bcController.bc.number}" /></td>
+								<td><h:outputLabel value="Nom :" /></td>
+								<td><h:inputText value="#{bcController.bc.name}" /></td>
+								<td><p:commandButton value="Ajouter"
+										action="#{bcController.doCreateBC}" ajax="false" /></td>
+							</tr>
+						</table>
 
-	<p:growl id="messages" life="2000" showDetail="true" />
+					</h:form>
+				</p:panel>
+				<br />
+				<br />
+				<p:panel header="Liste des BC">
+					<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
+						<p:column headerText="Numéro" sortBy="#{bc.number}">
+							<h:outputText value="#{bc.number}" />
+						</p:column>
 
-	<br />
-	<br />
-
-	<p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
-		<p:tab title="Business Cases">
-			<p:panel header="Nouveau BC">
-
-				<hr />
-				<h:form>
-					<table border="0">
-						<tr>
-							<td><h:outputLabel value="Numéro* :" /></td>
-							<td><h:inputText value="#{bcController.bc.number}" /></td>
-							<td><h:outputLabel value="Nom :" /></td>
-							<td><h:inputText value="#{bcController.bc.name}" /></td>
-							<td><p:commandButton value="Ajouter"
-									action="#{bcController.doCreateBC}" ajax="false" /></td>
-						</tr>
-					</table>
-
-				</h:form>
-			</p:panel>
-			<br />
-			<br />
-			<p:panel header="Liste des BC">
-				<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
-					<p:column headerText="Numéro" sortBy="#{bc.number}">
-						<h:outputText value="#{bc.number}" />
-					</p:column>
-
-					<p:column headerText="Nom">
-						<h:outputText value="#{bc.name}" />
-					</p:column>
+						<p:column headerText="Nom">
+							<h:outputText value="#{bc.name}" />
+						</p:column>
 
 
-				</p:dataTable>
-			</p:panel>
+					</p:dataTable>
+				</p:panel>
 
-		</p:tab>
-		<p:tab title="Activités">
-
-
-			<p:panel header="Nouvelle activité">
-
-				<hr />
-				<h:form>
-					<table border="0">
-						<tr>
-							<td><h:outputLabel value="Nom* :" /></td>
-							<td><h:inputText value="#{bcController.activity.name}" /></td>
-							<td><h:outputLabel value="BC :" /></td>
-							<td><p:selectOneListbox id="basic"
-									value="#{bcController.activity.bc.number}" >
-									<f:selectItems value="#{bcController.bcList}" var="bc"
-										itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}" />
-								</p:selectOneListbox>
-								
-								
-					
-								
-								</td>
-							<td><p:commandButton value="Ajouter"
-									action="#{bcController.doCreateActivity}" ajax="false" /></td>
-						</tr>
-					</table>
-
-				</h:form>
-			</p:panel>
-			<br />
-			<br />
-			<p:panel header="Liste des Activités">
-				<p:dataTable value="#{bcController.activityList}" var="activity"
-					border="1">
-					<p:column headerText="Nom" sortBy="#{activity.name}">
-						<h:outputText value="#{activity.name}" />
-					</p:column>
-
-					<p:column headerText="Numéro BC" sortBy="#{activity.bc.number}">
-						<h:outputText value="#{activity.bc.number}" />
-					</p:column>
-
-					<p:column headerText="Nom BC" sortBy="#{activity.bc.name}">
-						<h:outputText value="#{activity.bc.name}" />
-					</p:column>
+			</p:tab>
+			<p:tab title="Activités">
 
 
-				</p:dataTable>
-			</p:panel>
+				<p:panel header="Nouvelle activité">
 
-		</p:tab>
-	</p:tabView>
+					<hr />
+					<h:form>
+						<table border="0">
+							<tr>
+								<td><h:outputLabel value="Nom* :" /></td>
+								<td><h:inputText value="#{bcController.activity.name}" /></td>
+								<td><h:outputLabel value="BC :" /></td>
+								<td><p:selectOneListbox id="basic"
+										value="#{bcController.activity.bc.number}">
+										<f:selectItems value="#{bcController.bcList}" var="bc"
+											itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}" />
+									</p:selectOneListbox></td>
+								<td><p:commandButton value="Ajouter"
+										action="#{bcController.doCreateActivity}" ajax="false" /></td>
+							</tr>
+						</table>
+
+					</h:form>
+				</p:panel>
+				<br />
+				<br />
+				<p:panel header="Liste des Activités">
+					<p:dataTable value="#{bcController.activityList}" var="activity"
+						border="1">
+						<p:column headerText="Nom" sortBy="#{activity.name}">
+							<h:outputText value="#{activity.name}" />
+						</p:column>
+
+						<p:column headerText="Numéro BC" sortBy="#{activity.bc.number}">
+							<h:outputText value="#{activity.bc.number}" />
+						</p:column>
+
+						<p:column headerText="Nom BC" sortBy="#{activity.bc.name}">
+							<h:outputText value="#{activity.bc.name}" />
+						</p:column>
 
 
+					</p:dataTable>
+				</p:panel>
 
-</h:body>
-</html>
-
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+	</ui:composition>
