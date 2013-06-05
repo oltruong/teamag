@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
+
+	<ui:define name="title">Paramètres</ui:define>
+
+
+	<ui:define name="content">
+
+<p:panel header="Paramètres">
+
+	
+	<h:form>
+		<table border="0">
+			<tr>
+				<td><h:outputLabel value="Serveur STMP&#160;" /></td>
+				<td><p:inputText value="#{parametersController.parameters.smtpHost}" required="true" /></td>
+			</tr>
+			<tr>
+				<td><h:outputLabel value="Email Administrator&#160;" /></td>
+				<td><p:inputText value="#{parametersController.parameters.administratorEmail}" required="true" /></td>
+			</tr>
+		</table>
+		<br/>
+		<p:commandButton value="Mise à jour" action="#{parametersController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
+		<p:commandButton value="Test envoi d'email" action="#{parametersController.testEmail}" ajax="false" icon="ui-icon-person"/>
+		
+	</h:form>
+</p:panel>
+
+</ui:define>
+</ui:composition>
+

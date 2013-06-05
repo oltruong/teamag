@@ -4,11 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table( name = "TM_APP_PARAMETER" )
+@Table( name = "TM_APP_PARAMETERS" )
 @Entity
-public class ApplicationParameter
+@NamedQuery( name = "findParameters", query = "SELECT a from ApplicationParameters a" )
+public class ApplicationParameters
 {
     @Id
     @GeneratedValue

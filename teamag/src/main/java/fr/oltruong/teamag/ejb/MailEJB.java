@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,8 +18,8 @@ import javax.mail.internet.MimeMessage;
 public class MailEJB
 {
 
-    // FIXME
-    private String smtphost = "TODEFINE";
+    @EJB
+    private ApplicationParametersEJB parametersEJB;
 
     public void sendEmail( String from, String recipient, String subject, String content )
     {
@@ -39,7 +40,7 @@ public class MailEJB
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.setProperty( "mail.smtp.host", smtphost );
+        properties.setProperty( "mail.smtp.host", parametersEJB.getParameters().getSmtpHost() );
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance( properties );

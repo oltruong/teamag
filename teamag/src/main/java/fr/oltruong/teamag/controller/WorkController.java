@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.oltruong.teamag.ejb.ApplicationParametersEJB;
 import fr.oltruong.teamag.ejb.MailEJB;
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
@@ -47,8 +48,8 @@ public class WorkController
     @EJB
     private MailEJB mailEJB;
 
-    // FIXME
-    private String adminEmail = "TODEFINE";
+    @EJB
+    private ApplicationParametersEJB parametersEJB;
 
     public String doCreateActivity()
     {
@@ -190,7 +191,8 @@ public class WorkController
         int nbWorkingDays = CalendarUtils.getWorkingDays( realizedBean.getCurrentMonth() ).size();
         if ( total == nbWorkingDays )
         {
-            mailEJB.sendEmail( "TEAMAG", adminEmail, "Réalisé complet pour " + member.getName(), "Il l'a fait" );
+            mailEJB.sendEmail( "TEAMAG", parametersEJB.getParameters().getAdministratorEmail(), "Réalisé complet pour "
+                + member.getName(), "Il l'a fait" );
         }
     }
 
@@ -198,8 +200,10 @@ public class WorkController
     {
         realizedBean = new RealizedFormWebBean();
         realizedBean.setDayCursor( Calendar.getInstance() );
-        realizedBean.setCurrentMonth( CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-        works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+
+        Calendar firstDayOfMonth = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
+        realizedBean.setCurrentMonth( firstDayOfMonth );
+        works = workEJB.findWorks( member, firstDayOfMonth );
 
         initTaskWeek();
         return "realized.xhtml";
