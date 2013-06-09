@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Mes absences</title>
+</h:head>
+<h:body>
+
+	<p:growl id="growl" showDetail="true" life="2000" />
+
+	<h1 class="ui-widget-header ui-corner-all">
+		Absences de
+		<h:outputText value="#{workController.member.name}" />
+	</h1>
+
+	<p:panel header="Nouvelle absence">
+
+		<h:form>
+			<table border="0">
+				<tr>
+					<td><p:calendar value="#{absenceController.absence.beginDate}"
+							id="popupCal" pattern="dd/MM/yyyy" /></td>
+					<td><p:calendar value="#{absenceController.absence.endDate}"
+							id="popupCal2" /></td>
+					<td><p:selectOneRadio id="options"
+							value="#{absenceController.absence.type}">
+							<f:selectItem itemLabel="Journée entière" itemValue="0" />
+							<f:selectItem itemLabel="Matin" itemValue="1" />
+							<f:selectItem itemLabel="Après-midi" itemValue="2" />
+						</p:selectOneRadio></td>
+
+					<td><p:commandButton value="Ajouter"
+							action="#{absenceController.addAbsence}" ajax="false"
+							icon="ui-icon-plusthick" /></td>
+				</tr>
+			</table>
+		</h:form>
+
+	</p:panel>
+	<br />
+	<p:panel header="Liste des absences">
+		<p:dataTable value="#{absenceController.absencesList}" var="absence"
+			border="1">
+			<p:column headerText="Date début">
+				<h:outputText value="#{absence.beginDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Date fin">
+				<h:outputText value="#{absence.endDate}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+
+			</p:column>
+			<p:column headerText="Type">
+				<h:outputText value="#{absence.typeStr}" />
+			</p:column>
+
+		</p:dataTable>
+	</p:panel>
+
+</h:body>
+</html>
