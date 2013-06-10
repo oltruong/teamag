@@ -3,18 +3,17 @@ package fr.oltruong.teamag.ejb;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 
 @Stateless
 public class MemberEJB
+    extends AbstractEJB
 {
-    @PersistenceContext( unitName = "ejbPU" )
-    private EntityManager em;
 
     // ======================================
     // = Public Methods =
@@ -23,17 +22,17 @@ public class MemberEJB
     @SuppressWarnings( "unchecked" )
     public List<Member> findMembers()
     {
-        Query query = em.createNamedQuery( "findMembers" );
+        Query query = entityManager.createNamedQuery( "findMembers" );
         return query.getResultList();
     }
 
     public Member findByName( String name )
     {
-        Query query = em.createNamedQuery( "findByName" );
+        Query query = entityManager.createNamedQuery( "findByName" );
         query.setParameter( "fname", name );
         @SuppressWarnings( "unchecked" )
         List<Member> liste = query.getResultList();
-        if ( liste == null || liste.isEmpty() )
+        if ( CollectionUtils.isEmpty( liste ) )
         {
             return null;
         }
@@ -50,7 +49,7 @@ public class MemberEJB
         System.out.println( "Recherche de la tâche absence" );
 
         // Adding default task
-        Query query = em.createNamedQuery( "findTaskByName" );
+        Query query = entityManager.createNamedQuery( "findTaskByName" );
         query.setParameter( "fname", "Absence" );
         query.setParameter( "fproject", "" );
 
@@ -68,14 +67,14 @@ public class MemberEJB
             System.out.println( "Tâche non trouvée. Elle est créée" );
             Task newTask = new Task();
             newTask.setName( "Absence" );
-            em.persist( newTask );
+            entityManager.persist( newTask );
             task = newTask;
         }
 
-        em.persist( member );
+        entityManager.persist( member );
 
         task.addMember( member );
-        em.persist( task );
+        entityManager.persist( task );
 
         return member;
     }

@@ -7,9 +7,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import fr.oltruong.teamag.entity.ApplicationParameters;
 
@@ -18,10 +18,8 @@ import fr.oltruong.teamag.entity.ApplicationParameters;
  */
 @Singleton
 public class ApplicationParametersEJB
+    extends AbstractEJB
 {
-
-    @PersistenceContext( unitName = "ejbPU" )
-    private EntityManager em;
 
     private ApplicationParameters parameters;
 
@@ -38,7 +36,7 @@ public class ApplicationParametersEJB
 
     public void saveParameters()
     {
-        em.merge( parameters );
+        entityManager.merge( parameters );
         loadParameters();
     }
 
@@ -49,10 +47,10 @@ public class ApplicationParametersEJB
 
     private void loadParameters()
     {
-        Query query = em.createNamedQuery( "findParameters" );
+        Query query = entityManager.createNamedQuery( "findParameters" );
         @SuppressWarnings( "unchecked" )
         List<ApplicationParameters> listParam = query.getResultList();
-        if ( listParam != null && !listParam.isEmpty() )
+        if ( CollectionUtils.isNotEmpty( listParam ) )
         {
             parameters = listParam.get( 0 );
 

@@ -3,8 +3,6 @@ package fr.oltruong.teamag.ejb;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import fr.oltruong.teamag.entity.Absence;
@@ -12,10 +10,8 @@ import fr.oltruong.teamag.entity.Member;
 
 @Stateless
 public class AbsenceEJB
+    extends AbstractEJB
 {
-
-    @PersistenceContext( unitName = "ejbPU" )
-    private EntityManager em;
 
     @SuppressWarnings( "unchecked" )
     public List<Absence> findAbsences( Member member )
@@ -24,7 +20,7 @@ public class AbsenceEJB
         {
 
             System.out.println( "Recherche absence pour member " + member.toString() );
-            Query query = em.createNamedQuery( "findAbsencesByMember" );
+            Query query = entityManager.createNamedQuery( "findAbsencesByMember" );
             query.setParameter( "fmemberName", member.getName() );
 
             return (List<Absence>) query.getResultList();
@@ -40,7 +36,7 @@ public class AbsenceEJB
     {
 
         System.out.println( "Add absence" );
-        em.persist( absence );
+        entityManager.persist( absence );
 
     }
 

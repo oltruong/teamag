@@ -65,7 +65,7 @@ public class LoginController
     {
 
         RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage msg = null;
+        FacesMessage userMessage = null;
         boolean loggedIn = false;
 
         Member member = memberEJB.findByName( username );
@@ -73,19 +73,19 @@ public class LoginController
         if ( member != null )
         {
             loggedIn = true;
-            msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username );
+            userMessage = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username );
             this.member = member;
         }
         else
         {
             loggedIn = false;
-            msg =
+            userMessage =
                 new FacesMessage( FacesMessage.SEVERITY_WARN, "Erreur",
                                   "Nom inconnu, merci de contacter l'administrateur." );
 
         }
 
-        FacesContext.getCurrentInstance().addMessage( null, msg );
+        FacesContext.getCurrentInstance().addMessage( null, userMessage );
         context.addCallbackParam( "loggedIn", loggedIn );
     }
 
