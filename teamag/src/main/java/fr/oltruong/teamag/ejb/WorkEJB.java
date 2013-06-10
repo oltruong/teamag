@@ -203,7 +203,6 @@ public class WorkEJB
         if ( CollectionUtils.isNotEmpty( allTaskList ) )
         {
             System.out.println( "La tâche existe déjà" );
-            // La tâche existe déjà
             Task myTask = allTaskList.get( 0 );
             if ( myTask.getMembers().contains( member ) )
             {
@@ -219,7 +218,7 @@ public class WorkEJB
             }
         }
         else
-        // Création de la tâche
+
         {
             System.out.println( "Création d'une nouvelle tâche" );
 
@@ -235,9 +234,9 @@ public class WorkEJB
 
         // Création des objets Work
         System.out.println( "Création des objets WORK" );
-        List<Calendar> workingDays = CalendarUtils.getWorkingDays( month );
+        List<Calendar> workingDayList = CalendarUtils.getWorkingDays( month );
 
-        for ( Calendar day : workingDays )
+        for ( Calendar day : workingDayList )
         {
             Work work = new Work();
             work.setDay( day );
@@ -250,9 +249,9 @@ public class WorkEJB
 
     }
 
-    public void updateWorks( List<Work> works )
+    public void updateWorks( List<Work> workList )
     {
-        for ( Work work : works )
+        for ( Work work : workList )
         {
             work.setTotal( work.getTotalEdit() );
             entityManager.merge( work );
