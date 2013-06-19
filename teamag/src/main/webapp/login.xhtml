@@ -8,13 +8,44 @@
 	<title>Bienvenue</title>
 </h:head>
 <h:body>
+
+
+	<h:form>
+
+		<p:menubar>
+			<p:menuitem value="Mon équipe" url="newMember.xhtml"
+				icon="ui-icon-person" rendered="#{loginBean.jack}"/>
+			<p:menuitem value="Budget" url="businesscases.xhtml"
+				icon="ui-icon-folder-open" />
+			<p:menuitem value="Reporting" url="reporting.xhtml"
+				icon="ui-icon-calculator" rendered="#{loginBean.jack}" />
+			<p:menuitem value="Paramètres" url="parameters.xhtml"
+				icon="ui-icon-wrench" />
+			<p:menuitem value="Paramètres" url="test/absences.xhtml"
+				icon="ui-icon-wrench" />
+
+			<p:submenu label="?">
+				<p:menuitem value="A propos" url="about.xhtml" />
+			</p:submenu>
+
+
+			<p:menuitem rendered="true" style="position: absolute; right: 4px;"
+				value="Déconnexion" url="." icon="ui-icon-power" />
+
+		</p:menubar>
+
+	</h:form>
+
+
+
 <h1>Outil de saisie de réalisé</h1>
 
  <h:outputLink id="loginIn" style="display:none">     
                 <p:commandButton value="Mon réalisé" action="#{workController.init}"/>
                 <br />
-                <p:commandButton value="Mes absences" action="#{absenceController.init}"/>  
+                <p:commandButton value="Mes absences" action="#{absenceController.init}" rendered="#{loginBean.jack}"/>  
 </h:outputLink>  
+                <p:commandButton value="Mes absences" action="#{absenceController.init}" rendered="#{loginBean.jack}"/>  
 <div id="welcome">
 
       <h:form>  
@@ -51,5 +82,6 @@
         }  
     }  
 </script>
+
 </h:body>
 </html>  

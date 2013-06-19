@@ -26,6 +26,25 @@ public class LoginController
 
     private String password;
 
+    public boolean isLoggedIn()
+    {
+        return member != null;
+    }
+
+    public boolean isJack()
+    {
+        if ( member != null )
+        {
+            System.out.println( "isJackkk" + member.getName() );
+            System.out.println( member != null && "Jack".equals( member.getName() ) );
+        }
+        else
+        {
+            System.out.println( "isJackk  null" );
+        }
+        return member != null && "Jack".equals( member.getName() );
+    }
+
     public String getUsername()
     {
         return username;
@@ -61,10 +80,11 @@ public class LoginController
         this.member = member;
     }
 
-    public void login( ActionEvent actionEvent )
+    public String login( ActionEvent actionEvent )
     {
 
         RequestContext context = RequestContext.getCurrentInstance();
+
         FacesMessage userMessage = null;
         boolean loggedIn = false;
 
@@ -74,7 +94,7 @@ public class LoginController
         {
             loggedIn = true;
             userMessage = new FacesMessage( FacesMessage.SEVERITY_INFO, "Bienvenue", username );
-            this.member = member;
+            setMember( member );
         }
         else
         {
@@ -87,12 +107,14 @@ public class LoginController
 
         FacesContext.getCurrentInstance().addMessage( null, userMessage );
         context.addCallbackParam( "loggedIn", loggedIn );
+        return "login.xhtml";
+
     }
 
     public String logout()
     {
         System.out.println( "LOGGGGOUT" );
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        setMember( null );
         return "login.xhtml";
     }
 

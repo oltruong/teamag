@@ -11,7 +11,7 @@
 	<h:outputStylesheet name="css/mycustom.css" />
 </h:head>
 
-<h:body>
+<h:body rendered="#{loginBean.loggedIn}"/>
 
 	<h:form>
 
@@ -23,6 +23,8 @@
 			<p:menuitem value="Reporting" url="reporting.xhtml"
 				icon="ui-icon-calculator" />
 			<p:menuitem value="Paramètres" url="parameters.xhtml"
+				icon="ui-icon-wrench" />
+			<p:menuitem value="Paramètres" url="test/absences.xhtml"
 				icon="ui-icon-wrench" />
 
 			<p:submenu label="?">
