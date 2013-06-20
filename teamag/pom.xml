@@ -20,7 +20,7 @@
 		<version.commons-collections>3.2.1</version.commons-collections>
 		<version.apache.poi>3.7</version.apache.poi>
 		<version.javax.ejb>3.0.1</version.javax.ejb>
-		<version.eclipselink>2.4.0</version.eclipselink>
+		<version.eclipselink>2.5.0</version.eclipselink>
 		<version.glassfish-embedded>3.0</version.glassfish-embedded>
 
 		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
@@ -183,11 +183,6 @@
 			<name>PrimeFaces Maven Repository</name>
 			<url>http://repository.primefaces.org</url>
 			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>eclipseLink</id>
-			<name>EclipseLink Repository</name>
-			<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
 		</repository>
 	</repositories>
 
