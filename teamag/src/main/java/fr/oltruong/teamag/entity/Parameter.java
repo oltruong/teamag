@@ -2,29 +2,43 @@ package fr.oltruong.teamag.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table( name = "TM_APP_PARAMETERS" )
+@Table( name = "TM_PARAMETER" )
 @Entity
-@NamedQuery( name = "findParameters", query = "SELECT a from ApplicationParameters a" )
-public class ApplicationParameters
+@NamedQuery( name = "findParameters", query = "SELECT p from Parameter p" )
+public class Parameter
 {
+
     @Id
     @GeneratedValue
     private Long id;
 
     @Column( nullable = false )
-    private String smtpHost;
+    @Enumerated( EnumType.STRING )
+    private ParameterName name;
 
-    @Column( nullable = false )
-    private String administratorEmail;
+    @Column
+    private String value;
+
+    public Parameter()
+    {
+
+    }
+
+    public Parameter( ParameterName name )
+    {
+        this.name = name;
+    }
 
     public Long getId()
     {
-        return id;
+        return this.id;
     }
 
     public void setId( Long id )
@@ -32,24 +46,24 @@ public class ApplicationParameters
         this.id = id;
     }
 
-    public String getSmtpHost()
+    public ParameterName getName()
     {
-        return smtpHost;
+        return this.name;
     }
 
-    public void setSmtpHost( String smtpHost )
+    public void setName( ParameterName name )
     {
-        this.smtpHost = smtpHost;
+        this.name = name;
     }
 
-    public String getAdministratorEmail()
+    public String getValue()
     {
-        return administratorEmail;
+        return this.value;
     }
 
-    public void setAdministratorEmail( String administratorEmail )
+    public void setValue( String value )
     {
-        this.administratorEmail = administratorEmail;
+        this.value = value;
     }
 
 }

@@ -3,7 +3,10 @@
  */
 package fr.oltruong.teamag.ejb;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -11,17 +14,20 @@ import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import fr.oltruong.teamag.entity.ApplicationParameters;
+import fr.oltruong.teamag.entity.Parameter;
+import fr.oltruong.teamag.entity.ParameterName;
 
 /**
  * @author Olivier Truong
  */
 @Singleton
-public class ApplicationParametersEJB
+public class ParameterEJB
     extends AbstractEJB
 {
 
-    private ApplicationParameters parameters;
+    private final Logger logger = Logger.getLogger( getClass().getName() );
+
+    private Map<ParameterName, Parameter> parameterMap;
 
     @PostConstruct
     private void initValue()
@@ -29,37 +35,87 @@ public class ApplicationParametersEJB
         loadParameters();
     }
 
-    public void setParameters( ApplicationParameters updatedParameters )
+    public void saveAndReloadParameters()
     {
-        this.parameters = updatedParameters;
-    }
-
-    public void saveParameters()
-    {
-        entityManager.merge( parameters );
+        saveParameters();
         loadParameters();
     }
 
-    public ApplicationParameters getParameters()
+    private void saveParameters()
     {
-        return parameters;
+        for ( Parameter parameter : this.parameterMap.values() )
+        {
+            this.entityManager.merge( parameter );
+        }
     }
 
     private void loadParameters()
     {
-        Query query = entityManager.createNamedQuery( "findParameters" );
+        Query query = this.entityManager.createNamedQuery( "findParameters" );
         @SuppressWarnings( "unchecked" )
-        List<ApplicationParameters> listParam = query.getResultList();
-        if ( CollectionUtils.isNotEmpty( listParam ) )
+        List<Parameter> parameterList = query.getResultList();
+        if ( CollectionUtils.isNotEmpty( parameterList ) )
         {
-            parameters = listParam.get( 0 );
-
+            this.parameterMap = new HashMap<ParameterName, Parameter>( parameterList.size() );
+            for ( Parameter parameter : parameterList )
+            {
+                this.parameterMap.put( parameter.getName(), parameter );
+            }
         }
         else
         {
-            System.out.println( "Warning creation objet parameters" );
-            parameters = new ApplicationParameters();
+
+            initAndPersistParameterMap();
         }
+    }
+
+    private void initAndPersistParameterMap()
+    {
+
+        this.logger.info( "Creating parameters Map" );
+
+        this.parameterMap = new HashMap<ParameterName, Parameter>( 2 );
+        Parameter smtpHostParameter = new Parameter( ParameterName.SMTP_HOST );
+        Parameter administratorEmailParameter = new Parameter( ParameterName.ADMINISTRATOR_EMAIL );
+
+        this.entityManager.persist( smtpHostParameter );
+        this.entityManager.persist( administratorEmailParameter );
+
+        this.parameterMap.put( ParameterName.SMTP_HOST, smtpHostParameter );
+        this.parameterMap.put( ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter );
+
+    }
+
+    public String getSmtpHost()
+    {
+        return getSmtpHostParameter().getValue();
+    }
+
+    public String getAdministratorEmail()
+    {
+        return getAdministratorEmailParameter().getValue();
+    }
+
+    public Parameter getSmtpHostParameter()
+    {
+        return this.parameterMap.get( ParameterName.SMTP_HOST );
+    }
+
+    public Parameter getAdministratorEmailParameter()
+    {
+        return this.parameterMap.get( ParameterName.ADMINISTRATOR_EMAIL );
+    }
+
+    public void setSmtpHostParameter( Parameter smtpHostParameter )
+    {
+        this.parameterMap.put( ParameterName.SMTP_HOST, smtpHostParameter );
+
+    }
+
+    public void setAdministratorEmailParameter( Parameter administratorEmailParameter )
+    {
+        this.parameterMap.put( ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter );
+
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.controller;
 
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -15,34 +16,44 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import fr.oltruong.teamag.ejb.ApplicationParametersEJB;
-import fr.oltruong.teamag.entity.ApplicationParameters;
+import fr.oltruong.teamag.ejb.EmailEJB;
+import fr.oltruong.teamag.ejb.ParameterEJB;
+import fr.oltruong.teamag.entity.Parameter;
 
 @ManagedBean
 @ApplicationScoped
-public class ParametersController
+public class ParameterController
 {
+
+    private final Logger logger = Logger.getLogger( getClass().getName() );
 
     // ======================================
     // = Attributes =
     // ======================================
     @EJB
-    private ApplicationParametersEJB parametersEJB;
+    private ParameterEJB parametersEJB;
 
-    private ApplicationParameters parameters;
+    @EJB
+    private EmailEJB emailEJB;
+
+    private Parameter smtpHostParameter;
+
+    private Parameter administratorEmailParameter;
 
     @PostConstruct
     private void initList()
     {
-        parameters = parametersEJB.getParameters();
+        this.smtpHostParameter = this.parametersEJB.getSmtpHostParameter();
+        this.administratorEmailParameter = this.parametersEJB.getAdministratorEmailParameter();
     }
 
     public String doUpdateParameters()
     {
-        parametersEJB.setParameters( parameters );
-        parametersEJB.saveParameters();
+        this.parametersEJB.setSmtpHostParameter( this.smtpHostParameter );
+        this.parametersEJB.setAdministratorEmailParameter( this.administratorEmailParameter );
+        this.parametersEJB.saveAndReloadParameters();
 
-        parameters = parametersEJB.getParameters();
+        initList();
 
         FacesMessage msg = null;
         msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Paramètres mis à jour" );
@@ -54,14 +65,15 @@ public class ParametersController
     public void testEmail()
     {
 
+        this.logger.info( "Sending test email" );
+
         // Sender's email ID needs to be mentioned
 
         // Get system properties
         Properties properties = System.getProperties();
 
-        System.out.println( "SMTP" + parametersEJB.getParameters().getSmtpHost() );
         // Setup mail server
-        properties.setProperty( "mail.smtp.host", parametersEJB.getParameters().getSmtpHost() );
+        properties.setProperty( "mail.smtp.host", this.smtpHostParameter.getValue() );
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance( properties );
@@ -72,13 +84,13 @@ public class ParametersController
             MimeMessage message = new MimeMessage( session );
 
             // Set From: header field of the header.
-            message.setFrom( new InternetAddress( parametersEJB.getParameters().getAdministratorEmail() ) );
+            message.setFrom( new InternetAddress( "TEAMAG<" + this.administratorEmailParameter.getValue() + ">" ) );
 
             // Set To: header field of the header.
 
             message.addRecipient( Message.RecipientType.TO,
-                                  new InternetAddress( parametersEJB.getParameters().getAdministratorEmail() ) );
-            System.out.println( "TOOO" + parametersEJB.getParameters().getAdministratorEmail() );
+                                  new InternetAddress( this.administratorEmailParameter.getValue() ) );
+            this.logger.info( "Message to: " + this.administratorEmailParameter.getValue() );
 
             // Set Subject: header field
             message.setSubject( "Test" );
@@ -86,20 +98,43 @@ public class ParametersController
             // Send the actual HTML message, as big as you like
             message.setContent( "this is a test. Please ignore", "text/plain" );
 
+            this.logger.info( "Sending message" );
+
             // Send message
             Transport.send( message );
+
+            this.logger.info( "Message sent" );
+
+            FacesMessage msg = null;
+            msg =
+                new FacesMessage( FacesMessage.SEVERITY_INFO, "Message envoyé", "Envoyé à "
+                    + this.administratorEmailParameter.getValue() );
+            FacesContext.getCurrentInstance().addMessage( null, msg );
         }
-        catch ( MessagingException mex )
+        catch ( MessagingException messagingException )
         {
-            mex.printStackTrace();
+            this.logger.severe( "Error when sending message [" + messagingException.getMessage() + "]" );
         }
-        System.out.println( "Sent message successfully...." );
 
     }
 
-    public ApplicationParameters getParameters()
+    public String getSmtpHostParameterValue()
     {
-        return parameters;
+        return this.smtpHostParameter.getValue();
     }
 
+    public String getAdministratorEmailParameterValue()
+    {
+        return this.administratorEmailParameter.getValue();
+    }
+
+    public void setSmtpHostParameterValue( String value )
+    {
+        this.smtpHostParameter.setValue( value );
+    }
+
+    public void setAdministratorEmailParameterValue( String value )
+    {
+        this.administratorEmailParameter.setValue( value );
+    }
 }

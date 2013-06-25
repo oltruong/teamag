@@ -1,8 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -10,28 +9,23 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 // from http://www.tutorialspoint.com/java/java_sending_email.htm
 @Stateless
-public class MailEJB
+public class EmailEJB
 {
 
+    private final Logger logger = Logger.getLogger( getClass().getName() );
+
+    private static final String SENDER = "TEAMAG";
+
     @EJB
-    private ApplicationParametersEJB parametersEJB;
+    private ParameterEJB parameterEJB;
 
-    public void sendEmail( String from, String recipient, String subject, String content )
-    {
-        List<String> recipientsList = new ArrayList<String>( 1 );
-        recipientsList.add( recipient );
-
-        sendEmail( from, recipientsList, null, null, subject, content );
-
-    }
-
-    public void sendEmail( String from, List<String> recipients, List<String> recipientsCC, List<String> recipientsBCC,
-                           String subject, String content )
+    public void sendEmail( MailBean email )
     {
 
         // Sender's email ID needs to be mentioned
@@ -40,61 +34,36 @@ public class MailEJB
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.setProperty( "mail.smtp.host", parametersEJB.getParameters().getSmtpHost() );
+        properties.setProperty( "mail.smtp.host", this.parameterEJB.getSmtpHost() );
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance( properties );
 
         try
         {
-            // Create a default MimeMessage object.
-            MimeMessage message = new MimeMessage( session );
+            MimeMessage message = buildMessage( email, session );
 
-            // Set From: header field of the header.
-            message.setFrom( new InternetAddress( from ) );
-
-            // Set To: header field of the header.
-
-            if ( recipients != null )
-            {
-                for ( String recipient : recipients )
-                {
-                    message.addRecipient( Message.RecipientType.TO, new InternetAddress( recipient ) );
-                }
-
-            }
-
-            if ( recipientsCC != null )
-            {
-                for ( String recipient : recipientsCC )
-                {
-                    message.addRecipient( Message.RecipientType.CC, new InternetAddress( recipient ) );
-                }
-
-            }
-
-            if ( recipientsBCC != null )
-            {
-                for ( String recipient : recipientsBCC )
-                {
-                    message.addRecipient( Message.RecipientType.BCC, new InternetAddress( recipient ) );
-                }
-
-            }
-
-            // Set Subject: header field
-            message.setSubject( subject );
-
-            // Send the actual HTML message, as big as you like
-            message.setContent( content, "text/plain" );
-
-            // Send message
             Transport.send( message );
-            System.out.println( "Sent message successfully...." );
+            this.logger.fine( "Message successfully sent" );
         }
-        catch ( MessagingException mex )
+        catch ( MessagingException messagingException )
         {
-            mex.printStackTrace();
+            this.logger.severe( "Error in sending message [" + messagingException.getMessage() + "]" );
         }
+    }
+
+    private MimeMessage buildMessage( MailBean email, Session session )
+        throws MessagingException, AddressException
+    {
+        MimeMessage message = new MimeMessage( session );
+
+        message.setFrom( new InternetAddress( SENDER + "<" + this.parameterEJB.getAdministratorEmail() + ">" ) );
+
+        message.addRecipient( Message.RecipientType.TO, new InternetAddress( email.getRecipient() ) );
+
+        message.setSubject( email.getSubject() );
+
+        message.setContent( email.getContent(), "text/plain" );
+        return message;
     }
 }

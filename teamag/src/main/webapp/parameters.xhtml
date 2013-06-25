@@ -15,19 +15,19 @@
 
 	
 	<h:form>
-		<table border="0">
+		<table>
 			<tr>
 				<td><h:outputLabel value="Serveur STMP&#160;" /></td>
-				<td><p:inputText value="#{parametersController.parameters.smtpHost}" required="true" /></td>
+				<td><p:inputText value="#{parameterController.smtpHostParameterValue}" required="true" /></td>
 			</tr>
 			<tr>
 				<td><h:outputLabel value="Email Administrator&#160;" /></td>
-				<td><p:inputText value="#{parametersController.parameters.administratorEmail}" required="true" /></td>
+				<td><p:inputText value="#{parameterController.administratorEmailParameterValue}" required="true" /></td>
 			</tr>
 		</table>
 		<br/>
-		<p:commandButton value="Mise à jour" action="#{parametersController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
-		<p:commandButton value="Test envoi d'email" action="#{parametersController.testEmail}" ajax="false" icon="ui-icon-person"/>
+		<p:commandButton value="Mise à jour" action="#{parameterController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
+		<p:commandButton value="Test envoi d'email" action="#{parameterController.testEmail}" ajax="false" icon="ui-icon-person"/>
 		
 	</h:form>
 </p:panel>

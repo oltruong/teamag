@@ -16,8 +16,9 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
-import fr.oltruong.teamag.ejb.ApplicationParametersEJB;
-import fr.oltruong.teamag.ejb.MailEJB;
+import fr.oltruong.teamag.ejb.EmailEJB;
+import fr.oltruong.teamag.ejb.MailBean;
+import fr.oltruong.teamag.ejb.ParameterEJB;
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
@@ -46,17 +47,17 @@ public class WorkController
     private WorkEJB workEJB;
 
     @EJB
-    private MailEJB mailEJB;
+    private EmailEJB mailEJB;
 
     @EJB
-    private ApplicationParametersEJB parametersEJB;
+    private ParameterEJB parameterEJB;
 
     public String doCreateActivity()
     {
 
         System.out.println( "Calling doCreateActivity" );
 
-        if ( StringUtils.isBlank( newTask.getName() ) )
+        if ( StringUtils.isBlank( this.newTask.getName() ) )
         {
             FacesMessage msg = null;
             msg =
@@ -70,9 +71,10 @@ public class WorkController
 
             try
             {
-                workEJB.createTask( realizedBean.getCurrentMonth(), member, newTask );
+                this.workEJB.createTask( this.realizedBean.getCurrentMonth(), this.member, this.newTask );
 
-                works = workEJB.findWorks( member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
+                this.works =
+                    this.workEJB.findWorks( this.member, CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
                 initTaskWeek();
 
                 FacesMessage msg = null;
@@ -93,9 +95,10 @@ public class WorkController
 
     public String deleteTask()
     {
-        System.out.println( "Click deleteTask " + realizedBean.getSelectedTaskWeek().getTask().getName() );
+        System.out.println( "Click deleteTask " + this.realizedBean.getSelectedTaskWeek().getTask().getName() );
 
-        workEJB.removeTask( realizedBean.getSelectedTaskWeek().getTask(), member, realizedBean.getCurrentMonth() );
+        this.workEJB.removeTask( this.realizedBean.getSelectedTaskWeek().getTask(), this.member,
+                                 this.realizedBean.getCurrentMonth() );
         init();
         return "realized.xhtml";
     }
@@ -103,7 +106,7 @@ public class WorkController
     public String previousWeek()
     {
         System.out.println( "Click previous week" );
-        realizedBean.decrementWeek();
+        this.realizedBean.decrementWeek();
         initTaskWeek();
         return "realized.xhtml";
     }
@@ -111,7 +114,7 @@ public class WorkController
     public String nextWeek()
     {
         System.out.println( "Click next week" );
-        realizedBean.incrementWeek();
+        this.realizedBean.incrementWeek();
         initTaskWeek();
         return "realized.xhtml";
     }
@@ -120,8 +123,8 @@ public class WorkController
     {
 
         System.out.println( "Calling update method" );
-        List<Work> changedWorks = findChangedWorks( realizedBean.getTaskWeeks() );
-        workEJB.updateWorks( changedWorks );
+        List<Work> changedWorks = findChangedWorks( this.realizedBean.getTaskWeeks() );
+        this.workEJB.updateWorks( changedWorks );
 
         FacesMessage msg = null;
         if ( changedWorks.isEmpty() )
@@ -143,7 +146,7 @@ public class WorkController
 
     public List<String> completeProject( String query )
     {
-        List<Task> tasks = workEJB.findAllTasks();
+        List<Task> tasks = this.workEJB.findAllTasks();
 
         List<String> results = new ArrayList<String>( tasks.size() );
         if ( !StringUtils.isBlank( query ) && query.length() > 1 )
@@ -164,7 +167,7 @@ public class WorkController
 
     public List<String> completeName( String query )
     {
-        List<Task> tasks = workEJB.findAllTasks();
+        List<Task> tasks = this.workEJB.findAllTasks();
 
         List<String> results = new ArrayList<String>( tasks.size() );
         if ( !StringUtils.isBlank( query ) && query.length() > 1 )
@@ -172,7 +175,7 @@ public class WorkController
             for ( Task task : tasks )
             {
                 // Do not propose task that the member already has
-                if ( !task.getMembers().contains( member ) )
+                if ( !task.getMembers().contains( this.member ) )
                 {
                     if ( StringUtils.containsIgnoreCase( task.getName(), query ) && !results.contains( task.getName() ) )
                     {
@@ -186,24 +189,34 @@ public class WorkController
 
     private void sendNotification()
     {
-        int total = workEJB.getSumWorks( member, realizedBean.getCurrentMonth() );
+        int total = this.workEJB.getSumWorks( this.member, this.realizedBean.getCurrentMonth() );
 
-        int nbWorkingDays = CalendarUtils.getWorkingDays( realizedBean.getCurrentMonth() ).size();
+        int nbWorkingDays = CalendarUtils.getWorkingDays( this.realizedBean.getCurrentMonth() ).size();
         if ( total == nbWorkingDays )
         {
-            mailEJB.sendEmail( "TEAMAG", parametersEJB.getParameters().getAdministratorEmail(), "Réalisé complet pour "
-                + member.getName(), "Il l'a fait" );
+
+            MailBean email = buildEmail();
+            this.mailEJB.sendEmail( email );
         }
+    }
+
+    private MailBean buildEmail()
+    {
+        MailBean email = new MailBean();
+        email.setContent( "Réalisé complet" );
+        email.setRecipient( this.parameterEJB.getAdministratorEmail() );
+        email.setSubject( "Réalisé de" + this.member.getName() );
+        return email;
     }
 
     public String init()
     {
-        realizedBean = new RealizedFormWebBean();
-        realizedBean.setDayCursor( Calendar.getInstance() );
+        this.realizedBean = new RealizedFormWebBean();
+        this.realizedBean.setDayCursor( Calendar.getInstance() );
 
         Calendar firstDayOfMonth = CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() );
-        realizedBean.setCurrentMonth( firstDayOfMonth );
-        works = workEJB.findWorks( member, firstDayOfMonth );
+        this.realizedBean.setCurrentMonth( firstDayOfMonth );
+        this.works = this.workEJB.findWorks( this.member, firstDayOfMonth );
 
         initTaskWeek();
         return "realized.xhtml";
@@ -218,18 +231,18 @@ public class WorkController
 
     private void initTaskWeek()
     {
-        if ( works != null )
+        if ( this.works != null )
         {
-            Integer weekNumber = realizedBean.getWeekNumber();
+            Integer weekNumber = this.realizedBean.getWeekNumber();
 
             Map<String, ColumnDayBean> mapColumns = new HashMap<String, ColumnDayBean>( 5 );
 
-            List<TaskWeekBean> taskWeekList = new ArrayList<TaskWeekBean>( works.keySet().size() );
-            for ( Task task : works.keySet() )
+            List<TaskWeekBean> taskWeekList = new ArrayList<TaskWeekBean>( this.works.keySet().size() );
+            for ( Task task : this.works.keySet() )
             {
                 TaskWeekBean taskWeek = new TaskWeekBean();
                 taskWeek.setTask( task );
-                for ( Work work : works.get( task ) )
+                for ( Work work : this.works.get( task ) )
                 {
 
                     if ( work.getDay().get( Calendar.WEEK_OF_YEAR ) == weekNumber )
@@ -255,15 +268,15 @@ public class WorkController
 
             }
 
-            realizedBean.getColumnsDay().clear();
+            this.realizedBean.getColumnsDay().clear();
             for ( ColumnDayBean col : mapColumns.values() )
             {
-                realizedBean.addColumnDay( col );
+                this.realizedBean.addColumnDay( col );
 
             }
-            Collections.sort( realizedBean.getColumnsDay() );
-            realizedBean.setTaskWeeks( taskWeekList );
-            Collections.sort( realizedBean.getTaskWeeks() );
+            Collections.sort( this.realizedBean.getColumnsDay() );
+            this.realizedBean.setTaskWeeks( taskWeekList );
+            Collections.sort( this.realizedBean.getTaskWeeks() );
 
         }
         else
@@ -294,7 +307,7 @@ public class WorkController
 
     public RealizedFormWebBean getRealizedBean()
     {
-        return realizedBean;
+        return this.realizedBean;
     }
 
     public void setRealizedBean( RealizedFormWebBean realizedBean )
@@ -304,7 +317,7 @@ public class WorkController
 
     public Member getMember()
     {
-        return member;
+        return this.member;
     }
 
     public void setMember( Member member )
@@ -314,7 +327,7 @@ public class WorkController
 
     public Task getNewTask()
     {
-        return newTask;
+        return this.newTask;
     }
 
     public void setNewTask( Task newActivity )

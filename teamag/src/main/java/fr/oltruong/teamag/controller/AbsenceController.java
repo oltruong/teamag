@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.MailEJB;
+import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
 
@@ -28,7 +28,7 @@ public class AbsenceController
     private AbsenceEJB absenceEJB;
 
     @EJB
-    private MailEJB mailEJB;
+    private EmailEJB mailEJB;
 
     public String init()
     {
