@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.entity;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +34,7 @@ public class MemberTest
         em.close();
         emf.close();
 
-        assertNotNull( "Member should have an id", member.getId() );
+        assertThat( member.getId() ).isNotNull();
     }
 
     @Test( expected = RollbackException.class )
@@ -77,8 +76,7 @@ public class MemberTest
         @SuppressWarnings( "unchecked" )
         List<Member> listMembers = em.createNamedQuery( "findMembers" ).getResultList();
 
-        assertNotNull( listMembers );
-        assertFalse( listMembers.isEmpty() );
+        assertThat( listMembers ).isNotNull().isNotEmpty();
 
         em.close();
         emf.close();

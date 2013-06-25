@@ -74,7 +74,7 @@ public class WorkEJBTest
 
         task.addMember( member );
 
-        WorkEJB workEJB = (WorkEJB) ctx.lookup( "java:global/classes/WorkEJB" );
+        // WorkEJB workEJB = (WorkEJB) ctx.lookup( "java:global/classes/WorkEJB" );
 
         // workEJB.createTask( task );
 

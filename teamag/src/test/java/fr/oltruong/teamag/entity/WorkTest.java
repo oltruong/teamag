@@ -1,8 +1,6 @@
 package fr.oltruong.teamag.entity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Calendar;
 import java.util.List;
@@ -42,7 +40,7 @@ public class WorkTest
         em.close();
         emf.close();
 
-        assertNotNull( "Work should have an id", work.getId() );
+        assertThat( work.getId() ).isNotNull();
     }
 
     @Test
@@ -75,8 +73,7 @@ public class WorkTest
         @SuppressWarnings( "unchecked" )
         List<Work> listWorks = query.getResultList();
 
-        assertNotNull( "list should not be null", listWorks );
-        assertFalse( "list should not be empty", listWorks.isEmpty() );
+        assertThat( listWorks ).isNotNull().isNotEmpty();
 
         em.close();
         emf.close();
@@ -89,16 +86,16 @@ public class WorkTest
         Work work = new Work();
         work.setTotal( 1.1f );
 
-        assertEquals( "Total is incorrect", Float.valueOf( 1.1f ), work.getTotalEdit() );
+        assertThat( work.getTotalEdit() ).isEqualTo( Float.valueOf( 1.1f ) );
 
         work.setTotalEditStr( "5" );
-        assertEquals( "Total is incorrect", Float.valueOf( 5f ), work.getTotalEdit() );
+        assertThat( work.getTotalEdit() ).isEqualTo( Float.valueOf( 5f ) );
 
         work.setTotalEditStr( "sdqsd" );
-        assertEquals( "Total is incorrect", Float.valueOf( 5f ), work.getTotalEdit() );
+        assertThat( work.getTotalEdit() ).isEqualTo( Float.valueOf( 5f ) );
 
         work.setTotalEditStr( " " );
-        assertEquals( "Total is incorrect", Float.valueOf( 0f ), work.getTotalEdit() );
+        assertThat( work.getTotalEdit() ).isEqualTo( Float.valueOf( 0f ) );
 
     }
 

@@ -1,8 +1,6 @@
 package fr.oltruong.teamag.entity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Calendar;
 import java.util.List;
@@ -37,7 +35,8 @@ public class TaskTest
         em.close();
         emf.close();
 
-        assertNotNull( "Task should have an id", task.getId() );
+        assertThat( task.getId() ).isNotNull();
+
     }
 
     @Test
@@ -60,10 +59,10 @@ public class TaskTest
         @SuppressWarnings( "unchecked" )
         List<Task> listTasks = em.createNamedQuery( "findAllTasks" ).getResultList();
 
-        assertNotNull( listTasks );
-        assertFalse( listTasks.isEmpty() );
-        assertNotNull( listTasks.get( 0 ).getMembers() );
-        assertFalse( listTasks.get( 0 ).getMembers().isEmpty() );
+        assertThat( listTasks ).isNotNull().isNotEmpty();
+
+        assertThat( listTasks.get( 0 ).getMembers() ).isNotNull().isNotEmpty();
+
         em.close();
         emf.close();
 
@@ -104,10 +103,7 @@ public class TaskTest
         @SuppressWarnings( "unchecked" )
         List<Task> listTasks = query.getResultList();
 
-        assertNotNull( listTasks );
-        assertFalse( "list1 should not be empty", listTasks.isEmpty() );
-        assertEquals( "list1 should only have one item", 1, listTasks.size() );
-        assertEquals( "it should be task2", task2, listTasks.get( 0 ) );
+        assertThat( listTasks ).isNotNull().isNotEmpty().hasSize( 1 ).contains( task2 );
 
         Query query2 = em.createNamedQuery( "findTaskByName" );
         query2.setParameter( "fname", task1.getName() );
@@ -116,10 +112,7 @@ public class TaskTest
         @SuppressWarnings( "unchecked" )
         List<Task> listTasks2 = query2.getResultList();
 
-        assertNotNull( listTasks2 );
-        assertFalse( "list2 should not be empty", listTasks2.isEmpty() );
-        assertEquals( "list2 should only have one item", 1, listTasks2.size() );
-        assertEquals( "it should be task1", task1, listTasks2.get( 0 ) );
+        assertThat( listTasks2 ).isNotNull().isNotEmpty().hasSize( 1 ).contains( task1 );
 
         em.close();
         emf.close();

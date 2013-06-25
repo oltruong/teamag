@@ -14,6 +14,7 @@
 		<version.java>1.6</version.java>
 		<version.primefaces>3.5</version.primefaces>
 		<version.junit>4.11</version.junit>
+		<version.fest-assert>1.4</version.fest-assert>
 		<version.jsf-api>2.0</version.jsf-api>
 		<version.javax.mail>1.4.5</version.javax.mail>
 		<version.commons-lang>3.1</version.commons-lang>
@@ -107,6 +108,16 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		
+		<dependency>
+	<groupId>org.easytesting</groupId>
+	<artifactId>fest-assert</artifactId>
+	<version>${version.fest-assert}</version>
+				<scope>test</scope>
+</dependency>
+            
+		
 	</dependencies>
 
 	<build>
