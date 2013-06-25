@@ -18,9 +18,12 @@ public class BusinessCase
     @Column( nullable = false )
     private String name;
 
+    @Column
+    private Float amount;
+
     public Integer getNumber()
     {
-        return number;
+        return this.number;
     }
 
     public void setNumber( Integer number )
@@ -30,12 +33,22 @@ public class BusinessCase
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public Float getAmount()
+    {
+        return this.amount;
+    }
+
+    public void setAmount( Float amount )
+    {
+        this.amount = amount;
     }
 
 }

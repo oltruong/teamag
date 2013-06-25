@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">Gestion des business case</ui:define>
+	<ui:define name="title">Gestion du budget</ui:define>
 
 
 	<ui:define name="content">
@@ -23,6 +23,8 @@
 								<td><h:inputText value="#{bcController.bc.number}" /></td>
 								<td><h:outputLabel value="Nom :" /></td>
 								<td><h:inputText value="#{bcController.bc.name}" /></td>
+								<td><h:outputLabel value="Montant :" /></td>
+								<td><h:inputText value="#{bcController.bc.amount}" /></td>
 								<td><p:commandButton value="Ajouter"
 										action="#{bcController.doCreateBC}" ajax="false" /></td>
 							</tr>
@@ -42,6 +44,9 @@
 							<h:outputText value="#{bc.name}" />
 						</p:column>
 
+						<p:column headerText="Montant">
+							<h:outputText value="#{bc.amount}" />
+						</p:column>
 
 					</p:dataTable>
 				</p:panel>
