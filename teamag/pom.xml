@@ -10,7 +10,7 @@
 	<url>https://github.com/oltruong/TeaMag</url>
 
 	<properties>
-	
+
 		<version.java>1.6</version.java>
 		<version.primefaces>3.5</version.primefaces>
 		<version.junit>4.11</version.junit>
@@ -34,9 +34,9 @@
 		<version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
 		<version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
 		<version.maven-site-plugin>3.2</version.maven-site-plugin>
-		
+
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-		
+
 	</properties>
 
 	<dependencies>
@@ -53,11 +53,11 @@
 			<version>${version.commons-lang}</version>
 		</dependency>
 
-<dependency>
-	<groupId>commons-collections</groupId>
-	<artifactId>commons-collections</artifactId>
-	<version>${version.commons-collections}</version>
-</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${version.commons-collections}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -79,14 +79,14 @@
 			<version>${version.javax.mail}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.ejb</artifactId>
 			<version>${version.javax.ejb}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
@@ -108,16 +108,16 @@
 			<version>${version.junit}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		
+
+
 		<dependency>
-	<groupId>org.easytesting</groupId>
-	<artifactId>fest-assert</artifactId>
-	<version>${version.fest-assert}</version>
-				<scope>test</scope>
-</dependency>
-            
-		
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<version>${version.fest-assert}</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
