@@ -11,7 +11,7 @@
 
 	<properties>
 
-		<version.java>1.6</version.java>
+		<version.java>1.7</version.java>
 		<version.primefaces>3.5</version.primefaces>
 		<version.junit>4.11</version.junit>
 		<version.fest-assert>1.4</version.fest-assert>
