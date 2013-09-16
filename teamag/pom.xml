@@ -23,6 +23,7 @@
 		<version.javax.ejb>3.0.1</version.javax.ejb>
 		<version.eclipselink>2.5.0</version.eclipselink>
 		<version.glassfish-embedded>3.0</version.glassfish-embedded>
+		<version.logback>1.0.13</version.logback>
 
 		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
 		<version.maven-clean-plugin>2.5</version.maven-clean-plugin>
@@ -63,6 +64,12 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>${version.apache.poi}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${version.logback}</version>
 		</dependency>
 
 		<!-- Provided dependencies -->
