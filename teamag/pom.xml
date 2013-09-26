@@ -15,7 +15,7 @@
 		<version.javaee>7.0</version.javaee>
 		<version.glassfish>4.0</version.glassfish>
 		<version.primefaces>3.5</version.primefaces>
-
+		<version.primefaces-theme>1.0.10</version.primefaces-theme>
 		<version.junit>4.11</version.junit>
 		<version.fest-assert>1.4</version.fest-assert>
 		<version.jsf-api>2.0</version.jsf-api>
@@ -50,6 +50,12 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>${version.primefaces}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>${version.primefaces-theme}</version>
 		</dependency>
 
 		<dependency>
