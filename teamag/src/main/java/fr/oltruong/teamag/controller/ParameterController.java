@@ -49,9 +49,7 @@ public class ParameterController
 
     public String doUpdateParameters()
     {
-        this.parametersEJB.setSmtpHostParameter( this.smtpHostParameter );
-        this.parametersEJB.setAdministratorEmailParameter( this.administratorEmailParameter );
-        this.parametersEJB.saveAndReloadParameters();
+        this.parametersEJB.saveAndReloadParameters( this.smtpHostParameter, this.administratorEmailParameter );
 
         initList();
 

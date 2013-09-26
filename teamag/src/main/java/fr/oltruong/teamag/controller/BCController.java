@@ -2,6 +2,7 @@ package fr.oltruong.teamag.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -22,6 +23,8 @@ import fr.oltruong.teamag.exception.ExistingDataException;
 public class BCController
 {
 
+    private final Logger logger = Logger.getLogger( getClass().getName() );
+
     // ======================================
     // = Attributes =
     // ======================================
@@ -32,26 +35,26 @@ public class BCController
 
     private Activity activity = new Activity();
 
-    private List<BusinessCase> bcList = new ArrayList<BusinessCase>();
+    private List<BusinessCase> bcList = new ArrayList<>();
 
-    private List<Activity> activityList = new ArrayList<Activity>();
+    private List<Activity> activityList = new ArrayList<>();
 
     private int tabIndex = 0;
 
     @PostConstruct
     private void initList()
     {
-        bcList = activityEJB.findBC();
-        activityList = activityEJB.findActivities();
+        this.bcList = this.activityEJB.findBC();
+        this.activityList = this.activityEJB.findActivities();
     }
 
     public String doCreateBC()
     {
-        tabIndex = 0;
-        System.out.println( "Do Create BC" );
+        this.tabIndex = 0;
+        this.logger.info( "Creation of a business case" );
         FacesMessage msg = null;
 
-        if ( bc.getNumber() == null || StringUtils.isBlank( bc.getNumber().toString() ) )
+        if ( this.bc.getNumber() == null || StringUtils.isBlank( this.bc.getNumber().toString() ) )
         {
             msg =
                 new FacesMessage( FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Merci de fournir un numéro de BC" );
@@ -61,23 +64,23 @@ public class BCController
 
             try
             {
-                activityEJB.createBC( bc );
+                this.activityEJB.createBC( this.bc );
 
                 msg =
                     new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "BC "
-                        + bc.getNumber().toString() + " " + bc.getName() + " créé !" );
+                        + this.bc.getNumber().toString() + " " + this.bc.getName() + " créé !" );
                 // Réinit BC
-                bc = new BusinessCase();
+                this.bc = new BusinessCase();
             }
             catch ( ExistingDataException e )
             {
                 e.printStackTrace();
                 msg =
                     new FacesMessage( FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Le BC "
-                        + bc.getNumber().toString() + " existe déjà" );
+                        + this.bc.getNumber().toString() + " existe déjà" );
             }
 
-            bcList = activityEJB.findBC();
+            this.bcList = this.activityEJB.findBC();
         }
         FacesContext.getCurrentInstance().addMessage( null, msg );
 
@@ -86,11 +89,12 @@ public class BCController
 
     public String doCreateActivity()
     {
-        tabIndex = 1;
-        System.out.println( "Do Create Activity" );
+        this.tabIndex = 1;
+        this.logger.info( "Creation of an activity" );
+
         FacesMessage msg = null;
 
-        if ( StringUtils.isBlank( activity.getName() ) || activity.getBc() == null )
+        if ( StringUtils.isBlank( this.activity.getName() ) || this.activity.getBc() == null )
         {
             msg =
                 new FacesMessage( FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Merci de fournir un nom et un BC" );
@@ -100,11 +104,11 @@ public class BCController
 
             try
             {
-                activityEJB.createActivity( activity );
+                this.activityEJB.createActivity( this.activity );
 
                 msg = new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Activité créé !" );
                 // Réinit BC
-                activity = new Activity();
+                this.activity = new Activity();
             }
             catch ( ExistingDataException e )
             {
@@ -112,7 +116,7 @@ public class BCController
                 msg = new FacesMessage( FacesMessage.SEVERITY_ERROR, "Ajout impossible", "L'activité existe déjà" );
             }
 
-            activityList = activityEJB.findActivities();
+            this.activityList = this.activityEJB.findActivities();
         }
         FacesContext.getCurrentInstance().addMessage( null, msg );
 
@@ -124,7 +128,7 @@ public class BCController
     // ======================================
     public BusinessCase getBc()
     {
-        return bc;
+        return this.bc;
     }
 
     public void setBc( BusinessCase bc )
@@ -134,7 +138,7 @@ public class BCController
 
     public List<BusinessCase> getBcList()
     {
-        return bcList;
+        return this.bcList;
     }
 
     public void setBcList( List<BusinessCase> bcList )
@@ -144,7 +148,7 @@ public class BCController
 
     public Activity getActivity()
     {
-        return activity;
+        return this.activity;
     }
 
     public void setActivity( Activity activity )
@@ -154,7 +158,7 @@ public class BCController
 
     public List<Activity> getActivityList()
     {
-        return activityList;
+        return this.activityList;
     }
 
     public void setActivityList( List<Activity> activityList )
@@ -164,13 +168,11 @@ public class BCController
 
     public int getTabIndex()
     {
-        System.out.println( "ffff" + tabIndex );
-        return tabIndex;
+        return this.tabIndex;
     }
 
     public void setTabIndex( int tabIndex )
     {
-        System.out.println( "seeeeffff" + tabIndex );
         this.tabIndex = tabIndex;
     }
 
