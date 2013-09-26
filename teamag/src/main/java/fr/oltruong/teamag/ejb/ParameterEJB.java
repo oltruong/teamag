@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.persistence.Query;
 
@@ -35,8 +37,10 @@ public class ParameterEJB
         loadParameters();
     }
 
-    public void saveAndReloadParameters()
+    public void saveAndReloadParameters( Parameter smtpHostParameter, Parameter administratorEmailParameter )
     {
+        setSmtpHostParameter( smtpHostParameter );
+        setAdministratorEmailParameter( administratorEmailParameter );
         saveParameters();
         loadParameters();
     }
@@ -86,33 +90,37 @@ public class ParameterEJB
 
     }
 
+    @Lock( LockType.READ )
     public String getSmtpHost()
     {
         return getSmtpHostParameter().getValue();
     }
 
+    @Lock( LockType.READ )
     public String getAdministratorEmail()
     {
         return getAdministratorEmailParameter().getValue();
     }
 
+    @Lock( LockType.READ )
     public Parameter getSmtpHostParameter()
     {
         return this.parameterMap.get( ParameterName.SMTP_HOST );
     }
 
+    @Lock( LockType.READ )
     public Parameter getAdministratorEmailParameter()
     {
         return this.parameterMap.get( ParameterName.ADMINISTRATOR_EMAIL );
     }
 
-    public void setSmtpHostParameter( Parameter smtpHostParameter )
+    private void setSmtpHostParameter( Parameter smtpHostParameter )
     {
         this.parameterMap.put( ParameterName.SMTP_HOST, smtpHostParameter );
 
     }
 
-    public void setAdministratorEmailParameter( Parameter administratorEmailParameter )
+    private void setAdministratorEmailParameter( Parameter administratorEmailParameter )
     {
         this.parameterMap.put( ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter );
 
