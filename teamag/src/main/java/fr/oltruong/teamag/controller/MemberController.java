@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.MemberType;
 
 @ManagedBean
 @RequestScoped
@@ -28,12 +29,12 @@ public class MemberController
 
     private Member member = new Member();
 
-    private List<Member> memberList = new ArrayList<Member>();
+    private List<Member> memberList = new ArrayList<>();
 
     @PostConstruct
     private void initList()
     {
-        memberList = memberEJB.findMembers();
+        this.memberList = this.memberEJB.findMembers();
     }
 
     public String doNewMemberForm()
@@ -45,12 +46,12 @@ public class MemberController
     public String doCreateMember()
     {
         System.out.println( "Do Create Member" );
-        member = memberEJB.createMember( member );
-        memberList = memberEJB.findMembers();
+        this.member = this.memberEJB.createMember( this.member );
+        this.memberList = this.memberEJB.findMembers();
 
         FacesMessage msg = null;
         msg =
-            new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Membre " + member.getName()
+            new FacesMessage( FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Membre " + this.member.getName()
                 + " créé !" );
         FacesContext.getCurrentInstance().addMessage( null, msg );
 
@@ -59,7 +60,7 @@ public class MemberController
 
     public List<String> completeCompany( String query )
     {
-        List<Member> members = memberEJB.findMembers();
+        List<Member> members = this.memberEJB.findMembers();
 
         List<String> results = new ArrayList<String>( members.size() );
 
@@ -85,7 +86,7 @@ public class MemberController
     // ======================================
     public Member getMember()
     {
-        return member;
+        return this.member;
     }
 
     public void setMember( Member member )
@@ -95,12 +96,25 @@ public class MemberController
 
     public List<Member> getMemberList()
     {
-        return memberList;
+        return this.memberList;
     }
 
     public void setMemberList( List<Member> memberList )
     {
         this.memberList = memberList;
+    }
+
+    public List<String> getMembertypeList()
+    {
+
+        MemberType[] memberTypeArray = MemberType.values();
+
+        List<String> memberTypeList = new ArrayList<String>( memberTypeArray.length );
+        for ( int i = 0; i < memberTypeArray.length; i++ )
+        {
+            memberTypeList.add( memberTypeArray[i].toString() );
+        }
+        return memberTypeList;
     }
 
 }

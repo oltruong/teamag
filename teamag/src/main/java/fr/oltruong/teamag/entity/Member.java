@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
@@ -39,9 +41,13 @@ public class Member
     @Column( nullable = false )
     private Float productivity = 1f;
 
+    @Column
+    @Enumerated( EnumType.STRING )
+    private MemberType memberType;
+
     public Long getId()
     {
-        return id;
+        return this.id;
     }
 
     public void setId( Long id )
@@ -51,7 +57,7 @@ public class Member
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public void setName( String name )
@@ -61,7 +67,7 @@ public class Member
 
     public String getCompany()
     {
-        return company;
+        return this.company;
     }
 
     public void setCompany( String company )
@@ -71,12 +77,22 @@ public class Member
 
     public String getEmail()
     {
-        return email;
+        return this.email;
     }
 
     public void setEmail( String email )
     {
         this.email = email;
+    }
+
+    public MemberType getMemberType()
+    {
+        return this.memberType;
+    }
+
+    public void setMemberType( MemberType memberType )
+    {
+        this.memberType = memberType;
     }
 
     @Override
@@ -88,5 +104,10 @@ public class Member
         }
         Member member0 = (Member) otherMember;
         return this.id.equals( member0.getId() );
+    }
+
+    public boolean isAdministrator()
+    {
+        return MemberType.ADMINISTRATOR.equals( this.memberType );
     }
 }

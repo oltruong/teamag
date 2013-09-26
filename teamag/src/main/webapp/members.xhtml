@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">New member</ui:define>
+	<ui:define name="title">Gestion des membres</ui:define>
 
 
 	<ui:define name="content">
@@ -15,7 +15,7 @@
 
 	
 	<h:form>
-		<table border="0">
+		<table>
 			<tr>
 				<td><h:outputLabel value="Nom&#160;" /></td>
 				<td><p:inputText value="#{memberController.member.name}" required="true" /></td>
@@ -23,8 +23,21 @@
 							id="acCompany" value="#{memberController.member.company}"
 							completeMethod="#{memberController.completeCompany}" /></td>
 				<td><h:outputLabel value="Adresse électronique&#160;" /></td>
-				<td><p:inputText value="#{memberController.member.email}"  required="true" /></td>
-			<td><p:commandButton value="Ajouter" action="#{memberController.doCreateMember}" ajax="false" icon="ui-icon-plusthick"/></td>
+				<td><p:inputText value="#{memberController.member.email}"  required="true" validatorMessage="e-mail is not valid">
+				<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+				</p:inputText></td>
+				<td><h:outputLabel value="Type&#160;" /></td>
+				<td>
+				
+				
+				        <p:selectOneListbox value="#{memberController.member.memberType}">  
+ <f:selectItems value="#{memberController.membertypeList}" var="type" itemLabel="#{type}" itemValue="#{type}" />  
+        </p:selectOneListbox>  
+        
+				</td>
+			
+			</tr>
+			<tr><td colspan="6" ><p:commandButton value="Ajouter" action="#{memberController.doCreateMember}" ajax="false" icon="ui-icon-plusthick"/></td>
 			</tr>
 		</table>
 		
@@ -47,6 +60,10 @@
 		
 		<p:column headerText="e-mail">
 			<h:outputText value="#{user.email}" />
+		</p:column>
+		
+				<p:column headerText="type">
+			<h:outputText value="#{user.memberType}" />
 		</p:column>
 
 	</p:dataTable>
