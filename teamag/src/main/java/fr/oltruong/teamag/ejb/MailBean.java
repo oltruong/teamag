@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
-public class MailBean
-{
+public class MailBean {
 
     private String subject;
 
@@ -9,38 +8,31 @@ public class MailBean
 
     private String recipient;
 
-    public MailBean()
-    {
+    public MailBean() {
     }
 
-    public String getRecipient()
-    {
-        return this.recipient;
+    public String getRecipient() {
+	return this.recipient;
     }
 
-    public void setRecipient( String recipient )
-    {
-        this.recipient = recipient;
+    public void setRecipient(String recipient) {
+	this.recipient = recipient;
     }
 
-    public String getSubject()
-    {
-        return this.subject;
+    public String getSubject() {
+	return this.subject;
     }
 
-    public void setSubject( String subject )
-    {
-        this.subject = subject;
+    public void setSubject(String subject) {
+	this.subject = subject;
     }
 
-    public String getContent()
-    {
-        return this.content;
+    public String getContent() {
+	return this.content;
     }
 
-    public void setContent( String content )
-    {
-        this.content = content;
+    public void setContent(String content) {
+	this.content = content;
     }
 
 }

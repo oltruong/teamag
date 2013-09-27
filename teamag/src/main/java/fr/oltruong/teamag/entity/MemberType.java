@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.entity;
 
-public enum MemberType
-{
+public enum MemberType {
     ADMINISTRATOR, BASIC
 }
