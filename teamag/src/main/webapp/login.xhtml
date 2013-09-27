@@ -1,77 +1,24 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Bienvenue</title>
-</h:head>
-<h:body>
-
-
-	<h:form>
-
-		<p:menubar>
-			<p:menuitem value="Mon équipe" url="newMember.xhtml"
-				icon="ui-icon-person" rendered="#{loginBean.jack}"/>
-			<p:menuitem value="Budget" url="businesscases.xhtml"
-				icon="ui-icon-folder-open" />
-			<p:menuitem value="Reporting" url="reporting.xhtml"
-				icon="ui-icon-calculator" rendered="#{loginBean.jack}" />
-			<p:menuitem value="Paramètres" url="parameters.xhtml"
-				icon="ui-icon-wrench" />
-			<p:menuitem value="Paramètres" url="test/absences.xhtml"
-				icon="ui-icon-wrench" />
-
-			<p:submenu label="?">
-				<p:menuitem value="A propos" url="about.xhtml" />
-			</p:submenu>
-
-
-			<p:menuitem rendered="true" style="position: absolute; right: 4px;"
-				value="Déconnexion" url="." icon="ui-icon-power" />
-
-		</p:menubar>
-
-	</h:form>
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
+	
+	
+ <ui:define name="title">Login</ui:define>
+	<ui:define name="content">
 
 
 
-<h1>Outil de saisie de réalisé</h1>
-
- <h:outputLink id="loginIn" style="display:none">     
-                <p:commandButton value="Mon réalisé" action="#{workController.init}"/>
-                <br />
-                <p:commandButton value="Mes absences" action="#{absenceController.init}" rendered="#{loginBean.jack}"/>  
-</h:outputLink>  
-                <p:commandButton value="Mes absences" action="#{absenceController.init}" rendered="#{loginBean.jack}"/>  
-<div id="welcome">
-
-      <h:form>  
-  
-        <h:panelGrid columns="2" cellpadding="5">  
-            <p:outputLabel for="username" value="Prénom :" />  
-            <p:inputText value="#{loginBean.username}"   
-                    id="username" required="true" label="username" />  
-              
-            <f:facet name="footer">  
-                <p:commandButton id="loginButton" value="Connexion" update=":growl"   
-                    actionListener="#{loginBean.login}"   
-                    oncomplete="handleLoginRequest(xhr, status, args)"/>  
-            </f:facet>  
-        </h:panelGrid>  
-          
-    </h:form>  
-
-  </div>
-<p:growl id="growl" showDetail="true" life="2000" />  
   
   
 
   
   
-<script type="text/javascript">  
+<!-- <script type="text/javascript">  
     function handleLoginRequest(xhr, status, args) {  
         if(args.validationFailed || !args.loggedIn) {  
             jQuery('#dialog').effect("shake", { times:3 }, 100);  
@@ -81,7 +28,19 @@
 
         }  
     }  
-</script>
+</script> -->
 
-</h:body>
-</html>  
+<h:form>  
+  
+        <h:panelGrid columns="2" cellpadding="5">  
+            <p:outputLabel for="username" value="Prénom :" />  
+            <p:inputText value="#{loginBean.username}" id="username" required="true" label="username" />  
+
+            <f:facet name="footer">
+                            <p:commandButton value="Connexion" action="#{loginBean.login}"  ajax="false"/>
+            </f:facet>  
+        </h:panelGrid>  
+          
+    </h:form> 
+</ui:define>
+</ui:composition>

@@ -1,40 +1,19 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Mon réalisé</title>
-</h:head>
-<h:body>
-	<ui:remove>
-		<h:form>
+	xmlns:p="http://primefaces.org/ui"
+	template="WEB-INF/layouts/template.xhtml">
 
-			<p:menubar>
-				<p:menuitem value="Déconnexion" outcome="login.xhtml"
-					actionListener="#{loginBean.logout}" icon="ui-icon-close"
-					ajax="false" />
+	<ui:define name="title">Gestion du budget</ui:define>
 
 
-			</p:menubar>
-
-		</h:form>
-	</ui:remove>
-
-
-	<p:growl id="growl" showDetail="true" life="2000" />
-
-	<h1 class="ui-widget-header ui-corner-all">
-		Saisie de
-		<h:outputText value="#{workController.member.name}" />
-	</h1>
-
+	<ui:define name="content">
 
 	<p:panel header="Nouvelle tâche">
 		<h:form>
-			<table border="0">
+			<table>
 				<tr>
 					<td><h:outputLabel value="Projet/Appli :" for="acProject" />
 						<p:autoComplete id="acProject"
@@ -127,6 +106,5 @@
 				</p:panel> -->
 	</h:form>
 
-
-</h:body>
-</html>
+</ui:define>
+</ui:composition>
