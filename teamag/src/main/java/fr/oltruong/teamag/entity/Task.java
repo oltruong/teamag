@@ -27,7 +27,7 @@ public class Task {
 
     private String project = "";
 
-    private List<Member> members = new ArrayList<Member>(1);
+    private List<Member> members = new ArrayList<>(1);
 
     @Transient
     private Float total;
