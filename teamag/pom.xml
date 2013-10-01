@@ -4,7 +4,7 @@
 	<groupId>fr.oltruong</groupId>
 	<artifactId>teamag</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>TeamManagement</name>
 	<description>Team Management web application</description>
 	<url>https://github.com/oltruong/TeaMag</url>
@@ -22,12 +22,12 @@
 
 		<version.commons-lang>3.1</version.commons-lang>
 		<version.commons-collections>3.2.1</version.commons-collections>
+		<version.commons-fileupload>1.3</version.commons-fileupload>
+		<version.commons-io>1.4</version.commons-io>
 		<version.apache.poi>3.7</version.apache.poi>
 		<version.guava>15.0</version.guava>
 		<version.eclipselink>2.5.0</version.eclipselink>
 		<version.logback>1.0.13</version.logback>
-
-
 
 		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
 		<version.maven-clean-plugin>2.5</version.maven-clean-plugin>
@@ -69,7 +69,7 @@
 			<artifactId>commons-collections</artifactId>
 			<version>${version.commons-collections}</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -82,11 +82,25 @@
 			<version>${version.guava}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${version.logback}</version>
+		</dependency>
+
+    	<!-- Runtime -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${version.commons-fileupload}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${version.commons-io}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Provided dependencies -->
@@ -103,9 +117,6 @@
 			<version>${version.javaee}</version>
 			<scope>provided</scope>
 		</dependency>
-
-
-
 
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
