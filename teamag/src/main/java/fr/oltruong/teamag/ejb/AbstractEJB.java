@@ -1,10 +1,16 @@
 package fr.oltruong.teamag.ejb;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
+import ch.qos.logback.classic.Logger;
 
 public abstract class AbstractEJB {
-    @PersistenceContext(unitName = "ejbPU")
+
+    @Inject
     protected EntityManager entityManager;
+
+    @Inject
+    protected Logger logger;
 
 }
