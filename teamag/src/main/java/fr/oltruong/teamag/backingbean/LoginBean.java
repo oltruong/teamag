@@ -81,6 +81,10 @@ public class LoginBean {
     @UserLogin
     public Member getMemberFromSession() {
 
+	if (servletRequest == null || servletRequest.getSession() == null) {
+	    return null;
+	}
+
 	return (Member) servletRequest.getSession()
 		.getAttribute(Constants.USER);
 
