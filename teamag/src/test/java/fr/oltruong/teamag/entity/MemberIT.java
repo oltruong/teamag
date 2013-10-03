@@ -13,7 +13,7 @@ import javax.persistence.RollbackException;
 
 import org.junit.Test;
 
-public class MemberTest
+public class MemberIT
 {
 
     @Test

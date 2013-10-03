@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 import org.junit.Test;
 
-public class TaskTest
+public class TaskIT
 {
     @Test
     public void testCreation()

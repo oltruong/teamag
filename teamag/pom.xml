@@ -32,6 +32,7 @@
 		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
 		<version.maven-clean-plugin>2.5</version.maven-clean-plugin>
 		<version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
+		<version.maven-failsafe-plugin>2.16</version.maven-failsafe-plugin>
 		<version.maven-war-plugin>2.3</version.maven-war-plugin>
 		<version.maven-surefire-plugin>2.14.1</version.maven-surefire-plugin>
 		<version.maven-jar-plugin>2.4</version.maven-jar-plugin>
@@ -69,7 +70,7 @@
 			<artifactId>commons-collections</artifactId>
 			<version>${version.commons-collections}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -88,7 +89,7 @@
 			<version>${version.logback}</version>
 		</dependency>
 
-    	<!-- Runtime -->
+		<!-- Runtime -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -166,6 +167,20 @@
 					<source>${version.java}</source>
 					<target>${version.java}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${version.maven-failsafe-plugin}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

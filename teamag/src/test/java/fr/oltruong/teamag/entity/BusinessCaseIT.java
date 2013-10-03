@@ -12,7 +12,7 @@ import javax.persistence.RollbackException;
 
 import org.junit.Test;
 
-public class BusinessCaseTest
+public class BusinessCaseIT
 {
     @Test
     public void testCreation()
