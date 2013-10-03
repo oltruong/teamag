@@ -10,9 +10,6 @@ public abstract class AbstractEJB {
     @Inject
     protected EntityManager entityManager;
 
-    // @PersistenceContext(unitName = "ejbPU")
-    // protected EntityManager entityManager;
-
     @Inject
     protected Logger logger;
 

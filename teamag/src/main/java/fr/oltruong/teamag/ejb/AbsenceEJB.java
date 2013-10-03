@@ -13,25 +13,21 @@ public class AbsenceEJB extends AbstractEJB {
 
     @SuppressWarnings("unchecked")
     public List<Absence> findAbsences(Member member) {
-	if (member != null) {
+        if (member != null) {
 
-	    System.out.println("Recherche absence pour member "
-		    + member.toString());
-	    Query query = entityManager
-		    .createNamedQuery("findAbsencesByMember");
-	    query.setParameter("fmemberName", member.getName());
+            Query query = entityManager.createNamedQuery("findAbsencesByMember");
+            query.setParameter("fmemberName", member.getName());
 
-	    return (List<Absence>) query.getResultList();
-	} else {
-	    System.out.println("Member null");
-	    return null;
-	}
+            return (List<Absence>) query.getResultList();
+        } else {
+            logger.warn("Member is null");
+            return null;
+        }
     }
 
     public void addAbsence(Absence absence) {
 
-	System.out.println("Add absence");
-	entityManager.persist(absence);
+        entityManager.persist(absence);
 
     }
 

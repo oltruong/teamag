@@ -2,6 +2,7 @@ package fr.oltruong.teamag.entity;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,15 +17,17 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+
+import com.google.common.annotations.VisibleForTesting;
 
 @Table(name = "TM_WORK")
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day"),
-	@NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
-	@NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.company, w.member.id, w.task.id"),
-	@NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
-	@NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )") })
+@NamedQueries({ @NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day"),
+        @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
+        @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.company, w.member.id, w.task.id"),
+        @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
+        @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )") })
 public class Work {
 
     @Id
@@ -50,95 +53,104 @@ public class Work {
     @Transient
     private Float totalEdit = null;
 
+    @Transient
+    @Inject
+    protected Logger logger;
+
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public Calendar getMonth() {
-	return month;
+        return month;
     }
 
     public void setMonth(Calendar month) {
-	this.month = month;
+        this.month = month;
     }
 
     public Calendar getDay() {
-	return day;
+        return day;
     }
 
     public void setDay(Calendar day) {
-	this.day = day;
+        this.day = day;
     }
 
     public Member getMember() {
-	return member;
+        return member;
     }
 
     public void setMember(Member member) {
-	this.member = member;
+        this.member = member;
     }
 
     public Task getTask() {
-	return task;
+        return task;
     }
 
     public void setTask(Task task) {
-	this.task = task;
+        this.task = task;
     }
 
     public Float getTotal() {
-	return total;
+        return total;
     }
 
     public void setTotal(Float total) {
-	this.total = total;
-	this.totalEdit = total;
+        this.total = total;
+        this.totalEdit = total;
     }
 
     public Float getTotalEdit() {
-	if (totalEdit == null) {
-	    totalEdit = total;
-	}
-	return totalEdit;
+        if (totalEdit == null) {
+            totalEdit = total;
+        }
+        return totalEdit;
     }
 
     public String getTotalEditStr() {
-	Float value = getTotalEdit();
-	if (value.floatValue() == 0f) {
-	    return "";
-	}
-	return value.toString();
+        Float value = getTotalEdit();
+        if (value.floatValue() == 0f) {
+            return "";
+        }
+        return value.toString();
     }
 
     public void setTotalEditStr(String totalEditStr) {
-	if (!StringUtils.isBlank(totalEditStr)) {
-	    try {
-		this.totalEdit = Float.valueOf(totalEditStr);
-	    } catch (NumberFormatException ex) {
-		System.out.println("Valeur incorrecte " + totalEditStr);
-	    }
-	} else
-	// Blank means 0
-	{
-	    this.totalEdit = 0f;
-	}
+        if (!StringUtils.isBlank(totalEditStr)) {
+            try {
+                this.totalEdit = Float.valueOf(totalEditStr);
+            } catch (NumberFormatException ex) {
+                logger.error("Valeur incorrecte " + totalEditStr);
+            }
+        } else
+        // Blank means 0
+        {
+            this.totalEdit = 0f;
+        }
     }
 
     public void setTotalEdit(Float totalEdit) {
 
-	this.totalEdit = totalEdit;
+        this.totalEdit = totalEdit;
     }
 
     public String getDayStr() {
-	return DateFormatUtils.format(getDay(), "E dd");
+        return DateFormatUtils.format(getDay(), "E dd");
     }
 
     public boolean hasChanged() {
-	return total.floatValue() != totalEdit.floatValue();
+        return total.floatValue() != totalEdit.floatValue();
+    }
+
+    @VisibleForTesting
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
 }

@@ -47,7 +47,6 @@ public class Activity {
     }
 
     public void setBc(BusinessCase bc) {
-	System.out.println("aaaaa " + bc.getName());
 	this.bc = bc;
     }
 

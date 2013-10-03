@@ -2,13 +2,11 @@ package fr.oltruong.teamag.backingbean;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.qualifier.UserLogin;
@@ -21,15 +19,16 @@ public class AbsenceController {
     @UserLogin
     private Member member;
 
-    private Absence absence = new Absence();
+    @Inject
+    private Absence absence;
 
     private List<Absence> absencesList;
 
-    @EJB
+    @Inject
     private AbsenceEJB absenceEJB;
 
-    @EJB
-    private EmailEJB mailEJB;
+    // @Inject
+    // private EmailEJB mailEJB;
 
     public String init() {
 	absence.setMember(member);
