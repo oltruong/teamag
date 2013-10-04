@@ -55,7 +55,7 @@ public class Work {
 
     @Transient
     @Inject
-    protected Logger logger;
+    private Logger logger;
 
     public Long getId() {
         return id;

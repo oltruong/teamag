@@ -38,7 +38,7 @@ import fr.oltruong.teamag.webbean.TaskWeekBean;
 public class WorkController {
 
     @Inject
-    protected Logger logger;
+    private Logger logger;
 
     @Inject
     @UserLogin
@@ -155,11 +155,10 @@ public class WorkController {
         if (!StringUtils.isBlank(query) && query.length() > 1) {
             for (Task task : tasks) {
                 // Do not propose task that the member already has
-                if (!task.getMembers().contains(getMember())) {
-                    if (StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {
-                        results.add(task.getName());
-                    }
+                if (!task.getMembers().contains(getMember()) && StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {
+                    results.add(task.getName());
                 }
+
             }
         }
         return results;

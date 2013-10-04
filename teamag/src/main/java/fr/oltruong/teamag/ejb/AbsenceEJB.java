@@ -15,19 +15,19 @@ public class AbsenceEJB extends AbstractEJB {
     public List<Absence> findAbsences(Member member) {
         if (member != null) {
 
-            Query query = entityManager.createNamedQuery("findAbsencesByMember");
+            Query query = getEntityManager().createNamedQuery("findAbsencesByMember");
             query.setParameter("fmemberName", member.getName());
 
             return (List<Absence>) query.getResultList();
         } else {
-            logger.warn("Member is null");
+            getLogger().warn("Member is null");
             return null;
         }
     }
 
     public void addAbsence(Absence absence) {
 
-        entityManager.persist(absence);
+        getEntityManager().persist(absence);
 
     }
 

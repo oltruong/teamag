@@ -8,7 +8,6 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -49,7 +48,7 @@ public class EmailEJB {
         }
     }
 
-    private MimeMessage buildMessage(MailBean email, Session session) throws MessagingException, AddressException {
+    private MimeMessage buildMessage(MailBean email, Session session) throws MessagingException {
         MimeMessage message = new MimeMessage(session);
 
         message.setFrom(new InternetAddress(SENDER + "<" + this.parameterEJB.getAdministratorEmail() + ">"));

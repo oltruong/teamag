@@ -8,9 +8,17 @@ import org.slf4j.Logger;
 public abstract class AbstractEJB {
 
     @Inject
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Inject
-    protected Logger logger;
+    private Logger logger;
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
 
 }
