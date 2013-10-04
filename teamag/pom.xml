@@ -28,6 +28,7 @@
 		<version.guava>15.0</version.guava>
 		<version.eclipselink>2.5.0</version.eclipselink>
 		<version.logback>1.0.13</version.logback>
+		<version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
 
 		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
 		<version.maven-clean-plugin>2.5</version.maven-clean-plugin>
@@ -41,7 +42,11 @@
 		<version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
 		<version.maven-site-plugin>3.2</version.maven-site-plugin>
 
-		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+
 
 	</properties>
 
@@ -172,6 +177,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>${version.maven-failsafe-plugin}</version>
+				<configuration>
+					<argLine>${jacoco.agent.argLine}</argLine>
+				</configuration>
 				<executions>
 					<execution>
 						<id>integration-test</id>
@@ -182,6 +190,26 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${version.jacoco-plugin}</version>
+				<configuration>
+					<propertyName>jacoco.agent.argLine</propertyName>
+					<destFile>${sonar.jacoco.itReportPath}</destFile>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<id>agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
