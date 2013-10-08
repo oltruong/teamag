@@ -6,26 +6,26 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">Gestion du budget</ui:define>
+	<ui:define name="title">#{i18n.businesscasePagetitle}</ui:define>
 
 
 	<ui:define name="content">
 
 		<p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
-			<p:tab title="Business Cases">
-				<p:panel header="Nouveau BC">
+			<p:tab title="#{i18n.businesscasePagebusinesscases}">
+				<p:panel header="#{i18n.businesscasePagenewBC}">
 
 					<hr />
 					<h:form>
 						<table border="0">
 							<tr>
-								<td><h:outputLabel value="Numéro* :" /></td>
+								<td><h:outputLabel value="#{i18n.number}" /></td>
 								<td><h:inputText value="#{bcController.bc.number}" /></td>
-								<td><h:outputLabel value="Nom :" /></td>
+								<td><h:outputLabel value="#{i18n.name}" /></td>
 								<td><h:inputText value="#{bcController.bc.name}" /></td>
-								<td><h:outputLabel value="Montant :" /></td>
+								<td><h:outputLabel value="#{i18n.businesscasePageamount}" /></td>
 								<td><h:inputText value="#{bcController.bc.amount}" /></td>
-								<td><p:commandButton value="Ajouter"
+								<td><p:commandButton value="#{i18n.add}"
 										action="#{bcController.doCreateBC}" ajax="false" /></td>
 							</tr>
 						</table>
@@ -34,17 +34,17 @@
 				</p:panel>
 				<br />
 				<br />
-				<p:panel header="Liste des BC">
+				<p:panel header="#{i18n.businesscasePagebcList}">
 					<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
-						<p:column headerText="Numéro" sortBy="#{bc.number}">
+						<p:column headerText="#{i18n.number}" sortBy="#{bc.number}">
 							<h:outputText value="#{bc.number}" />
 						</p:column>
 
-						<p:column headerText="Nom">
+						<p:column headerText="#{i18n.name}">
 							<h:outputText value="#{bc.name}" />
 						</p:column>
 
-						<p:column headerText="Montant">
+						<p:column headerText="#{i18n.businesscasePageamount}">
 							<h:outputText value="#{bc.amount}" />
 						</p:column>
 
@@ -52,24 +52,24 @@
 				</p:panel>
 
 			</p:tab>
-			<p:tab title="Activités">
+			<p:tab title="#{i18n.businesscasePageactivities}">
 
 
-				<p:panel header="Nouvelle activité">
+				<p:panel header="#{i18n.businesscasePagenewActivity}">
 
 					<hr />
 					<h:form>
 						<table border="0">
 							<tr>
-								<td><h:outputLabel value="Nom* :" /></td>
+								<td><h:outputLabel value="#{i18n.name}" /></td>
 								<td><h:inputText value="#{bcController.activity.name}" /></td>
-								<td><h:outputLabel value="BC :" /></td>
+								<td><h:outputLabel value="#{i18n.businesscasePageBC}" /></td>
 								<td><p:selectOneListbox id="basic"
 										value="#{bcController.activity.bc.number}">
 										<f:selectItems value="#{bcController.bcList}" var="bc"
 											itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}" />
 									</p:selectOneListbox></td>
-								<td><p:commandButton value="Ajouter"
+								<td><p:commandButton value="#{i18n.add}"
 										action="#{bcController.doCreateActivity}" ajax="false" /></td>
 							</tr>
 						</table>
@@ -78,18 +78,18 @@
 				</p:panel>
 				<br />
 				<br />
-				<p:panel header="Liste des Activités">
+				<p:panel header="#{i18n.businesscasePageactivities}">
 					<p:dataTable value="#{bcController.activityList}" var="activity"
 						border="1">
-						<p:column headerText="Nom" sortBy="#{activity.name}">
+						<p:column headerText="#{i18n.name}" sortBy="#{activity.name}">
 							<h:outputText value="#{activity.name}" />
 						</p:column>
 
-						<p:column headerText="Numéro BC" sortBy="#{activity.bc.number}">
+						<p:column headerText="#{i18n.businesscasePagebcNumber}" sortBy="#{activity.bc.number}">
 							<h:outputText value="#{activity.bc.number}" />
 						</p:column>
 
-						<p:column headerText="Nom BC" sortBy="#{activity.bc.name}">
+						<p:column headerText="#{i18n.businesscasePagebcName}" sortBy="#{activity.bc.name}">
 							<h:outputText value="#{activity.bc.name}" />
 						</p:column>
 

@@ -6,28 +6,28 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">Paramètres</ui:define>
+	<ui:define name="title">#{i18n.parameterPagetitle}</ui:define>
 
 
 	<ui:define name="content">
 
-<p:panel header="Paramètres">
+<p:panel header="#{i18n.parameterPageparameters}">
 
 	
 	<h:form>
 		<table>
 			<tr>
-				<td><h:outputLabel value="Serveur STMP&#160;" /></td>
+				<td><h:outputLabel value="#{i18n.parameterPagesmtpServer}" /></td>
 				<td><p:inputText value="#{parameterController.smtpHostParameterValue}" required="true" size="38" /></td>
 			</tr>
 			<tr>
-				<td><h:outputLabel value="Email Administrator&#160;" /></td>
+				<td><h:outputLabel value="#{i18n.parameterPageadminEmail}" /></td>
 				<td><p:inputText value="#{parameterController.administratorEmailParameterValue}" required="true" size="38" /></td>
 			</tr>
 		</table>
 		<br/>
-		<p:commandButton value="Mise à jour" action="#{parameterController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
-		<p:commandButton value="Test envoi d'email" action="#{parameterController.testEmail}" ajax="false" icon="ui-icon-person"/>
+		<p:commandButton value="#{i18n.update}" action="#{parameterController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
+		<p:commandButton value="#{i18n.parameterPagetestEmail}" action="#{parameterController.testEmail}" ajax="false" icon="ui-icon-person"/>
 		
 	</h:form>
 </p:panel>

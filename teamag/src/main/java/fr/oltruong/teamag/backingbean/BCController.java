@@ -20,7 +20,7 @@ import fr.oltruong.teamag.exception.ExistingDataException;
 
 @ManagedBean(name = "bcController")
 @RequestScoped
-public class BCController {
+public class BCController extends Controller {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -42,118 +42,106 @@ public class BCController {
 
     @PostConstruct
     private void initList() {
-	this.bcList = this.activityEJB.findBC();
-	this.activityList = this.activityEJB.findActivities();
+        this.bcList = this.activityEJB.findBC();
+        this.activityList = this.activityEJB.findActivities();
     }
 
     public String doCreateBC() {
-	this.tabIndex = 0;
-	this.logger.info("Creation of a business case");
-	FacesMessage msg = null;
+        this.tabIndex = 0;
+        this.logger.info("Creation of a business case");
+        FacesMessage msg = null;
 
-	if (this.bc.getNumber() == null
-		|| StringUtils.isBlank(this.bc.getNumber().toString())) {
-	    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		    "Ajout impossible", "Merci de fournir un numéro de BC");
-	} else {
+        if (this.bc.getNumber() == null || StringUtils.isBlank(this.bc.getNumber().toString())) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Merci de fournir un numï¿½ro de BC");
+        } else {
 
-	    try {
-		this.activityEJB.createBC(this.bc);
+            try {
+                this.activityEJB.createBC(this.bc);
 
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-			"Mise à jour effectuée", "BC "
-				+ this.bc.getNumber().toString() + " "
-				+ this.bc.getName() + " créé !");
-		// Réinit BC
-		this.bc = new BusinessCase();
-	    } catch (ExistingDataException e) {
-		e.printStackTrace();
-		msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-			"Ajout impossible", "Le BC "
-				+ this.bc.getNumber().toString()
-				+ " existe déjà");
-	    }
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise ï¿½ jour effectuï¿½e", "BC " + this.bc.getNumber().toString() + " " + this.bc.getName() + " crï¿½ï¿½ !");
+                // Rï¿½init BC
+                this.bc = new BusinessCase();
+            } catch (ExistingDataException e) {
+                e.printStackTrace();
+                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Le BC " + this.bc.getNumber().toString() + " existe dï¿½jï¿½");
+            }
 
-	    this.bcList = this.activityEJB.findBC();
-	}
-	FacesContext.getCurrentInstance().addMessage(null, msg);
+            this.bcList = this.activityEJB.findBC();
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 
-	return "businesscases.xhtml";
+        return "businesscases.xhtml";
     }
 
     public String doCreateActivity() {
-	this.tabIndex = 1;
-	this.logger.info("Creation of an activity");
+        this.tabIndex = 1;
+        this.logger.info("Creation of an activity");
 
-	FacesMessage msg = null;
+        FacesMessage msg = null;
 
-	if (StringUtils.isBlank(this.activity.getName())
-		|| this.activity.getBc() == null) {
-	    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		    "Ajout impossible", "Merci de fournir un nom et un BC");
-	} else {
+        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), "Merci de fournir un nom et un BC");
+        } else {
 
-	    try {
-		this.activityEJB.createActivity(this.activity);
+            try {
+                this.activityEJB.createActivity(this.activity);
 
-		msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
-			"Mise à jour effectuée", "Activité créé !");
-		// Réinit BC
-		this.activity = new Activity();
-	    } catch (ExistingDataException e) {
-		e.printStackTrace();
-		msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-			"Ajout impossible", "L'activité existe déjà");
-	    }
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise ï¿½ jour effectuï¿½e", "Activitï¿½ crï¿½ï¿½ !");
+                // Rï¿½init BC
+                this.activity = new Activity();
+            } catch (ExistingDataException e) {
+                e.printStackTrace();
+                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), "L'activitï¿½ existe dï¿½jï¿½");
+            }
 
-	    this.activityList = this.activityEJB.findActivities();
-	}
-	FacesContext.getCurrentInstance().addMessage(null, msg);
+            this.activityList = this.activityEJB.findActivities();
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 
-	return "businesscases.xhtml";
+        return "businesscases.xhtml";
     }
 
     // ======================================
     // = Getters & Setters =
     // ======================================
     public BusinessCase getBc() {
-	return this.bc;
+        return this.bc;
     }
 
     public void setBc(BusinessCase bc) {
-	this.bc = bc;
+        this.bc = bc;
     }
 
     public List<BusinessCase> getBcList() {
-	return this.bcList;
+        return this.bcList;
     }
 
     public void setBcList(List<BusinessCase> bcList) {
-	this.bcList = bcList;
+        this.bcList = bcList;
     }
 
     public Activity getActivity() {
-	return this.activity;
+        return this.activity;
     }
 
     public void setActivity(Activity activity) {
-	this.activity = activity;
+        this.activity = activity;
     }
 
     public List<Activity> getActivityList() {
-	return this.activityList;
+        return this.activityList;
     }
 
     public void setActivityList(List<Activity> activityList) {
-	this.activityList = activityList;
+        this.activityList = activityList;
     }
 
     public int getTabIndex() {
-	return this.tabIndex;
+        return this.tabIndex;
     }
 
     public void setTabIndex(int tabIndex) {
-	this.tabIndex = tabIndex;
+        this.tabIndex = tabIndex;
     }
 
 }

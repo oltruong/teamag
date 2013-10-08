@@ -17,7 +17,7 @@ import fr.oltruong.teamag.utils.Constants;
 
 @ManagedBean
 @SessionScoped
-public class LoginBean {
+public class LoginBean extends Controller {
 
     @Inject
     private Logger logger;
@@ -102,7 +102,7 @@ public class LoginBean {
 
         if (member != null) {
             this.logger.info(member.getName() + " found");
-            userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenue", this.username);
+            userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", this.username), "");
             setMember(member);
             getMember();
             servletRequest.getSession().setAttribute(Constants.USER, member);
@@ -110,7 +110,7 @@ public class LoginBean {
             return "welcome";
         } else {
             this.logger.warn(this.username + " not found");
-            userMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, this.username + " inconnu(e)", "merci de réessayer ou contacter l'administrateur.");
+            userMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("unknown", this.username), getMessage("tryagain"));
 
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
             return "login.xhtml";
@@ -124,7 +124,7 @@ public class LoginBean {
         setMember(null);
         servletRequest.getSession().setAttribute(Constants.USER, null);
 
-        FacesMessage userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Au revoir " + this.username, "à la prochaine!");
+        FacesMessage userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("farewell", this.username), getMessage("seeYou"));
 
         FacesContext.getCurrentInstance().addMessage(null, userMessage);
         return "welcome.xhtml";

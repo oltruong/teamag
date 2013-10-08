@@ -27,15 +27,10 @@ public class EmailEJB {
 
     public void sendEmail(MailBean email) {
 
-        // Sender's email ID needs to be mentioned
-
-        // Get system properties
         Properties properties = System.getProperties();
 
-        // Setup mail server
         properties.setProperty("mail.smtp.host", this.parameterEJB.getSmtpHost());
 
-        // Get the default Session object.
         Session session = Session.getDefaultInstance(properties);
 
         try {

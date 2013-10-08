@@ -6,14 +6,14 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">Visualisation du réalisé</ui:define>
+	<ui:define name="title">#{i18n.reportingPagetitle}</ui:define>
 
 
 	<ui:define name="content">
 
 
 	<p:tabView orientation="top">
-		<p:tab title="Par personne">
+		<p:tab title="#{i18n.reportingPageperPerson}">
 			<h:form>
 				<p:dataTable id="realizedPerson"
 					value="#{reportingController.realizedPersons}" var="person"
@@ -22,8 +22,8 @@
 
 					<p:columnGroup type="header">
 						<p:row>
-							<p:column headerText="Membre" sortBy="#{person.name}" />
-							<p:column headerText="Réalisé" />
+							<p:column headerText="#{i18n.reportingPagemember}" sortBy="#{person.name}" />
+							<p:column headerText="#{i18n.reportingPagerealized}" />
 						</p:row>
 
 					</p:columnGroup>
@@ -47,9 +47,9 @@
 
 						<p:columnGroup type="footer">
 							<p:row>
-								<p:column footerText="Total: " style="text-align:right" />
+								<p:column footerText="#{i18n.total}" style="text-align:right" />
 								<p:column
-									footerText="#{person.totalRealized} dont #{person.totalWorkRealized} travaillés" />
+									footerText="#{person.totalRealized} #{i18n.including} #{person.totalWorkRealized} #{i18n.reportingPageworked}" />
 							</p:row>
 						</p:columnGroup>
 					</p:subTable>
@@ -58,7 +58,7 @@
 
 			</h:form>
 		</p:tab>
-		<p:tab title="Par entreprise">
+		<p:tab title="#{i18n.reportingPageperCompany}">
 			<h:form>
 				<p:dataTable id="realizedCompany"
 					value="#{reportingController.realizedCompanies}" var="company"
@@ -67,8 +67,8 @@
 
 					<p:columnGroup type="header">
 						<p:row>
-							<p:column headerText="Entreprise" sortBy="#{company.name}" />
-							<p:column headerText="Réalisé" />
+							<p:column headerText="#{i18n.reportingPagecompany}" sortBy="#{company.name}" />
+							<p:column headerText="#{i18n.reportingPagerealized}" />
 						</p:row>
 
 					</p:columnGroup>
@@ -91,9 +91,9 @@
 
 						<p:columnGroup type="footer">
 							<p:row>
-								<p:column footerText="Total: " style="text-align:right" />
+								<p:column footerText="#{i18n.total}" style="text-align:right" />
 								<p:column
-									footerText="#{company.totalRealized} dont #{company.totalWorkRealized} travaillés" />
+									footerText="#{company.totalRealized} #{i18n.including} #{company.totalWorkRealized} #{i18n.reportingPageworked}" />
 							</p:row>
 						</p:columnGroup>
 					</p:subTable>

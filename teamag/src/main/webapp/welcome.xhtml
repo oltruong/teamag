@@ -8,11 +8,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/layouts/template.xhtml">
                 
- <ui:define name="title">Bienvenue</ui:define>
+ <ui:define name="title">#{i18n.welcomePagetitle}</ui:define>
 
 
  <ui:define name="content">
- 
- Bienvenue sur Teamag, outil de saisie du réalisé<br/>
+ #{i18n.welcomePagewelcomeMessage}
 </ui:define>
 </ui:composition>

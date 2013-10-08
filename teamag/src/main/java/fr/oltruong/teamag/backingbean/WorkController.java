@@ -35,7 +35,7 @@ import fr.oltruong.teamag.webbean.TaskWeekBean;
 
 @SessionScoped
 @ManagedBean
-public class WorkController {
+public class WorkController extends Controller {
 
     @Inject
     private Logger logger;
@@ -67,7 +67,7 @@ public class WorkController {
 
         if (StringUtils.isBlank(this.newTask.getName())) {
             FacesMessage msg = null;
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Merci de fournir un nom à la tâche !");
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), getMessage("nameTask"));
             FacesContext.getCurrentInstance().addMessage(null, msg);
 
         } else {
@@ -79,12 +79,12 @@ public class WorkController {
                 initTaskWeek();
 
                 FacesMessage msg = null;
-                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Tâche créée", "");
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("createdTask"), "");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
 
             } catch (ExistingDataException e) {
                 FacesMessage msg = null;
-                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Tâche existante", "Aucune modification");
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("existingTask"), getMessage("noChange"));
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             }
         }
@@ -120,10 +120,10 @@ public class WorkController {
 
         FacesMessage msg = null;
         if (changedWorks.isEmpty()) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Aucun changement détecté", "");
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
 
         } else {
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "");
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
             sendNotification();
             initTaskWeek();
         }
@@ -177,9 +177,9 @@ public class WorkController {
 
     private MailBean buildEmail() {
         MailBean email = new MailBean();
-        email.setContent("Réalisé complet");
+        email.setContent("Realise complet");
         email.setRecipient(this.parameterEJB.getAdministratorEmail());
-        email.setSubject("Réalisé de" + getMember().getName());
+        email.setSubject("Realise de " + getMember().getName());
         return email;
     }
 
@@ -253,8 +253,6 @@ public class WorkController {
 
         return worksChanged;
     }
-
-    // Getters and setters
 
     public RealizedFormWebBean getRealizedBean() {
         return this.realizedBean;

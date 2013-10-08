@@ -7,7 +7,7 @@
 
 
 <h:head>
-	<title><ui:insert name="title">TEAMAG</ui:insert></title>
+	<title><ui:insert name="title"></ui:insert></title>
 	<h:outputStylesheet name="css/mycustom.css" />
 </h:head>
 
@@ -20,24 +20,19 @@
 
 		<p:menubar>
 
-<!-- 			<p:submenu label="#{loginBean.loggedUserName}"	rendered="#{loginBean.loggedIn}">
-				<p:menuitem value="Déconnexion" action="#{loginBean.logout}" icon="ui-icon-power" />
-			</p:submenu>
- -->			
+			<p:menuitem value="#{i18n.menulogOut}" action="#{loginBean.logout}" icon="ui-icon-power" rendered="#{loginBean.loggedIn}" ajax="false"/>
 			
-			<p:menuitem value="Déconnexion" action="#{loginBean.logout}" icon="ui-icon-power" rendered="#{loginBean.loggedIn}" ajax="false"/>
-			
-			<p:menuitem value=" Login " url="login.xhtml" icon="ui-icon-person" rendered="#{loginBean.notLoggedIn}" />
+			<p:menuitem value="#{i18n.logIn}" url="login.xhtml" icon="ui-icon-person" rendered="#{loginBean.notLoggedIn}" />
 
-			<p:menuitem value=" Mon réalisé " action="#{workController.init}" icon="ui-icon-calculator" rendered="#{loginBean.loggedIn}" ajax="false" />
+			<p:menuitem value="#{i18n.menurealized}" action="#{workController.init}" icon="ui-icon-calculator" rendered="#{loginBean.loggedIn}" ajax="false" />
 
-			<p:menuitem value=" Mon équipe " url="members.xhtml" icon="ui-icon-person" rendered="#{loginBean.administrator}" />
-			<p:menuitem value=" Budget " url="businesscases.xhtml" icon="ui-icon-folder-open" rendered="#{loginBean.administrator}" />
-			<p:menuitem value=" Reporting " url="reporting.xhtml" icon="ui-icon-calculator" rendered="#{loginBean.administrator}" />
-			<p:menuitem value=" Paramètres " url="parameters.xhtml" icon="ui-icon-wrench" rendered="#{loginBean.administrator}" />
+			<p:menuitem value="#{i18n.menuteam}" url="members.xhtml" icon="ui-icon-person" rendered="#{loginBean.administrator}" />
+			<p:menuitem value="#{i18n.menubudget}" url="businesscases.xhtml" icon="ui-icon-folder-open" rendered="#{loginBean.administrator}" />
+			<p:menuitem value="#{i18n.menureporting}" url="reporting.xhtml" icon="ui-icon-calculator" rendered="#{loginBean.administrator}" />
+			<p:menuitem value="#{i18n.menuparameters}" url="parameters.xhtml" icon="ui-icon-wrench" rendered="#{loginBean.administrator}" />
 
-			<p:submenu label=" ? ">
-				<p:menuitem value="A propos" url="about.xhtml" />
+			<p:submenu label="#{i18n.menumore}">
+				<p:menuitem value="#{i18n.menuabout}" url="about.xhtml" />
 			</p:submenu>
 
 
@@ -60,7 +55,7 @@
 
 	<footer class="text-center">
 		<br />
-		<h:outputLabel value="&#169;Teamag 2013" />
+		<h:outputLabel value="#{i18n.copyright}#{i18n.applicationName} #{i18n.year}" />
 	</footer>
 
 

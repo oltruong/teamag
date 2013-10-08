@@ -8,10 +8,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="WEB-INF/layouts/template.xhtml">
                 
- <ui:define name="title">A propos</ui:define>
+ <ui:define name="title">#{i18n.aboutPagetitle}</ui:define>
 
 
- <ui:define name="content">Application de gestion d'équipe Teamag.<br/>
-  Version 0.1.0
+ <ui:define name="content">#{i18n.aboutPageaboutVersion}<br/>
+  #{i18n.aboutPageversionTimeStamp}
 </ui:define>
 </ui:composition>
