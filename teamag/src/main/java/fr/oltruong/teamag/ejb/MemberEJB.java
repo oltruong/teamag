@@ -36,7 +36,7 @@ public class MemberEJB extends AbstractEJB {
     }
 
     @SuppressWarnings("unchecked")
-    public Member createMember(Member member) {
+    public Member createMemberWithAbsenceTask(Member member) {
 
         // Adding default task
         Query query = getEntityManager().createNamedQuery("findTaskByName");

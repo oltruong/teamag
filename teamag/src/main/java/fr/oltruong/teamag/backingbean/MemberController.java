@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +19,7 @@ import fr.oltruong.teamag.entity.MemberType;
 
 @ManagedBean
 @RequestScoped
-public class MemberController {
+public class MemberController extends Controller {
 
     // ======================================
     // = Attributes =
@@ -43,11 +42,11 @@ public class MemberController {
     }
 
     public String doCreateMember() {
-        this.member = this.memberEJB.createMember(this.member);
+        this.member = this.memberEJB.createMemberWithAbsenceTask(this.member);
         this.memberList = this.memberEJB.findMembers();
 
         FacesMessage msg = null;
-        msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Membre " + this.member.getName() + " créé !");
+        msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", this.member.getName()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         return "newMember.xhtml";
@@ -56,7 +55,7 @@ public class MemberController {
     public List<String> completeCompany(String query) {
         List<Member> members = this.memberEJB.findMembers();
 
-        List<String> results = new ArrayList<String>(members.size());
+        List<String> results = Lists.newArrayListWithExpectedSize(members.size());
 
         if (!StringUtils.isBlank(query) && query.length() > 1) {
 

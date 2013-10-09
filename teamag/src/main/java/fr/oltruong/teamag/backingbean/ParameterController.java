@@ -22,7 +22,7 @@ import fr.oltruong.teamag.entity.Parameter;
 
 @ManagedBean
 @ApplicationScoped
-public class ParameterController {
+public class ParameterController extends Controller {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -51,7 +51,7 @@ public class ParameterController {
         initList();
 
         FacesMessage msg = null;
-        msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise à jour effectuée", "Paramètres mis à jour");
+        msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("parametersUpdated"));
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         return "parameters.xhtml";
@@ -98,7 +98,7 @@ public class ParameterController {
             this.logger.info("Message sent");
 
             FacesMessage msg = null;
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Message envoyé", "Envoyé à " + this.administratorEmailParameter.getValue());
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("messageSent"), getMessage("sentTo", this.administratorEmailParameter.getValue()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (MessagingException messagingException) {
             this.logger.severe("Error when sending message [" + messagingException.getMessage() + "]");
