@@ -18,6 +18,7 @@
 		<version.primefaces-theme>1.0.10</version.primefaces-theme>
 		<version.junit>4.11</version.junit>
 		<version.fest-assert>1.4</version.fest-assert>
+		<version.mockito>1.9.5</version.mockito>
 		<version.jsf-api>2.0</version.jsf-api>
 
 		<version.commons-lang>3.1</version.commons-lang>
@@ -148,6 +149,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -250,17 +257,16 @@
 									<format property="now" pattern="dd/MM/yyyy - HH:mm" />
 									<format property="year" pattern="yyyy" />
 								</tstamp>
-								<property name="messageResources.path"
-									value="target/classes/messages_fr.properties" />
+								<property name="messageResources.path" value="target/classes/messages_fr.properties" />
 
 								<replace file="${messageResources.path}" token="REPLACE.VERSION"
-									value="${version}" />
-										<replace file="${messageResources.path}" token="REPLACE.YEAR"
+									value="${project.version}" />
+								<replace file="${messageResources.path}" token="REPLACE.YEAR"
 									value="${year}" />
 								<replace file="${messageResources.path}" token="REPLACE.TIMESTAMP"
 									value="${now}" />
 							</target>
-						</configuration> 
+						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>

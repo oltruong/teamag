@@ -14,9 +14,7 @@ import javax.persistence.Table;
 
 @Table(name = "TM_MEMBER")
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"),
-	@NamedQuery(name = "findByName", query = "SELECT m from Member m where m.name=:fname") })
+@NamedQueries({ @NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findByName", query = "SELECT m from Member m where m.name=:fname") })
 public class Member implements Serializable {
 
     /**
@@ -38,62 +36,62 @@ public class Member implements Serializable {
     private String email;
 
     @Column(nullable = false)
-    private Float productivity = 1f;
+    private final Float productivity = 1f;
 
     @Column
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
     public Long getId() {
-	return this.id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public String getName() {
-	return this.name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getCompany() {
-	return this.company;
+        return company;
     }
 
     public void setCompany(String company) {
-	this.company = company;
+        this.company = company;
     }
 
     public String getEmail() {
-	return this.email;
+        return email;
     }
 
     public void setEmail(String email) {
-	this.email = email;
+        this.email = email;
     }
 
     public MemberType getMemberType() {
-	return this.memberType;
+        return memberType;
     }
 
     public void setMemberType(MemberType memberType) {
-	this.memberType = memberType;
+        this.memberType = memberType;
     }
 
     @Override
     public boolean equals(Object otherMember) {
-	if (!(otherMember instanceof Member)) {
-	    return false;
-	}
-	Member member0 = (Member) otherMember;
-	return this.id.equals(member0.getId());
+        if (!(otherMember instanceof Member)) {
+            return false;
+        }
+        Member member0 = (Member) otherMember;
+        return id != null && id.equals(member0.getId());
     }
 
     public boolean isAdministrator() {
-	return MemberType.ADMINISTRATOR.equals(this.memberType);
+        return MemberType.ADMINISTRATOR.equals(memberType);
     }
 }
