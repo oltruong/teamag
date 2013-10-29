@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.entity;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Calendar;
 import java.util.List;
