@@ -2,10 +2,11 @@ package fr.oltruong.teamag.webbean;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -15,26 +16,26 @@ public class RealizedFormWebBean {
     @Inject
     private Logger logger;
 
-    private Calendar dayCursor;
+    private DateTime dayCursor;
 
     private int weekNumberMonth;
 
-    private Calendar currentMonth;
+    private DateTime currentMonth;
 
-    private List<ColumnDayBean> columnsDay = Lists.newArrayListWithExpectedSize(5);
+    private final List<ColumnDayBean> columnsDay = Lists.newArrayListWithExpectedSize(5);
 
     private List<TaskWeekBean> taskWeeks = Lists.newArrayList();
 
     private TaskWeekBean selectedTaskWeek;
 
     public boolean getIsFirstWeek() {
-        logger.debug("day cursot" + dayCursor.get(Calendar.DAY_OF_MONTH));
+        logger.debug("day cursor" + dayCursor.getDayOfMonth());
         logger.debug("weekNumberMonth" + weekNumberMonth);
         return weekNumberMonth == 1;
     }
 
     public boolean getIsLastWeek() {
-        logger.debug("day cursot" + dayCursor.get(Calendar.DAY_OF_MONTH));
+        logger.debug("day cursor" + dayCursor.getDayOfMonth());
         logger.debug("weekNumberMonth" + weekNumberMonth);
         return weekNumberMonth == 5;
         // return CalendarUtils.isLastWeek( dayCursor );
@@ -50,7 +51,7 @@ public class RealizedFormWebBean {
 
     public int getWeekNumber() {
 
-        return dayCursor.get(Calendar.WEEK_OF_YEAR);
+        return dayCursor.getWeekOfWeekyear();
     }
 
     public List<TaskWeekBean> getTaskWeeks() {
@@ -71,30 +72,30 @@ public class RealizedFormWebBean {
 
     public void incrementWeek() {
         weekNumberMonth += 1;
-        dayCursor.add(Calendar.WEEK_OF_MONTH, 1);
+        dayCursor = dayCursor.plusWeeks(1);
 
     }
 
     public void decrementWeek() {
         weekNumberMonth -= 1;
-        dayCursor.add(Calendar.WEEK_OF_MONTH, -1);
+        dayCursor = dayCursor.plusWeeks(-1);
     }
 
-    public Calendar getCurrentMonth() {
+    public DateTime getCurrentMonth() {
         return currentMonth;
     }
 
     public String getCurrentMonthStr() {
-        return DateFormatUtils.format(currentMonth, "MMMMM");
+        return currentMonth.toString("MMMMM");
     }
 
-    public void setCurrentMonth(Calendar currentMonth) {
+    public void setCurrentMonth(DateTime currentMonth) {
         this.currentMonth = currentMonth;
     }
 
-    public void setDayCursor(Calendar dayCursor) {
+    public void setDayCursor(DateTime dayCursor) {
         this.dayCursor = dayCursor;
-        this.weekNumberMonth = dayCursor.get(Calendar.WEEK_OF_MONTH);
+        weekNumberMonth = dayCursor.toCalendar(Locale.getDefault()).get(Calendar.WEEK_OF_MONTH);
     }
 
 }

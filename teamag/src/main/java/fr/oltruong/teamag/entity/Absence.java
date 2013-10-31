@@ -43,54 +43,54 @@ public class Absence {
     private Integer type = ALL_DAY;
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public Date getBeginDate() {
-	return beginDate;
+        return beginDate;
     }
 
     public void setBeginDate(Date beginDate) {
-	this.beginDate = beginDate;
+        this.beginDate = beginDate;
     }
 
     public Date getEndDate() {
-	return endDate;
+        return endDate;
     }
 
     public void setEndDate(Date endDate) {
-	this.endDate = endDate;
+        this.endDate = endDate;
     }
 
     public String getTypeStr() {
-	if ((type != null) && !type.equals(ALL_DAY)) {
-	    if (type.equals(AFTERNOON_ONLY)) {
-		return "Après-midi";
-	    } else if (type.equals(MORNING_ONLY)) {
-		return "Matinée";
-	    }
-	}
-	return null;
+        if ((type != null) && !type.equals(ALL_DAY)) {
+            if (type.equals(AFTERNOON_ONLY)) {
+                return "Aprï¿½s-midi";
+            } else if (type.equals(MORNING_ONLY)) {
+                return "Matinï¿½e";
+            }
+        }
+        return null;
     }
 
     public Member getMember() {
-	return member;
+        return member;
     }
 
     public void setMember(Member member) {
-	this.member = member;
+        this.member = member;
     }
 
     public Integer getType() {
-	return type;
+        return type;
     }
 
     public void setType(Integer type) {
-	this.type = type;
+        this.type = type;
     }
 
 }

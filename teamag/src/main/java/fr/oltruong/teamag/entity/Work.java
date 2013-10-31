@@ -1,9 +1,8 @@
 package fr.oltruong.teamag.entity;
 
-import java.util.Calendar;
-
 import javax.inject.Inject;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,10 +15,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import fr.oltruong.teamag.entity.converter.DateConverter;
 
 @Table(name = "TM_WORK")
 @Entity
@@ -36,11 +37,13 @@ public class Work {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar month;
+    @Convert(converter = DateConverter.class)
+    private DateTime month;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Calendar day;
+    @Convert(converter = DateConverter.class)
+    private DateTime day;
 
     @JoinColumn(nullable = false)
     private Member member;
@@ -65,19 +68,19 @@ public class Work {
         this.id = id;
     }
 
-    public Calendar getMonth() {
+    public DateTime getMonth() {
         return month;
     }
 
-    public void setMonth(Calendar month) {
+    public void setMonth(DateTime month) {
         this.month = month;
     }
 
-    public Calendar getDay() {
+    public DateTime getDay() {
         return day;
     }
 
-    public void setDay(Calendar day) {
+    public void setDay(DateTime day) {
         this.day = day;
     }
 
@@ -103,7 +106,7 @@ public class Work {
 
     public void setTotal(Float total) {
         this.total = total;
-        this.totalEdit = total;
+        totalEdit = total;
     }
 
     public Float getTotalEdit() {
@@ -124,14 +127,14 @@ public class Work {
     public void setTotalEditStr(String totalEditStr) {
         if (!StringUtils.isBlank(totalEditStr)) {
             try {
-                this.totalEdit = Float.valueOf(totalEditStr);
+                totalEdit = Float.valueOf(totalEditStr);
             } catch (NumberFormatException ex) {
                 logger.error("Valeur incorrecte " + totalEditStr);
             }
         } else
         // Blank means 0
         {
-            this.totalEdit = 0f;
+            totalEdit = 0f;
         }
     }
 
@@ -141,7 +144,8 @@ public class Work {
     }
 
     public String getDayStr() {
-        return DateFormatUtils.format(getDay(), "E dd");
+        System.out.println(getDay().toString("E mmm dd"));
+        return getDay().toString("E mmm dd");
     }
 
     public boolean hasChanged() {

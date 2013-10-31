@@ -31,42 +31,42 @@ public class AbsenceController {
     // private EmailEJB mailEJB;
 
     public String init() {
-	absence.setMember(member);
-	absencesList = absenceEJB.findAbsences(member);
+        absence.setMember(member);
+        absencesList = absenceEJB.findAbsences(member);
 
-	return "absence.xhtml";
+        return "absence.xhtml";
 
     }
 
     public void addAbsence() {
-	absenceEJB.addAbsence(absence);
-	absencesList = absenceEJB.findAbsences(member);
-	absence.setId(null);
+        absenceEJB.addAbsence(absence);
+        absencesList = absenceEJB.findAbsences(member);
+        absence.setId(null);
 
     }
 
     public Absence getAbsence() {
-	return absence;
+        return absence;
     }
 
     public void setAbsence(Absence absence) {
-	this.absence = absence;
+        this.absence = absence;
     }
 
     public List<Absence> getAbsencesList() {
-	return absencesList;
+        return absencesList;
     }
 
     public void setAbsencesList(List<Absence> absencesList) {
-	this.absencesList = absencesList;
+        this.absencesList = absencesList;
     }
 
     public Member getMember() {
-	return member;
+        return member;
     }
 
     public void setMember(Member member) {
-	this.member = member;
+        this.member = member;
     }
 
 }

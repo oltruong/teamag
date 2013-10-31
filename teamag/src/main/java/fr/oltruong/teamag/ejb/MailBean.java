@@ -12,27 +12,27 @@ public class MailBean {
     }
 
     public String getRecipient() {
-	return this.recipient;
+        return this.recipient;
     }
 
     public void setRecipient(String recipient) {
-	this.recipient = recipient;
+        this.recipient = recipient;
     }
 
     public String getSubject() {
-	return this.subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
-	this.subject = subject;
+        this.subject = subject;
     }
 
     public String getContent() {
-	return this.content;
+        return this.content;
     }
 
     public void setContent(String content) {
-	this.content = content;
+        this.content = content;
     }
 
 }

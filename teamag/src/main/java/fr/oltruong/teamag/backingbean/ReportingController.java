@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,13 +9,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
 
+import org.joda.time.DateTime;
+
 import com.google.common.collect.Maps;
 
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
-import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.RealizedReportBean;
 
 @ManagedBean
@@ -29,17 +29,17 @@ public class ReportingController {
 
     private List<RealizedReportBean> realizedCompanies;
 
-    private Calendar month;
+    private DateTime month;
 
     @PostConstruct
     private void initLists() {
 
-        this.month = CalendarUtils.getFirstDayOfMonth(Calendar.getInstance());
+        month = DateTime.now().withDayOfMonth(1);
         // this.month = CalendarUtils.getPreviousMonth(
         // CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
 
         System.currentTimeMillis();
-        List<Work> works = this.workEJB.getWorksMonth(this.month);
+        List<Work> works = workEJB.getWorksMonth(month);
 
         initRealizedPersons(works);
 
@@ -64,14 +64,14 @@ public class ReportingController {
             }
 
         }
-        this.realizedCompanies = new ArrayList<RealizedReportBean>(map.size());
+        realizedCompanies = new ArrayList<RealizedReportBean>(map.size());
 
         final Set<Map.Entry<String, List<Task>>> entries = map.entrySet();
         for (Map.Entry<String, List<Task>> entry : entries) {
             RealizedReportBean report = new RealizedReportBean();
             report.setName(entry.getKey());
             report.setTasks(entry.getValue());
-            this.realizedCompanies.add(report);
+            realizedCompanies.add(report);
         }
     }
 
@@ -92,7 +92,7 @@ public class ReportingController {
             }
 
         }
-        this.realizedPersons = new ArrayList<RealizedReportBean>(map.size());
+        realizedPersons = new ArrayList<RealizedReportBean>(map.size());
 
         final Set<Map.Entry<Member, List<Task>>> entries = map.entrySet();
 
@@ -100,13 +100,13 @@ public class ReportingController {
             RealizedReportBean report = new RealizedReportBean();
             report.setName(entry.getKey().getName());
             report.setTasks(entry.getValue());
-            this.realizedPersons.add(report);
+            realizedPersons.add(report);
         }
 
     }
 
     public List<RealizedReportBean> getRealizedPersons() {
-        return this.realizedPersons;
+        return realizedPersons;
     }
 
     public void setRealizedPersons(List<RealizedReportBean> realizedPersons) {
@@ -114,7 +114,7 @@ public class ReportingController {
     }
 
     public List<RealizedReportBean> getRealizedCompanies() {
-        return this.realizedCompanies;
+        return realizedCompanies;
     }
 
     public void setRealizedCompanies(List<RealizedReportBean> realizedCompanies) {

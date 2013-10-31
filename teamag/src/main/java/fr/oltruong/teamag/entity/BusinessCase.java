@@ -21,27 +21,27 @@ public class BusinessCase {
     private Float amount;
 
     public Integer getNumber() {
-	return this.number;
+        return this.number;
     }
 
     public void setNumber(Integer number) {
-	this.number = number;
+        this.number = number;
     }
 
     public String getName() {
-	return this.name;
+        return this.name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public Float getAmount() {
-	return this.amount;
+        return this.amount;
     }
 
     public void setAmount(Float amount) {
-	this.amount = amount;
+        this.amount = amount;
     }
 
 }

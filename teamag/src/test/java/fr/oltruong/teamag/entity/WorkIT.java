@@ -11,10 +11,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
-import fr.oltruong.teamag.utils.CalendarUtils;
 
 public class WorkIT {
     @Test
@@ -48,7 +47,6 @@ public class WorkIT {
         Work work = createWork();
 
         // Gets an entity manager and a transaction
-        // Gets an entity manager and a transaction
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -66,7 +64,7 @@ public class WorkIT {
 
         Query query = em.createNamedQuery("findWorksByMember");
         query.setParameter("fmemberName", work.getMember().getName());
-        query.setParameter("fmonth", CalendarUtils.getFirstDayOfMonth(Calendar.getInstance()));
+        query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
 
         @SuppressWarnings("unchecked")
         List<Work> listWorks = query.getResultList();
@@ -103,9 +101,9 @@ public class WorkIT {
 
         work.setLogger(LoggerFactory.getLogger(Work.class.getName()));
         work.setMember(createMember());
-        work.setDay(Calendar.getInstance());
+        work.setDay(DateTime.now());
         work.setTask(createTask());
-        work.setMonth(CalendarUtils.getFirstDayOfMonth(Calendar.getInstance()));
+        work.setMonth(DateTime.now().withDayOfMonth(1));
         return work;
     }
 }

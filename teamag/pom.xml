@@ -4,7 +4,7 @@
 	<groupId>fr.oltruong</groupId>
 	<artifactId>teamag</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>TeamManagement</name>
 	<description>Team Management web application</description>
 	<url>https://github.com/oltruong/TeaMag</url>
@@ -87,6 +87,12 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${version.guava}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
 		</dependency>
 
 		<dependency>

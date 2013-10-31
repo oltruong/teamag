@@ -12,7 +12,7 @@ public class TaskWeekBean implements Comparable<TaskWeekBean> {
 
     private Task task;
 
-    private Map<String, Work> mapWorks = Maps.newHashMapWithExpectedSize(5);
+    private final Map<String, Work> mapWorks = Maps.newHashMapWithExpectedSize(5);
 
     public Task getTask() {
         return task;
@@ -37,6 +37,10 @@ public class TaskWeekBean implements Comparable<TaskWeekBean> {
 
     public Work getDay6() {
         return getWork("day6");
+    }
+
+    public Work getDay1() {
+        return getWork("day1");
     }
 
     public Work getDay2() {

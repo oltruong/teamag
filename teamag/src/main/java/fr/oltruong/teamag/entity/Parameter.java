@@ -30,31 +30,31 @@ public class Parameter {
     }
 
     public Parameter(ParameterName name) {
-	this.name = name;
+        this.name = name;
     }
 
     public Long getId() {
-	return this.id;
+        return this.id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public ParameterName getName() {
-	return this.name;
+        return this.name;
     }
 
     public void setName(ParameterName name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getValue() {
-	return this.value;
+        return this.value;
     }
 
     public void setValue(String value) {
-	this.value = value;
+        this.value = value;
     }
 
 }

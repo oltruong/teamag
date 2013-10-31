@@ -1,14 +1,16 @@
 package fr.oltruong.teamag.ejb;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 
 import com.google.common.collect.Maps;
 
@@ -21,7 +23,7 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 @Stateless
 public class WorkEJB extends AbstractEJB {
 
-    public Map<Task, List<Work>> findWorks(Member member, Calendar month) {
+    public Map<Task, List<Work>> findWorks(Member member, DateTime month) {
 
         Map<Task, List<Work>> worksByTask = Maps.newHashMap();
 
@@ -48,7 +50,7 @@ public class WorkEJB extends AbstractEJB {
         return getEntityManager().createNamedQuery("findAllTasks").getResultList();
     }
 
-    public int getSumWorks(Member member, Calendar month) {
+    public int getSumWorks(Member member, DateTime month) {
         Query query = getEntityManager().createNamedQuery("countWorksMemberMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
@@ -73,18 +75,18 @@ public class WorkEJB extends AbstractEJB {
         return worksByTask;
     }
 
-    private List<Work> createWorks(Member member, Calendar month) {
+    private List<Work> createWorks(Member member, DateTime month) {
 
         List<Work> workList = null;
 
         List<Task> taskList = findMemberTasks(member);
         if (CollectionUtils.isNotEmpty(taskList)) {
 
-            List<Calendar> workingDays = CalendarUtils.getWorkingDays(month);
+            List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
 
-            workList = new ArrayList<Work>(taskList.size() * workingDays.size());
+            workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
             for (Task task : taskList) {
-                for (Calendar day : workingDays) {
+                for (DateTime day : workingDays) {
                     Work work = new Work();
                     work.setDay(day);
                     work.setMember(member);
@@ -98,13 +100,13 @@ public class WorkEJB extends AbstractEJB {
             }
 
         } else {
-            getLogger().debug("Aucune activite");
+            getLogger().debug("No activity");
         }
         return workList;
 
     }
 
-    public void removeTask(Task task, Member member, Calendar month) {
+    public void removeTask(Task task, Member member, DateTime month) {
         Query query = getEntityManager().createNamedQuery("deleteWorksByMemberTaskMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("ftaskId", task.getId());
@@ -112,9 +114,9 @@ public class WorkEJB extends AbstractEJB {
 
         int rowsNumberDeleted = query.executeUpdate();
 
-        getLogger().debug("Works supprimés : " + rowsNumberDeleted);
+        getLogger().debug("Works deleted : " + rowsNumberDeleted);
 
-        // Suppression pour la tâche de l'utilisateur
+        // Suppression pour la tï¿½che de l'utilisateur
 
         Task taskDb = getEntityManager().find(Task.class, task.getId());
 
@@ -123,10 +125,10 @@ public class WorkEJB extends AbstractEJB {
         taskDb.getMembers().remove(memberDb);
 
         if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
-            getLogger().debug("La tâche n'a aucun objet attaché dessus. Suppression de la tâche");
+            getLogger().debug("La tï¿½che n'a aucun objet attachï¿½ dessus. Suppression de la tï¿½che");
             getEntityManager().remove(taskDb);
         } else {
-            getLogger().debug("Mise à jour de la tâche");
+            getLogger().debug("Mise ï¿½ jour de la tï¿½che");
             getEntityManager().persist(taskDb);
         }
     }
@@ -152,12 +154,12 @@ public class WorkEJB extends AbstractEJB {
 
             if (task.getMembers() != null && !task.getMembers().isEmpty()) {
 
-                getLogger().debug("tache Name" + task.getMembers().get(0).getName());
-                getLogger().debug("tache Id" + task.getMembers().get(0).getId());
+                getLogger().debug("Task Name" + task.getMembers().get(0).getName());
+                getLogger().debug("Task Id" + task.getMembers().get(0).getId());
                 getLogger().debug("Member id" + member.getId());
 
                 if (task.getMembers().contains(member)) {
-                    getLogger().debug("la tâche a bien comme member " + member.getName());
+                    getLogger().debug("Task has member " + member.getName());
                     taskList.add(task);
                 }
             }
@@ -166,7 +168,7 @@ public class WorkEJB extends AbstractEJB {
         return taskList;
     }
 
-    public void createTask(Calendar month, Member member, Task task) throws ExistingDataException {
+    public void createTask(DateTime month, Member member, Task task) throws ExistingDataException {
         Query query = getEntityManager().createNamedQuery("findTaskByName");
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
@@ -176,13 +178,13 @@ public class WorkEJB extends AbstractEJB {
         List<Task> allTaskList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(allTaskList)) {
-            getLogger().debug("La tâche existe déjà");
+            getLogger().debug("La tï¿½che existe dï¿½jï¿½");
             Task myTask = allTaskList.get(0);
             if (myTask.getMembers().contains(member)) {
-                getLogger().debug("Déjà affectée à la personne");
+                getLogger().debug("Dï¿½jï¿½ affectï¿½e ï¿½ la personne");
                 throw new ExistingDataException();
             } else {
-                getLogger().debug("Affectation à la personne " + member.getId());
+                getLogger().debug("Affectation ï¿½ la personne " + member.getId());
                 myTask.addMember(member);
                 getEntityManager().merge(myTask);
                 taskDB = myTask;
@@ -190,7 +192,7 @@ public class WorkEJB extends AbstractEJB {
         } else
 
         {
-            getLogger().debug("Création d'une nouvelle tâche");
+            getLogger().debug("new task creation");
 
             // Reset task ID
             task.setId(null);
@@ -202,11 +204,10 @@ public class WorkEJB extends AbstractEJB {
 
         getEntityManager().flush();
 
-        // Création des objets Work
-        getLogger().debug("Création des objets WORK");
-        List<Calendar> workingDayList = CalendarUtils.getWorkingDays(month);
+        getLogger().debug("Creation of WORK objects");
+        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
 
-        for (Calendar day : workingDayList) {
+        for (DateTime day : workingDayList) {
             Work work = new Work();
             work.setDay(day);
             work.setMember(member);
@@ -226,7 +227,7 @@ public class WorkEJB extends AbstractEJB {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Work> getWorksMonth(Calendar month) {
+    public List<Work> getWorksMonth(DateTime month) {
         Query query = getEntityManager().createNamedQuery("findWorksMonth");
         query.setParameter("fmonth", month);
 

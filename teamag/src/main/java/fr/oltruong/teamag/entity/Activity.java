@@ -11,9 +11,8 @@ import javax.persistence.Table;
 
 @Table(name = "TM_ACTIVITY")
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.bc.number, a.name"),
-	@NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc") })
+@NamedQueries({ @NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.bc.number, a.name"),
+        @NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc") })
 public class Activity {
 
     @Id
@@ -27,27 +26,27 @@ public class Activity {
     private BusinessCase bc = new BusinessCase();
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public BusinessCase getBc() {
-	return bc;
+        return bc;
     }
 
     public void setBc(BusinessCase bc) {
-	this.bc = bc;
+        this.bc = bc;
     }
 
 }

@@ -1,7 +1,5 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import com.google.common.collect.Lists;
@@ -63,9 +62,9 @@ public class WorkController extends Controller {
 
     public String doCreateActivity() {
 
-        this.logger.info("Adding a new activity");
+        logger.info("Adding a new activity");
 
-        if (StringUtils.isBlank(this.newTask.getName())) {
+        if (StringUtils.isBlank(newTask.getName())) {
             FacesMessage msg = null;
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), getMessage("nameTask"));
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -73,9 +72,9 @@ public class WorkController extends Controller {
         } else {
 
             try {
-                this.workEJB.createTask(this.realizedBean.getCurrentMonth(), getMember(), this.newTask);
+                workEJB.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                this.works = this.workEJB.findWorks(getMember(), CalendarUtils.getFirstDayOfMonth(Calendar.getInstance()));
+                works = workEJB.findWorks(getMember(), DateTime.now().withDayOfMonth(1));
                 initTaskWeek();
 
                 FacesMessage msg = null;
@@ -93,30 +92,30 @@ public class WorkController extends Controller {
     }
 
     public String deleteTask() {
-        this.logger.info("Deleting task " + this.realizedBean.getSelectedTaskWeek().getTask().getName());
+        logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        this.workEJB.removeTask(this.realizedBean.getSelectedTaskWeek().getTask(), getMember(), this.realizedBean.getCurrentMonth());
+        workEJB.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
         init();
         return "realized.xhtml";
     }
 
     public String previousWeek() {
-        this.logger.debug("Click Previous week");
-        this.realizedBean.decrementWeek();
+        logger.debug("Click Previous week");
+        realizedBean.decrementWeek();
         initTaskWeek();
         return "realized.xhtml";
     }
 
     public String nextWeek() {
-        this.realizedBean.incrementWeek();
+        realizedBean.incrementWeek();
         initTaskWeek();
         return "realized.xhtml";
     }
 
     public String update() {
 
-        List<Work> changedWorks = findChangedWorks(this.realizedBean.getTaskWeeks());
-        this.workEJB.updateWorks(changedWorks);
+        List<Work> changedWorks = findChangedWorks(realizedBean.getTaskWeeks());
+        workEJB.updateWorks(changedWorks);
 
         FacesMessage msg = null;
         if (changedWorks.isEmpty()) {
@@ -133,7 +132,7 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeProject(String query) {
-        List<Task> tasks = this.workEJB.findAllTasks();
+        List<Task> tasks = workEJB.findAllTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -149,7 +148,7 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeName(String query) {
-        List<Task> tasks = this.workEJB.findAllTasks();
+        List<Task> tasks = workEJB.findAllTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -165,49 +164,49 @@ public class WorkController extends Controller {
     }
 
     private void sendNotification() {
-        int total = this.workEJB.getSumWorks(getMember(), this.realizedBean.getCurrentMonth());
+        int total = workEJB.getSumWorks(getMember(), realizedBean.getCurrentMonth());
 
-        int nbWorkingDays = CalendarUtils.getWorkingDays(this.realizedBean.getCurrentMonth()).size();
+        int nbWorkingDays = CalendarUtils.getWorkingDays(realizedBean.getCurrentMonth()).size();
         if (total == nbWorkingDays) {
 
             MailBean email = buildEmail();
-            this.mailEJB.sendEmail(email);
+            mailEJB.sendEmail(email);
         }
     }
 
     private MailBean buildEmail() {
         MailBean email = new MailBean();
         email.setContent("Realise complet");
-        email.setRecipient(this.parameterEJB.getAdministratorEmail());
+        email.setRecipient(parameterEJB.getAdministratorEmail());
         email.setSubject("Realise de " + getMember().getName());
         return email;
     }
 
     public String init() {
         // this.realizedBean = new RealizedFormWebBean();
-        this.realizedBean.setDayCursor(Calendar.getInstance());
+        realizedBean.setDayCursor(DateTime.now());
 
-        Calendar firstDayOfMonth = CalendarUtils.getFirstDayOfMonth(Calendar.getInstance());
-        this.realizedBean.setCurrentMonth(firstDayOfMonth);
-        this.works = this.workEJB.findWorks(getMember(), firstDayOfMonth);
+        DateTime firstDayOfMonth = DateTime.now().withDayOfMonth(1);
+        realizedBean.setCurrentMonth(firstDayOfMonth);
+        works = workEJB.findWorks(getMember(), firstDayOfMonth);
 
         initTaskWeek();
         return "realized";
     }
 
     private void initTaskWeek() {
-        if (this.works != null) {
-            Integer weekNumber = this.realizedBean.getWeekNumber();
+        if (works != null) {
+            Integer weekNumber = realizedBean.getWeekNumber();
 
             Map<String, ColumnDayBean> mapColumns = Maps.newHashMapWithExpectedSize(5);
 
-            List<TaskWeekBean> taskWeekList = new ArrayList<TaskWeekBean>(this.works.keySet().size());
-            for (Task task : this.works.keySet()) {
+            List<TaskWeekBean> taskWeekList = Lists.newArrayListWithExpectedSize(works.keySet().size());
+            for (Task task : works.keySet()) {
                 TaskWeekBean taskWeek = new TaskWeekBean();
                 taskWeek.setTask(task);
-                for (Work work : this.works.get(task)) {
+                for (Work work : works.get(task)) {
 
-                    if (work.getDay().get(Calendar.WEEK_OF_YEAR) == weekNumber) {
+                    if (work.getDay().getWeekOfWeekyear() == weekNumber) {
 
                         ColumnDayBean columnDay = new ColumnDayBean();
                         columnDay.setDay(work.getDay());
@@ -226,14 +225,14 @@ public class WorkController extends Controller {
 
             }
 
-            this.realizedBean.getColumnsDay().clear();
+            realizedBean.getColumnsDay().clear();
             for (ColumnDayBean col : mapColumns.values()) {
-                this.realizedBean.addColumnDay(col);
+                realizedBean.addColumnDay(col);
 
             }
-            Collections.sort(this.realizedBean.getColumnsDay());
-            this.realizedBean.setTaskWeeks(taskWeekList);
-            Collections.sort(this.realizedBean.getTaskWeeks());
+            Collections.sort(realizedBean.getColumnsDay());
+            realizedBean.setTaskWeeks(taskWeekList);
+            Collections.sort(realizedBean.getTaskWeeks());
 
         } else {
             logger.debug("No taskMonth found");
@@ -255,7 +254,7 @@ public class WorkController extends Controller {
     }
 
     public RealizedFormWebBean getRealizedBean() {
-        return this.realizedBean;
+        return realizedBean;
     }
 
     public void setRealizedBean(RealizedFormWebBean realizedBean) {
@@ -263,15 +262,15 @@ public class WorkController extends Controller {
     }
 
     public Member getMember() {
-        return this.memberInstance.get();
+        return memberInstance.get();
     }
 
     public Task getNewTask() {
-        return this.newTask;
+        return newTask;
     }
 
     public void setNewTask(Task newActivity) {
-        this.newTask = newActivity;
+        newTask = newActivity;
     }
 
 }
