@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.naming.NamingException;
 
@@ -16,7 +16,7 @@ public class WorkEJBIT extends AbstractEJBIT {
     // ======================================
 
     // FIXME
-    @Ignore
+    @Ignore("too long")
     public void createMember() throws NamingException {
 
         // Creates an instance of member
@@ -30,7 +30,7 @@ public class WorkEJBIT extends AbstractEJBIT {
         MemberEJB memberEJB = (MemberEJB) getContext().lookup("java:global/classes/MemberEJB");
 
         // Persists the member to the database
-        member = memberEJB.createMember(member);
+        member = memberEJB.createMemberWithAbsenceTask(member);
         assertThat(member.getId()).isNotNull();
 
         Task task = new Task();

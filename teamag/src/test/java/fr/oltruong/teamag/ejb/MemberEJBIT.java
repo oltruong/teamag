@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class MemberEJBIT extends AbstractEJBIT {
     // ======================================
 
     // FIXME
-    @Ignore
+    @Ignore("too long")
     public void createMember() throws NamingException {
 
         // Creates an instance of member
@@ -31,12 +31,12 @@ public class MemberEJBIT extends AbstractEJBIT {
         MemberEJB memberEJB = (MemberEJB) getContext().lookup("java:global/classes/MemberEJB");
 
         // Persists the member to the database
-        member = memberEJB.createMember(member);
-        assertNotNull("ID should not be null", member.getId());
-
+        member = memberEJB.createMemberWithAbsenceTask(member);
+        assertThat(member.getId()).isNotNull();
         // Retrieves all the members from the database
         List<Member> members = memberEJB.findMembers();
         assertNotNull(members);
-        assertTrue(!members.isEmpty());
+        assertThat(members).isNotNull();
+        assertThat(members).isNotEmpty();
     }
 }
