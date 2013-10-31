@@ -5,5 +5,7 @@ teamag/.project
 **/*.DS_Store
 *.bak
 *.prefs
+*.iml
+*.idea
 .DS_Store
 **/*.log
