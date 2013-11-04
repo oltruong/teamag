@@ -20,6 +20,7 @@
 		<version.assertj>1.4.0</version.assertj>
 		<version.mockito>1.9.5</version.mockito>
 		<version.jsf-api>2.0</version.jsf-api>
+		<version.joda-time>2.3</version.joda-time>
 
 		<version.commons-lang>3.1</version.commons-lang>
 		<version.commons-collections>3.2.1</version.commons-collections>
@@ -92,7 +93,7 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.3</version>
+			<version>${version.joda-time}</version>
 		</dependency>
 
 		<dependency>
