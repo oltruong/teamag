@@ -17,7 +17,7 @@
 			<h:form>
 				<p:dataTable id="realizedPerson"
 					value="#{reportingController.realizedPersons}" var="person"
-					border="1" sortBy="#{person.name}">
+					border="1" sortBy="#{person.name}" selectionMode="single">
 
 
 					<p:columnGroup type="header">
@@ -62,7 +62,7 @@
 			<h:form>
 				<p:dataTable id="realizedCompany"
 					value="#{reportingController.realizedCompanies}" var="company"
-					border="1" sortBy="#{company.name}">
+					border="1" sortBy="#{company.name}" selectionMode="single">
 
 
 					<p:columnGroup type="header">
