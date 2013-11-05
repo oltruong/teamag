@@ -1,80 +1,80 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="WEB-INF/layouts/template.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">#{i18n.membersPagetitle}</ui:define>
-
-
-	<ui:define name="content">
-
-		<p:panel header="#{i18n.membersPagenewMember}">
+    <ui:define name="title">#{i18n.membersPagetitle}</ui:define>
 
 
-			<h:form>
-				<table>
-					<tr>
-						<td><h:outputLabel value="#{i18n.name}" /></td>
-						<td><p:inputText value="#{memberController.member.name}"
-								required="true" /></td>
-						<td><h:outputLabel value="#{i18n.membersPagecompany}"
-								for="acCompany" /> <p:autoComplete id="acCompany"
-								value="#{memberController.member.company}"
-								completeMethod="#{memberController.completeCompany}" /></td>
-						<td><h:outputLabel value="#{i18n.membersPageemail}" /></td>
-						<td><p:inputText value="#{memberController.member.email}"
-								required="true" validatorMessage="e-mail is not valid">
-								<f:validateRegex
-									pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-							</p:inputText></td>
-						<td><h:outputLabel value="#{i18n.type}" /></td>
-						<td><p:selectOneListbox
-								value="#{memberController.member.memberType}">
-								<f:selectItems value="#{memberController.membertypeList}"
-									var="type" itemLabel="#{type}" itemValue="#{type}" />
-							</p:selectOneListbox></td>
+    <ui:define name="content">
 
-					</tr>
-					<tr>
-						<td colspan="6"><p:commandButton value="#{i18n.add}"
-								action="#{memberController.doCreateMember}" ajax="false"
-								icon="ui-icon-plusthick" /></td>
-					</tr>
-				</table>
+        <p:panel header="#{i18n.membersPagenewMember}">
 
-			</h:form>
-		</p:panel>
-		<br />
-		<br />
-		<p:panel header="#{i18n.membersPagememberList}">
-			<p:dataTable value="#{memberController.memberList}" var="user"
-				border="1">
-				<p:column headerText="#{i18n.id}">
-					<h:outputText value="#{user.id}" />
-				</p:column>
 
-				<p:column headerText="#{i18n.name}">
-					<h:outputText value="#{user.name}" />
-				</p:column>
+            <h:form>
+                <table>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.name}"/></td>
+                        <td><p:inputText value="#{memberController.member.name}"
+                                         required="true"/></td>
+                        <td><h:outputLabel value="#{i18n.membersPagecompany}"
+                                           for="acCompany"/> <p:autoComplete id="acCompany"
+                                                                             value="#{memberController.member.company}"
+                                                                             completeMethod="#{memberController.completeCompany}"/>
+                        </td>
+                        <td><h:outputLabel value="#{i18n.membersPageemail}"/></td>
+                        <td><p:inputText value="#{memberController.member.email}"
+                                         required="true" validatorMessage="e-mail is not valid">
+                            <f:validateRegex
+                                    pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+                        </p:inputText></td>
+                        <td><h:outputLabel value="#{i18n.type}"/></td>
+                        <td><p:selectOneListbox
+                                value="#{memberController.member.memberType}">
+                            <f:selectItems value="#{memberController.membertypeList}"
+                                           var="type" itemLabel="#{type}" itemValue="#{type}"/>
+                        </p:selectOneListbox></td>
 
-				<p:column headerText="#{i18n.membersPagecompany}"
-					sortBy="#{user.company}">
-					<h:outputText value="#{user.company}" />
-				</p:column>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><p:commandButton value="#{i18n.add}"
+                                                         action="#{memberController.doCreateMember}" ajax="false"
+                                                         icon="ui-icon-plusthick"/></td>
+                    </tr>
+                </table>
 
-				<p:column headerText="#{i18n.membersPageemail}">
-					<h:outputText value="#{user.email}" />
-				</p:column>
+            </h:form>
+        </p:panel>
+        <br/>
+        <br/>
+        <p:panel header="#{i18n.membersPagememberList}">
+            <p:dataTable value="#{memberController.memberList}" var="user" border="1">
+                <p:column headerText="#{i18n.id}">
+                    <h:outputText value="#{user.id}"/>
+                </p:column>
 
-				<p:column headerText="#{i18n.type}">
-					<h:outputText value="#{user.memberType}" />
-				</p:column>
+                <p:column headerText="#{i18n.name}">
+                    <h:outputText value="#{user.name}"/>
+                </p:column>
 
-			</p:dataTable>
-		</p:panel>
-	</ui:define>
+                <p:column headerText="#{i18n.membersPagecompany}"
+                          sortBy="#{user.company}">
+                    <h:outputText value="#{user.company}"/>
+                </p:column>
+
+                <p:column headerText="#{i18n.membersPageemail}">
+                    <h:outputText value="#{user.email}"/>
+                </p:column>
+
+                <p:column headerText="#{i18n.type}">
+                    <h:outputText value="#{user.memberType}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
 </ui:composition>
 
