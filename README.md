@@ -1,6 +1,6 @@
 # TEAMAG
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
-* Team management web application written in JavaEE7 to explore its possibilities and serve as a useful tool for my job :)
+* Team management web application using JavaEE7 to learn while getting a useful tool for my job :)
 
 
 ## Frameworks used
