@@ -11,6 +11,17 @@
 
 	<ui:define name="content">
 
+<h:form>
+		<p:panel
+			header="#{i18n.reportingPagetitle} - #{reportingController.monthString}"
+			id="idPanel">
+			
+						<p:commandButton value="#{reportingController.previousMonthString}" ajax="false"
+				action="#{reportingController.previousMonth}"
+				icon="ui-icon-arrowthick-1-w" />
+			<p:commandButton value="#{reportingController.nextMonthString}"
+				action="#{reportingController.nextMonth}" ajax="false"
+				icon="ui-icon-arrowthick-1-e" />
 
 	<p:tabView orientation="top">
 		<p:tab title="#{i18n.reportingPageperPerson}">
@@ -102,7 +113,8 @@
 			</h:form>
 		</p:tab>
 	</p:tabView>
-
+</p:panel>
+</h:form>
 
 </ui:define>
 </ui:composition>

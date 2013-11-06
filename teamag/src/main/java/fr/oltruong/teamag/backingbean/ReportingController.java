@@ -7,9 +7,11 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
 
 import com.google.common.collect.Maps;
 
@@ -17,8 +19,10 @@ import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
+import fr.oltruong.teamag.utils.Constants;
 import fr.oltruong.teamag.webbean.RealizedReportBean;
 
+@SessionScoped
 @ManagedBean
 public class ReportingController {
 
@@ -29,22 +33,35 @@ public class ReportingController {
 
     private List<RealizedReportBean> realizedCompanies;
 
-    private DateTime month;
+    private MutableDateTime month;
+
+    public String previousMonth() {
+        month.addMonths(-1);
+        initLists();
+        return "reporting";
+    }
+
+    public String nextMonth() {
+        month.addMonths(1);
+        initLists();
+        return "reporting";
+    }
 
     @PostConstruct
+    private void init() {
+
+        month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).toMutableDateTime();
+
+        initLists();
+
+    }
+
     private void initLists() {
-
-        month = DateTime.now().withDayOfMonth(1);
-        // this.month = CalendarUtils.getPreviousMonth(
-        // CalendarUtils.getFirstDayOfMonth( Calendar.getInstance() ) );
-
-        System.currentTimeMillis();
-        List<Work> works = workEJB.getWorksMonth(month);
+        List<Work> works = workEJB.getWorksMonth(month.toDateTime());
 
         initRealizedPersons(works);
 
         initRealizedCompanies(works);
-
     }
 
     private void initRealizedCompanies(List<Work> works) {
@@ -92,6 +109,7 @@ public class ReportingController {
             }
 
         }
+
         realizedPersons = new ArrayList<RealizedReportBean>(map.size());
 
         final Set<Map.Entry<Member, List<Task>>> entries = map.entrySet();
@@ -119,6 +137,18 @@ public class ReportingController {
 
     public void setRealizedCompanies(List<RealizedReportBean> realizedCompanies) {
         this.realizedCompanies = realizedCompanies;
+    }
+
+    public String getMonthString() {
+        return month.toString(Constants.MONTH_YEAR_FORMAT);
+    }
+
+    public String getPreviousMonthString() {
+        return month.toDateTime().minusMonths(1).toString(Constants.MONTH_YEAR_FORMAT);
+    }
+
+    public String getNextMonthString() {
+        return month.toDateTime().plusMonths(1).toString(Constants.MONTH_YEAR_FORMAT);
     }
 
 }
