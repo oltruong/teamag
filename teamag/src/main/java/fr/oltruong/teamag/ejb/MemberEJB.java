@@ -3,11 +3,9 @@ package fr.oltruong.teamag.ejb;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
 
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.MemberType;
@@ -17,13 +15,10 @@ import fr.oltruong.teamag.exception.UserNotFoundException;
 @Stateless
 public class MemberEJB extends AbstractEJB {
 
-    @Inject
-    private Logger logger;
-
     public void checkMembersNotEmpty() {
 
         if (findMembers().isEmpty()) {
-            logger.info("No member so far. Default admin will be created");
+            getLogger().info("No member so far. Default admin will be created");
 
             Member adminMember = generateAdminMember();
             getEntityManager().persist(adminMember);
@@ -60,10 +55,10 @@ public class MemberEJB extends AbstractEJB {
         query.setParameter("fproject", "");
 
         Task task = null;
-        List<Task> tasks = query.getResultList();
+        List<Task> tasklist = query.getResultList();
 
-        if (tasks != null && !tasks.isEmpty()) {
-            task = tasks.get(0);
+        if (tasklist != null && !tasklist.isEmpty()) {
+            task = tasklist.get(0);
         }
 
         if (task == null) {

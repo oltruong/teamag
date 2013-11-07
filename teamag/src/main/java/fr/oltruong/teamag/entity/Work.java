@@ -18,8 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import fr.oltruong.teamag.entity.converter.DateConverter;
 
 @Table(name = "TM_WORK")
@@ -150,11 +148,6 @@ public class Work {
 
     public boolean hasChanged() {
         return total.floatValue() != totalEdit.floatValue();
-    }
-
-    @VisibleForTesting
-    public void setLogger(Logger logger) {
-        this.logger = logger;
     }
 
 }

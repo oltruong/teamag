@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
@@ -15,14 +16,17 @@ import com.google.common.collect.Lists;
 
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.exception.UserNotFoundException;
+import fr.oltruong.teamag.utils.TestUtils;
 
 public class MemberEJBTest extends AbstractEJBTest {
 
     private MemberEJB buildMemberEJB() {
         MemberEJB memberEJB = new MemberEJB();
-        memberEJB.setEntityManager(getMockEntityManager());
 
-        memberEJB.setLogger(getMockLogger());
+        TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockEntityManager(), "entityManager");
+        TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockLogger(), "logger");
+
         return memberEJB;
     }
 
@@ -58,13 +62,18 @@ public class MemberEJBTest extends AbstractEJBTest {
 
         MemberEJB memberEJB = buildMemberEJB();
 
-        assertThat(memberEJB.findByName(null)).isNull();
+        try {
+            memberEJB.findByName(null);
+            fail("UserNotFoundException expected");
+        } catch (UserNotFoundException e) {
+
+        }
         verify(getMockEntityManager()).createNamedQuery(eq("findByName"));
 
     }
 
     @Test
-    public void testFindByName() {
+    public void testFindByName() throws UserNotFoundException {
 
         String name = "FOOONAME";
         MemberEJB memberEJB = buildMemberEJB();

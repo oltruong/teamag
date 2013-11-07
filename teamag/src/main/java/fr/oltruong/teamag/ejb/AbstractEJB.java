@@ -5,8 +5,6 @@ import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
-import com.google.common.annotations.VisibleForTesting;
-
 public abstract class AbstractEJB {
 
     @Inject
@@ -23,13 +21,4 @@ public abstract class AbstractEJB {
         return logger;
     }
 
-    @VisibleForTesting
-    public void setEntityManager(EntityManager entityManagerInjected) {
-        entityManager = entityManagerInjected;
-    }
-
-    @VisibleForTesting
-    public void setLogger(Logger loggerInjected) {
-        logger = loggerInjected;
-    }
 }

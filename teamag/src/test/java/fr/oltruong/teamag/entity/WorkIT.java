@@ -15,6 +15,8 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import fr.oltruong.teamag.utils.TestUtils;
+
 public class WorkIT {
     @Test
     public void testCreation() {
@@ -99,7 +101,7 @@ public class WorkIT {
     private Work createWork() {
         Work work = new Work();
 
-        work.setLogger(LoggerFactory.getLogger(Work.class.getName()));
+        TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
         work.setMember(createMember());
         work.setDay(DateTime.now());
         work.setTask(createTask());
