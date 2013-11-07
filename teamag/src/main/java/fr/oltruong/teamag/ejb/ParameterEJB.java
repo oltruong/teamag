@@ -6,15 +6,16 @@ package fr.oltruong.teamag.ejb;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
 
 import fr.oltruong.teamag.entity.Parameter;
 import fr.oltruong.teamag.entity.ParameterName;
@@ -25,7 +26,8 @@ import fr.oltruong.teamag.entity.ParameterName;
 @Singleton
 public class ParameterEJB extends AbstractEJB {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    @Inject
+    private Logger logger;
 
     private Map<ParameterName, Parameter> parameterMap;
 
@@ -42,7 +44,7 @@ public class ParameterEJB extends AbstractEJB {
     }
 
     private void saveParameters() {
-        for (Parameter parameter : this.parameterMap.values()) {
+        for (Parameter parameter : parameterMap.values()) {
             this.getEntityManager().merge(parameter);
         }
     }
@@ -52,9 +54,9 @@ public class ParameterEJB extends AbstractEJB {
         @SuppressWarnings("unchecked")
         List<Parameter> parameterList = query.getResultList();
         if (CollectionUtils.isNotEmpty(parameterList)) {
-            this.parameterMap = new HashMap<ParameterName, Parameter>(parameterList.size());
+            parameterMap = new HashMap<ParameterName, Parameter>(parameterList.size());
             for (Parameter parameter : parameterList) {
-                this.parameterMap.put(parameter.getName(), parameter);
+                parameterMap.put(parameter.getName(), parameter);
             }
         } else {
 
@@ -64,17 +66,17 @@ public class ParameterEJB extends AbstractEJB {
 
     private void initAndPersistParameterMap() {
 
-        this.logger.info("Creating parameters Map");
+        logger.info("Creating parameters Map");
 
-        this.parameterMap = new HashMap<ParameterName, Parameter>(2);
+        parameterMap = new HashMap<ParameterName, Parameter>(2);
         Parameter smtpHostParameter = new Parameter(ParameterName.SMTP_HOST);
         Parameter administratorEmailParameter = new Parameter(ParameterName.ADMINISTRATOR_EMAIL);
 
         this.getEntityManager().persist(smtpHostParameter);
         this.getEntityManager().persist(administratorEmailParameter);
 
-        this.parameterMap.put(ParameterName.SMTP_HOST, smtpHostParameter);
-        this.parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);
+        parameterMap.put(ParameterName.SMTP_HOST, smtpHostParameter);
+        parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);
 
     }
 
@@ -90,21 +92,21 @@ public class ParameterEJB extends AbstractEJB {
 
     @Lock(LockType.READ)
     public Parameter getSmtpHostParameter() {
-        return this.parameterMap.get(ParameterName.SMTP_HOST);
+        return parameterMap.get(ParameterName.SMTP_HOST);
     }
 
     @Lock(LockType.READ)
     public Parameter getAdministratorEmailParameter() {
-        return this.parameterMap.get(ParameterName.ADMINISTRATOR_EMAIL);
+        return parameterMap.get(ParameterName.ADMINISTRATOR_EMAIL);
     }
 
     private void setSmtpHostParameter(Parameter smtpHostParameter) {
-        this.parameterMap.put(ParameterName.SMTP_HOST, smtpHostParameter);
+        parameterMap.put(ParameterName.SMTP_HOST, smtpHostParameter);
 
     }
 
     private void setAdministratorEmailParameter(Parameter administratorEmailParameter) {
-        this.parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);
+        parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);
 
     }
 
