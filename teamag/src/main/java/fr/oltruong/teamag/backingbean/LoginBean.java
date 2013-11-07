@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.qualifier.UserLogin;
 import fr.oltruong.teamag.utils.Constants;
 
@@ -55,7 +56,7 @@ public class LoginBean extends Controller {
     }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -63,7 +64,7 @@ public class LoginBean extends Controller {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -95,22 +96,22 @@ public class LoginBean extends Controller {
 
     public String login() {
 
-        this.logger.info("Login={}", this.username);
+        logger.info("Login={}", username);
 
         FacesMessage userMessage = null;
-        Member member = this.memberEJB.findByName(this.username);
-
-        if (member != null) {
-            this.logger.info(member.getName() + " found");
-            userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", this.username), "");
+        Member member;
+        try {
+            member = memberEJB.findByName(username);
+            logger.info(member.getName() + " found");
+            userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", username), "");
             setMember(member);
             getMember();
             servletRequest.getSession().setAttribute(Constants.USER, member);
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
             return "welcome";
-        } else {
-            this.logger.warn(this.username + " not found");
-            userMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("unknown", this.username), getMessage("tryagain"));
+        } catch (UserNotFoundException e) {
+            logger.warn("[" + username + "] not found");
+            userMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("unknown", username), getMessage("tryagain"));
 
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
             return "login.xhtml";
@@ -120,11 +121,11 @@ public class LoginBean extends Controller {
 
     public String logout() {
 
-        this.logger.info("Logging out");
+        logger.info("Logging out");
         setMember(null);
         servletRequest.getSession().setAttribute(Constants.USER, null);
 
-        FacesMessage userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("farewell", this.username), getMessage("seeYou"));
+        FacesMessage userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("farewell", username), getMessage("seeYou"));
 
         FacesContext.getCurrentInstance().addMessage(null, userMessage);
         return "welcome.xhtml";

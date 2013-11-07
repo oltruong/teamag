@@ -14,3 +14,15 @@
 * [Guava] (https://code.google.com/p/guava-libraries/): Google core librairies
 * [LogBack] (http://logback.qos.ch/): nice logger
 * [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
+
+## Getting started
+
+### Required software
+
+* [Java7] (http://www.oracle.com/technetwork/java/index.html): forget java.util.Date and java.util.Calendar !
+* [Maven] (http://maven.apache.org): to generate war file
+* [JavaEE 7 server] (https://glassfish.java.net/): for example Glassfish
+
+### Default configuration
+* Datasource : jdbc/teamag
+* Default user : admin
