@@ -37,9 +37,6 @@ public class Parameter {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public ParameterName getName() {
         return this.name;

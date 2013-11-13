@@ -3,9 +3,11 @@
  */
 package fr.oltruong.teamag.ejb;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.Maps;
+import fr.oltruong.teamag.entity.Parameter;
+import fr.oltruong.teamag.entity.ParameterName;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
@@ -13,12 +15,9 @@ import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.persistence.Query;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-
-import fr.oltruong.teamag.entity.Parameter;
-import fr.oltruong.teamag.entity.ParameterName;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Olivier Truong
@@ -43,6 +42,7 @@ public class ParameterEJB extends AbstractEJB {
         loadParameters();
     }
 
+    @Lock(LockType.WRITE)
     private void saveParameters() {
         for (Parameter parameter : parameterMap.values()) {
             this.getEntityManager().merge(parameter);
@@ -54,7 +54,7 @@ public class ParameterEJB extends AbstractEJB {
         @SuppressWarnings("unchecked")
         List<Parameter> parameterList = query.getResultList();
         if (CollectionUtils.isNotEmpty(parameterList)) {
-            parameterMap = new HashMap<ParameterName, Parameter>(parameterList.size());
+            parameterMap = Maps.newHashMapWithExpectedSize(parameterList.size());
             for (Parameter parameter : parameterList) {
                 parameterMap.put(parameter.getName(), parameter);
             }

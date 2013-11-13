@@ -1,16 +1,14 @@
 package fr.oltruong.teamag.ejb;
 
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.persistence.Query;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.MemberType;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.UserNotFoundException;
+import org.apache.commons.collections.CollectionUtils;
+
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class MemberEJB extends AbstractEJB {
@@ -57,11 +55,9 @@ public class MemberEJB extends AbstractEJB {
         Task task = null;
         List<Task> tasklist = query.getResultList();
 
-        if (tasklist != null && !tasklist.isEmpty()) {
+        if (!CollectionUtils.isEmpty(tasklist)) {
             task = tasklist.get(0);
-        }
-
-        if (task == null) {
+        }  else {
             getLogger().info("Task is not found. Will be created");
             Task newTask = new Task();
             newTask.setName("Absence");

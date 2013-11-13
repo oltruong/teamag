@@ -127,11 +127,9 @@ public class Work {
             try {
                 totalEdit = Float.valueOf(totalEditStr);
             } catch (NumberFormatException ex) {
-                logger.error("Valeur incorrecte " + totalEditStr);
+                logger.error("Incorrect value " + totalEditStr);
             }
-        } else
-        // Blank means 0
-        {
+        } else {   // Blank means 0
             totalEdit = 0f;
         }
     }

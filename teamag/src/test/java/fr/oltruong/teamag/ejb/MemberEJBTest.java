@@ -1,24 +1,23 @@
 package fr.oltruong.teamag.ejb;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
-
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TestUtils;
+import org.junit.Test;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.*;
+
+/**
+ *  @author Olivier Truong
+ */
 public class MemberEJBTest extends AbstractEJBTest {
 
     private MemberEJB buildMemberEJB() {
@@ -54,8 +53,10 @@ public class MemberEJBTest extends AbstractEJBTest {
 
         assertThat(memberList).isEqualTo(mockList);
         verify(getMockEntityManager()).createNamedQuery(eq("findMembers"));
-
     }
+
+
+
 
     @Test
     public void testFindByNameNull() {
@@ -90,10 +91,27 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     @Test
     public void testCreateMemberWithAbsenceTask() {
-        MemberEJB memberEJB = buildMemberEJB();
+
         List<Task> taskList = buildEmptyTaskList();
+        taskList.add(new Task());
+        testCreateMember(taskList);
+        verify(getMockEntityManager()).persist(isA(Task.class));
+
+    }
+
+    @Test
+    public void testCreateMemberWithoutAbsenceTask() {
+
+        List<Task> taskList = buildEmptyTaskList();
+        testCreateMember(taskList);
+        verify(getMockEntityManager(), times(2)).persist(isA(Task.class));
+
+    }
+
+    private void testCreateMember(List<Task> taskList) {
         when(getMockQuery().getResultList()).thenReturn(taskList);
 
+        MemberEJB memberEJB = buildMemberEJB();
         Member member = buildMember();
         Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
 
@@ -102,10 +120,9 @@ public class MemberEJBTest extends AbstractEJBTest {
         verify(getMockQuery()).setParameter(eq("fname"), isA(String.class));
         verify(getMockQuery()).setParameter(eq("fproject"), isA(String.class));
 
-        verify(getMockEntityManager(), times(2)).persist(isA(Task.class));
+
 
         verify(getMockEntityManager()).persist(eq(member));
-
     }
 
     private List<Task> buildEmptyTaskList() {

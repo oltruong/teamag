@@ -1,23 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.enterprise.inject.Instance;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.ejb.MailBean;
 import fr.oltruong.teamag.ejb.ParameterEJB;
@@ -31,6 +15,19 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
 import fr.oltruong.teamag.webbean.TaskWeekBean;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+
+import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @SessionScoped
 @ManagedBean

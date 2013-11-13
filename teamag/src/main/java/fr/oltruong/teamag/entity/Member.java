@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -88,7 +89,7 @@ public class Member implements Serializable {
             return false;
         }
         Member member0 = (Member) otherMember;
-        return id != null && id.equals(member0.getId());
+        return Objects.equals(id,member0.getId());
     }
 
     public boolean isAdministrator() {

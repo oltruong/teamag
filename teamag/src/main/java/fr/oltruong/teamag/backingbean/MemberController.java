@@ -1,29 +1,22 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.List;
+import com.google.common.collect.Lists;
+import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.MemberType;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.Lists;
-
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.MemberType;
+import java.util.List;
 
 @ManagedBean
 @RequestScoped
 public class MemberController extends Controller {
 
-    // ======================================
-    // = Attributes =
-    // ======================================
     @Inject
     private MemberEJB memberEJB;
 
@@ -34,32 +27,30 @@ public class MemberController extends Controller {
 
     @PostConstruct
     private void initList() {
-        this.memberList = this.memberEJB.findMembers();
+        memberList = memberEJB.findMembers();
     }
 
     public String doNewMemberForm() {
-        return "newMember.xhtml";
+        return "newMember";
     }
 
     public String doCreateMember() {
-        this.member = this.memberEJB.createMemberWithAbsenceTask(this.member);
-        this.memberList = this.memberEJB.findMembers();
+        member = memberEJB.createMemberWithAbsenceTask(member);
+        memberList = memberEJB.findMembers();
 
-        FacesMessage msg = null;
-        msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", this.member.getName()));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));
+        getFacesContext().addMessage(null, facesMessage);
 
-        return "newMember.xhtml";
+        return "newMember";
     }
 
     public List<String> completeCompany(String query) {
-        List<Member> members = this.memberEJB.findMembers();
 
-        List<String> results = Lists.newArrayListWithExpectedSize(members.size());
+        List<String> results = Lists.newArrayListWithExpectedSize(memberList.size());
 
         if (!StringUtils.isBlank(query) && query.length() > 1) {
 
-            for (Member member : members) {
+            for (Member member : memberList) {
                 if (StringUtils.containsIgnoreCase(member.getCompany(), query) && !results.contains(member.getCompany())) {
                     results.add(member.getCompany());
                 }
@@ -68,22 +59,6 @@ public class MemberController extends Controller {
         }
         return results;
 
-    }
-
-    public Member getMember() {
-        return this.member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public List<Member> getMemberList() {
-        return this.memberList;
-    }
-
-    public void setMemberList(List<Member> memberList) {
-        this.memberList = memberList;
     }
 
     public List<String> getMembertypeList() {
@@ -95,6 +70,22 @@ public class MemberController extends Controller {
             memberTypeList.add(memberTypeArray[i].toString());
         }
         return memberTypeList;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public List<Member> getMemberList() {
+        return memberList;
+    }
+
+    public void setMemberList(List<Member> memberList) {
+        this.memberList = memberList;
     }
 
 }

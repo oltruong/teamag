@@ -1,6 +1,8 @@
 package fr.oltruong.teamag.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class TestUtils {
 
@@ -23,5 +25,11 @@ public class TestUtils {
             e.printStackTrace();
         }
 
+    }
+
+    public static Object callPrivateMethod(Object object, String methodName, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = object.getClass().getDeclaredMethod(methodName);
+        method.setAccessible(true);
+        return method.invoke(object,arguments);
     }
 }

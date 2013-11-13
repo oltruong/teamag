@@ -8,6 +8,7 @@
 		<class>fr.oltruong.teamag.entity.Activity</class>
 		<class>fr.oltruong.teamag.entity.BusinessCase</class>
 		<class>fr.oltruong.teamag.entity.Member</class>
+        <class>fr.oltruong.teamag.entity.Parameter</class>
 		<class>fr.oltruong.teamag.entity.Task</class>
 		<class>fr.oltruong.teamag.entity.Work</class>
 		<class>fr.oltruong.teamag.entity.converter.DateConverter</class>
@@ -31,6 +32,7 @@
    		<class>fr.oltruong.teamag.entity.Activity</class>
 		<class>fr.oltruong.teamag.entity.BusinessCase</class>
 		<class>fr.oltruong.teamag.entity.Member</class>
+        <class>fr.oltruong.teamag.entity.Parameter</class>
 		<class>fr.oltruong.teamag.entity.Task</class>
 		<class>fr.oltruong.teamag.entity.Work</class>
 

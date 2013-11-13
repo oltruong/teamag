@@ -1,15 +1,15 @@
 package fr.oltruong.teamag.ejb;
 
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.when;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.when;
 
 public abstract class AbstractEJBTest {
 
@@ -25,7 +25,6 @@ public abstract class AbstractEJBTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-
         when(getMockEntityManager().createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
     }
 
