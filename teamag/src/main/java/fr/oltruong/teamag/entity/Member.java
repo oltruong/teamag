@@ -15,33 +15,41 @@ import javax.persistence.Table;
 
 @Table(name = "TM_MEMBER")
 @Entity
-@NamedQueries({ @NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findByName", query = "SELECT m from Member m where m.name=:fname") })
+@NamedQueries({@NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
 public class Member implements Serializable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-
+    @Column(nullable = false)
+    private final Float productivity = 1f;
     @Id
     @GeneratedValue
     private Long id;
-
     @Column(nullable = false, unique = true)
     private String name;
-
+    private String password;
     @Column(nullable = false)
     private String company;
-
     @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private final Float productivity = 1f;
-
     @Column
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
+
+    public boolean isAdministrator() {
+        return MemberType.ADMINISTRATOR.equals(memberType);
+    }
+
+    @Override
+    public boolean equals(Object otherMember) {
+        if (!(otherMember instanceof Member)) {
+            return false;
+        }
+        Member member0 = (Member) otherMember;
+        return Objects.equals(id, member0.getId());
+    }
 
     public Long getId() {
         return id;
@@ -57,6 +65,10 @@ public class Member implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCompany() {
@@ -83,16 +95,4 @@ public class Member implements Serializable {
         this.memberType = memberType;
     }
 
-    @Override
-    public boolean equals(Object otherMember) {
-        if (!(otherMember instanceof Member)) {
-            return false;
-        }
-        Member member0 = (Member) otherMember;
-        return Objects.equals(id,member0.getId());
-    }
-
-    public boolean isAdministrator() {
-        return MemberType.ADMINISTRATOR.equals(memberType);
-    }
 }

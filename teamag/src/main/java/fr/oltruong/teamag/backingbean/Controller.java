@@ -7,18 +7,8 @@ import java.util.ResourceBundle;
 
 public abstract class Controller {
 
-    private FacesContext facesContext;
-
-    protected FacesContext getFacesContext() {
-
-        if (facesContext == null) {
-            facesContext = FacesContext.getCurrentInstance();
-        }
-        return facesContext;
-    }
-
     protected String getMessage(String msgKey, Object... args) {
-        Locale locale = getFacesContext().getViewRoot().getLocale();
+        Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, classLoader);
         String msgValue = bundle.getString(msgKey);

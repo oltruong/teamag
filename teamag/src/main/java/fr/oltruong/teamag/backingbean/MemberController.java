@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -19,10 +20,8 @@ public class MemberController extends Controller {
 
     @Inject
     private MemberEJB memberEJB;
-
     @Inject
     private Member member;
-
     private List<Member> memberList = Lists.newArrayList();
 
     @PostConstruct
@@ -39,7 +38,7 @@ public class MemberController extends Controller {
         memberList = memberEJB.findMembers();
 
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));
-        getFacesContext().addMessage(null, facesMessage);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 
         return "newMember";
     }

@@ -1,34 +1,19 @@
 package fr.oltruong.teamag.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.RollbackException;
-
 import org.junit.Test;
 
-public class BusinessCaseIT {
+import javax.persistence.RollbackException;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class BusinessCaseIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
         BusinessCase businessCase = createBusinessCase(99);
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
 
-        // Persists member to the database
-        tx.begin();
-        em.persist(businessCase);
-
-        tx.commit();
-
-        em.close();
-        emf.close();
+        getEntityManager().persist(businessCase);
+        getTransaction().commit();
 
         assertThat(businessCase.getNumber()).isNotNull();
     }
@@ -38,18 +23,8 @@ public class BusinessCaseIT {
         BusinessCase businessCase = createBusinessCase(567);
         businessCase.setName(null);
 
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        // Persists member to the database
-        tx.begin();
-        em.persist(businessCase);
-
-        tx.commit();
-        em.close();
-        emf.close();
+        getEntityManager().persist(businessCase);
+        getTransaction().commit();
 
     }
 
@@ -58,23 +33,13 @@ public class BusinessCaseIT {
 
         BusinessCase businessCase = createBusinessCase(1234);
 
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        getEntityManager().persist(businessCase);
 
-        // Persists member to the database
-        tx.begin();
-        em.persist(businessCase);
-
-        tx.commit();
+        getTransaction().commit();
         @SuppressWarnings("unchecked")
-        List<BusinessCase> businessCaseList = em.createNamedQuery("findAllBC").getResultList();
+        List<BusinessCase> businessCaseList = getEntityManager().createNamedQuery("findAllBC").getResultList();
 
         assertThat(businessCaseList).isNotNull().isNotEmpty();
-
-        em.close();
-        emf.close();
 
     }
 

@@ -1,5 +1,14 @@
 package fr.oltruong.teamag.backingbean;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
+import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.exception.UserNotFoundException;
+import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.utils.Constants;
+import org.slf4j.Logger;
+
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -8,32 +17,19 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.exception.UserNotFoundException;
-import fr.oltruong.teamag.qualifier.UserLogin;
-import fr.oltruong.teamag.utils.Constants;
-
 @ManagedBean
 @SessionScoped
 public class LoginBean extends Controller {
 
     @Inject
     private Logger logger;
-
     @Inject
     private MemberEJB memberEJB;
-
     @Inject
     private HttpServletRequest servletRequest;
-
     private Member member;
-
     private String username;
-
-    private String password;
+    private String password = "";
 
     public String getLoggedUserName() {
         if (getMember() == null) {
@@ -78,6 +74,10 @@ public class LoginBean extends Controller {
         return member;
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     @Produces
     @UserLogin
     public Member getMemberFromSession() {
@@ -90,18 +90,18 @@ public class LoginBean extends Controller {
 
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
     public String login() {
 
         logger.info("Login={}", username);
 
         FacesMessage userMessage = null;
         Member member;
+        String passwordHashed = null;
         try {
-            member = memberEJB.findByName(username);
+
+            passwordHashed = hashPassword(password);
+
+            member = memberEJB.findMember(username, passwordHashed);
             logger.info(member.getName() + " found");
             userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", username), "");
             setMember(member);
@@ -110,7 +110,7 @@ public class LoginBean extends Controller {
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
             return "welcome";
         } catch (UserNotFoundException e) {
-            logger.warn("[" + username + "] not found");
+            logger.warn("login [" + username + "] passwordhashed [" + passwordHashed + "] not found");
             userMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("unknown", username), getMessage("tryagain"));
 
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
@@ -129,6 +129,10 @@ public class LoginBean extends Controller {
 
         FacesContext.getCurrentInstance().addMessage(null, userMessage);
         return "welcome.xhtml";
+    }
+
+    private String hashPassword(String passwordClear) {
+        return Hashing.sha256().hashString(passwordClear, Charsets.UTF_8).toString();
     }
 
 }

@@ -1,37 +1,22 @@
 package fr.oltruong.teamag.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
+import org.junit.Test;
 
+import javax.persistence.Query;
+import javax.persistence.RollbackException;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.RollbackException;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
-
-public class MemberIT {
+public class MemberIT extends AbstractEntityIT {
 
     @Test
     public void testCreation() {
         Member member = createMember();
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        // Persists member to the database
-        tx.begin();
-        em.persist(member);
-
-        tx.commit();
-
-        em.close();
-        emf.close();
-
+        getEntityManager().persist(member);
         assertThat(member.getId()).isNotNull();
     }
 
@@ -39,43 +24,42 @@ public class MemberIT {
     public void testException() {
         Member member = createMember();
         member.setEmail(null);
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        getEntityManager().persist(member);
+        getTransaction().commit();
+    }
 
-        // Persists member to the database
-        tx.begin();
-        em.persist(member);
+    @Test
+    public void testFindMembers() {
 
-        tx.commit();
-        em.close();
-        emf.close();
+        Member member = createMember();
+        getEntityManager().persist(member);
+
+        getTransaction().commit();
+        @SuppressWarnings("unchecked")
+        List<Member> listMembers = getEntityManager().createNamedQuery("findMembers").getResultList();
+
+        assertThat(listMembers).isNotNull().isNotEmpty();
+
 
     }
 
     @Test
-    public void testNamedQuery() {
-
+    public void testFindMemberByNameAndPassword() throws Exception {
         Member member = createMember();
+        getEntityManager().persist(member);
+        getTransaction().commit();
 
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        Query query = getEntityManager().createNamedQuery("findByNamePassword");
+        query.setParameter("fname", member.getName());
+        query.setParameter("fpassword", Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
 
-        // Persists member to the database
-        tx.begin();
-        em.persist(member);
+        List<Member> memberList = query.getResultList();
+        assertThat(memberList).isNotEmpty().hasSize(1).contains(member);
 
-        tx.commit();
-        @SuppressWarnings("unchecked")
-        List<Member> listMembers = em.createNamedQuery("findMembers").getResultList();
+        query.setParameter("fpassword", "sss");
 
-        assertThat(listMembers).isNotNull().isNotEmpty();
+        assertThat(query.getResultList()).isEmpty();
 
-        em.close();
-        emf.close();
 
     }
 
@@ -83,9 +67,9 @@ public class MemberIT {
         Member member = new Member();
 
         member.setName("Carot" + Calendar.getInstance().getTimeInMillis());
+        member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
-
         return member;
     }
 }

@@ -30,15 +30,16 @@ public class MemberEJB extends AbstractEJB {
         return query.getResultList();
     }
 
-    public Member findByName(String name) throws UserNotFoundException {
+    public Member findMember(String name,String password) throws UserNotFoundException {
         checkMembersNotEmpty();
 
-        Query query = getEntityManager().createNamedQuery("findByName");
+        Query query = getEntityManager().createNamedQuery("findByNamePassword");
         query.setParameter("fname", name);
+        query.setParameter("fpassword",password);
         @SuppressWarnings("unchecked")
-        List<Member> liste = query.getResultList();
-        if (!CollectionUtils.isEmpty(liste)) {
-            return liste.get(0);
+        List<Member> memberList = query.getResultList();
+        if (!CollectionUtils.isEmpty(memberList)) {
+            return memberList.get(0);
         } else {
             throw new UserNotFoundException();
         }

@@ -16,7 +16,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 
 /**
- *  @author Olivier Truong
+ * @author Olivier Truong
  */
 public class MemberEJBTest extends AbstractEJBTest {
 
@@ -55,36 +55,34 @@ public class MemberEJBTest extends AbstractEJBTest {
         verify(getMockEntityManager()).createNamedQuery(eq("findMembers"));
     }
 
-
-
-
     @Test
     public void testFindByNameNull() {
 
         MemberEJB memberEJB = buildMemberEJB();
 
         try {
-            memberEJB.findByName(null);
+            memberEJB.findMember(null, null);
             fail("UserNotFoundException expected");
         } catch (UserNotFoundException e) {
 
         }
-        verify(getMockEntityManager()).createNamedQuery(eq("findByName"));
+        verify(getMockEntityManager()).createNamedQuery(eq("findByNamePassword"));
 
     }
 
     @Test
-    public void testFindByName() throws UserNotFoundException {
+    public void testFindMember() throws UserNotFoundException {
 
         String name = "FOOONAME";
+        String password = "PASSWORD";
         MemberEJB memberEJB = buildMemberEJB();
 
         List<Member> mockList = buildMemberList();
 
         when(getMockQuery().getResultList()).thenReturn(mockList);
 
-        assertThat(memberEJB.findByName(name)).isNotNull().isEqualTo(mockList.get(0));
-        verify(getMockEntityManager()).createNamedQuery(eq("findByName"));
+        assertThat(memberEJB.findMember(name, password)).isNotNull().isEqualTo(mockList.get(0));
+        verify(getMockEntityManager()).createNamedQuery(eq("findByNamePassword"));
         verify(getMockQuery()).setParameter("fname", name);
 
     }
@@ -119,7 +117,6 @@ public class MemberEJBTest extends AbstractEJBTest {
         verify(getMockEntityManager()).createNamedQuery(eq("findTaskByName"));
         verify(getMockQuery()).setParameter(eq("fname"), isA(String.class));
         verify(getMockQuery()).setParameter(eq("fproject"), isA(String.class));
-
 
 
         verify(getMockEntityManager()).persist(eq(member));

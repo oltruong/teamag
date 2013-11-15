@@ -1,37 +1,21 @@
 package fr.oltruong.teamag.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
+import javax.persistence.Query;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
-
-public class TaskIT {
+public class TaskIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
         Task task = createTask();
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        getEntityManager().persist(task.getMembers().get(0));
+        getEntityManager().persist(task);
 
-        // Persists activity to the database
-        tx.begin();
-
-        em.persist(task.getMembers().get(0));
-        em.persist(task);
-
-        tx.commit();
-
-        em.close();
-        emf.close();
+        getTransaction().commit();
 
         assertThat(task.getId()).isNotNull();
 
@@ -42,26 +26,17 @@ public class TaskIT {
 
         Task task = createTask();
 
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        getEntityManager().persist(task.getMembers().get(0));
+        getEntityManager().persist(task);
 
-        // Persists activity to the database
-        tx.begin();
-        em.persist(task.getMembers().get(0));
-        em.persist(task);
-
-        tx.commit();
+        getTransaction().commit();
         @SuppressWarnings("unchecked")
-        List<Task> listTasks = em.createNamedQuery("findAllTasks").getResultList();
+        List<Task> listTasks = getEntityManager().createNamedQuery("findAllTasks").getResultList();
 
         assertThat(listTasks).isNotNull().isNotEmpty();
 
         assertThat(listTasks.get(0).getMembers()).isNotNull().isNotEmpty();
 
-        em.close();
-        emf.close();
 
     }
 
@@ -79,20 +54,13 @@ public class TaskIT {
 
         task2.setProject("");
 
-        // Gets an entity manager and a transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("testPersistence");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
 
-        // Persists activity to the database
-        tx.begin();
+        getEntityManager().persist(task1);
+        getEntityManager().persist(task2);
 
-        em.persist(task1);
-        em.persist(task2);
+        getTransaction().commit();
 
-        tx.commit();
-
-        Query query = em.createNamedQuery("findTaskByName");
+        Query query = getEntityManager().createNamedQuery("findTaskByName");
         query.setParameter("fname", name);
         query.setParameter("fproject", "");
 
@@ -101,7 +69,7 @@ public class TaskIT {
 
         assertThat(listTasks).isNotNull().isNotEmpty().hasSize(1).contains(task2);
 
-        Query query2 = em.createNamedQuery("findTaskByName");
+        Query query2 = getEntityManager().createNamedQuery("findTaskByName");
         query2.setParameter("fname", task1.getName());
         query2.setParameter("fproject", task1.getProject());
 
@@ -109,9 +77,6 @@ public class TaskIT {
         List<Task> listTasks2 = query2.getResultList();
 
         assertThat(listTasks2).isNotNull().isNotEmpty().hasSize(1).contains(task1);
-
-        em.close();
-        emf.close();
 
     }
 
