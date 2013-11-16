@@ -19,7 +19,7 @@ import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
-import fr.oltruong.teamag.utils.Constants;
+import fr.oltruong.teamag.utils.TeamagConstants;
 import fr.oltruong.teamag.webbean.RealizedReportBean;
 
 @SessionScoped
@@ -140,15 +140,15 @@ public class ReportingController {
     }
 
     public String getMonthString() {
-        return month.toString(Constants.MONTH_YEAR_FORMAT);
+        return month.toString(TeamagConstants.MONTH_YEAR_FORMAT);
     }
 
     public String getPreviousMonthString() {
-        return month.toDateTime().minusMonths(1).toString(Constants.MONTH_YEAR_FORMAT);
+        return month.toDateTime().minusMonths(1).toString(TeamagConstants.MONTH_YEAR_FORMAT);
     }
 
     public String getNextMonthString() {
-        return month.toDateTime().plusMonths(1).toString(Constants.MONTH_YEAR_FORMAT);
+        return month.toDateTime().plusMonths(1).toString(TeamagConstants.MONTH_YEAR_FORMAT);
     }
 
 }
