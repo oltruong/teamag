@@ -35,25 +35,18 @@ public class WorkController extends Controller {
 
     @Inject
     private Logger logger;
-
     @Inject
     @UserLogin
     private Instance<Member> memberInstance;
-
     @Inject
     private Task newTask;
-
     private Map<Task, List<Work>> works;
-
     @Inject
     private RealizedFormWebBean realizedBean;
-
     @Inject
     private WorkEJB workEJB;
-
     @Inject
     private EmailEJB mailEJB;
-
     @Inject
     private ParameterEJB parameterEJB;
 

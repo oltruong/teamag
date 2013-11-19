@@ -28,11 +28,8 @@ public class ReportingController {
 
     @Inject
     private WorkEJB workEJB;
-
     private List<RealizedReportBean> realizedPersons;
-
     private List<RealizedReportBean> realizedCompanies;
-
     private MutableDateTime month;
 
     public String previousMonth() {
