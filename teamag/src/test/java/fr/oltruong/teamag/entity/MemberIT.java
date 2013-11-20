@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,14 +14,14 @@ public class MemberIT extends AbstractEntityIT {
 
     @Test
     public void testCreation() {
-        Member member = createMember();
+        Member member = EntityFactory.createMember();
         getEntityManager().persist(member);
         assertThat(member.getId()).isNotNull();
     }
 
     @Test(expected = RollbackException.class)
     public void testException() {
-        Member member = createMember();
+        Member member = EntityFactory.createMember();
         member.setEmail(null);
         getEntityManager().persist(member);
         getTransaction().commit();
@@ -31,7 +30,7 @@ public class MemberIT extends AbstractEntityIT {
     @Test
     public void testFindMembers() {
 
-        Member member = createMember();
+        Member member = EntityFactory.createMember();
         getEntityManager().persist(member);
 
         getTransaction().commit();
@@ -45,7 +44,7 @@ public class MemberIT extends AbstractEntityIT {
 
     @Test
     public void testFindMemberByNameAndPassword() throws Exception {
-        Member member = createMember();
+        Member member = EntityFactory.createMember();
         getEntityManager().persist(member);
         getTransaction().commit();
 
@@ -63,13 +62,5 @@ public class MemberIT extends AbstractEntityIT {
 
     }
 
-    private Member createMember() {
-        Member member = new Member();
 
-        member.setName("Carot" + Calendar.getInstance().getTimeInMillis());
-        member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
-        member.setCompany("my company");
-        member.setEmail("dummy@email.com");
-        return member;
-    }
 }

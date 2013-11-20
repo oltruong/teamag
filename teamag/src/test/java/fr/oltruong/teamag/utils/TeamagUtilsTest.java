@@ -2,10 +2,6 @@ package fr.oltruong.teamag.utils;
 
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -21,10 +17,7 @@ public class TeamagUtilsTest {
     }
 
     @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<TeamagUtils> constructor = TeamagUtils.class.getDeclaredConstructor();
-        assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
-        constructor.setAccessible(true);
-        constructor.newInstance();
+    public void testConstructorIsPrivate() {
+        TestUtils.testConstructorIsPrivate(TeamagUtils.class);
     }
 }

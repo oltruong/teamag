@@ -37,7 +37,6 @@ public class Parameter {
         return this.id;
     }
 
-
     public ParameterName getName() {
         return this.name;
     }

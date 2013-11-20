@@ -1,17 +1,13 @@
 package fr.oltruong.teamag.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarUtilsTest {
 
@@ -40,11 +36,8 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<CalendarUtils> constructor = CalendarUtils.class.getDeclaredConstructor();
-        assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
-        constructor.setAccessible(true);
-        constructor.newInstance();
+    public void testConstructorIsPrivate() {
+        TestUtils.testConstructorIsPrivate(CalendarUtils.class);
     }
 
 }

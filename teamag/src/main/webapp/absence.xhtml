@@ -1,66 +1,85 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>#{i18n.absencePagetitle}</title>
-</h:head>
-<h:body>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
 
-	<p:growl id="growl" showDetail="true" life="2000" />
+    <ui:define name="title">#{i18n.absencePagetitle}</ui:define>
 
-	<h1 class="ui-widget-header ui-corner-all">
-		#{i18n.absencePageabsences} <h:outputText value="#{workController.member.name}" />
-	</h1>
+    <ui:define name="content">
 
-	<p:panel header="#{i18n.absencePagenewAbsence}">
+        <p:panel header="#{i18n.absencePagenewAbsence}">
 
-		<h:form>
-			<table border="0">
-				<tr>
-					<td><p:calendar value="#{absenceController.absence.beginDate}"
-							id="popupCal" pattern="dd/MM/yyyy" /></td>
-					<td><p:calendar value="#{absenceController.absence.endDate}"
-							id="popupCal2" /></td>
-					<td><p:selectOneRadio id="options"
-							value="#{absenceController.absence.type}">
-							<f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0" />
-							<f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1" />
-							<f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2" />
-						</p:selectOneRadio></td>
+            <h:form>
+                <table border="0">
+                    <tr>
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.beginDate}"
+                                        id="popupCal" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
+                        </td>
+                        <td><p:selectOneMenu id="options"
+                                             value="#{absenceController.absence.beginType}">
+                            <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                            <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                        </p:selectOneMenu></td>
+                    </tr>
+                    <tr>
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.endDate}"
+                                        id="popupCal2" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
+                        </td>
+                        <td><p:selectOneMenu id="options2"
+                                             value="#{absenceController.absence.endType}">
+                            <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                            <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                        </p:selectOneMenu></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><p:commandButton value="#{i18n.add}"
+                                                         action="#{absenceController.addAbsence}" ajax="false"
+                                                         icon="ui-icon-plusthick"/></td>
+                    </tr>
+                </table>
+            </h:form>
 
-					<td><p:commandButton value="#{i18n.add}"
-							action="#{absenceController.addAbsence}" ajax="false"
-							icon="ui-icon-plusthick" /></td>
-				</tr>
-			</table>
-		</h:form>
+        </p:panel>
+        <br/>
+        <p:panel header="#{i18n.absencePageabsenceList}">
+            <p:dataTable value="#{absenceController.absencesList}" var="absence"
+                         border="1">
+                <p:column headerText="#{i18n.beginDate}">
+                    <h:outputText value="#{absence.beginDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{i18n.type}">
+                    <p:selectOneMenu value="#{absence.beginType}">
+                        <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                        <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                        <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                    </p:selectOneMenu>
 
-	</p:panel>
-	<br />
-	<p:panel header="#{i18n.absencePageabsenceList}">
-		<p:dataTable value="#{absenceController.absencesList}" var="absence"
-			border="1">
-			<p:column headerText="#{i18n.beginDate}">
-				<h:outputText value="#{absence.beginDate}">
-					<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
-			</p:column>
-			<p:column headerText="#{i18n.endDate}">
-				<h:outputText value="#{absence.endDate}">
-					<f:convertDateTime pattern="dd/MM/yyyy" />
-				</h:outputText>
+                </p:column>
+                <p:column headerText="#{i18n.endDate}">
+                    <h:outputText value="#{absence.endDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
 
-			</p:column>
-			<p:column headerText="#{i18n.type}">
-				<h:outputText value="#{absence.typeStr}" />
-			</p:column>
+                </p:column>
+                <p:column headerText="#{i18n.type}">
+                    <p:selectOneMenu value="#{absence.endType}">
+                        <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                        <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                        <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                    </p:selectOneMenu>
+                </p:column>
 
-		</p:dataTable>
-	</p:panel>
+            </p:dataTable>
+        </p:panel>
 
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>

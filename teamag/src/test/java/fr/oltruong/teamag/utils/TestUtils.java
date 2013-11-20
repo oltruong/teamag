@@ -1,8 +1,13 @@
 package fr.oltruong.teamag.utils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+import static junit.framework.TestCase.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
 
@@ -30,6 +35,18 @@ public class TestUtils {
     public static Object callPrivateMethod(Object object, String methodName, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = object.getClass().getDeclaredMethod(methodName);
         method.setAccessible(true);
-        return method.invoke(object,arguments);
+        return method.invoke(object, arguments);
+    }
+
+    public static void testConstructorIsPrivate(Class<?> clazz) {
+        try {
+            Constructor<?> constructor = clazz.getDeclaredConstructor();
+            assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
+            constructor.setAccessible(true);
+
+            constructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            fail(e.getMessage());
+        }
     }
 }
