@@ -1,11 +1,10 @@
 package fr.oltruong.teamag.entity.converter;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-
-import org.joda.time.DateTime;
+import java.util.Date;
 
 @Converter
 public class DateConverter implements AttributeConverter<DateTime, Date> {

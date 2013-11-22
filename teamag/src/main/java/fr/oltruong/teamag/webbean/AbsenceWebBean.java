@@ -1,5 +1,7 @@
 package fr.oltruong.teamag.webbean;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 /**
@@ -8,20 +10,20 @@ import java.util.Date;
 public class AbsenceWebBean {
 
 
-    private Date beginDate;
+    private DateTime beginDateTime;
 
     private int beginType;
 
-    private Date endDate;
+    private DateTime endDateTime;
 
     private int endType;
 
-    public Date getBeginDate() {
-        return beginDate;
+    public DateTime getBeginDateTime() {
+        return beginDateTime;
     }
 
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
+    public void setBeginDateTime(DateTime beginDateTime) {
+        this.beginDateTime = beginDateTime;
     }
 
     public int getBeginType() {
@@ -32,12 +34,12 @@ public class AbsenceWebBean {
         this.beginType = beginType;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public DateTime getEndDateTime() {
+        return endDateTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDateTime(DateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public int getEndType() {
@@ -47,4 +49,24 @@ public class AbsenceWebBean {
     public void setEndType(int endType) {
         this.endType = endType;
     }
+
+
+    //Methods used by JSF component
+
+    public Date getEndDate() {
+        return endDateTime.toDate();
+    }
+
+    public void setEndDate(Date endDate) {
+        endDateTime = new DateTime(endDate);
+    }
+
+    public Date getBeginDate() {
+        return beginDateTime.toDate();
+    }
+
+    public void setBeginDate(Date beginDate) {
+        beginDateTime = new DateTime(beginDate);
+    }
+
 }

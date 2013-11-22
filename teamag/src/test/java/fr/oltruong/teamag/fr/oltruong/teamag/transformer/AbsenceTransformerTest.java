@@ -2,6 +2,7 @@ package fr.oltruong.teamag.fr.oltruong.teamag.transformer;
 
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.EntityFactory;
+import fr.oltruong.teamag.transformer.AbsenceTransformer;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 import org.joda.time.DateTime;
@@ -62,14 +63,14 @@ public class AbsenceTransformerTest {
     private AbsenceWebBean buildAbsenceWebBean() {
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
         absenceWebBean.setBeginType(Absence.MORNING_ONLY.intValue());
-        absenceWebBean.setBeginDate((DateTime.now().toDate()));
-        absenceWebBean.setEndDate((DateTime.now().plusDays(5).toDate()));
+        absenceWebBean.setBeginDateTime((DateTime.now()));
+        absenceWebBean.setEndDateTime((DateTime.now().plusDays(5)));
         absenceWebBean.setEndType(Absence.AFTERNOON_ONLY.intValue());
         return absenceWebBean;
     }
 
     private void compare(AbsenceWebBean absenceWebBean, Absence absence) {
-        assertThat(new DateTime(absenceWebBean.getBeginDate())).isEqualTo(absence.getBeginDate());
+        assertThat(new DateTime(absenceWebBean.getBeginDateTime())).isEqualTo(absence.getBeginDate());
         assertThat(new DateTime(absenceWebBean.getEndDate())).isEqualTo(absence.getEndDate());
         assertThat(absenceWebBean.getBeginType()).isEqualTo(absence.getBeginType().intValue());
         assertThat(absenceWebBean.getEndType()).isEqualTo(absence.getEndType().intValue());

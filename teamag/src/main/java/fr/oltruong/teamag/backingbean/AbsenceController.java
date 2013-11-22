@@ -3,19 +3,24 @@ package fr.oltruong.teamag.backingbean;
 import fr.oltruong.teamag.ejb.AbsenceEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.fr.oltruong.teamag.transformer.AbsenceTransformer;
+import fr.oltruong.teamag.exception.DateOverlapException;
+import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.transformer.AbsenceTransformer;
+import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 
 import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
 
 @SessionScoped
 @ManagedBean
-public class AbsenceController {
+public class AbsenceController extends Controller {
 
     @Inject
     @UserLogin
@@ -41,12 +46,25 @@ public class AbsenceController {
     }
 
     public void addAbsence() {
-        Absence newAbsence = AbsenceTransformer.transformWebBean(absence);
-        newAbsence.setMember(getMember());
-        absenceEJB.addAbsence(newAbsence);
-        absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
+        FacesMessage msg = null;
 
-        absence = new AbsenceWebBean();
+        try {
+            AbsenceWebBeanValidator.validate(absence, absencesList);
+            Absence newAbsence = AbsenceTransformer.transformWebBean(absence);
+            newAbsence.setMember(getMember());
+            absenceEJB.addAbsence(newAbsence);
+            absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
+
+            absence = new AbsenceWebBean();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("absenceAdded"), "");
+        } catch (InconsistentDateException e) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("errorAddingAbsence"), getMessage("inconsistentDates"));
+        } catch (DateOverlapException e) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("errorAddingAbsence"), getMessage("overlappingDates"));
+        }
+
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 
     }
 

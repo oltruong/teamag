@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.fr.oltruong.teamag.transformer;
+package fr.oltruong.teamag.transformer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -20,7 +20,7 @@ public final class AbsenceTransformer {
     public static Absence transformWebBean(AbsenceWebBean absenceWebBean) {
         Preconditions.checkArgument(absenceWebBean != null);
         Absence absence = new Absence();
-        absence.setBeginDate(new DateTime(absenceWebBean.getBeginDate()));
+        absence.setBeginDate(new DateTime(absenceWebBean.getBeginDateTime()));
         absence.setEndDate(new DateTime(absenceWebBean.getEndDate()));
         absence.setBeginType(Integer.valueOf(absenceWebBean.getBeginType()));
         absence.setEndType(Integer.valueOf(absenceWebBean.getEndType()));
@@ -30,8 +30,8 @@ public final class AbsenceTransformer {
     public static AbsenceWebBean transform(Absence absence) {
         Preconditions.checkArgument(absence != null);
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
-        absenceWebBean.setBeginDate(absence.getBeginDate().toDate());
-        absenceWebBean.setEndDate(absence.getEndDate().toDate());
+        absenceWebBean.setBeginDateTime(absence.getBeginDate());
+        absenceWebBean.setEndDateTime(absence.getEndDate());
         absenceWebBean.setBeginType(absence.getBeginType().intValue());
         absenceWebBean.setEndType(absence.getEndType().intValue());
         return absenceWebBean;

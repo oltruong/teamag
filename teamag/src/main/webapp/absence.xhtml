@@ -17,7 +17,8 @@
             <h:form>
                 <table border="0">
                     <tr>
-                        <td><p:calendar locale="fr" value="#{absenceController.absence.beginDate}"
+                        <td><h:outputText value="#{i18n.beginDateTime}"/></td>
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.beginDateTime}"
                                         id="popupCal" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
                         </td>
                         <td><p:selectOneMenu id="options"
@@ -26,11 +27,12 @@
                             <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
                             <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
                         </p:selectOneMenu></td>
-                    </tr>
-                    <tr>
-                        <td><p:calendar locale="fr" value="#{absenceController.absence.endDate}"
+                        <td>&nbsp;&nbsp;-&nbsp;&nbsp;</td>
+                        <td><h:outputText value="#{i18n.endDateTime}"/></td>
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.endDateTime}"
                                         id="popupCal2" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
                         </td>
+
                         <td><p:selectOneMenu id="options2"
                                              value="#{absenceController.absence.endType}">
                             <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
@@ -39,7 +41,7 @@
                         </p:selectOneMenu></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><p:commandButton value="#{i18n.add}"
+                        <td colspan="6"><p:commandButton value="#{i18n.add}"
                                                          action="#{absenceController.addAbsence}" ajax="false"
                                                          icon="ui-icon-plusthick"/></td>
                     </tr>
@@ -49,10 +51,11 @@
         </p:panel>
         <br/>
         <p:panel header="#{i18n.absencePageabsenceList}">
-            <p:dataTable value="#{absenceController.absencesList}" var="absence"
+            <p:dataTable value="#{absenceController.absencesList}" sortBy="#{absence.beginDateTime}"
+                         sortOrder="ascending" var="absence"
                          border="1">
-                <p:column headerText="#{i18n.beginDate}">
-                    <h:outputText value="#{absence.beginDate}">
+                <p:column headerText="#{i18n.beginDateTime}">
+                    <h:outputText value="#{absence.beginDateTime}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
@@ -64,8 +67,8 @@
                     </p:selectOneMenu>
 
                 </p:column>
-                <p:column headerText="#{i18n.endDate}">
-                    <h:outputText value="#{absence.endDate}">
+                <p:column headerText="#{i18n.endDateTime}"  sortBy="#{absence.endDateTime}">
+                    <h:outputText value="#{absence.endDateTime}">
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
 

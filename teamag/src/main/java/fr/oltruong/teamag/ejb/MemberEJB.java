@@ -69,6 +69,7 @@ public class MemberEJB
             task = newTask;
         }
 
+        member.setPassword(TeamagUtils.hashPassword(""));
         getEntityManager().persist(member);
 
         task.addMember(member);

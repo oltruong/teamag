@@ -1,26 +1,23 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
-
-import org.joda.time.DateTime;
-import org.joda.time.MutableDateTime;
-
 import com.google.common.collect.Maps;
-
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.utils.TeamagConstants;
 import fr.oltruong.teamag.webbean.RealizedReportBean;
+import org.joda.time.DateTime;
+import org.joda.time.MutableDateTime;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SessionScoped
 @ManagedBean
