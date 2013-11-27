@@ -47,6 +47,7 @@ public class AbsenceTransformerTest {
         Absence absence = EntityFactory.createAbsence();
         AbsenceWebBean absenceWebBean = AbsenceTransformer.transform(absence);
         compare(absenceWebBean, absence);
+        assertThat(absenceWebBean.getId()).isEqualTo(absence.getId());
     }
 
     @Test
@@ -62,6 +63,7 @@ public class AbsenceTransformerTest {
 
     private AbsenceWebBean buildAbsenceWebBean() {
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
+        absenceWebBean.setId(Long.valueOf(326l));
         absenceWebBean.setBeginType(Absence.MORNING_ONLY.intValue());
         absenceWebBean.setBeginDateTime((DateTime.now()));
         absenceWebBean.setEndDateTime((DateTime.now().plusDays(5)));
@@ -74,5 +76,6 @@ public class AbsenceTransformerTest {
         assertThat(new DateTime(absenceWebBean.getEndDate())).isEqualTo(absence.getEndDate());
         assertThat(absenceWebBean.getBeginType()).isEqualTo(absence.getBeginType().intValue());
         assertThat(absenceWebBean.getEndType()).isEqualTo(absence.getEndType().intValue());
+
     }
 }

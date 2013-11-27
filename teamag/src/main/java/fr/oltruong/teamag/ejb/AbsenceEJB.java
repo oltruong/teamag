@@ -25,4 +25,9 @@ public class AbsenceEJB extends AbstractEJB {
         getEntityManager().persist(absence);
     }
 
+    public void deleteAbsence(Long absenceId) {
+        Absence absenceDB = getEntityManager().find(Absence.class, absenceId);
+        getEntityManager().remove(absenceDB);
+    }
+
 }

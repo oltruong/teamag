@@ -29,6 +29,9 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceWebBean absence;
 
+    @Inject
+    private AbsenceWebBean selectedAbsence;
+
     private List<AbsenceWebBean> absencesList;
 
     @Inject
@@ -39,8 +42,7 @@ public class AbsenceController extends Controller {
 
     public String init() {
 
-        absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
-
+        refreshList();
         return "absence";
 
     }
@@ -53,7 +55,7 @@ public class AbsenceController extends Controller {
             Absence newAbsence = AbsenceTransformer.transformWebBean(absence);
             newAbsence.setMember(getMember());
             absenceEJB.addAbsence(newAbsence);
-            absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
+            refreshList();
 
             absence = new AbsenceWebBean();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("absenceAdded"), "");
@@ -66,6 +68,16 @@ public class AbsenceController extends Controller {
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
+    }
+
+    public void deleteAbsence() {
+        absenceEJB.deleteAbsence(getSelectedAbsence().getId());
+        refreshList();
+
+    }
+
+    private void refreshList() {
+        absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
     }
 
     public AbsenceWebBean getAbsence() {
@@ -82,6 +94,14 @@ public class AbsenceController extends Controller {
 
     public void setAbsencesList(List<AbsenceWebBean> absencesList) {
         this.absencesList = absencesList;
+    }
+
+    public AbsenceWebBean getSelectedAbsence() {
+        return selectedAbsence;
+    }
+
+    public void setSelectedAbsence(AbsenceWebBean selectedAbsence) {
+        this.selectedAbsence = selectedAbsence;
     }
 
     private Member getMember() {

@@ -10,6 +10,8 @@ import java.util.Date;
 public class AbsenceWebBean {
 
 
+    private Long id;
+
     private DateTime beginDateTime;
 
     private int beginType;
@@ -50,23 +52,43 @@ public class AbsenceWebBean {
         this.endType = endType;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     //Methods used by JSF component
 
     public Date getEndDate() {
-        return endDateTime.toDate();
+        Date endDate = null;
+        if (endDateTime != null) {
+            endDate = endDateTime.toDate();
+        }
+        return endDate;
     }
 
     public void setEndDate(Date endDate) {
-        endDateTime = new DateTime(endDate);
+        if (endDate != null) {
+            endDateTime = new DateTime(endDate).withTimeAtStartOfDay();
+        }
     }
 
     public Date getBeginDate() {
-        return beginDateTime.toDate();
+        Date beginDate = null;
+        if (beginDateTime != null) {
+            beginDate = beginDateTime.toDate();
+        }
+        return beginDate;
     }
 
     public void setBeginDate(Date beginDate) {
-        beginDateTime = new DateTime(beginDate);
+        if (beginDate != null) {
+            beginDateTime = new DateTime(beginDate).withTimeAtStartOfDay();
+        }
     }
 
 }

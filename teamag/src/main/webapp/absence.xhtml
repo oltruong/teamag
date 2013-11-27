@@ -18,7 +18,7 @@
                 <table border="0">
                     <tr>
                         <td><h:outputText value="#{i18n.beginDateTime}"/></td>
-                        <td><p:calendar locale="fr" value="#{absenceController.absence.beginDateTime}"
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.beginDate}"
                                         id="popupCal" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
                         </td>
                         <td><p:selectOneMenu id="options"
@@ -29,7 +29,7 @@
                         </p:selectOneMenu></td>
                         <td>&nbsp;&nbsp;-&nbsp;&nbsp;</td>
                         <td><h:outputText value="#{i18n.endDateTime}"/></td>
-                        <td><p:calendar locale="fr" value="#{absenceController.absence.endDateTime}"
+                        <td><p:calendar locale="fr" value="#{absenceController.absence.endDate}"
                                         id="popupCal2" pattern="dd/MM/yyyy" showButtonPanel="true" navigator="true"/>
                         </td>
 
@@ -50,39 +50,50 @@
 
         </p:panel>
         <br/>
-        <p:panel header="#{i18n.absencePageabsenceList}">
-            <p:dataTable value="#{absenceController.absencesList}" sortBy="#{absence.beginDateTime}"
-                         sortOrder="ascending" var="absence"
-                         border="1">
-                <p:column headerText="#{i18n.beginDateTime}">
-                    <h:outputText value="#{absence.beginDateTime}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="#{i18n.type}">
-                    <p:selectOneMenu value="#{absence.beginType}">
-                        <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
-                        <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
-                        <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
-                    </p:selectOneMenu>
+        <h:form>
+            <p:panel header="#{i18n.absencePageabsenceList}">
+                <p:dataTable value="#{absenceController.absencesList}" sortBy="#{absence.beginDate}"
+                             sortOrder="ascending" var="absence"
+                             border="1" id="idTable">
+                    <p:column headerText="#{i18n.beginDateTime}">
+                        <h:outputText value="#{absence.beginDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{i18n.type}">
+                        <p:selectOneMenu value="#{absence.beginType}">
+                            <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                            <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                        </p:selectOneMenu>
 
-                </p:column>
-                <p:column headerText="#{i18n.endDateTime}"  sortBy="#{absence.endDateTime}">
-                    <h:outputText value="#{absence.endDateTime}">
-                        <f:convertDateTime pattern="dd/MM/yyyy"/>
-                    </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{i18n.endDateTime}" sortBy="#{absence.endDate}">
+                        <h:outputText value="#{absence.endDate}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
 
-                </p:column>
-                <p:column headerText="#{i18n.type}">
-                    <p:selectOneMenu value="#{absence.endType}">
-                        <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
-                        <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
-                        <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
-                    </p:selectOneMenu>
-                </p:column>
+                    </p:column>
+                    <p:column headerText="#{i18n.type}">
+                        <p:selectOneMenu value="#{absence.endType}">
+                            <f:selectItem itemLabel="#{i18n.absencePagefullDay}" itemValue="0"/>
+                            <f:selectItem itemLabel="#{i18n.absencePagemorning}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{i18n.absencePageafternoon}" itemValue="2"/>
+                        </p:selectOneMenu>
+                    </p:column>
 
-            </p:dataTable>
-        </p:panel>
+                    <p:column style="width:4%">
+                        <p:commandButton id="selectButton" action="#{absenceController.deleteAbsence}"
+                                         icon="ui-icon-trash" title="Delete"
+                                         update="idTable">
+                            <f:setPropertyActionListener value="#{absence}"
+                                                         target="#{absenceController.selectedAbsence}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
 
     </ui:define>
 </ui:composition>

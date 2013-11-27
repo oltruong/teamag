@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,6 +46,22 @@ public class AbsenceEJBTest extends AbstractEJBTest {
         verify(getMockEntityManager()).createNamedQuery(eq("findAbsencesByMember"));
         verify(getMockQuery()).setParameter(eq("fmemberId"), eq(member.getId()));
 
+
+    }
+
+    @Test
+    public void testDeleteAbsence() throws Exception {
+        AbsenceEJB absenceEJB = buildAbsenceEJB();
+
+        Absence absence = EntityFactory.createAbsence();
+        when(getMockEntityManager().find(eq(Absence.class), anyLong())).thenReturn(absence);
+
+        Long absenceId = Long.valueOf(325l);
+
+        absenceEJB.deleteAbsence(absenceId);
+
+        verify(getMockEntityManager()).find(eq(Absence.class), eq(absenceId));
+        verify(getMockEntityManager()).remove(eq(absence));
 
     }
 
