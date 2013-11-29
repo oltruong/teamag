@@ -51,6 +51,7 @@ public class AbsenceController extends Controller {
         FacesMessage msg = null;
 
         try {
+            format(absence);
             AbsenceWebBeanValidator.validate(absence, absencesList);
             Absence newAbsence = AbsenceTransformer.transformWebBean(absence);
             newAbsence.setMember(getMember());
@@ -68,6 +69,23 @@ public class AbsenceController extends Controller {
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
+    }
+
+    /**
+     * Enable the possibility to fill only beginDate or endDate
+     *
+     * @param absence
+     */
+    private void format(AbsenceWebBean absence) {
+        if (absence.getEndDateTime() == null) {
+            absence.setEndDateTime(absence.getBeginDateTime());
+            absence.setEndType(absence.getBeginType());
+        }
+
+        if (absence.getBeginDateTime() == null) {
+            absence.setBeginDateTime(absence.getEndDateTime());
+            absence.setBeginType(absence.getEndType());
+        }
     }
 
     public void deleteAbsence() {
