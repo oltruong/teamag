@@ -74,6 +74,8 @@ public class AbsenceWebBean {
     public void setEndDate(Date endDate) {
         if (endDate != null) {
             endDateTime = new DateTime(endDate).withTimeAtStartOfDay();
+        } else {
+            endDateTime = null;
         }
     }
 
@@ -88,6 +90,8 @@ public class AbsenceWebBean {
     public void setBeginDate(Date beginDate) {
         if (beginDate != null) {
             beginDateTime = new DateTime(beginDate).withTimeAtStartOfDay();
+        } else {
+            beginDateTime = null;
         }
     }
 

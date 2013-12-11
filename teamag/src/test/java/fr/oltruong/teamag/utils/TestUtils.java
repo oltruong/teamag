@@ -32,6 +32,28 @@ public class TestUtils {
 
     }
 
+
+    public static Object getPrivateAttribute(Object object, @SuppressWarnings("rawtypes")
+    String name) {
+        return getPrivateAttribute(object, object.getClass(), name);
+
+    }
+
+
+    public static Object getPrivateAttribute(Object object, @SuppressWarnings("rawtypes")
+    Class className, String name) {
+        Object result = null;
+        try {
+            Field field = className.getDeclaredField(name);
+            field.setAccessible(true);
+            result = field.get(object);
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
     public static Object callPrivateMethod(Object object, String methodName, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = object.getClass().getDeclaredMethod(methodName);
         method.setAccessible(true);

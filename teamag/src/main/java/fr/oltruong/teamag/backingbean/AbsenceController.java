@@ -7,6 +7,7 @@ import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.qualifier.UserLogin;
 import fr.oltruong.teamag.transformer.AbsenceTransformer;
+import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 
@@ -37,19 +38,20 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
-    // @Inject
-    // private EmailEJB mailEJB;
+    @Inject
+    private MessageManager messageManager;
+
+
+    private final String viewname = "absence";
 
     public String init() {
 
         refreshList();
-        return "absence";
+        return viewname;
 
     }
 
     public void addAbsence() {
-        FacesMessage msg = null;
-
         try {
             format(absence);
             AbsenceWebBeanValidator.validate(absence, absencesList);
@@ -59,16 +61,13 @@ public class AbsenceController extends Controller {
             refreshList();
 
             absence = new AbsenceWebBean();
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("absenceAdded"), "");
+            messageManager.displayMessage(MessageManager.INFORMATION, "absenceAdded");
+
         } catch (InconsistentDateException e) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("errorAddingAbsence"), getMessage("inconsistentDates"));
+            messageManager.displayMessage(MessageManager.ERROR, "errorAddingAbsence", "inconsistentDates");
         } catch (DateOverlapException e) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("errorAddingAbsence"), getMessage("overlappingDates"));
+            messageManager.displayMessage(MessageManager.ERROR, "errorAddingAbsence", "overlappingDates");
         }
-
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-
     }
 
     /**
