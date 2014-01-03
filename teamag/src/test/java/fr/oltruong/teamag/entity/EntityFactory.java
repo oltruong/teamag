@@ -44,5 +44,39 @@ public class EntityFactory {
         return absenceList;
     }
 
+    public static List<Activity> createActivityList(int number) {
+        List<Activity> activityList = Lists.newArrayListWithExpectedSize(number);
+        for (int i = 0; i < number; i++) {
+            activityList.add(createActivity());
+        }
+        return activityList;
+    }
+
+
+    public static List<BusinessCase> createBCList(int number) {
+        List<BusinessCase> bcList = Lists.newArrayListWithExpectedSize(number);
+        for (int i = 0; i < number; i++) {
+            bcList.add(createBusinessCase());
+        }
+        return bcList;
+    }
+
+
+    public static Activity createActivity() {
+        Activity activity = new Activity();
+        activity.setName("MyActivity" + DateTime.now().getMillis());
+        activity.setBc(createBusinessCase());
+        return activity;
+    }
+
+
+    public static BusinessCase createBusinessCase() {
+        BusinessCase businessCase = new BusinessCase();
+        businessCase.setName("MyBC" + DateTime.now().getMillis());
+        businessCase.setAmount(Float.valueOf(DateTime.now().getMillis()));
+        businessCase.setNumber(Integer.valueOf(DateTime.now().getMillisOfSecond()));
+        return businessCase;
+    }
+
 
 }

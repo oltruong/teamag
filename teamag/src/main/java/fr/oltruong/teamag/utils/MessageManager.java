@@ -27,7 +27,7 @@ public class MessageManager {
         if (descriptionKey != null) {
             descriptionMessage = getMessage(descriptionKey, args);
         }
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage(titleKey), descriptionMessage);
+        FacesMessage message = new FacesMessage(getSeverity(type), getMessage(titleKey), descriptionMessage);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

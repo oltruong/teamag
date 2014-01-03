@@ -1,109 +1,99 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.collect.Lists;
 import fr.oltruong.teamag.ejb.ActivityEJB;
 import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
+import fr.oltruong.teamag.utils.MessageManager;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.logging.Logger;
+
+/**
+ * @author Olivier Truong
+ */
 @ManagedBean(name = "bcController")
-@RequestScoped
+@SessionScoped
 public class BCController extends Controller {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
-    // ======================================
-    // = Attributes =
-    // ======================================
     @Inject
     private ActivityEJB activityEJB;
 
-    private BusinessCase bc = new BusinessCase();
+    @Inject
+    private BusinessCase bc;
 
-    private Activity activity = new Activity();
+    @Inject
+    private Activity activity;
 
-    private List<BusinessCase> bcList = new ArrayList<>();
+    private List<BusinessCase> bcList = Lists.newArrayList();
 
-    private List<Activity> activityList = new ArrayList<>();
+    private List<Activity> activityList = Lists.newArrayList();
 
     private int tabIndex = 0;
 
-    @PostConstruct
-    private void initList() {
-        this.bcList = this.activityEJB.findBC();
-        this.activityList = this.activityEJB.findActivities();
+    private final String viewname = "businesscases";
+
+
+    public String init() {
+        setBcList(this.activityEJB.findBC());
+        setActivityList(this.activityEJB.findActivities());
+        return viewname;
     }
 
     public String doCreateBC() {
         this.tabIndex = 0;
         this.logger.info("Creation of a business case");
-        FacesMessage msg = null;
 
         if (this.bc.getNumber() == null || StringUtils.isBlank(this.bc.getNumber().toString())) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Merci de fournir un num�ro de BC");
+            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
         } else {
-
             try {
                 this.activityEJB.createBC(this.bc);
-
-                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise � jour effectu�e", "BC " + this.bc.getNumber().toString() + " " + this.bc.getName() + " cr�� !");
-                // R�init BC
+                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getNumber().toString(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (ExistingDataException e) {
-                e.printStackTrace();
-                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ajout impossible", "Le BC " + this.bc.getNumber().toString() + " existe d�j�");
+                logger.warning("BusinessCase already exists");
+                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getNumber().toString());
             }
 
-            this.bcList = this.activityEJB.findBC();
-        }
-        FacesContext.getCurrentInstance().addMessage(null, msg);
 
-        return "businesscases.xhtml";
+        }
+
+        return init();
+
     }
 
     public String doCreateActivity() {
         this.tabIndex = 1;
         this.logger.info("Creation of an activity");
 
-        FacesMessage msg = null;
-
-        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), "Merci de fournir un nom et un BC");
+        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getNumber() == null) {
+            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
         } else {
 
             try {
                 this.activityEJB.createActivity(this.activity);
-
-                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Mise � jour effectu�e", "Activit� cr�� !");
-                // R�init BC
+                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
             } catch (ExistingDataException e) {
-                e.printStackTrace();
-                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), "L'activit� existe d�j�");
+                this.logger.warning("Existing activity");
+                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingActivity");
             }
 
-            this.activityList = this.activityEJB.findActivities();
-        }
-        FacesContext.getCurrentInstance().addMessage(null, msg);
 
-        return "businesscases.xhtml";
+        }
+
+        return init();
     }
 
-    // ======================================
-    // = Getters & Setters =
-    // ======================================
+
     public BusinessCase getBc() {
         return this.bc;
     }

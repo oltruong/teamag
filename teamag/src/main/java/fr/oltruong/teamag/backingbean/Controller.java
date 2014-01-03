@@ -1,11 +1,22 @@
 package fr.oltruong.teamag.backingbean;
 
+import fr.oltruong.teamag.utils.MessageManager;
+
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public abstract class Controller {
+
+
+    @Inject
+    private MessageManager messageManager;
+
+    protected MessageManager getMessageManager() {
+        return messageManager;
+    }
 
     protected String getMessage(String msgKey, Object... args) {
         Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();

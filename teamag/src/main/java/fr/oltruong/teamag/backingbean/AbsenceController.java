@@ -12,10 +12,8 @@ import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 
 import javax.enterprise.inject.Instance;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -38,10 +36,6 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
-    @Inject
-    private MessageManager messageManager;
-
-
     private final String viewname = "absence";
 
     public String init() {
@@ -61,12 +55,12 @@ public class AbsenceController extends Controller {
             refreshList();
 
             absence = new AbsenceWebBean();
-            messageManager.displayMessage(MessageManager.INFORMATION, "absenceAdded");
+            getMessageManager().displayMessage(MessageManager.INFORMATION, "absenceAdded");
 
         } catch (InconsistentDateException e) {
-            messageManager.displayMessage(MessageManager.ERROR, "errorAddingAbsence", "inconsistentDates");
+            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
         } catch (DateOverlapException e) {
-            messageManager.displayMessage(MessageManager.ERROR, "errorAddingAbsence", "overlappingDates");
+            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "overlappingDates");
         }
     }
 

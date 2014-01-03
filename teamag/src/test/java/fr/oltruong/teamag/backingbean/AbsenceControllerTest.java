@@ -13,22 +13,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import javax.enterprise.inject.Instance;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Olivier Truong
  */
-public class AbsenceControllerTest {
+public class AbsenceControllerTest extends ControllerTest {
 
     @Mock
     private AbsenceEJB mockAbsenceEJB;
@@ -39,21 +37,17 @@ public class AbsenceControllerTest {
     @Mock
     private Member mockMember;
 
-    @Mock
-    private MessageManager mockMessageManager;
-
-
     private AbsenceController absenceController;
 
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        super.setup();
         absenceController = new AbsenceController();
         when(mockMemberInstance.get()).thenReturn(mockMember);
         TestUtils.setPrivateAttribute(absenceController, mockAbsenceEJB, "absenceEJB");
         TestUtils.setPrivateAttribute(absenceController, mockMemberInstance, "member");
-        TestUtils.setPrivateAttribute(absenceController, mockMessageManager, "messageManager");
+        TestUtils.setPrivateAttribute(absenceController, Controller.class, mockMessageManager, "messageManager");
 
     }
 

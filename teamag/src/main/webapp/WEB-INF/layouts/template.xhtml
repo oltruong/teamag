@@ -32,8 +32,8 @@
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.menuteam}" url="members.xhtml" icon="ui-icon-person"
-                        rendered="#{loginBean.administrator}"/>
-            <p:menuitem value="#{i18n.menubudget}" url="businesscases.xhtml" icon="ui-icon-folder-open"
+                        rendered="#{loginBean.administrator}" ajax="false"/>
+            <p:menuitem value="#{i18n.menubudget}" action="#{bcController.init}" icon="ui-icon-folder-open"
                         rendered="#{loginBean.administrator}"/>
             <p:menuitem value="#{i18n.menureporting}" url="reporting.xhtml" icon="ui-icon-calculator"
                         rendered="#{loginBean.administrator}"/>
