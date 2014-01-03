@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
+
+    <ui:define name="title">#{i18n.menuProfile}</ui:define>
+
+
+    <ui:define name="content">
+
+
+        <p:panel header="#{i18n.menuProfile}">
+            <table>
+                <tr>
+                    <td><h:outputLabel value="#{i18n.name}"/></td>
+                    <td></td>
+                    <td><b><h:outputLabel value="#{profileController.profileWebBean.name}"/></b></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{i18n.membersPagecompany}"/></td>
+                    <td></td>
+                    <td><b><h:outputLabel value="#{profileController.profileWebBean.company}"/></b></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{i18n.membersPageemail}"/></td>
+                    <td></td>
+                    <td><b><h:outputLabel value="#{profileController.profileWebBean.email}"/></b></td>
+                </tr>
+            </table>
+        </p:panel>
+
+        <br/>
+        <br/>
+        <p:panel header="#{i18n.profilePageupdatePassword}">
+
+
+            <h:form>
+                <table>
+                    <tr>
+                        <td><h:outputLabel for="pwd1" value="#{i18n.profilePagenewPassword}"/></td>
+                        <td></td>
+                        <td>
+                            <p:password id="pwd1" value="#{profileController.profileWebBean.password}" match="pwd2"
+                                        label="#{i18n.profilePagenewPassword}" required="true"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputLabel for="pwd2" value="#{i18n.profilePagenewPasswordAgain}"/>
+                        </td>
+                        <td></td>
+                        <td>
+                            <p:password id="pwd2" value="#{profileController.profileWebBean.passwordAgain}"
+                                        label="#{i18n.profilePagenewPasswordAgain}" required="true"/></td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2"><p:commandButton value="#{i18n.update}"
+                                                         action="#{profileController.updatePassword}" ajax="false"
+                                                         icon="ui-icon-disk"/></td>
+                    </tr>
+                </table>
+
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
+

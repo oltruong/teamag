@@ -50,6 +50,20 @@ public class WorkController extends Controller {
     @Inject
     private ParameterEJB parameterEJB;
 
+    private final String viewname = "realized";
+
+    public String init() {
+        // this.realizedBean = new RealizedFormWebBean();
+        realizedBean.setDayCursor(DateTime.now());
+
+        DateTime firstDayOfMonth = DateTime.now().withDayOfMonth(1);
+        realizedBean.setCurrentMonth(firstDayOfMonth);
+        works = workEJB.findWorks(getMember(), firstDayOfMonth);
+
+        initTaskWeek();
+        return viewname;
+    }
+
     public String doCreateActivity() {
 
         logger.info("Adding a new activity");
@@ -78,7 +92,7 @@ public class WorkController extends Controller {
             }
         }
 
-        return "realized.xhtml";
+        return viewname;
     }
 
     public String deleteTask() {
@@ -86,20 +100,20 @@ public class WorkController extends Controller {
 
         workEJB.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
         init();
-        return "realized.xhtml";
+        return viewname;
     }
 
     public String previousWeek() {
         logger.debug("Click Previous week");
         realizedBean.decrementWeek();
         initTaskWeek();
-        return "realized.xhtml";
+        return viewname;
     }
 
     public String nextWeek() {
         realizedBean.incrementWeek();
         initTaskWeek();
-        return "realized.xhtml";
+        return viewname;
     }
 
     public String update() {
@@ -118,7 +132,7 @@ public class WorkController extends Controller {
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
-        return "realized.xhtml";
+        return viewname;
     }
 
     public List<String> completeProject(String query) {
@@ -172,17 +186,6 @@ public class WorkController extends Controller {
         return email;
     }
 
-    public String init() {
-        // this.realizedBean = new RealizedFormWebBean();
-        realizedBean.setDayCursor(DateTime.now());
-
-        DateTime firstDayOfMonth = DateTime.now().withDayOfMonth(1);
-        realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workEJB.findWorks(getMember(), firstDayOfMonth);
-
-        initTaskWeek();
-        return "realized";
-    }
 
     private void initTaskWeek() {
         if (works != null) {

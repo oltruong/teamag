@@ -25,6 +25,9 @@
             <p:menuitem value="#{i18n.logIn}" url="login.xhtml" icon="ui-icon-person"
                         rendered="#{loginBean.notLoggedIn}"/>
 
+            <p:menuitem value="#{i18n.menuProfile}" action="#{profileController.init}" icon="ui-icon-person"
+                        rendered="#{loginBean.loggedIn}" ajax="false"/>
+
             <p:menuitem value="#{i18n.menuabsence}" action="#{absenceController.init}" icon="ui-icon-calendar"
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 

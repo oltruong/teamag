@@ -1,10 +1,12 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
+import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TestUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,32 +22,29 @@ import static org.mockito.Mockito.*;
  */
 public class MemberEJBTest extends AbstractEJBTest {
 
-    private MemberEJB buildMemberEJB() {
-        MemberEJB memberEJB = new MemberEJB();
 
+    private MemberEJB memberEJB;
+
+    @Before
+    public void init() {
+        memberEJB = new MemberEJB();
         TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockEntityManager(), "entityManager");
         TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockLogger(), "logger");
 
-        return memberEJB;
     }
 
     private List<Member> buildMemberList() {
         List<Member> mockList = Lists.newArrayListWithExpectedSize(1);
 
-        Member newMember = buildMember();
+        Member newMember = EntityFactory.createMember();
         mockList.add(newMember);
         return mockList;
     }
 
-    private Member buildMember() {
-        Member newMember = new Member();
-        newMember.setId(Long.valueOf(1l));
-        return newMember;
-    }
 
     @Test
     public void testFindMembers() {
-        MemberEJB memberEJB = buildMemberEJB();
+
         List<Member> mockList = buildMemberList();
         when(getMockQuery().getResultList()).thenReturn(mockList);
 
@@ -58,7 +57,6 @@ public class MemberEJBTest extends AbstractEJBTest {
     @Test
     public void testFindByNameNull() {
 
-        MemberEJB memberEJB = buildMemberEJB();
 
         try {
             memberEJB.findMember(null, null);
@@ -75,7 +73,6 @@ public class MemberEJBTest extends AbstractEJBTest {
 
         String name = "FOOONAME";
         String password = "PASSWORD";
-        MemberEJB memberEJB = buildMemberEJB();
 
         List<Member> mockList = buildMemberList();
 
@@ -106,11 +103,18 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     }
 
+    @Test
+    public void testUpdateMember() {
+        Member member = EntityFactory.createMember();
+        memberEJB.updateMember(member);
+
+        verify(getMockEntityManager()).merge(eq(member));
+    }
+
     private void testCreateMember(List<Task> taskList) {
         when(getMockQuery().getResultList()).thenReturn(taskList);
 
-        MemberEJB memberEJB = buildMemberEJB();
-        Member member = buildMember();
+        Member member = EntityFactory.createMember();
         Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
 
         assertThat(memberCreated).isEqualTo(member);

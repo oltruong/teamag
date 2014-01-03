@@ -78,6 +78,10 @@ public class MemberEJB
         return member;
     }
 
+    public void updateMember(Member member) {
+        getEntityManager().merge(member);
+    }
+
     private Member generateAdminMember() {
         Member adminMember = new Member();
         adminMember.setName("admin");

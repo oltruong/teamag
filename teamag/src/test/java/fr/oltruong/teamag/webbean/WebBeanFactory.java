@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.webbean;
 
 import fr.oltruong.teamag.entity.Absence;
+import fr.oltruong.teamag.entity.EntityFactory;
 import org.joda.time.DateTime;
 
 /**
@@ -21,6 +22,11 @@ public class WebBeanFactory {
         absenceWebBean.setEndType(Absence.MORNING_ONLY);
 
         return absenceWebBean;
+    }
+
+
+    public static ProfileWebBean generateProfileWebBean() {
+        return new ProfileWebBean(EntityFactory.createMember());
     }
 
 }
