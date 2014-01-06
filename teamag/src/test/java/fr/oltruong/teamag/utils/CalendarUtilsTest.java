@@ -16,8 +16,10 @@ public class CalendarUtilsTest {
 
         testWorkingDays(1, Lists.newArrayList(1));
         testWorkingDays(2, Lists.newArrayList(0));
-        testWorkingDays(4, Lists.newArrayList(1));
-        testWorkingDays(5, Lists.newArrayList(1, 8, 9, 20));
+        testWorkingDays(4, Lists.newArrayList(21));
+        testWorkingDays(5, Lists.newArrayList(1, 8, 29));
+        testWorkingDays(6, Lists.newArrayList(9));
+        testWorkingDays(7, Lists.newArrayList(14));
         testWorkingDays(8, Lists.newArrayList(15));
         testWorkingDays(11, Lists.newArrayList(1, 11));
         testWorkingDays(12, Lists.newArrayList(25));

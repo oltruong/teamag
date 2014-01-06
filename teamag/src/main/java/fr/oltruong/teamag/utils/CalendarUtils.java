@@ -25,10 +25,16 @@ public final class CalendarUtils {
                     verdict = dayOfMonth == 1;
                     break;
                 case DateTimeConstants.APRIL:
-                    verdict = dayOfMonth == 1;
+                    verdict = dayOfMonth == 21;
                     break;
                 case DateTimeConstants.MAY:
-                    verdict = (dayOfMonth == 1 || dayOfMonth == 8 || dayOfMonth == 9 || dayOfMonth == 20);
+                    verdict = (dayOfMonth == 1 || dayOfMonth == 8 || dayOfMonth == 29);
+                    break;
+                case DateTimeConstants.JUNE:
+                    verdict = dayOfMonth == 9;
+                    break;
+                case DateTimeConstants.JULY:
+                    verdict = dayOfMonth == 14;
                     break;
                 case DateTimeConstants.AUGUST:
                     verdict = (dayOfMonth == 15);
