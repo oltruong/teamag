@@ -1,308 +1,307 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.oltruong</groupId>
-	<artifactId>teamag</artifactId>
-	<packaging>war</packaging>
-	<version>0.1.1-SNAPSHOT</version>
-	<name>TeamManagement</name>
-	<description>Team Management web application</description>
-	<url>https://github.com/oltruong/TeaMag</url>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fr.oltruong</groupId>
+    <artifactId>teamag</artifactId>
+    <packaging>war</packaging>
+    <version>0.1.1-SNAPSHOT</version>
+    <name>TeamManagement</name>
+    <description>Team Management web application</description>
+    <url>https://github.com/oltruong/TeaMag</url>
 
-	<properties>
+    <properties>
 
-		<version.java>1.7</version.java>
-		<version.javaee>7.0</version.javaee>
-		<version.glassfish>4.0</version.glassfish>
-		<version.primefaces>3.5</version.primefaces>
-		<version.primefaces-theme>1.0.10</version.primefaces-theme>
-		<version.junit>4.11</version.junit>
-		<version.assertj>1.4.0</version.assertj>
-		<version.mockito>1.9.5</version.mockito>
-		<version.jsf-api>2.0</version.jsf-api>
-		<version.joda-time>2.3</version.joda-time>
+        <version.java>1.7</version.java>
+        <version.javaee>7.0</version.javaee>
+        <version.glassfish>4.0</version.glassfish>
+        <version.primefaces>3.5</version.primefaces>
+        <version.primefaces-theme>1.0.10</version.primefaces-theme>
+        <version.junit>4.11</version.junit>
+        <version.assertj>1.4.0</version.assertj>
+        <version.mockito>1.9.5</version.mockito>
+        <version.joda-time>2.3</version.joda-time>
 
-		<version.commons-lang>3.1</version.commons-lang>
-		<version.commons-collections>3.2.1</version.commons-collections>
-		<version.commons-fileupload>1.3</version.commons-fileupload>
-		<version.commons-io>1.4</version.commons-io>
-		<version.apache.poi>3.7</version.apache.poi>
-		<version.guava>15.0</version.guava>
-		<version.eclipselink>2.5.0</version.eclipselink>
-		<version.logback>1.0.13</version.logback>
-		<version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
+        <version.commons-lang>3.1</version.commons-lang>
+        <version.commons-collections>3.2.1</version.commons-collections>
+        <version.commons-fileupload>1.3</version.commons-fileupload>
+        <version.commons-io>1.4</version.commons-io>
+        <version.apache.poi>3.7</version.apache.poi>
+        <version.guava>15.0</version.guava>
+        <version.eclipselink>2.5.0</version.eclipselink>
+        <version.logback>1.0.13</version.logback>
+        <version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
 
-		<version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
-		<version.maven-clean-plugin>2.5</version.maven-clean-plugin>
-		<version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
-		<version.maven-failsafe-plugin>2.16</version.maven-failsafe-plugin>
-		<version.maven-war-plugin>2.3</version.maven-war-plugin>
-		<version.maven-surefire-plugin>2.14.1</version.maven-surefire-plugin>
-		<version.maven-jar-plugin>2.4</version.maven-jar-plugin>
-		<version.maven-dependency-plugin>2.7</version.maven-dependency-plugin>
-		<version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
-		<version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
-		<version.maven-site-plugin>3.2</version.maven-site-plugin>
+        <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
+        <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
+        <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
+        <version.maven-failsafe-plugin>2.16</version.maven-failsafe-plugin>
+        <version.maven-war-plugin>2.3</version.maven-war-plugin>
+        <version.maven-surefire-plugin>2.14.1</version.maven-surefire-plugin>
+        <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
+        <version.maven-dependency-plugin>2.7</version.maven-dependency-plugin>
+        <version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
+        <version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
+        <version.maven-site-plugin>3.2</version.maven-site-plugin>
 
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-		<sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
-
-
-	</properties>
-
-	<dependencies>
-
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>${version.primefaces}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>all-themes</artifactId>
-			<version>${version.primefaces-theme}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${version.commons-lang}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>${version.commons-collections}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>${version.apache.poi}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${version.guava}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${version.joda-time}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${version.logback}</version>
-		</dependency>
-
-		<!-- Runtime -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>${version.commons-fileupload}</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${version.commons-io}</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- Provided dependencies -->
-
-		<dependency>
-			<groupId>org.glassfish.main.extras</groupId>
-			<artifactId>glassfish-embedded-all</artifactId>
-			<version>${version.glassfish}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${version.javaee}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>eclipselink</artifactId>
-			<version>${version.eclipselink}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- TEST dependencies -->
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${version.junit}</version>
-			<scope>test</scope>
-		</dependency>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
 
 
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>${version.assertj}</version>
-			<scope>test</scope>
-		</dependency>
+    </properties>
 
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${version.mockito}</version>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
 
-	</dependencies>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>${version.primefaces}</version>
+        </dependency>
 
-	<build>
-		<finalName>teamag</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>${version.maven-project-info-reports-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>${version.maven-clean-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.maven-compiler-plugin}</version>
-				<configuration>
-					<source>${version.java}</source>
-					<target>${version.java}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${version.maven-failsafe-plugin}</version>
-				<configuration>
-					<argLine>${jacoco.agent.argLine}</argLine>
-				</configuration>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>${version.primefaces-theme}</version>
+        </dependency>
 
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${version.jacoco-plugin}</version>
-				<configuration>
-					<propertyName>jacoco.agent.argLine</propertyName>
-					<destFile>${sonar.jacoco.itReportPath}</destFile>
-					<append>true</append>
-				</configuration>
-				<executions>
-					<execution>
-						<id>agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.commons-lang}</version>
+        </dependency>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${version.maven-war-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${version.maven-surefire-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>${version.maven-jar-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${version.maven-dependency-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${version.build-helper-maven-plugin}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>${version.maven-antrun-plugin}</version>
-				<executions>
-					<execution>
-						<id>compile</id>
-						<phase>compile</phase>
-						<configuration>
-							<target>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${version.commons-collections}</version>
+        </dependency>
 
-								<tstamp>
-									<format property="now" pattern="dd/MM/yyyy - HH:mm" />
-									<format property="year" pattern="yyyy" />
-								</tstamp>
-								<property name="messageResources.path" value="target/classes/messages_fr.properties" />
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${version.apache.poi}</version>
+        </dependency>
 
-								<replace file="${messageResources.path}" token="REPLACE.VERSION"
-									value="${project.version}" />
-								<replace file="${messageResources.path}" token="REPLACE.YEAR"
-									value="${year}" />
-								<replace file="${messageResources.path}" token="REPLACE.TIMESTAMP"
-									value="${now}" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>${version.maven-site-plugin}</version>
-				<configuration>
-					<locales>fr,en</locales>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+        </dependency>
 
-	<repositories>
-		<repository>
-			<id>glassfish-maven-repository.dev.java.net</id>
-			<name>GlassFish Maven Repository</name>
-			<url>http://download.java.net/maven/glassfish/</url>
-		</repository>
-		<repository>
-			<id>prime-repo</id>
-			<name>PrimeFaces Maven Repository</name>
-			<url>http://repository.primefaces.org</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${version.joda-time}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version.logback}</version>
+        </dependency>
+
+        <!-- Runtime -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${version.commons-fileupload}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${version.commons-io}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Provided dependencies -->
+
+        <dependency>
+            <groupId>org.glassfish.main.extras</groupId>
+            <artifactId>glassfish-embedded-all</artifactId>
+            <version>${version.glassfish}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${version.javaee}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>${version.eclipselink}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- TEST dependencies -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${version.assertj}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>teamag</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${version.maven-project-info-reports-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${version.maven-clean-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven-compiler-plugin}</version>
+                <configuration>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${version.maven-failsafe-plugin}</version>
+                <configuration>
+                    <argLine>${jacoco.agent.argLine}</argLine>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${version.jacoco-plugin}</version>
+                <configuration>
+                    <propertyName>jacoco.agent.argLine</propertyName>
+                    <destFile>${sonar.jacoco.itReportPath}</destFile>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.maven-war-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.maven-surefire-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${version.maven-jar-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${version.maven-dependency-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${version.build-helper-maven-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${version.maven-antrun-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target>
+
+                                <tstamp>
+                                    <format property="now" pattern="dd/MM/yyyy - HH:mm"/>
+                                    <format property="year" pattern="yyyy"/>
+                                </tstamp>
+                                <property name="messageResources.path" value="target/classes/messages_fr.properties"/>
+
+                                <replace file="${messageResources.path}" token="REPLACE.VERSION"
+                                         value="${project.version}"/>
+                                <replace file="${messageResources.path}" token="REPLACE.YEAR"
+                                         value="${year}"/>
+                                <replace file="${messageResources.path}" token="REPLACE.TIMESTAMP"
+                                         value="${now}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${version.maven-site-plugin}</version>
+                <configuration>
+                    <locales>fr,en</locales>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>glassfish-maven-repository.dev.java.net</id>
+            <name>GlassFish Maven Repository</name>
+            <url>http://download.java.net/maven/glassfish/</url>
+        </repository>
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 
 </project>
