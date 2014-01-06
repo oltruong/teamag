@@ -1,17 +1,10 @@
 package fr.oltruong.teamag.entity;
 
+import fr.oltruong.teamag.utils.TeamagConstants;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 @Table(name = "TM_MEMBER")
 @Entity
@@ -32,11 +25,19 @@ public class Member implements Serializable {
     private String password;
     @Column(nullable = false)
     private String company;
+
+    @Transient
+    private String companyEdit;
+
+
     @Column(nullable = false)
     private String email;
     @Column
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
+
+    @Column
+    private Float estimatedworkDays;
 
     public boolean isAdministrator() {
         return MemberType.ADMINISTRATOR.equals(memberType);
@@ -95,4 +96,15 @@ public class Member implements Serializable {
         this.memberType = memberType;
     }
 
+    public Float getEstimatedworkDays() {
+        return estimatedworkDays;
+    }
+
+    public Float getEstimatedworkMonths() {
+        return estimatedworkDays / TeamagConstants.MONTH_DAYS_RATIO;
+    }
+
+    public void setEstimatedworkDays(Float estimatedworkDays) {
+        this.estimatedworkDays = estimatedworkDays;
+    }
 }

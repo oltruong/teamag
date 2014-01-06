@@ -1,16 +1,15 @@
 package fr.oltruong.teamag.backingbean;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.entity.MemberType;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.MemberType;
-import fr.oltruong.teamag.utils.TestUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberControllerTest {
 
@@ -19,7 +18,6 @@ public class MemberControllerTest {
 
     private MemberController memberController;
 
-    private final String VIEW_NAME = "newMember";
 
     @Before
     public void setup() {
@@ -29,9 +27,8 @@ public class MemberControllerTest {
     }
 
     @Test
-    public void testDoNewMemberForm() {
-
-        assertThat(memberController.doNewMemberForm()).isEqualTo(VIEW_NAME);
+    public void testInitList() {
+        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "viewname"));
     }
 
     @Test
@@ -41,7 +38,7 @@ public class MemberControllerTest {
 
     @Ignore("to fix")
     public void testDoCreateMember() {
-        assertThat(memberController.doCreateMember()).isEqualTo(VIEW_NAME);
+        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "viewname"));
     }
 
 }

@@ -32,6 +32,7 @@ public class MemberEJB
         return query.getResultList();
     }
 
+
     public Member findMember(String name, String password)
             throws UserNotFoundException {
         checkMembersNotEmpty();

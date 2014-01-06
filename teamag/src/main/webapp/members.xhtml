@@ -10,7 +10,88 @@
 
 
     <ui:define name="content">
+        <h:form id="idForm" action="#{memberController.update}">
+            <p:panel header="#{i18n.membersPagememberList}">
+                <p:dataTable value="#{memberController.memberList}" var="user" border="1" editable="true">
 
+                    <p:ajax event="rowEdit" listener="#{memberController.onEdit}" update=":growl"/>
+                    <p:ajax event="rowEditCancel" listener="#{memberController.onCancel}" update=":growl"/>
+
+
+                    <p:column headerText="#{i18n.id}">
+                        <h:outputText value="#{user.id}"/>
+                    </p:column>
+
+                    <p:column headerText="#{i18n.name}">
+                        <h:outputText value="#{user.name}"/>
+                    </p:column>
+
+                    <p:column headerText="#{i18n.membersPagecompany}"
+                              sortBy="#{user.company}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.company}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.company}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{i18n.membersPageemail}">
+                        <h:outputText value="#{user.email}"/>
+                    </p:column>
+
+
+                    <p:column headerText="#{i18n.workDays}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.estimatedworkDays}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.estimatedworkDays}"/>
+                            </f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+
+                    <p:column headerText="#{i18n.workMonths}">
+                        <h:outputText value="#{user.estimatedworkMonths}">
+                            <f:convertNumber maxFractionDigits="3"/>
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column headerText="#{i18n.type}">
+                        <h:outputText value="#{user.memberType}"/>
+                    </p:column>
+
+                    <p:column style="width:6%">
+                        <p:rowEditor/>
+                    </p:column>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column colspan="4" style="text-align:right" footerText="Total:">
+
+                            </p:column>
+
+                            <p:column footerText="#{memberController.totalEstimatedWorkDays}">
+                            </p:column>
+
+                            <p:column footerText="#{memberController.totalEstimatedWorkMonths}">
+                            </p:column>
+                            <p:column colspan="2" footerText="">
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+
+            </p:panel>
+        </h:form>
+        <br/>
+        <br/>
         <p:panel header="#{i18n.membersPagenewMember}">
 
 
@@ -47,33 +128,6 @@
                 </table>
 
             </h:form>
-        </p:panel>
-        <br/>
-        <br/>
-        <p:panel header="#{i18n.membersPagememberList}">
-            <p:dataTable value="#{memberController.memberList}" var="user" border="1">
-                <p:column headerText="#{i18n.id}">
-                    <h:outputText value="#{user.id}"/>
-                </p:column>
-
-                <p:column headerText="#{i18n.name}">
-                    <h:outputText value="#{user.name}"/>
-                </p:column>
-
-                <p:column headerText="#{i18n.membersPagecompany}"
-                          sortBy="#{user.company}">
-                    <h:outputText value="#{user.company}"/>
-                </p:column>
-
-                <p:column headerText="#{i18n.membersPageemail}">
-                    <h:outputText value="#{user.email}"/>
-                </p:column>
-
-                <p:column headerText="#{i18n.type}">
-                    <h:outputText value="#{user.memberType}"/>
-                </p:column>
-
-            </p:dataTable>
         </p:panel>
     </ui:define>
 </ui:composition>

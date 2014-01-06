@@ -34,10 +34,13 @@
             <p:menuitem value="#{i18n.menurealized}" action="#{workController.init}" icon="ui-icon-calculator"
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
-            <p:menuitem value="#{i18n.menuteam}" url="members.xhtml" icon="ui-icon-person"
+            <p:menuitem value="#{i18n.menuteam}" action="#{memberController.init}" icon="ui-icon-person"
                         rendered="#{loginBean.administrator}" ajax="false"/>
+
             <p:menuitem value="#{i18n.menubudget}" action="#{bcController.init}" icon="ui-icon-folder-open"
                         rendered="#{loginBean.administrator}"/>
+
+
             <p:menuitem value="#{i18n.menureporting}" url="reporting.xhtml" icon="ui-icon-calculator"
                         rendered="#{loginBean.administrator}"/>
             <p:menuitem value="#{i18n.menuparameters}" url="parameters.xhtml" icon="ui-icon-wrench"
