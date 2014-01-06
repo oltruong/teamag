@@ -71,6 +71,7 @@ public class MemberEJB
         }
 
         member.setPassword(TeamagUtils.hashPassword(""));
+        member.setEstimatedworkDays(0f);
         getEntityManager().persist(member);
 
         task.addMember(member);

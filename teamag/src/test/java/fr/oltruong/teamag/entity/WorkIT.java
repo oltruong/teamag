@@ -60,6 +60,7 @@ public class WorkIT extends AbstractEntityIT {
         member.setName("Carot" + Calendar.getInstance().getTimeInMillis());
         member.setCompany("my company");
         member.setEmail("email@dummy.com");
+        member.setEstimatedworkDays(0f);
         return member;
     }
 

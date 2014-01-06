@@ -46,6 +46,7 @@ public class MemberController extends Controller {
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 
+        member = new Member();
         return viewname;
     }
 

@@ -36,7 +36,7 @@ public class Member implements Serializable {
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
-    @Column
+    @Column(nullable = false)
     private Float estimatedworkDays;
 
     public boolean isAdministrator() {

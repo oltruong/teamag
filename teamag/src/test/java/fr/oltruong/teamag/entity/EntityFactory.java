@@ -22,6 +22,7 @@ public class EntityFactory {
         member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
+        member.setEstimatedworkDays(0f);
         return member;
     }
 
