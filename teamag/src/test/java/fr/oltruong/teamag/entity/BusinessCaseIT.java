@@ -49,6 +49,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
         businessCase.setName("My BC");
         businessCase.setNumber(Integer.valueOf(number));
         businessCase.setAmount(Float.valueOf(3.5f));
+        businessCase.setComment("Hello");
 
         return businessCase;
     }

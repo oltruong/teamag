@@ -50,7 +50,7 @@ public class WorkController extends Controller {
     @Inject
     private ParameterEJB parameterEJB;
 
-    private final String viewname = "realized";
+    private static final String viewname = "realized";
 
     public String init() {
         // this.realizedBean = new RealizedFormWebBean();

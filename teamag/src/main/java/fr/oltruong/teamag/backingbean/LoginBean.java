@@ -95,18 +95,18 @@ public class LoginBean
         logger.info("Login={}", username);
 
         FacesMessage userMessage = null;
-        Member member;
+        Member myMember;
         String passwordHashed = null;
         try {
 
             passwordHashed = TeamagUtils.hashPassword(password);
 
-            member = memberEJB.findMember(username, passwordHashed);
-            logger.info(member.getName() + " found");
+            myMember = memberEJB.findMember(username, passwordHashed);
+            logger.info(myMember.getName() + " found");
             userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", username), "");
-            setMember(member);
+            setMember(myMember);
             getMember();
-            servletRequest.getSession().setAttribute(TeamagConstants.USER, member);
+            servletRequest.getSession().setAttribute(TeamagConstants.USER, myMember);
             FacesContext.getCurrentInstance().addMessage(null, userMessage);
             return "welcome";
         } catch (UserNotFoundException e) {

@@ -11,12 +11,8 @@ import java.util.Objects;
 @NamedQueries({@NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
 public class Member implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
-    @Column(nullable = false)
-    private final Float productivity = 1f;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -25,9 +21,6 @@ public class Member implements Serializable {
     private String password;
     @Column(nullable = false)
     private String company;
-
-    @Transient
-    private String companyEdit;
 
 
     @Column(nullable = false)
@@ -38,6 +31,9 @@ public class Member implements Serializable {
 
     @Column(nullable = false)
     private Float estimatedworkDays;
+
+
+    private String comment;
 
     public boolean isAdministrator() {
         return MemberType.ADMINISTRATOR.equals(memberType);
@@ -106,5 +102,13 @@ public class Member implements Serializable {
 
     public void setEstimatedworkDays(Float estimatedworkDays) {
         this.estimatedworkDays = estimatedworkDays;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Olivier Truong
  */
-public class AbsenceWebBeanValidator {
+public final class AbsenceWebBeanValidator {
     private AbsenceWebBeanValidator() {
 
     }

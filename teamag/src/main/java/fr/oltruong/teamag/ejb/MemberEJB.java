@@ -94,4 +94,15 @@ public class MemberEJB
         return adminMember;
     }
 
+    public void removeMember(Member selectedMember) {
+
+        Query query = getEntityManager().createNamedQuery("deleteWorksByMember");
+        query.setParameter("fmemberId", selectedMember.getId());
+        int rowsNumberDeleted = query.executeUpdate();
+        getLogger().debug("Works deleted : " + rowsNumberDeleted);
+
+
+
+        getEntityManager().remove(selectedMember);
+    }
 }

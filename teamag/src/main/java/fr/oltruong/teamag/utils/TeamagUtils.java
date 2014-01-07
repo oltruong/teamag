@@ -3,7 +3,10 @@ package fr.oltruong.teamag.utils;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 
-public class TeamagUtils {
+/**
+ * @author Olivier Truong
+ */
+public final class TeamagUtils {
 
     private TeamagUtils() {
 

@@ -1,24 +1,20 @@
 package fr.oltruong.teamag.ejb;
 
-import java.util.ArrayList;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.ejb.Stateless;
-import javax.persistence.Query;
-
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
-
 import com.google.common.collect.Maps;
-
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Stateless
 public class WorkEJB extends AbstractEJB {
@@ -116,7 +112,7 @@ public class WorkEJB extends AbstractEJB {
 
         getLogger().debug("Works deleted : " + rowsNumberDeleted);
 
-        // Suppression pour la t�che de l'utilisateur
+        // Suppression pour la tache de l'utilisateur
 
         Task taskDb = getEntityManager().find(Task.class, task.getId());
 
@@ -125,10 +121,10 @@ public class WorkEJB extends AbstractEJB {
         taskDb.getMembers().remove(memberDb);
 
         if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
-            getLogger().debug("La t�che n'a aucun objet attach� dessus. Suppression de la t�che");
+            getLogger().info("Task has no more Members on it. It will be deleted");
             getEntityManager().remove(taskDb);
         } else {
-            getLogger().debug("Mise � jour de la t�che");
+            getLogger().debug("Task updated");
             getEntityManager().persist(taskDb);
         }
     }

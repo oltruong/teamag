@@ -36,7 +36,7 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
-    private final String viewname = "absence";
+    private static final String viewname = "absence";
 
     public String init() {
 

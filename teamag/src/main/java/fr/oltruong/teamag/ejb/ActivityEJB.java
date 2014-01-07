@@ -1,15 +1,13 @@
 package fr.oltruong.teamag.ejb;
 
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.persistence.Query;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
+import org.apache.commons.collections.CollectionUtils;
+
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 public class ActivityEJB extends AbstractEJB {
@@ -52,4 +50,7 @@ public class ActivityEJB extends AbstractEJB {
         return activity;
     }
 
+    public void updateBC(BusinessCase bcUpdated) {
+        getEntityManager().merge(bcUpdated);
+    }
 }

@@ -12,7 +12,13 @@
     <ui:define name="content">
         <h:form id="idForm" action="#{memberController.update}">
             <p:panel header="#{i18n.membersPagememberList}">
-                <p:dataTable value="#{memberController.memberList}" var="user" border="1" editable="true">
+
+                <p:contextMenu for="idTable">
+                    <p:menuitem value="#{i18n.realizedPagedeleteTask}" update="idTable"
+                                icon="ui-icon-trash" action="#{workController.deleteMember}"/>
+                </p:contextMenu>
+
+                <p:dataTable id="idTable" value="#{memberController.memberList}" var="user" border="1" editable="true">
 
                     <p:ajax event="rowEdit" listener="#{memberController.onEdit}" update=":growl"/>
                     <p:ajax event="rowEditCancel" listener="#{memberController.onCancel}" update=":growl"/>
@@ -61,6 +67,17 @@
                         </h:outputText>
                     </p:column>
 
+
+                    <p:column headerText="#{i18n.comment}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.comment}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.comment}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
                     <p:column headerText="#{i18n.type}">
                         <h:outputText value="#{user.memberType}"/>
@@ -113,11 +130,12 @@
                                     pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
                         </p:inputText></td>
                         <td><h:outputLabel value="#{i18n.type}"/></td>
-                        <td><p:selectOneListbox
+                        <td><p:selectOneMenu
                                 value="#{memberController.member.memberType}">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{memberController.membertypeList}"
                                            var="type" itemLabel="#{type}" itemValue="#{type}"/>
-                        </p:selectOneListbox></td>
+                        </p:selectOneMenu></td>
 
                     </tr>
                     <tr>

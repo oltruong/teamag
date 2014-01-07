@@ -20,12 +20,18 @@ import java.util.List;
 public class MemberController extends Controller {
 
     @Inject
+    private org.slf4j.Logger logger;
+
+    @Inject
     private MemberEJB memberEJB;
     @Inject
     private Member member;
     private List<Member> memberList = Lists.newArrayList();
 
-    private final String viewname = "members";
+    @Inject
+    private Member selectedMember;
+
+    private static final String viewname = "members";
 
     public String init() {
         memberList = memberEJB.findMembers();
@@ -50,15 +56,24 @@ public class MemberController extends Controller {
         return viewname;
     }
 
+
+    public String deleteMember() {
+        logger.info("Deleting Member " + getSelectedMember().getName());
+
+        memberEJB.removeMember(getSelectedMember());
+        init();
+        return viewname;
+    }
+
     public List<String> completeCompany(String query) {
 
         List<String> results = Lists.newArrayListWithExpectedSize(memberList.size());
 
         if (!StringUtils.isBlank(query) && query.length() > 1) {
 
-            for (Member member : memberList) {
-                if (StringUtils.containsIgnoreCase(member.getCompany(), query) && !results.contains(member.getCompany())) {
-                    results.add(member.getCompany());
+            for (Member myMember : memberList) {
+                if (StringUtils.containsIgnoreCase(myMember.getCompany(), query) && !results.contains(myMember.getCompany())) {
+                    results.add(myMember.getCompany());
                 }
 
             }
@@ -114,6 +129,14 @@ public class MemberController extends Controller {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public Member getSelectedMember() {
+        return selectedMember;
+    }
+
+    public void setSelectedMember(Member selectedMember) {
+        this.selectedMember = selectedMember;
     }
 
     public List<Member> getMemberList() {

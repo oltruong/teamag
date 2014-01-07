@@ -1,103 +1,156 @@
 <?xml version='1.0' encoding='ISO-8859-1' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="WEB-INF/layouts/template.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">#{i18n.businesscasePagetitle}</ui:define>
-
-
-	<ui:define name="content">
-
-		<p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
-			<p:tab title="#{i18n.businesscasePagebusinesscases}">
-				<p:panel header="#{i18n.businesscasePagenewBC}">
-
-					<hr />
-					<h:form>
-						<table border="0">
-							<tr>
-								<td><h:outputLabel value="#{i18n.number}" /></td>
-								<td><h:inputText value="#{bcController.bc.number}" /></td>
-								<td><h:outputLabel value="#{i18n.name}" /></td>
-								<td><h:inputText value="#{bcController.bc.name}" /></td>
-								<td><h:outputLabel value="#{i18n.businesscasePageamount}" /></td>
-								<td><h:inputText value="#{bcController.bc.amount}" /></td>
-								<td><p:commandButton value="#{i18n.add}"
-										action="#{bcController.doCreateBC}" ajax="false" /></td>
-							</tr>
-						</table>
-
-					</h:form>
-				</p:panel>
-				<br />
-				<br />
-				<p:panel header="#{i18n.businesscasePagebcList}">
-					<p:dataTable value="#{bcController.bcList}" var="bc" border="1">
-						<p:column headerText="#{i18n.number}" sortBy="#{bc.number}">
-							<h:outputText value="#{bc.number}" />
-						</p:column>
-
-						<p:column headerText="#{i18n.name}">
-							<h:outputText value="#{bc.name}" />
-						</p:column>
-
-						<p:column headerText="#{i18n.businesscasePageamount}">
-							<h:outputText value="#{bc.amount}" />
-						</p:column>
-
-					</p:dataTable>
-				</p:panel>
-
-			</p:tab>
-			<p:tab title="#{i18n.businesscasePageactivities}">
+    <ui:define name="title">#{i18n.businesscasePagetitle}</ui:define>
 
 
-				<p:panel header="#{i18n.businesscasePagenewActivity}">
+    <ui:define name="content">
 
-					<hr />
-					<h:form>
-						<table border="0">
-							<tr>
-								<td><h:outputLabel value="#{i18n.name}" /></td>
-								<td><h:inputText value="#{bcController.activity.name}" /></td>
-								<td><h:outputLabel value="#{i18n.businesscasePageBC}" /></td>
-								<td><p:selectOneListbox id="basic"
-										value="#{bcController.activity.bc.number}">
-										<f:selectItems value="#{bcController.bcList}" var="bc"
-											itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}" />
-									</p:selectOneListbox></td>
-								<td><p:commandButton value="#{i18n.add}"
-										action="#{bcController.doCreateActivity}" ajax="false" /></td>
-							</tr>
-						</table>
+        <p:tabView orientation="top" activeIndex="#{bcController.tabIndex}">
+            <p:tab title="#{i18n.businesscasePagebusinesscases}">
 
-					</h:form>
-				</p:panel>
-				<br />
-				<br />
-				<p:panel header="#{i18n.businesscasePageactivities}">
-					<p:dataTable value="#{bcController.activityList}" var="activity"
-						border="1">
-						<p:column headerText="#{i18n.name}" sortBy="#{activity.name}">
-							<h:outputText value="#{activity.name}" />
-						</p:column>
+                <h:form id="idForm">
+                    <p:panel header="#{i18n.businesscasePagebcList}">
 
-						<p:column headerText="#{i18n.businesscasePagebcNumber}" sortBy="#{activity.bc.number}">
-							<h:outputText value="#{activity.bc.number}" />
-						</p:column>
+                        <p:dataTable value="#{bcController.bcList}" var="bc" border="1" editable="true">
 
-						<p:column headerText="#{i18n.businesscasePagebcName}" sortBy="#{activity.bc.name}">
-							<h:outputText value="#{activity.bc.name}" />
-						</p:column>
+                            <p:ajax event="rowEdit" listener="#{bcController.onEditBC}" update=":growl"/>
+                            <p:ajax event="rowEditCancel" listener="#{bcController.onCancelBC}" update=":growl"/>
+
+                            <p:column headerText="#{i18n.number}" sortBy="#{bc.number}">
+                                <h:outputText value="#{bc.number}"/>
+                            </p:column>
+
+                            <p:column headerText="#{i18n.name}" sortBy="#{bc.name}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{bc.name}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{bc.name}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="#{i18n.businesscasePageamount}" sortBy="#{bc.amount}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{bc.amount}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{bc.amount}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="#{i18n.comment}">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{bc.comment}"/>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{bc.comment}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:6%">
+                                <p:rowEditor/>
+                            </p:column>
+
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:right" footerText="Total:">
+
+                                    </p:column>
+
+                                    <p:column footerText="#{bcController.total}">
+                                    </p:column>
+
+                                </p:row>
+                            </p:columnGroup>
+
+                        </p:dataTable>
+
+                    </p:panel>
+                </h:form>
+                <br/>
+                <p:panel header="#{i18n.businesscasePagenewBC}">
+
+                    <hr/>
+                    <h:form>
+                        <table border="0">
+                            <tr>
+                                <td><h:outputLabel value="#{i18n.number}"/></td>
+                                <td><h:inputText value="#{bcController.bc.number}"/></td>
+                                <td><h:outputLabel value="#{i18n.name}"/></td>
+                                <td><h:inputText value="#{bcController.bc.name}"/></td>
+                                <td><h:outputLabel value="#{i18n.businesscasePageamount}"/></td>
+                                <td><h:inputText value="#{bcController.bc.amount}"/></td>
+                                <td><p:commandButton value="#{i18n.add}"
+                                                     action="#{bcController.doCreateBC}" ajax="false"/></td>
+                            </tr>
+                        </table>
+
+                    </h:form>
+                </p:panel>
+
+            </p:tab>
+            <p:tab title="#{i18n.businesscasePageactivities}">
 
 
-					</p:dataTable>
-				</p:panel>
+                <p:panel header="#{i18n.businesscasePagenewActivity}">
 
-			</p:tab>
-		</p:tabView>
-	</ui:define>
-	</ui:composition>
+                    <hr/>
+                    <h:form>
+                        <table border="0">
+                            <tr>
+                                <td><h:outputLabel value="#{i18n.name}"/></td>
+                                <td><h:inputText value="#{bcController.activity.name}"/></td>
+                                <td><h:outputLabel value="#{i18n.businesscasePageBC}"/></td>
+                                <td>
+                                    <p:selectOneMenu id="basic"
+                                                     value="#{bcController.activity.bc.number}">
+                                        <f:selectItem itemLabel="Select One" itemValue=""/>
+                                        <f:selectItems value="#{bcController.bcList}" var="bc"
+                                                       itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}"/>
+                                    </p:selectOneMenu></td>
+                                <td><p:commandButton value="#{i18n.add}"
+                                                     action="#{bcController.doCreateActivity}" ajax="false"/></td>
+                            </tr>
+                        </table>
+
+                    </h:form>
+                </p:panel>
+                <br/>
+                <br/>
+                <p:panel header="#{i18n.businesscasePageactivities}">
+                    <p:dataTable value="#{bcController.activityList}" var="activity"
+                                 border="1">
+                        <p:column headerText="#{i18n.name}" sortBy="#{activity.name}">
+                            <h:outputText value="#{activity.name}"/>
+                        </p:column>
+
+                        <p:column headerText="#{i18n.businesscasePagebcNumber}" sortBy="#{activity.bc.number}">
+                            <h:outputText value="#{activity.bc.number}">
+                                <f:convertNumber pattern="####"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{i18n.businesscasePagebcName}" sortBy="#{activity.bc.name}">
+                            <h:outputText value="#{activity.bc.name}"/>
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:panel>
+
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+</ui:composition>

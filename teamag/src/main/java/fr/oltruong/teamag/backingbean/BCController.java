@@ -7,9 +7,12 @@ import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.event.RowEditEvent;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,12 +41,15 @@ public class BCController extends Controller {
 
     private int tabIndex = 0;
 
-    private final String viewname = "businesscases";
+    private static final String viewname = "businesscases";
 
+
+    private Float total;
 
     public String init() {
         setBcList(this.activityEJB.findBC());
         setActivityList(this.activityEJB.findActivities());
+        computeTotal();
         return viewname;
     }
 
@@ -70,6 +76,19 @@ public class BCController extends Controller {
 
     }
 
+
+    public Float getTotal() {
+        return total;
+    }
+
+    private void computeTotal() {
+        total = 0f;
+        for (BusinessCase businessCase : bcList) {
+            total += businessCase.getAmount();
+        }
+
+    }
+
     public String doCreateActivity() {
         this.tabIndex = 1;
         this.logger.info("Creation of an activity");
@@ -93,6 +112,20 @@ public class BCController extends Controller {
         return init();
     }
 
+
+    public void onEditBC(RowEditEvent event) {
+        BusinessCase bcUpdated = (BusinessCase) event.getObject();
+
+        activityEJB.updateBC(bcUpdated);
+        FacesMessage msg = new FacesMessage("BC Edited", bcUpdated.getName());
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        computeTotal();
+
+    }
+
+    public void onCancelBC(RowEditEvent event) {
+    }
 
     public BusinessCase getBc() {
         return this.bc;

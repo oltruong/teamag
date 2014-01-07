@@ -28,7 +28,7 @@ public class ProfileController extends Controller {
 
     private ProfileWebBean profileWebBean;
 
-    private final String viewname = "profile";
+    private static final String viewname = "profile";
 
     public String init() {
         setProfileWebBean(new ProfileWebBean(memberInstance.get()));

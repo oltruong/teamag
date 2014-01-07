@@ -1,32 +1,21 @@
 package fr.oltruong.teamag.entity;
 
-import javax.inject.Inject;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
+import fr.oltruong.teamag.entity.converter.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
-import fr.oltruong.teamag.entity.converter.DateConverter;
+import javax.inject.Inject;
+import javax.persistence.*;
 
 @Table(name = "TM_WORK")
 @Entity
-@NamedQueries({ @NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day"),
+@NamedQueries({@NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day"),
         @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
+        @NamedQuery(name = "deleteWorksByMember", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
         @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.company, w.member.id, w.task.id"),
         @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
-        @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )") })
+        @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
 
     @Id
@@ -140,7 +129,6 @@ public class Work {
     }
 
     public String getDayStr() {
-        System.out.println(getDay().toString("E mmm dd"));
         return getDay().toString("E mmm dd");
     }
 

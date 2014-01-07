@@ -1,10 +1,6 @@
 package fr.oltruong.teamag.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "TM_BUSINESSCASE")
 @Entity
@@ -16,6 +12,9 @@ public class BusinessCase {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String comment;
 
     @Column
     private Float amount;
@@ -42,6 +41,14 @@ public class BusinessCase {
 
     public void setAmount(Float amount) {
         this.amount = amount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 }
