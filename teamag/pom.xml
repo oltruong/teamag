@@ -4,7 +4,7 @@
     <groupId>fr.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <name>TeamManagement</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/TeaMag</url>
@@ -52,7 +52,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
