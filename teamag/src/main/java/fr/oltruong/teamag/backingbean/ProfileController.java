@@ -28,11 +28,11 @@ public class ProfileController extends Controller {
 
     private ProfileWebBean profileWebBean;
 
-    private static final String viewname = "profile";
+    private static final String VIEWNAME = "profile";
 
     public String init() {
         setProfileWebBean(new ProfileWebBean(memberInstance.get()));
-        return viewname;
+        return VIEWNAME;
     }
 
     public String updatePassword() {
@@ -42,7 +42,7 @@ public class ProfileController extends Controller {
         memberEJB.updateMember(member);
 
         getMessageManager().displayMessage(MessageManager.INFORMATION, "updated");
-        return viewname;
+        return VIEWNAME;
     }
 
     public ProfileWebBean getProfileWebBean() {

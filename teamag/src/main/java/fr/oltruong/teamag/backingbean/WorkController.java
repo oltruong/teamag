@@ -50,7 +50,7 @@ public class WorkController extends Controller {
     @Inject
     private ParameterEJB parameterEJB;
 
-    private static final String viewname = "realized";
+    private static final String VIEWNAME = "realized";
 
     public String init() {
         // this.realizedBean = new RealizedFormWebBean();
@@ -61,7 +61,7 @@ public class WorkController extends Controller {
         works = workEJB.findWorks(getMember(), firstDayOfMonth);
 
         initTaskWeek();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String doCreateActivity() {
@@ -92,7 +92,7 @@ public class WorkController extends Controller {
             }
         }
 
-        return viewname;
+        return VIEWNAME;
     }
 
     public String deleteTask() {
@@ -100,20 +100,20 @@ public class WorkController extends Controller {
 
         workEJB.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
         init();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String previousWeek() {
         logger.debug("Click Previous week");
         realizedBean.decrementWeek();
         initTaskWeek();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String nextWeek() {
         realizedBean.incrementWeek();
         initTaskWeek();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String update() {
@@ -132,7 +132,7 @@ public class WorkController extends Controller {
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
-        return viewname;
+        return VIEWNAME;
     }
 
     public List<String> completeProject(String query) {

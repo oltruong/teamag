@@ -59,7 +59,7 @@ public class AbsenceControllerTest extends ControllerTest {
         when(mockAbsenceEJB.findAbsencesByMember(eq(mockMember))).thenReturn(absenceList);
         String view = absenceController.init();
 
-        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(absenceController, "viewname"));
+        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(absenceController, "VIEWNAME"));
         verify(mockAbsenceEJB).findAbsencesByMember(eq(mockMember));
 
         assertThat(absenceController.getAbsencesList()).hasSameSizeAs(absenceList);

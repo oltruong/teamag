@@ -28,7 +28,7 @@ public class MemberControllerTest {
 
     @Test
     public void testInitList() {
-        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "viewname"));
+        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "VIEWNAME"));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class MemberControllerTest {
 
     @Ignore("to fix")
     public void testDoCreateMember() {
-        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "viewname"));
+        assertThat(memberController.init()).isEqualTo(TestUtils.getPrivateAttribute(memberController, "VIEWNAME"));
     }
 
 }

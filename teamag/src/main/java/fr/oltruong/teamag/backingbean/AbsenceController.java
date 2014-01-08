@@ -36,12 +36,12 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
-    private static final String viewname = "absence";
+    private static final String VIEWNAME = "absence";
 
     public String init() {
 
         refreshList();
-        return viewname;
+        return VIEWNAME;
 
     }
 

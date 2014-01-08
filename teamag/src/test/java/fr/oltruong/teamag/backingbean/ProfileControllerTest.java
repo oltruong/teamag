@@ -58,7 +58,7 @@ public class ProfileControllerTest extends ControllerTest {
     }
 
     private void checkView(String view) {
-        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(profileController, "viewname"));
+        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(profileController, "VIEWNAME"));
     }
 
     @Test

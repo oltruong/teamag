@@ -10,6 +10,7 @@ import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.primefaces.event.RowEditEvent;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class BCControllerTest extends ControllerTest {
     @Mock
     private ActivityEJB mockActivityEJB;
 
+    @Mock
+    private RowEditEvent mockRowEditEvent;
+
+
     private BCController bcController;
 
 
@@ -38,6 +43,7 @@ public class BCControllerTest extends ControllerTest {
         bcController.setActivity(new Activity());
         TestUtils.setPrivateAttribute(bcController, mockActivityEJB, "activityEJB");
         TestUtils.setPrivateAttribute(bcController, Controller.class, mockMessageManager, "messageManager");
+        TestUtils.setPrivateAttribute(bcController, Controller.class, mockLogger, "logger");
 
     }
 
@@ -54,12 +60,23 @@ public class BCControllerTest extends ControllerTest {
         assertThat(bcController.getBcList()).isEqualTo(bcList);
 
         checkInitView(view);
+
+        assertThat(bcController.getTotal()).isEqualTo(getSumBc(bcList));
+    }
+
+
+    private Float getSumBc(List<BusinessCase> bcList) {
+        Float result = 0f;
+        for (BusinessCase businessCase : bcList) {
+            result += businessCase.getAmount();
+        }
+        return result;
     }
 
     private void checkInitView(String view) {
         verify(mockActivityEJB).findActivities();
         verify(mockActivityEJB).findBC();
-        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(bcController, "viewname"));
+        assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(bcController, "VIEWNAME"));
     }
 
     @Test
@@ -149,5 +166,23 @@ public class BCControllerTest extends ControllerTest {
         int tabIndex = 365;
         bcController.setTabIndex(tabIndex);
         assertThat(bcController.getTabIndex()).isEqualTo(tabIndex);
+    }
+
+
+    @Test
+    public void testOnEditBC() {
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
+        when(mockRowEditEvent.getObject()).thenReturn(businessCase);
+
+        bcController.onEditBC(mockRowEditEvent);
+
+        verify(mockActivityEJB).updateBC(eq(businessCase));
+        verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString(), anyString());
+    }
+
+    @Test
+    public void testOnCancel() {
+        bcController.onCancelBC(mockRowEditEvent);
+        verifyZeroInteractions(mockActivityEJB);
     }
 }

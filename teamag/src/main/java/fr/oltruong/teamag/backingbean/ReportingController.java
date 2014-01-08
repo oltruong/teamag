@@ -29,16 +29,19 @@ public class ReportingController {
     private List<RealizedReportBean> realizedCompanies;
     private MutableDateTime month;
 
+    private static final String VIEWNAME = "reporting";
+
+
     public String previousMonth() {
         month.addMonths(-1);
         initLists();
-        return "reporting";
+        return VIEWNAME;
     }
 
     public String nextMonth() {
         month.addMonths(1);
         initLists();
-        return "reporting";
+        return VIEWNAME;
     }
 
     @PostConstruct

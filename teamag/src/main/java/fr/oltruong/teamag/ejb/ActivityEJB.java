@@ -21,9 +21,7 @@ public class ActivityEJB extends AbstractEJB {
 
     public BusinessCase createBC(BusinessCase bc) throws ExistingDataException {
 
-        if (Strings.isNullOrEmpty(bc.getIdentifier())) {
-        } else {
-
+        if (!Strings.isNullOrEmpty(bc.getIdentifier())) {
             Query query = getEntityManager().createNamedQuery("findBCByNumber");
             query.setParameter("fidentifier", bc.getIdentifier());
             if (!query.getResultList().isEmpty()) {

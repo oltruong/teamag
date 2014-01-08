@@ -31,18 +31,18 @@ public class MemberController extends Controller {
     @Inject
     private Member selectedMember;
 
-    private static final String viewname = "members";
+    private static final String VIEWNAME = "members";
 
     public String init() {
         memberList = memberEJB.findMembers();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String update() {
         for (Member member : memberList) {
             memberEJB.updateMember(member);
         }
-        return viewname;
+        return VIEWNAME;
     }
 
     public String doCreateMember() {
@@ -53,7 +53,7 @@ public class MemberController extends Controller {
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 
         member = new Member();
-        return viewname;
+        return VIEWNAME;
     }
 
 
@@ -62,7 +62,7 @@ public class MemberController extends Controller {
 
         memberEJB.removeMember(getSelectedMember());
         init();
-        return viewname;
+        return VIEWNAME;
     }
 
     public List<String> completeCompany(String query) {

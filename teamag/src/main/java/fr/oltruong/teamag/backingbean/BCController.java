@@ -9,13 +9,10 @@ import fr.oltruong.teamag.utils.MessageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.RowEditEvent;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author Olivier Truong
@@ -24,7 +21,6 @@ import java.util.logging.Logger;
 @SessionScoped
 public class BCController extends Controller {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
 
     @Inject
     private ActivityEJB activityEJB;
@@ -41,7 +37,7 @@ public class BCController extends Controller {
 
     private int tabIndex = 0;
 
-    private static final String viewname = "businesscases";
+    private static final String VIEWNAME = "businesscases";
 
 
     private Float total;
@@ -52,12 +48,12 @@ public class BCController extends Controller {
         bc = new BusinessCase();
 
         computeTotal();
-        return viewname;
+        return VIEWNAME;
     }
 
     public String doCreateBC() {
         this.tabIndex = 0;
-        this.logger.info("Creation of a business case");
+        getLogger().info("Creation of a business case");
 
         if (StringUtils.isBlank(this.bc.getName())) {
             getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
@@ -67,7 +63,7 @@ public class BCController extends Controller {
                 getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (ExistingDataException e) {
-                logger.warning("BusinessCase already exists");
+                getLogger().warn("BusinessCase already exists");
                 getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getIdentifier());
             }
 
@@ -93,7 +89,7 @@ public class BCController extends Controller {
 
     public String doCreateActivity() {
         this.tabIndex = 1;
-        this.logger.info("Creation of an activity");
+        this.getLogger().info("Creation of an activity");
 
         if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getId() == null) {
             getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
@@ -104,7 +100,7 @@ public class BCController extends Controller {
                 getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
             } catch (ExistingDataException e) {
-                this.logger.warning("Existing activity");
+                this.getLogger().warn("Existing activity");
                 getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingActivity");
             }
 
@@ -119,9 +115,7 @@ public class BCController extends Controller {
         BusinessCase bcUpdated = (BusinessCase) event.getObject();
 
         activityEJB.updateBC(bcUpdated);
-        FacesMessage msg = new FacesMessage("BC Edited", bcUpdated.getName());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        getMessageManager().displayMessage(MessageManager.INFORMATION, "businessCaseUpdated", bcUpdated.getName());
         computeTotal();
 
     }
