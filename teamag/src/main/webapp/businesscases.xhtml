@@ -22,8 +22,8 @@
                             <p:ajax event="rowEdit" listener="#{bcController.onEditBC}" update=":growl"/>
                             <p:ajax event="rowEditCancel" listener="#{bcController.onCancelBC}" update=":growl"/>
 
-                            <p:column headerText="#{i18n.number}" sortBy="#{bc.number}">
-                                <h:outputText value="#{bc.number}"/>
+                            <p:column headerText="#{i18n.number}" sortBy="#{bc.identifier}">
+                                <h:outputText value="#{bc.identifier}"/>
                             </p:column>
 
                             <p:column headerText="#{i18n.name}" sortBy="#{bc.name}">
@@ -87,7 +87,7 @@
                         <table border="0">
                             <tr>
                                 <td><h:outputLabel value="#{i18n.number}"/></td>
-                                <td><h:inputText value="#{bcController.bc.number}"/></td>
+                                <td><h:inputText value="#{bcController.bc.identifier}"/></td>
                                 <td><h:outputLabel value="#{i18n.name}"/></td>
                                 <td><h:inputText value="#{bcController.bc.name}"/></td>
                                 <td><h:outputLabel value="#{i18n.businesscasePageamount}"/></td>
@@ -115,10 +115,11 @@
                                 <td><h:outputLabel value="#{i18n.businesscasePageBC}"/></td>
                                 <td>
                                     <p:selectOneMenu id="basic"
-                                                     value="#{bcController.activity.bc.number}">
+                                                     value="#{bcController.activity.bc.identifier}">
                                         <f:selectItem itemLabel="Select One" itemValue=""/>
                                         <f:selectItems value="#{bcController.bcList}" var="bc"
-                                                       itemLabel="#{bc.number}-#{bc.name}" itemValue="#{bc.number}"/>
+                                                       itemLabel="#{bc.identifier}-#{bc.name}"
+                                                       itemValue="#{bc.identifier}"/>
                                     </p:selectOneMenu></td>
                                 <td><p:commandButton value="#{i18n.add}"
                                                      action="#{bcController.doCreateActivity}" ajax="false"/></td>
@@ -136,8 +137,8 @@
                             <h:outputText value="#{activity.name}"/>
                         </p:column>
 
-                        <p:column headerText="#{i18n.businesscasePagebcNumber}" sortBy="#{activity.bc.number}">
-                            <h:outputText value="#{activity.bc.number}">
+                        <p:column headerText="#{i18n.businesscasePagebcNumber}" sortBy="#{activity.bc.identifier}">
+                            <h:outputText value="#{activity.bc.identifier}">
                                 <f:convertNumber pattern="####"/>
                             </h:outputText>
                         </p:column>

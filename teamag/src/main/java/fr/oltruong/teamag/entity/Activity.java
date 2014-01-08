@@ -1,18 +1,11 @@
 package fr.oltruong.teamag.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "TM_ACTIVITY")
 @Entity
-@NamedQueries({ @NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.bc.number, a.name"),
-        @NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc") })
+@NamedQueries({@NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.bc.identifier, a.name"),
+        @NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc")})
 public class Activity {
 
     @Id
@@ -22,8 +15,9 @@ public class Activity {
     @Column(nullable = false)
     private String name;
 
-    @JoinColumn(nullable = false)
-    private BusinessCase bc = new BusinessCase();
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "BC_FK")
+    private BusinessCase bc;
 
     public Long getId() {
         return id;

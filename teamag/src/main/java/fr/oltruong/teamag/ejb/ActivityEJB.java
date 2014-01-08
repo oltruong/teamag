@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
+import com.google.common.base.Strings;
 import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
@@ -19,13 +20,17 @@ public class ActivityEJB extends AbstractEJB {
     }
 
     public BusinessCase createBC(BusinessCase bc) throws ExistingDataException {
-        BusinessCase existingBC = getEntityManager().find(BusinessCase.class, bc.getNumber());
 
-        if (existingBC != null) {
-            throw new ExistingDataException();
+        if (Strings.isNullOrEmpty(bc.getIdentifier())) {
         } else {
-            getEntityManager().persist(bc);
+
+            Query query = getEntityManager().createNamedQuery("findBCByNumber");
+            query.setParameter("fidentifier", bc.getIdentifier());
+            if (!query.getResultList().isEmpty()) {
+                throw new ExistingDataException();
+            }
         }
+        getEntityManager().persist(bc);
         return bc;
     }
 

@@ -106,9 +106,6 @@ public class MemberController extends Controller {
 
 
     public void onCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Member Cancelled", ((Member) event.getObject()).getName());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
 

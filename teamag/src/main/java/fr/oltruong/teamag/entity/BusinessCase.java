@@ -4,27 +4,34 @@ import javax.persistence.*;
 
 @Table(name = "TM_BUSINESSCASE")
 @Entity
-@NamedQuery(name = "findAllBC", query = "SELECT b from BusinessCase b order by b.number")
+
+@NamedQueries({@NamedQuery(name = "findAllBC", query = "SELECT b from BusinessCase b order by b.identifier"), @NamedQuery(name = "findBCByNumber", query = "SELECT b FROM BusinessCase b WHERE b.identifier=:fidentifier")})
+
 public class BusinessCase {
 
+
     @Id
-    private Integer number;
+    @GeneratedValue
+    private Long id;
+
+    @Column
+    private String identifier;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String comment;
 
     @Column
-    private Float amount;
+    private Float amount = 0f;
 
-    public Integer getNumber() {
-        return this.number;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getName() {
@@ -51,4 +58,11 @@ public class BusinessCase {
         this.comment = comment;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

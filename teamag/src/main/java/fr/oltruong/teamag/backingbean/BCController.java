@@ -49,6 +49,8 @@ public class BCController extends Controller {
     public String init() {
         setBcList(this.activityEJB.findBC());
         setActivityList(this.activityEJB.findActivities());
+        bc = new BusinessCase();
+
         computeTotal();
         return viewname;
     }
@@ -57,16 +59,16 @@ public class BCController extends Controller {
         this.tabIndex = 0;
         this.logger.info("Creation of a business case");
 
-        if (this.bc.getNumber() == null || StringUtils.isBlank(this.bc.getNumber().toString())) {
+        if (StringUtils.isBlank(this.bc.getName())) {
             getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
         } else {
             try {
                 this.activityEJB.createBC(this.bc);
-                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getNumber().toString(), this.bc.getName());
+                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (ExistingDataException e) {
                 logger.warning("BusinessCase already exists");
-                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getNumber().toString());
+                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getIdentifier());
             }
 
 
@@ -93,7 +95,7 @@ public class BCController extends Controller {
         this.tabIndex = 1;
         this.logger.info("Creation of an activity");
 
-        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getNumber() == null) {
+        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getId() == null) {
             getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
         } else {
 

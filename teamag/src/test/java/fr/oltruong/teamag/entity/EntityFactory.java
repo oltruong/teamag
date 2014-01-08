@@ -23,7 +23,7 @@ public class EntityFactory {
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
         member.setEstimatedworkDays(0f);
-        member.setComment("Comment");
+
         return member;
     }
 
@@ -76,7 +76,7 @@ public class EntityFactory {
         BusinessCase businessCase = new BusinessCase();
         businessCase.setName("MyBC" + DateTime.now().getMillis());
         businessCase.setAmount(Float.valueOf(DateTime.now().getMillis()));
-        businessCase.setNumber(Integer.valueOf(DateTime.now().getMillisOfSecond()));
+        businessCase.setIdentifier("" + DateTime.now().getMillisOfSecond());
         return businessCase;
     }
 

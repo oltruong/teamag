@@ -105,6 +105,8 @@ public class BCControllerTest extends ControllerTest {
     @Test
     public void testDoCreateActivity() throws Exception {
         Activity activity = EntityFactory.createActivity();
+        activity.getBc().setId(Long.valueOf(3l));
+
         bcController.setActivity(activity);
         assertThat(bcController.getActivity()).isEqualTo(activity);
 
@@ -131,6 +133,7 @@ public class BCControllerTest extends ControllerTest {
     public void testDoCreateActivity_existing() throws Exception {
         when(mockActivityEJB.createActivity(isA(Activity.class))).thenThrow(new ExistingDataException());
         Activity activity = EntityFactory.createActivity();
+        activity.getBc().setId(Long.valueOf(3l));
         bcController.setActivity(activity);
         String view = bcController.doCreateActivity();
 

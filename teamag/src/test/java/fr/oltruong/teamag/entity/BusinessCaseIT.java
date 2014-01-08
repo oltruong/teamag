@@ -10,17 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BusinessCaseIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
-        BusinessCase businessCase = createBusinessCase(99);
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
 
         getEntityManager().persist(businessCase);
         getTransaction().commit();
 
-        assertThat(businessCase.getNumber()).isNotNull();
+        assertThat(businessCase.getId()).isNotNull();
     }
 
     @Test(expected = RollbackException.class)
     public void testException() {
-        BusinessCase businessCase = createBusinessCase(567);
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setName(null);
 
         getEntityManager().persist(businessCase);
@@ -31,7 +31,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
     @Test
     public void testNamedQuery() {
 
-        BusinessCase businessCase = createBusinessCase(1234);
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
 
         getEntityManager().persist(businessCase);
 
@@ -43,15 +43,5 @@ public class BusinessCaseIT extends AbstractEntityIT {
 
     }
 
-    private BusinessCase createBusinessCase(int number) {
-        BusinessCase businessCase = new BusinessCase();
-
-        businessCase.setName("My BC");
-        businessCase.setNumber(Integer.valueOf(number));
-        businessCase.setAmount(Float.valueOf(3.5f));
-        businessCase.setComment("Hello");
-
-        return businessCase;
-    }
 
 }
