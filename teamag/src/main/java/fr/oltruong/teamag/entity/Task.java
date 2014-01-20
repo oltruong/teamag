@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.entity;
 
+import com.google.common.collect.Lists;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,11 +11,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.google.common.collect.Lists;
-
 @Table(name = "TM_TASK")
-@NamedQueries({ @NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"),
-        @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)") })
+@NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"),
+        @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)")})
 @Entity
 public class Task {
     @Id
@@ -110,4 +108,8 @@ public class Task {
 
     }
 
+
+    public String getDescription() {
+        return this.getProject() + "-" + this.getName();
+    }
 }
