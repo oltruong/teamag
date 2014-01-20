@@ -4,7 +4,7 @@
     <groupId>fr.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>TeamManagement</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/TeaMag</url>
@@ -14,7 +14,7 @@
         <version.java>1.7</version.java>
         <version.javaee>7.0</version.javaee>
         <version.glassfish>4.0</version.glassfish>
-        <version.primefaces>3.5</version.primefaces>
+        <version.primefaces>4.0</version.primefaces>
         <version.primefaces-theme>1.0.10</version.primefaces-theme>
         <version.junit>4.11</version.junit>
         <version.assertj>1.4.0</version.assertj>
