@@ -113,7 +113,7 @@ public class WorkEJB extends AbstractEJB {
 
         getLogger().debug("Works deleted : " + rowsNumberDeleted);
 
-        // Suppression pour la tache de l'utilisateur
+        // Delete of task for user
 
         Task taskDb = getEntityManager().find(Task.class, task.getId());
 
@@ -144,7 +144,7 @@ public class WorkEJB extends AbstractEJB {
         @SuppressWarnings("unchecked")
         List<Task> allTaskList = query.getResultList();
 
-        List<Task> taskList = new ArrayList<Task>();
+        List<Task> taskList = Lists.newArrayList();
 
         for (Task task : allTaskList) {
             getLogger().debug("tache " + task.getId());
@@ -175,13 +175,13 @@ public class WorkEJB extends AbstractEJB {
         List<Task> allTaskList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(allTaskList)) {
-            getLogger().debug("La t�che existe d�j�");
+            getLogger().debug("Existing task");
             Task myTask = allTaskList.get(0);
             if (myTask.getMembers().contains(member)) {
-                getLogger().debug("D�j� affect�e � la personne");
+                getLogger().debug("Already affected to member");
                 throw new ExistingDataException();
             } else {
-                getLogger().debug("Affectation � la personne " + member.getId());
+                getLogger().debug("Affecting to member " + member.getId());
                 myTask.addMember(member);
                 getEntityManager().merge(myTask);
                 taskDB = myTask;
@@ -253,9 +253,7 @@ public class WorkEJB extends AbstractEJB {
     }
 
     public void updateWeekComment(WeekComment weekComment) {
-        System.out.println("BEFORE UPDATE [" + weekComment.getComment() + "]");
         getEntityManager().merge(weekComment);
-        System.out.println("AFTER UPDATE [" + weekComment.getComment() + "]");
     }
 
     public void removeWeekComment(WeekComment weekComment) {
