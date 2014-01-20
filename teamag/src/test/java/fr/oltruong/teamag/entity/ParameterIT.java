@@ -11,10 +11,8 @@ public class ParameterIT extends AbstractEntityIT {
 
     @Test
     public void testCreation() {
-        Parameter parameter = new Parameter();
-        parameter.setName(ParameterName.ADMINISTRATOR_EMAIL);
-        parameter.setValue("toto");
-
+        Parameter parameter = EntityFactory.createParameter();
+        assertThat(parameter.getId()).isNull();
         getEntityManager().persist(parameter);
         getTransaction().commit();
 

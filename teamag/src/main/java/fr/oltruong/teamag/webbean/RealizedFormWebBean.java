@@ -1,15 +1,13 @@
 package fr.oltruong.teamag.webbean;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import javax.inject.Inject;
-
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
-import com.google.common.collect.Lists;
+import javax.inject.Inject;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class RealizedFormWebBean {
 
@@ -27,6 +25,7 @@ public class RealizedFormWebBean {
     private List<TaskWeekBean> taskWeeks = Lists.newArrayList();
 
     private TaskWeekBean selectedTaskWeek;
+
 
     public boolean getIsFirstWeek() {
         logger.debug("day cursor" + dayCursor.getDayOfMonth());
@@ -52,6 +51,10 @@ public class RealizedFormWebBean {
     public int getWeekNumber() {
 
         return dayCursor.getWeekOfWeekyear();
+    }
+
+    public int getYear() {
+        return dayCursor.getYear();
     }
 
     public List<TaskWeekBean> getTaskWeeks() {

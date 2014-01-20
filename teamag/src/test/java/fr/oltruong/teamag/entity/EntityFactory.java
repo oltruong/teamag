@@ -80,5 +80,19 @@ public class EntityFactory {
         return businessCase;
     }
 
+    public static WeekComment createWeekComment() {
+        DateTime now = DateTime.now();
+        WeekComment weekComment = new WeekComment(createMember(), now.getWeekOfWeekyear(), now.getYear());
+        weekComment.setComment("Comment" + now.toString());
+        return weekComment;
+    }
+
+    public static Parameter createParameter() {
+        Parameter parameter = new Parameter();
+        parameter.setName(ParameterName.ADMINISTRATOR_EMAIL);
+        parameter.setValue("toto");
+        return parameter;
+    }
+
 
 }

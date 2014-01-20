@@ -18,15 +18,15 @@ public abstract class AbstractEntityIT {
     EntityTransaction transaction;
 
     @Before
-     public void setup(){
-         entityManagerFactory = Persistence.createEntityManagerFactory("testPersistence");
-         entityManager = entityManagerFactory.createEntityManager();
+    public void setup() {
+        entityManagerFactory = Persistence.createEntityManagerFactory("testPersistence");
+        entityManager = entityManagerFactory.createEntityManager();
         transaction = entityManager.getTransaction();
         transaction.begin();
-     }
+    }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         entityManager.close();
         entityManagerFactory.close();
     }

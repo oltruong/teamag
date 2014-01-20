@@ -20,4 +20,5 @@ public class TeamagUtilsTest {
     public void testConstructorIsPrivate() {
         TestUtils.testConstructorIsPrivate(TeamagUtils.class);
     }
+
 }

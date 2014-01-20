@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
-import java.util.Properties;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -10,8 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.slf4j.Logger;
+import java.util.Properties;
 
 // from http://www.tutorialspoint.com/java/java_sending_email.htm
 @Stateless
@@ -25,7 +24,13 @@ public class EmailEJB {
     @Inject
     private ParameterEJB parameterEJB;
 
-    public void sendEmail(MailBean email) {
+    public void sendEmailAdministrator(MailBean email) {
+
+        email.setRecipient(parameterEJB.getAdministratorEmail());
+        sendEmail(email);
+    }
+
+    private void sendEmail(MailBean email) {
 
         Properties properties = System.getProperties();
 

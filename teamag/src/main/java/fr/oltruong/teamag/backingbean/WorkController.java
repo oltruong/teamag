@@ -1,13 +1,14 @@
 package fr.oltruong.teamag.backingbean;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.ejb.MailBean;
-import fr.oltruong.teamag.ejb.ParameterEJB;
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.qualifier.UserLogin;
@@ -47,16 +48,18 @@ public class WorkController extends Controller {
     private WorkEJB workEJB;
     @Inject
     private EmailEJB mailEJB;
-    @Inject
-    private ParameterEJB parameterEJB;
+
+    private WeekComment weekComment;
+
 
     private static final String VIEWNAME = "realized";
 
     public String init() {
+        DateTime now = DateTime.now();
         // this.realizedBean = new RealizedFormWebBean();
-        realizedBean.setDayCursor(DateTime.now());
+        realizedBean.setDayCursor(now);
 
-        DateTime firstDayOfMonth = DateTime.now().withDayOfMonth(1);
+        DateTime firstDayOfMonth = now.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         works = workEJB.findWorks(getMember(), firstDayOfMonth);
 
@@ -121,18 +124,38 @@ public class WorkController extends Controller {
         List<Work> changedWorks = findChangedWorks(realizedBean.getTaskWeeks());
         workEJB.updateWorks(changedWorks);
 
-        FacesMessage msg = null;
+        updateComment();
+
+
         if (changedWorks.isEmpty()) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
+            //    msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
 
         } else {
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
+            //      msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
             sendNotification();
             initTaskWeek();
         }
+
+
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         return VIEWNAME;
+    }
+
+    private void updateComment() {
+        if (Strings.isNullOrEmpty(weekComment.getComment())) {
+            if (weekComment.getId() != null) {
+                workEJB.removeWeekComment(weekComment);
+            }
+        } else {
+            if (weekComment.getId() != null) {
+                workEJB.updateWeekComment(weekComment);
+            } else {
+                workEJB.createWeekComment(weekComment);
+            }
+
+        }
     }
 
     public List<String> completeProject(String query) {
@@ -174,20 +197,25 @@ public class WorkController extends Controller {
         if (total == nbWorkingDays) {
 
             MailBean email = buildEmail();
-            mailEJB.sendEmail(email);
+            mailEJB.sendEmailAdministrator(email);
         }
     }
 
     private MailBean buildEmail() {
         MailBean email = new MailBean();
         email.setContent("Realise complet");
-        email.setRecipient(parameterEJB.getAdministratorEmail());
         email.setSubject("Realise de " + getMember().getName());
         return email;
     }
 
 
     private void initTaskWeek() {
+        weekComment = workEJB.findWeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());
+
+        if (weekComment == null) {
+            weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        }
+
         if (works != null) {
             Integer weekNumber = realizedBean.getWeekNumber();
 
@@ -266,4 +294,11 @@ public class WorkController extends Controller {
         newTask = newActivity;
     }
 
+    public WeekComment getWeekComment() {
+        return weekComment;
+    }
+
+    public void setWeekComment(WeekComment weekComment) {
+        this.weekComment = weekComment;
+    }
 }

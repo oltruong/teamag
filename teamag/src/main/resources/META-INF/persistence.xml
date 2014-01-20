@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	version="1.0">
+             version="1.0">
 
-	<persistence-unit name="ejbPU" transaction-type="JTA">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<jta-data-source>jdbc/teamag</jta-data-source>
-		<class>fr.oltruong.teamag.entity.Absence</class>
-		<class>fr.oltruong.teamag.entity.Activity</class>
-		<class>fr.oltruong.teamag.entity.BusinessCase</class>
-		<class>fr.oltruong.teamag.entity.Member</class>
-		<class>fr.oltruong.teamag.entity.Task</class>
-		<class>fr.oltruong.teamag.entity.Work</class>
-		<class>fr.oltruong.teamag.entity.converter.DateConverter</class>
-		<properties>
-			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
-			<property name="eclipselink.logging.level" value="INFO" />
-		</properties>
-	</persistence-unit>
+    <persistence-unit name="ejbPU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/teamag</jta-data-source>
+        <class>fr.oltruong.teamag.entity.Absence</class>
+        <class>fr.oltruong.teamag.entity.Activity</class>
+        <class>fr.oltruong.teamag.entity.BusinessCase</class>
+        <class>fr.oltruong.teamag.entity.Member</class>
+        <class>fr.oltruong.teamag.entity.Task</class>
+        <class>fr.oltruong.teamag.entity.WeekComment</class>
+        <class>fr.oltruong.teamag.entity.Work</class>
+        <class>fr.oltruong.teamag.entity.converter.DateConverter</class>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <property name="eclipselink.logging.level" value="INFO"/>
+        </properties>
+    </persistence-unit>
 
 </persistence>        

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
@@ -228,6 +229,38 @@ public class WorkEJB extends AbstractEJB {
         query.setParameter("fmonth", month);
 
         return query.getResultList();
+    }
+
+    public WeekComment findWeekComment(Member member, int weekYear, int year) {
+
+        WeekComment result = null;
+        Query query = getEntityManager().createNamedQuery("findWeekComment");
+        query.setParameter("fmember", member);
+        query.setParameter("fweekYear", weekYear);
+        query.setParameter("fyear", year);
+
+        List<WeekComment> weekCommentList = query.getResultList();
+        if (!weekCommentList.isEmpty()) {
+            result = weekCommentList.get(0);
+        }
+
+        return result;
+    }
+
+    public WeekComment createWeekComment(WeekComment weekComment) {
+        getEntityManager().persist(weekComment);
+        return weekComment;
+    }
+
+    public void updateWeekComment(WeekComment weekComment) {
+        System.out.println("BEFORE UPDATE [" + weekComment.getComment() + "]");
+        getEntityManager().merge(weekComment);
+        System.out.println("AFTER UPDATE [" + weekComment.getComment() + "]");
+    }
+
+    public void removeWeekComment(WeekComment weekComment) {
+        WeekComment weekCommentDb = getEntityManager().find(WeekComment.class, weekComment.getId());
+        getEntityManager().remove(weekCommentDb);
     }
 
 }
