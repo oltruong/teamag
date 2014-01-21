@@ -5,10 +5,9 @@ import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
+import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-
-import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -51,7 +50,7 @@ public final class AbsenceWebBeanValidator {
             for (AbsenceWebBean absenceWebBean1 : absenceWebBeanList) {
                 DateTime[] dateTimes1 = computeDateTime(absenceWebBean1);
                 Interval interval1 = new Interval(dateTimes1[0], dateTimes1[1]);
-                if (interval.overlaps(interval1)) {
+                if (interval.overlaps(interval1) || interval.isEqual(interval1)) {
                     throw new DateOverlapException();
                 }
             }
@@ -68,7 +67,7 @@ public final class AbsenceWebBeanValidator {
         DateTime endTime = absenceWebBean.getEndDateTime().withHourOfDay(0).withTimeAtStartOfDay();
         if (absenceWebBean.getEndType() == Absence.MORNING_ONLY) {
             endTime = endTime.plusHours(12);
-        } else if (absenceWebBean.getEndType() == Absence.AFTERNOON_ONLY) {
+        } else {
             endTime = endTime.plusHours(20);
         }
         DateTime[] dateTimes = new DateTime[2];
