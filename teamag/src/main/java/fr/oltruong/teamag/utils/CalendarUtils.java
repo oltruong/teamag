@@ -1,10 +1,9 @@
 package fr.oltruong.teamag.utils;
 
 import com.google.common.collect.Lists;
+import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
-
-import java.util.List;
 
 public final class CalendarUtils {
 
@@ -51,6 +50,30 @@ public final class CalendarUtils {
         }
         return verdict;
 
+    }
+
+    public static List<DateTime> getListDaysOff() {
+        int numberDaysOff = 11;
+        List<DateTime> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
+
+        daysOff.add(buildDayOff(1, DateTimeConstants.JANUARY));
+        daysOff.add(buildDayOff(21, DateTimeConstants.APRIL));
+        daysOff.add(buildDayOff(1, DateTimeConstants.MAY));
+        daysOff.add(buildDayOff(8, DateTimeConstants.MAY));
+        daysOff.add(buildDayOff(29, DateTimeConstants.MAY));
+        daysOff.add(buildDayOff(9, DateTimeConstants.JUNE));
+        daysOff.add(buildDayOff(14, DateTimeConstants.JULY));
+        daysOff.add(buildDayOff(15, DateTimeConstants.AUGUST));
+        daysOff.add(buildDayOff(1, DateTimeConstants.NOVEMBER));
+        daysOff.add(buildDayOff(11, DateTimeConstants.NOVEMBER));
+        daysOff.add(buildDayOff(25, DateTimeConstants.DECEMBER));
+
+
+        return daysOff;
+    }
+
+    private static DateTime buildDayOff(int day, int month) {
+        return DateTime.now().withTimeAtStartOfDay().withDayOfMonth(day).withMonthOfYear(month);
     }
 
     public static List<DateTime> getWorkingDays(DateTime month) {

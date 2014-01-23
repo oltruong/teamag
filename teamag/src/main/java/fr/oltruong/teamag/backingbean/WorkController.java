@@ -16,19 +16,18 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
 import fr.oltruong.teamag.webbean.TaskWeekBean;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
 
 @SessionScoped
 @ManagedBean
@@ -73,7 +72,7 @@ public class WorkController extends Controller {
 
         if (StringUtils.isBlank(newTask.getName())) {
             FacesMessage msg = null;
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessage("impossibleAdd"), getMessage("nameTask"));
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, getMessageManager().getMessage("impossibleAdd"), getMessage("nameTask"));
             FacesContext.getCurrentInstance().addMessage(null, msg);
 
         } else {
@@ -127,15 +126,18 @@ public class WorkController extends Controller {
         updateComment();
 
 
-        if (changedWorks.isEmpty()) {
-            //    msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
-
-        } else {
-            //      msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
+//        if (changedWorks.isEmpty()) {
+//            //    msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
+//
+//        } else {
+//            //      msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
+//            sendNotification();
+//            initTaskWeek();
+//        }
+        if (!changedWorks.isEmpty()) {
             sendNotification();
             initTaskWeek();
         }
-
 
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -175,11 +177,18 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeName(String query) {
+//        List<Task> tasks = workEJB.findTasksByProject(newTask.getProject());
+//
+//        System.out.println("FFFFFFIND tasks for prohject [" + newTask.getProject());
+//
+//        System.out.println("FFFFFFIND tasks  [" + tasks.size());
         List<Task> tasks = workEJB.findAllTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
             for (Task task : tasks) {
+//                System.out.println("TTTTTTTTND tasks  [" + task.getName());
+
                 // Do not propose task that the member already has
                 if (!task.getMembers().contains(getMember()) && StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {
                     results.add(task.getName());

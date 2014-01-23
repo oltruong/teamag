@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * @author Olivier Truong
  */
-public final class AbsenceTransformer {
+public final class AbsenceWebBeanTransformer {
 
-    private AbsenceTransformer() {
+    private AbsenceWebBeanTransformer() {
 
     }
 

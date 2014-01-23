@@ -3,13 +3,17 @@ package fr.oltruong.teamag.ejb;
 import com.google.common.base.Preconditions;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
-
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
-import java.util.List;
 
 @Stateless
 public class AbsenceEJB extends AbstractEJB {
+
+
+    public List<Absence> findAllAbsences() {
+        return getEntityManager().createNamedQuery("findAllAbsences").getResultList();
+    }
 
     @SuppressWarnings("unchecked")
     public List<Absence> findAbsencesByMember(Member member) {

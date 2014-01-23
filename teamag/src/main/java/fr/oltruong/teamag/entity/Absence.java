@@ -1,8 +1,6 @@
 package fr.oltruong.teamag.entity;
 
 import fr.oltruong.teamag.entity.converter.DateConverter;
-import org.joda.time.DateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -10,14 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.joda.time.DateTime;
 
 @Table(name = "TM_ABSENCE")
 @Entity
-@NamedQuery(name = "findAbsencesByMember", query = "SELECT a FROM Absence a WHERE a.member.id=:fmemberId order by a.beginDate")
+@NamedQueries({@NamedQuery(name = "findAbsencesByMember", query = "SELECT a FROM Absence a WHERE a.member.id=:fmemberId order by a.beginDate"), @NamedQuery(name = "findAllAbsences", query = "SELECT a FROM Absence a order by a.member.name, a.beginDate")})
 public class Absence {
 
     public static final Integer ALL_DAY = 0;

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Table(name = "TM_TASK")
-@NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"),
+@NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
         @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)")})
 @Entity
 public class Task {

@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.utils;
 
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Olivier Truong
@@ -32,7 +32,7 @@ public class MessageManager {
     }
 
 
-    protected String getMessage(String msgKey, Object... args) {
+    public String getMessage(String msgKey, Object... args) {
         Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, classLoader);

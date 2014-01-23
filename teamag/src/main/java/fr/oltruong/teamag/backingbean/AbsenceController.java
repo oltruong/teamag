@@ -6,7 +6,7 @@ import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.qualifier.UserLogin;
-import fr.oltruong.teamag.transformer.AbsenceTransformer;
+import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
@@ -49,7 +49,7 @@ public class AbsenceController extends Controller {
         try {
             format(absence);
             AbsenceWebBeanValidator.validate(absence, absencesList);
-            Absence newAbsence = AbsenceTransformer.transformWebBean(absence);
+            Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(absence);
             newAbsence.setMember(getMember());
             absenceEJB.addAbsence(newAbsence);
             refreshList();
@@ -88,7 +88,7 @@ public class AbsenceController extends Controller {
     }
 
     private void refreshList() {
-        absencesList = AbsenceTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
+        absencesList = AbsenceWebBeanTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
     }
 
     public AbsenceWebBean getAbsence() {

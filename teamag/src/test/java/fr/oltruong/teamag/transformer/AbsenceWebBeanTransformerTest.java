@@ -14,37 +14,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Olivier Truong
  */
-public class AbsenceTransformerTest {
+public class AbsenceWebBeanTransformerTest {
 
 
     @Test
     public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(AbsenceTransformer.class);
+        TestUtils.testConstructorIsPrivate(AbsenceWebBeanTransformer.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testTransformNull() throws Exception {
-        AbsenceTransformer.transform(null);
+        AbsenceWebBeanTransformer.transform(null);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testTransformWebBeanNull() throws Exception {
-        AbsenceTransformer.transformWebBean(null);
+        AbsenceWebBeanTransformer.transformWebBean(null);
 
     }
 
     @Test
     public void testTransformWebBean() throws Exception {
         AbsenceWebBean absenceWebBean = buildAbsenceWebBean();
-        Absence absence = AbsenceTransformer.transformWebBean(absenceWebBean);
+        Absence absence = AbsenceWebBeanTransformer.transformWebBean(absenceWebBean);
         compare(absenceWebBean, absence);
     }
 
     @Test
     public void testTransform() throws Exception {
         Absence absence = EntityFactory.createAbsence();
-        AbsenceWebBean absenceWebBean = AbsenceTransformer.transform(absence);
+        AbsenceWebBean absenceWebBean = AbsenceWebBeanTransformer.transform(absence);
         compare(absenceWebBean, absence);
         assertThat(absenceWebBean.getId()).isEqualTo(absence.getId());
     }
@@ -52,7 +52,7 @@ public class AbsenceTransformerTest {
     @Test
     public void testTransformList() throws Exception {
         List<Absence> absenceList = EntityFactory.createAbsenceList(99);
-        List<AbsenceWebBean> absenceWebBeanList = AbsenceTransformer.transformList(absenceList);
+        List<AbsenceWebBean> absenceWebBeanList = AbsenceWebBeanTransformer.transformList(absenceList);
 
         assertThat(absenceWebBeanList).hasSameSizeAs(absenceList);
         for (int i = 0; i < absenceList.size(); i++) {

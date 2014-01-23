@@ -65,6 +65,30 @@ public class AbsenceWebBeanValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
+    public void testValidate_InconsistentDate_gapAfternoon() throws DateOverlapException, InconsistentDateException {
+        AbsenceWebBean absenceWebBean = new AbsenceWebBean();
+
+        absenceWebBean.setBeginDateTime(new DateTime(2013, 11, 22, 16, 40, 0));
+        absenceWebBean.setEndDateTime(new DateTime(2013, 11, 25, 0, 40, 0));
+        absenceWebBean.setBeginType(Absence.MORNING_ONLY);
+        absenceWebBean.setEndType(Absence.ALL_DAY);
+
+        AbsenceWebBeanValidator.validate(absenceWebBean, null);
+    }
+
+    @Test(expected = InconsistentDateException.class)
+    public void testValidate_InconsistentDate_gapMorning() throws DateOverlapException, InconsistentDateException {
+        AbsenceWebBean absenceWebBean = new AbsenceWebBean();
+
+        absenceWebBean.setBeginDateTime(new DateTime(2013, 11, 22, 16, 40, 0));
+        absenceWebBean.setEndDateTime(new DateTime(2013, 11, 25, 0, 40, 0));
+        absenceWebBean.setBeginType(Absence.ALL_DAY);
+        absenceWebBean.setEndType(Absence.AFTERNOON_ONLY);
+
+        AbsenceWebBeanValidator.validate(absenceWebBean, null);
+    }
+
+    @Test(expected = InconsistentDateException.class)
     public void testValidate_DateNonChronologicalSameDay2() throws DateOverlapException, InconsistentDateException {
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
 
@@ -82,11 +106,6 @@ public class AbsenceWebBeanValidatorTest {
 
         absenceWebBean.setBeginDateTime(new DateTime(2013, 11, 22, 16, 40, 0));
         absenceWebBean.setEndDateTime(new DateTime(2013, 11, 23, 16, 40, 0));
-        absenceWebBean.setBeginType(Absence.MORNING_ONLY);
-        absenceWebBean.setEndType(Absence.MORNING_ONLY);
-
-        AbsenceWebBeanValidator.validate(absenceWebBean, null);
-
         absenceWebBean.setBeginType(Absence.AFTERNOON_ONLY);
         absenceWebBean.setEndType(Absence.MORNING_ONLY);
         AbsenceWebBeanValidator.validate(absenceWebBean, null);

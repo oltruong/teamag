@@ -8,14 +8,13 @@ import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
-
-import javax.ejb.Stateless;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 
 @Stateless
 public class WorkEJB extends AbstractEJB {
@@ -45,6 +44,13 @@ public class WorkEJB extends AbstractEJB {
     @SuppressWarnings("unchecked")
     public List<Task> findAllTasks() {
         return getEntityManager().createNamedQuery("findAllTasks").getResultList();
+    }
+
+    public List<Task> findTasksByProject(String project) {
+
+        Query query = getEntityManager().createNamedQuery("findTaskByProject");
+        query.setParameter("fproject", project);
+        return query.getResultList();
     }
 
     public int getSumWorks(Member member, DateTime month) {

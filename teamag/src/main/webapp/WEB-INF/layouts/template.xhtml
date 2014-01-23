@@ -8,6 +8,7 @@
 <h:head>
     <title><ui:insert name="title"></ui:insert></title>
     <h:outputStylesheet name="css/mycustom.css"/>
+    <h:outputScript library="js" name="primefaces.locales.js"/>
 </h:head>
 
 <h:body>
@@ -32,6 +33,9 @@
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.menurealized}" action="#{workController.init}" icon="ui-icon-calculator"
+                        rendered="#{loginBean.loggedIn}" ajax="false"/>
+
+            <p:menuitem value="#{i18n.menuabsences}" action="#{scheduleController.init}" icon="ui-icon-folder-open"
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.menuteam}" action="#{memberController.init}" icon="ui-icon-person"

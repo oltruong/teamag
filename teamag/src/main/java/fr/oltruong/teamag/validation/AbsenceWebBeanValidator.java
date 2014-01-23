@@ -34,6 +34,8 @@ public final class AbsenceWebBeanValidator {
         dateInconsistent = beginDateTime.isAfter(endDateTime);
         dateInconsistent |= beginDateTime.equals(endDateTime) && absenceWebBean.getBeginType() > absenceWebBean.getEndType();
 
+        dateInconsistent |= !beginDateTime.equals(endDateTime) && (Absence.MORNING_ONLY.equals(Integer.valueOf(absenceWebBean.getBeginType())) || Absence.AFTERNOON_ONLY.equals(Integer.valueOf(absenceWebBean.getEndType())));
+
         if (dateInconsistent) {
             throw new InconsistentDateException();
         }
