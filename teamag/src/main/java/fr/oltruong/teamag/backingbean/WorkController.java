@@ -54,11 +54,15 @@ public class WorkController extends Controller {
     private static final String VIEWNAME = "realized";
 
     public String init() {
-        DateTime now = DateTime.now();
-        // this.realizedBean = new RealizedFormWebBean();
-        realizedBean.setDayCursor(now);
 
-        DateTime firstDayOfMonth = now.withDayOfMonth(1);
+        return initInformation(DateTime.now());
+    }
+
+    public String initInformation(DateTime dateTime) {
+
+        realizedBean.setDayCursor(dateTime);
+
+        DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         works = workEJB.findWorks(getMember(), firstDayOfMonth);
 
@@ -98,10 +102,14 @@ public class WorkController extends Controller {
     }
 
     public String deleteTask() {
+
+        System.out.println("DDDDDDDDDDDDDDD Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
         workEJB.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
-        init();
+
+        initInformation(realizedBean.getDayCursor());
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         return VIEWNAME;
     }
 

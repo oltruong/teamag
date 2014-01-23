@@ -1,13 +1,12 @@
 package fr.oltruong.teamag.webbean;
 
 import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-
-import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import javax.inject.Inject;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
 
 public class RealizedFormWebBean {
 
@@ -101,4 +100,7 @@ public class RealizedFormWebBean {
         weekNumberMonth = dayCursor.toCalendar(Locale.getDefault()).get(Calendar.WEEK_OF_MONTH);
     }
 
+    public DateTime getDayCursor() {
+        return dayCursor;
+    }
 }
