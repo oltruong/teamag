@@ -53,7 +53,7 @@
 
                 <p:dataTable id="idTable" var="taskWeek"
                              value="#{workController.realizedBean.taskWeeks}"
-                             sortBy="#{taskWeek.task.description}"
+                             sortBy="task.description"
                              sortOrder="ascending"
                              selection="#{workController.realizedBean.selectedTaskWeek}"
                              selectionMode="single" rowKey="#{taskWeek.task.id}">
