@@ -166,7 +166,7 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeProject(String query) {
-        List<Task> tasks = workEJB.findAllTasks();
+        List<Task> tasks = workEJB.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -183,16 +183,12 @@ public class WorkController extends Controller {
 
     public List<String> completeName(String query) {
 //        List<Task> tasks = workEJB.findTasksByProject(newTask.getProject());
-//
-//        System.out.println("FFFFFFIND tasks for prohject [" + newTask.getProject());
-//
-//        System.out.println("FFFFFFIND tasks  [" + tasks.size());
-        List<Task> tasks = workEJB.findAllTasks();
+
+        List<Task> tasks = workEJB.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
             for (Task task : tasks) {
-//                System.out.println("TTTTTTTTND tasks  [" + task.getName());
 
                 // Do not propose task that the member already has
                 if (!task.getMembers().contains(getMember()) && StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {

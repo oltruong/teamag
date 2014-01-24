@@ -46,6 +46,33 @@ public class WorkEJB extends AbstractEJB {
         return getEntityManager().createNamedQuery("findAllTasks").getResultList();
     }
 
+    public List<Task> findAllNonAdminTasks() {
+        List<Task> taskList = findAllTasks();
+
+        List<Task> nonAdminTaskList = Lists.newArrayListWithCapacity(taskList.size());
+
+        for (Task task : taskList) {
+            if (isTaskNonAdmin(task)) {
+                nonAdminTaskList.add(task);
+            }
+
+        }
+        return nonAdminTaskList;
+    }
+
+    private boolean isTaskNonAdmin(Task task) {
+        boolean verdict = false;
+        if (task.getMembers() != null && !task.getMembers().isEmpty()) {
+            for (Member member : task.getMembers()) {
+                verdict |= !member.isAdministrator();
+            }
+        } else {
+            verdict = true;
+        }
+        return verdict;
+    }
+
+
     public List<Task> findTasksByProject(String project) {
 
         Query query = getEntityManager().createNamedQuery("findTaskByProject");

@@ -58,9 +58,9 @@ public class AbsenceController extends Controller {
             getMessageManager().displayMessage(MessageManager.INFORMATION, "absenceAdded");
 
         } catch (InconsistentDateException e) {
-            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
+            getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
         } catch (DateOverlapException e) {
-            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "overlappingDates");
+            getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "overlappingDates");
         }
     }
 

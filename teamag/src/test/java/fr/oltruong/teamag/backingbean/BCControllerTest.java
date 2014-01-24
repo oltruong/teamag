@@ -88,7 +88,7 @@ public class BCControllerTest extends ControllerTest {
         String view = bcController.doCreateBC();
 
         verify(mockActivityEJB).createBC(eq(businessCase));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString(), anyString(), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.INFORMATION), anyString(), anyString(), anyString(), anyString());
 
         assertThat(bcController.getBc()).isNotEqualTo(businessCase);
 
@@ -100,7 +100,7 @@ public class BCControllerTest extends ControllerTest {
         String view = bcController.doCreateBC();
 
         verify(mockActivityEJB, never()).createBC(isA(BusinessCase.class));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);
     }
@@ -113,7 +113,7 @@ public class BCControllerTest extends ControllerTest {
         String view = bcController.doCreateBC();
 
         verify(mockActivityEJB).createBC(eq(businessCase));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString(), anyString());
         checkInitView(view);
 
 
@@ -130,7 +130,7 @@ public class BCControllerTest extends ControllerTest {
         String view = bcController.doCreateActivity();
 
         verify(mockActivityEJB).createActivity(eq(activity));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.INFORMATION), anyString(), anyString());
         assertThat(bcController.getActivity()).isNotEqualTo(activity);
         checkInitView(view);
     }
@@ -141,7 +141,7 @@ public class BCControllerTest extends ControllerTest {
 
         verify(mockActivityEJB, never()).createActivity(isA(Activity.class));
         verify(mockActivityEJB).findActivities();
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);
     }
@@ -156,7 +156,7 @@ public class BCControllerTest extends ControllerTest {
 
         verify(mockActivityEJB).createActivity(eq(activity));
 
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);
     }

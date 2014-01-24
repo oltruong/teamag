@@ -129,7 +129,7 @@ public class AbsenceControllerTest extends ControllerTest {
         ArgumentCaptor<Absence> argument = ArgumentCaptor.forClass(Absence.class);
         verify(mockAbsenceEJB, never()).addAbsence(isA(Absence.class));
         verify(mockAbsenceEJB, never()).findAbsencesByMember(eq(mockMember));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
     }
 
     @Test
@@ -147,7 +147,7 @@ public class AbsenceControllerTest extends ControllerTest {
         ArgumentCaptor<Absence> argument = ArgumentCaptor.forClass(Absence.class);
         verify(mockAbsenceEJB, never()).addAbsence(isA(Absence.class));
         verify(mockAbsenceEJB, never()).findAbsencesByMember(eq(mockMember));
-        verify(mockMessageManager).displayMessage(eq(MessageManager.ERROR), anyString(), anyString());
+        verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
     }
 
     @Test

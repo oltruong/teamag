@@ -6,13 +6,12 @@ import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.event.RowEditEvent;
-
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.event.RowEditEvent;
 
 /**
  * @author Olivier Truong
@@ -56,15 +55,15 @@ public class BCController extends Controller {
         getLogger().info("Creation of a business case");
 
         if (StringUtils.isBlank(this.bc.getName())) {
-            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
+            getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
         } else {
             try {
                 this.activityEJB.createBC(this.bc);
-                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
+                getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (ExistingDataException e) {
                 getLogger().warn("BusinessCase already exists");
-                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getIdentifier());
+                getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getIdentifier());
             }
 
 
@@ -92,16 +91,16 @@ public class BCController extends Controller {
         this.getLogger().info("Creation of an activity");
 
         if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getId() == null) {
-            getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
+            getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
         } else {
 
             try {
                 this.activityEJB.createActivity(this.activity);
-                getMessageManager().displayMessage(MessageManager.INFORMATION, "updated", "activityCreated");
+                getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
             } catch (ExistingDataException e) {
                 this.getLogger().warn("Existing activity");
-                getMessageManager().displayMessage(MessageManager.ERROR, "impossibleAdd", "existingActivity");
+                getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "existingActivity");
             }
 
 

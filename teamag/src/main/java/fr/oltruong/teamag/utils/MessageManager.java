@@ -19,10 +19,10 @@ public class MessageManager {
 
 
     public void displayMessage(int type, String titleKey, Object... args) {
-        displayMessage(type, titleKey, null, args);
+        displayMessageWithDescription(type, titleKey, null, args);
     }
 
-    public void displayMessage(int type, String titleKey, String descriptionKey, Object... args) {
+    public void displayMessageWithDescription(int type, String titleKey, String descriptionKey, Object... args) {
         String descriptionMessage = "";
         if (descriptionKey != null) {
             descriptionMessage = getMessage(descriptionKey, args);
