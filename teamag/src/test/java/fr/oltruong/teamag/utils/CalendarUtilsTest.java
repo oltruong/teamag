@@ -38,7 +38,7 @@ public class CalendarUtilsTest {
     }
 
     private void checkContains(List<DateTime> daysOff, int day, int month) {
-        DateTime dayOffCheck = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(day).withMonthOfYear(month);
+        DateTime dayOffCheck = DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day);
         boolean found = false;
         for (DateTime dayOff : daysOff) {
             if (dayOff.isEqual(dayOffCheck)) {

@@ -73,7 +73,7 @@ public final class CalendarUtils {
     }
 
     private static DateTime buildDayOff(int day, int month) {
-        return DateTime.now().withTimeAtStartOfDay().withDayOfMonth(day).withMonthOfYear(month);
+        return DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day);
     }
 
     public static List<DateTime> getWorkingDays(DateTime month) {
