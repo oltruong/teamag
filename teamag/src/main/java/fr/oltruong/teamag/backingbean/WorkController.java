@@ -16,18 +16,19 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
 import fr.oltruong.teamag.webbean.TaskWeekBean;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+
 import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @SessionScoped
 @ManagedBean
@@ -64,7 +65,7 @@ public class WorkController extends Controller {
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workEJB.findWorks(getMember(), firstDayOfMonth);
+        works = workEJB.findOrCreateWorks(getMember(), firstDayOfMonth);
 
         initTaskWeek();
         return VIEWNAME;
@@ -84,7 +85,7 @@ public class WorkController extends Controller {
             try {
                 workEJB.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workEJB.findWorks(getMember(), DateTime.now().withDayOfMonth(1));
+                works = workEJB.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1));
                 initTaskWeek();
 
                 FacesMessage msg = null;

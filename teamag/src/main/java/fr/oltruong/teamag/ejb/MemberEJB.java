@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
+import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.MemberType;
 import fr.oltruong.teamag.entity.Task;
@@ -32,6 +33,22 @@ public class MemberEJB
         return query.getResultList();
     }
 
+    public List<Member> findNonAdminMembers() {
+        List<Member> memberList = findMembers();
+        List<Member> nonAdminMemberList = Lists.newArrayListWithExpectedSize(memberList.size());
+
+        for (Member member : memberList) {
+            if (!member.isAdministrator()) {
+                nonAdminMemberList.add(member);
+            }
+        }
+        return nonAdminMemberList;
+    }
+
+
+    public Member findMember(Long id) {
+        return getEntityManager().find(Member.class, id);
+    }
 
     public Member findMember(String name, String password)
             throws UserNotFoundException {
@@ -100,7 +117,6 @@ public class MemberEJB
         query.setParameter("fmemberId", selectedMember.getId());
         int rowsNumberDeleted = query.executeUpdate();
         getLogger().debug("Works deleted : " + rowsNumberDeleted);
-
 
 
         getEntityManager().remove(selectedMember);

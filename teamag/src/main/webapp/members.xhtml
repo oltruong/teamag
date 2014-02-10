@@ -49,7 +49,7 @@
                     </p:column>
 
 
-                    <p:column headerText="#{i18n.workDays}">
+                    <p:column headerText="#{i18n.workDays}" sortBy="#{user.estimatedworkDays}">
                         <p:cellEditor>
                             <f:facet name="output">
                                 <h:outputText value="#{user.estimatedworkDays}"/>
@@ -61,7 +61,7 @@
 
                     </p:column>
 
-                    <p:column headerText="#{i18n.workMonths}">
+                    <p:column headerText="#{i18n.workMonths}" sortBy="#{user.estimatedworkMonths}">
                         <h:outputText value="#{user.estimatedworkMonths}">
                             <f:convertNumber maxFractionDigits="3"/>
                         </h:outputText>

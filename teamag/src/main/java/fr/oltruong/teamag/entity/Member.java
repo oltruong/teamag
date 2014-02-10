@@ -35,6 +35,10 @@ public class Member implements Serializable {
 
     private String comment;
 
+    public boolean isSupervisor() {
+        return MemberType.SUPERVISOR.equals(memberType) || isAdministrator();
+    }
+
     public boolean isAdministrator() {
         return MemberType.ADMINISTRATOR.equals(memberType);
     }
@@ -46,6 +50,13 @@ public class Member implements Serializable {
         }
         Member member0 = (Member) otherMember;
         return Objects.equals(id, member0.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return (id != null)
+                ? (this.getClass().hashCode() + id.hashCode())
+                : super.hashCode();
     }
 
     public Long getId() {

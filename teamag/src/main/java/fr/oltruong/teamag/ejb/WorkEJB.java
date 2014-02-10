@@ -8,27 +8,48 @@ import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
+
+import javax.ejb.Stateless;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Stateless;
-import javax.persistence.Query;
-import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
 
 @Stateless
 public class WorkEJB extends AbstractEJB {
 
-    public Map<Task, List<Work>> findWorks(Member member, DateTime month) {
+    public Map<Task, List<Work>> findWorksNotNull(Member member, DateTime month) {
 
-        Map<Task, List<Work>> worksByTask = Maps.newHashMap();
+        Map<Task, List<Work>> worksByTask = transformWorkList(findWorkList(member, month));
 
-        Query query = getEntityManager().createNamedQuery("findWorksByMember");
-        query.setParameter("fmemberName", member.getName());
-        query.setParameter("fmonth", month);
 
-        @SuppressWarnings("unchecked")
-        List<Work> listWorks = query.getResultList();
+        List<Task> emptyWorkTasks = Lists.newArrayListWithCapacity(worksByTask.size());
+
+        for (Task task : worksByTask.keySet()) {
+            List<Work> workList = worksByTask.get(task);
+
+            boolean empty = true;
+            for (Work work : workList) {
+                empty &= !Float.valueOf(0f).equals(work.getTotal());
+            }
+            if (empty) {
+                emptyWorkTasks.add(task);
+            }
+        }
+
+        for (Task task : emptyWorkTasks) {
+            worksByTask.remove(task);
+        }
+
+        return worksByTask;
+
+    }
+
+    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month) {
+
+        List<Work> listWorks = findWorkList(member, month);
 
         if (CollectionUtils.isEmpty(listWorks)) {
 
@@ -36,10 +57,24 @@ public class WorkEJB extends AbstractEJB {
             listWorks = createWorks(member, month);
         }
 
-        worksByTask = transformWorkList(listWorks);
 
-        return worksByTask;
+        return transformWorkList(listWorks);
     }
+
+
+    private List<Work> findWorkList(Member member, DateTime month) {
+
+        Map<Task, List<Work>> worksByTask = Maps.newHashMap();
+
+        Query query = getEntityManager().createNamedQuery("findWorksByMember");
+        query.setParameter("fmemberId", member.getId());
+        query.setParameter("fmonth", month);
+
+        return (List<Work>) query.getResultList();
+
+
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Task> findAllTasks() {

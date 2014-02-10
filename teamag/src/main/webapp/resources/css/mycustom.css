@@ -26,6 +26,14 @@ li {
     background: #808080;
 }
 
+.rightmenu {
+    float: right !important;
+}
+
+.rightmenu .ui-menu-child {
+    left: -160px !important;
+}
+
 .member1 .fc-event-inner {
     background: #228b22;
 }

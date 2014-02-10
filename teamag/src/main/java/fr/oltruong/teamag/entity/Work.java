@@ -10,10 +10,10 @@ import javax.persistence.*;
 
 @Table(name = "TM_WORK")
 @Entity
-@NamedQueries({@NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.name=:fmemberName and w.month=:fmonth order by w.task.name, w.day"),
+@NamedQueries({@NamedQuery(name = "findWorksByMember", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
         @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
         @NamedQuery(name = "deleteWorksByMember", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
-        @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.company, w.member.id, w.task.id"),
+        @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
         @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
         @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
@@ -113,8 +113,10 @@ public class Work {
 
     public void setTotalEditStr(String totalEditStr) {
         if (!StringUtils.isBlank(totalEditStr)) {
+            String totalEditFormatted = totalEditStr.replace(",", ".");
+
             try {
-                totalEdit = Float.valueOf(totalEditStr);
+                totalEdit = Float.valueOf(totalEditFormatted);
             } catch (NumberFormatException ex) {
                 logger.error("Incorrect value " + totalEditStr);
             }

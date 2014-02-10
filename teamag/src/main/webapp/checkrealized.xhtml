@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
+
+    <ui:define name="title">#{i18n.realizedfollowedPagetitle}</ui:define>
+
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="#{i18n.realizedfollowedPageChoicePerson}">
+                <p:selectOneMenu
+                        value="#{checkWorkController.memberToCheck.id}">
+                    <f:selectItems value="#{checkWorkController.memberList}"
+                                   var="member" itemLabel="#{member.name}" itemValue="#{member.id}"/>
+                </p:selectOneMenu>
+                <br/>
+
+                <p:commandButton value="#{i18n.load}"
+                                 action="#{checkWorkController.refresh}" ajax="false" icon="ui-icon-refresh"/>
+
+            </p:panel>
+            <br/>
+            <p:panel
+                    header="#{i18n.realizedPagerealized} #{checkWorkController.memberToCheck.name}"
+                    id="idPanel">
+                <p:commandButton value="#{i18n.realizedPagepreviousWeek}" ajax="false"
+                                 action="#{checkWorkController.previousWeek}"
+                                 icon="ui-icon-arrowthick-1-w"/>
+                <p:commandButton value="#{i18n.realizedPagenextWeek}"
+                                 action="#{checkWorkController.nextWeek}" ajax="false"
+                                 icon="ui-icon-arrowthick-1-e"/>
+
+
+                <p:dataTable id="idTable" var="taskWeek"
+                             value="#{checkWorkController.realizedBean.taskWeeks}"
+                             sortBy="task.description"
+                             sortOrder="ascending"
+                             selection="#{checkWorkController.realizedBean.selectedTaskWeek}"
+                             selectionMode="single" rowKey="#{taskWeek.task.id}">
+
+                    <f:facet name="header">
+                        #{i18n.realizedPageweek} #{checkWorkController.realizedBean.weekNumber}
+                    </f:facet>
+
+                    <p:column headerText="#{i18n.realizedPagetask}"
+                              sortBy="#{taskWeek.task.description}"
+                              footerText="Total">
+                        <h:outputText
+                                value="#{taskWeek.task.description}" size="35"/>
+                    </p:column>
+
+                    <p:columns value="#{checkWorkController.realizedBean.columnsDay}"
+                               var="column">
+                        <f:facet name="header" size="2">
+                            #{column.dayHeader}
+                        </f:facet>
+                        <h:outputText value="#{taskWeek[column.dayNumber].totalEditStr}"/>
+
+                        <f:facet name="footer" size="2">
+                            #{column.total}
+                        </f:facet>
+
+                    </p:columns>
+
+
+                </p:dataTable>
+                <br/>
+                <br/><br/>
+                #{i18n.comment}<br/><br/>
+                <p:outputLabel rows="10" cols="120" value="#{checkWorkController.weekComment.comment}"/>
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

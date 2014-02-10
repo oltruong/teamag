@@ -1,120 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="WEB-INF/layouts/template.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">#{i18n.reportingPagetitle}</ui:define>
-
-
-	<ui:define name="content">
-
-<h:form>
-		<p:panel
-			header="#{i18n.reportingPagetitle} - #{reportingController.monthString}"
-			id="idPanel">
-			
-						<p:commandButton value="#{reportingController.previousMonthString}" ajax="false"
-				action="#{reportingController.previousMonth}"
-				icon="ui-icon-arrowthick-1-w" />
-			<p:commandButton value="#{reportingController.nextMonthString}"
-				action="#{reportingController.nextMonth}" ajax="false"
-				icon="ui-icon-arrowthick-1-e" />
-
-	<p:tabView orientation="top">
-		<p:tab title="#{i18n.reportingPageperPerson}">
-			<h:form>
-				<p:dataTable id="realizedPerson"
-					value="#{reportingController.realizedPersons}" var="person"
-					border="1" sortBy="#{person.name}" selectionMode="single">
+    <ui:define name="title">#{i18n.reportingPagetitle}</ui:define>
 
 
-					<p:columnGroup type="header">
-						<p:row>
-							<p:column headerText="#{i18n.reportingPagemember}" sortBy="#{person.name}" />
-							<p:column headerText="#{i18n.reportingPagerealized}" />
-						</p:row>
+    <ui:define name="content">
 
-					</p:columnGroup>
+        <h:form>
+            <p:panel
+                    header="#{i18n.reportingPagetitle} - #{reportingController.monthString}"
+                    id="idPanel">
 
-					<p:subTable var="task" value="#{person.tasks}">
-						<f:facet name="header">  
-              #{person.name}   
-            </f:facet>
+                <p:commandButton value="#{reportingController.previousMonthString}" ajax="false"
+                                 action="#{reportingController.previousMonth}"
+                                 icon="ui-icon-arrowthick-1-w"/>
+                <p:commandButton value="#{reportingController.nextMonthString}"
+                                 action="#{reportingController.nextMonth}" ajax="false"
+                                 icon="ui-icon-arrowthick-1-e"/>
 
-						<p:column>  
-                #{task.project}-#{task.name}  
-            </p:column>
-
-						<p:column>
-							<h:outputText value="#{task.total}">
-								<f:convertNumber maxFractionDigits="3" />
-							</h:outputText>
-
-						</p:column>
+                <p:tabView orientation="top">
+                    <p:tab title="#{i18n.reportingPageperPerson}">
+                        <h:form>
+                            <p:dataTable id="realizedPerson"
+                                         value="#{reportingController.realizedPersons}" var="person"
+                                         border="1" selectionMode="single" >
 
 
-						<p:columnGroup type="footer">
-							<p:row>
-								<p:column footerText="#{i18n.total}" style="text-align:right" />
-								<p:column
-									footerText="#{person.totalRealized} #{i18n.including} #{person.totalWorkRealized} #{i18n.reportingPageworked}" />
-							</p:row>
-						</p:columnGroup>
-					</p:subTable>
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column headerText="#{i18n.reportingPagemember}" sortBy="#{person.name}"/>
+                                        <p:column headerText="#{i18n.reportingPagerealized}"/>
+                                    </p:row>
 
-				</p:dataTable>
+                                </p:columnGroup>
 
-			</h:form>
-		</p:tab>
-		<p:tab title="#{i18n.reportingPageperCompany}">
-			<h:form>
-				<p:dataTable id="realizedCompany"
-					value="#{reportingController.realizedCompanies}" var="company"
-					border="1" sortBy="#{company.name}" selectionMode="single">
+                                <p:subTable var="task" value="#{person.tasks}">
+                                    <f:facet name="header">
+                                        #{person.name}
+                                    </f:facet>
 
+                                    <p:column>
+                                        #{task.project}-#{task.name}
+                                    </p:column>
 
-					<p:columnGroup type="header">
-						<p:row>
-							<p:column headerText="#{i18n.reportingPagecompany}" sortBy="#{company.name}" />
-							<p:column headerText="#{i18n.reportingPagerealized}" />
-						</p:row>
+                                    <p:column>
+                                        <h:outputText value="#{task.total}">
+                                            <f:convertNumber maxFractionDigits="3"/>
+                                        </h:outputText>
 
-					</p:columnGroup>
-
-					<p:subTable var="task" value="#{company.tasks}">
-						<f:facet name="header">  
-              #{company.name}   
-            </f:facet>
-
-						<p:column>  
-                #{task.project}-#{task.name}  
-            </p:column>
-
-						<p:column>
-							<h:outputText value="#{task.total}">
-								<f:convertNumber maxFractionDigits="3" />
-							</h:outputText>
-						</p:column>
+                                    </p:column>
 
 
-						<p:columnGroup type="footer">
-							<p:row>
-								<p:column footerText="#{i18n.total}" style="text-align:right" />
-								<p:column
-									footerText="#{company.totalRealized} #{i18n.including} #{company.totalWorkRealized} #{i18n.reportingPageworked}" />
-							</p:row>
-						</p:columnGroup>
-					</p:subTable>
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="#{i18n.total}" style="text-align:right"/>
+                                            <p:column
+                                                    footerText="#{person.totalRealized} #{i18n.including} #{person.totalWorkRealized} #{i18n.reportingPageworked}"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:subTable>
 
-				</p:dataTable>
-			</h:form>
-		</p:tab>
-	</p:tabView>
-</p:panel>
-</h:form>
+                            </p:dataTable>
 
-</ui:define>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="#{i18n.reportingPageperCompany}">
+                        <h:form>
+                            <p:dataTable id="realizedCompany"
+                                         value="#{reportingController.realizedCompanies}" var="company"
+                                         border="1" sortBy="#{company.name}" selectionMode="single">
+
+
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column headerText="#{i18n.reportingPagecompany}" sortBy="#{company.name}"/>
+                                        <p:column headerText="#{i18n.reportingPagerealized}"/>
+                                    </p:row>
+
+                                </p:columnGroup>
+
+                                <p:subTable var="task" value="#{company.tasks}">
+                                    <f:facet name="header">
+                                        #{company.name}
+                                    </f:facet>
+
+                                    <p:column>
+                                        #{task.project}-#{task.name}
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="#{task.total}">
+                                            <f:convertNumber maxFractionDigits="3"/>
+                                        </h:outputText>
+                                    </p:column>
+
+
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column footerText="#{i18n.total}" style="text-align:right"/>
+                                            <p:column
+                                                    footerText="#{company.totalRealized} #{i18n.including} #{company.totalWorkRealized} #{i18n.reportingPageworked}"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:subTable>
+
+                            </p:dataTable>
+                        </h:form>
+                    </p:tab>
+                </p:tabView>
+            </p:panel>
+        </h:form>
+
+    </ui:define>
 </ui:composition>

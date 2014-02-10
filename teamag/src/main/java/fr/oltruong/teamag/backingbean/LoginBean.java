@@ -51,6 +51,10 @@ public class LoginBean
         return getMember() != null && getMember().isAdministrator();
     }
 
+    public boolean isSupervisor() {
+        return getMember() != null && getMember().isSupervisor();
+    }
+
     public String getUsername() {
         return username;
     }

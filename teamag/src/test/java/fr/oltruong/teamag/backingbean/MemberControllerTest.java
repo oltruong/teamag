@@ -33,7 +33,7 @@ public class MemberControllerTest {
 
     @Test
     public void testGetMembertypeList() {
-        assertThat(memberController.getMembertypeList()).isNotEmpty().hasSize(2).contains(MemberType.ADMINISTRATOR.toString(), MemberType.BASIC.toString());
+        assertThat(memberController.getMembertypeList()).isNotEmpty().hasSize(3).contains(MemberType.ADMINISTRATOR.toString(), MemberType.BASIC.toString(), MemberType.SUPERVISOR.toString());
     }
 
     @Ignore("to fix")

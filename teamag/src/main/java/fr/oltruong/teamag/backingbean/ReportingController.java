@@ -10,7 +10,6 @@ import fr.oltruong.teamag.webbean.RealizedReportBean;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
@@ -34,23 +33,25 @@ public class ReportingController {
 
     public String previousMonth() {
         month.addMonths(-1);
-        initLists();
-        return VIEWNAME;
+        return refreshView();
     }
 
     public String nextMonth() {
         month.addMonths(1);
-        initLists();
-        return VIEWNAME;
+        return refreshView();
     }
 
-    @PostConstruct
-    private void init() {
+
+    public String init() {
 
         month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).toMutableDateTime();
 
-        initLists();
+        return refreshView();
+    }
 
+    private String refreshView() {
+        initLists();
+        return VIEWNAME;
     }
 
     private void initLists() {
@@ -62,7 +63,7 @@ public class ReportingController {
     }
 
     private void initRealizedCompanies(List<Work> works) {
-        Map<String, List<Task>> map = Maps.newHashMap();
+        Map<String, List<Task>> map = Maps.newLinkedHashMap();
 
         for (Work work : works) {
             if (!map.containsKey(work.getMember().getCompany())) {
@@ -90,7 +91,7 @@ public class ReportingController {
     }
 
     private void initRealizedPersons(List<Work> works) {
-        Map<Member, List<Task>> map = Maps.newHashMap();
+        Map<Member, List<Task>> map = Maps.newLinkedHashMap();
 
         for (Work work : works) {
             if (!map.containsKey(work.getMember())) {

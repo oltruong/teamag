@@ -20,14 +20,9 @@
 
         <p:menubar>
 
-            <p:menuitem value="#{i18n.menulogOut}" action="#{loginBean.logout}" icon="ui-icon-power"
-                        rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.logIn}" url="login.xhtml" icon="ui-icon-person"
                         rendered="#{loginBean.notLoggedIn}"/>
-
-            <p:menuitem value="#{i18n.menuProfile}" action="#{profileController.init}" icon="ui-icon-person"
-                        rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.menuabsence}" action="#{absenceController.init}" icon="ui-icon-calendar"
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
@@ -38,22 +33,37 @@
             <p:menuitem value="#{i18n.menuabsences}" action="#{scheduleController.init}" icon="ui-icon-folder-open"
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
-            <p:menuitem value="#{i18n.menuteam}" action="#{memberController.init}" icon="ui-icon-person"
-                        rendered="#{loginBean.administrator}" ajax="false"/>
-
-            <p:menuitem value="#{i18n.menubudget}" action="#{bcController.init}" icon="ui-icon-folder-open"
-                        rendered="#{loginBean.administrator}"/>
+            <p:menuitem value="#{i18n.menurealizedfollowed}" action="#{checkWorkController.init}" icon="ui-icon-zoomin"
+                        rendered="#{loginBean.supervisor}" ajax="false"/>
 
 
-            <p:menuitem value="#{i18n.menureporting}" url="reporting.xhtml" icon="ui-icon-calculator"
-                        rendered="#{loginBean.administrator}"/>
-            <p:menuitem value="#{i18n.menuparameters}" url="parameters.xhtml" icon="ui-icon-wrench"
-                        rendered="#{loginBean.administrator}"/>
+            <p:submenu label="#{i18n.menuadmin}" rendered="#{loginBean.administrator}">
+                <p:menuitem value="#{i18n.menuteam}" action="#{memberController.init}" icon="ui-icon-person"
+                            rendered="#{loginBean.administrator}" ajax="false"/>
+
+                <p:menuitem value="#{i18n.menubudget}" action="#{bcController.init}" icon="ui-icon-folder-open"
+                            rendered="#{loginBean.administrator}"/>
+
+                <p:menuitem value="#{i18n.menuparameters}" url="parameters.xhtml" icon="ui-icon-wrench"
+                            rendered="#{loginBean.administrator}"/>
+
+                <p:menuitem value="#{i18n.menureporting}" action="#{reportingController.init}" icon="ui-icon-calculator"
+                            rendered="#{loginBean.administrator}" ajax="false"/>
+
+            </p:submenu>
 
             <p:submenu label="#{i18n.menumore}">
                 <p:menuitem value="#{i18n.menuabout}" url="about.xhtml"/>
             </p:submenu>
 
+
+            <p:submenu label="#{loginBean.username}" rendered="#{loginBean.loggedIn}"
+                    >
+                <p:menuitem value="#{i18n.menuProfile}" action="#{profileController.init}" icon="ui-icon-person"
+                            rendered="#{loginBean.loggedIn}" ajax="false"/>
+                <p:menuitem value="#{i18n.menulogOut}" action="#{loginBean.logout}" icon="ui-icon-power"
+                            rendered="#{loginBean.loggedIn}" ajax="false"/>
+            </p:submenu>
 
         </p:menubar>
 
