@@ -35,6 +35,8 @@ public class Member implements Serializable {
 
     private String comment;
 
+    private String absenceHTMLColor;
+
     public boolean isSupervisor() {
         return MemberType.SUPERVISOR.equals(memberType) || isAdministrator();
     }
@@ -121,5 +123,14 @@ public class Member implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+
+    public String getAbsenceHTMLColor() {
+        return absenceHTMLColor;
+    }
+
+    public void setAbsenceHTMLColor(String absenceHTMLColor) {
+        this.absenceHTMLColor = absenceHTMLColor;
     }
 }

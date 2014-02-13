@@ -1,14 +1,15 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -22,6 +23,8 @@ public class ScheduleControllerTest extends ControllerTest {
     @Mock
     private AbsenceEJB mockAbsenceEJB;
 
+    @Mock
+    private MemberEJB mockMemberEJB;
 
     private ScheduleController scheduleController;
 
@@ -31,6 +34,7 @@ public class ScheduleControllerTest extends ControllerTest {
         super.setup();
         scheduleController = new ScheduleController();
         TestUtils.setPrivateAttribute(scheduleController, mockAbsenceEJB, "absenceEJB");
+        TestUtils.setPrivateAttribute(scheduleController, mockMemberEJB, "memberEJB");
         TestUtils.setPrivateAttribute(scheduleController, Controller.class, mockMessageManager, "messageManager");
 
     }
@@ -51,6 +55,7 @@ public class ScheduleControllerTest extends ControllerTest {
 
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(scheduleController, "VIEWNAME"));
         verify(mockAbsenceEJB).findAllAbsences();
+        verify(mockMemberEJB).findMembers();
         assertThat(scheduleController.getEventModel().getEventCount()).isGreaterThan(0);
 
     }

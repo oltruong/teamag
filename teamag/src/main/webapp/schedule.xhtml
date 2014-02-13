@@ -21,6 +21,14 @@
 
         </h:form>
 
+        <ui:repeat value="#{scheduleController.members}" var="member">
+            <style>
+                .member-#{member.id} .fc-event-inner {
+                    background: \##{member.absenceHTMLColor};
+                }
+            </style>
+        </ui:repeat>
+
 
     </ui:define>
 </ui:composition>

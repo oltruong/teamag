@@ -79,6 +79,18 @@
                         </p:cellEditor>
                     </p:column>
 
+                    <p:column headerText="#{i18n.htmlColor}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{user.absenceHTMLColor}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{user.absenceHTMLColor}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
                     <p:column headerText="#{i18n.type}">
                         <h:outputText value="#{user.memberType}"/>
                     </p:column>

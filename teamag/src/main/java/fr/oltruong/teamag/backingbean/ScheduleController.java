@@ -1,15 +1,18 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Absence;
+import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.transformer.ScheduleEventTransformer;
-import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -23,7 +26,12 @@ public class ScheduleController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
+    @Inject
+    private MemberEJB memberEJB;
+
     private static final String VIEWNAME = "schedule";
+
+    private List<Member> members;
 
     public String init() {
 
@@ -34,6 +42,7 @@ public class ScheduleController extends Controller {
     private void fillEventModel() {
 
         eventModel = new DefaultScheduleModel();
+        members = memberEJB.findMembers();
         fillAbsences();
         fillDaysOff();
 
@@ -60,4 +69,11 @@ public class ScheduleController extends Controller {
         return eventModel;
     }
 
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 }

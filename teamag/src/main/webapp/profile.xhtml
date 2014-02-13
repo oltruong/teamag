@@ -12,23 +12,39 @@
 
 
         <p:panel header="#{i18n.menuProfile}">
-            <table>
-                <tr>
-                    <td><h:outputLabel value="#{i18n.name}"/></td>
-                    <td></td>
-                    <td><b><h:outputLabel value="#{profileController.profileWebBean.name}"/></b></td>
-                </tr>
-                <tr>
-                    <td><h:outputLabel value="#{i18n.membersPagecompany}"/></td>
-                    <td></td>
-                    <td><b><h:outputLabel value="#{profileController.profileWebBean.company}"/></b></td>
-                </tr>
-                <tr>
-                    <td><h:outputLabel value="#{i18n.membersPageemail}"/></td>
-                    <td></td>
-                    <td><b><h:outputLabel value="#{profileController.profileWebBean.email}"/></b></td>
-                </tr>
-            </table>
+            <h:form>
+                <table>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.name}"/></td>
+                        <td></td>
+                        <td><b><h:outputLabel value="#{profileController.profileWebBean.name}"/></b></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.membersPagecompany}"/></td>
+                        <td></td>
+                        <td><b><h:outputLabel value="#{profileController.profileWebBean.company}"/></b></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.membersPageemail}"/></td>
+                        <td></td>
+                        <td><b><h:outputLabel value="#{profileController.profileWebBean.email}"/></b></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.htmlColor}"/></td>
+                        <td></td>
+                        <td><b><h:outputLabel value="#{profileController.profileWebBean.htmlColor}"
+                                /></b><p:colorPicker id="popupCP"
+                                                     value="#{profileController.profileWebBean.htmlColor}"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"><p:commandButton value="#{i18n.update}"
+                                                         action="#{profileController.update}" ajax="false"
+                                                         icon="ui-icon-disk"/></td>
+                    </tr>
+                </table>
+            </h:form>
         </p:panel>
 
         <br/>

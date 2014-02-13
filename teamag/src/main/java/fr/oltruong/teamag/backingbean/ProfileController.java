@@ -35,6 +35,16 @@ public class ProfileController extends Controller {
         return VIEWNAME;
     }
 
+
+    public String update() {
+        Member member = profileWebBean.getMember();
+        member.setAbsenceHTMLColor(profileWebBean.getHtmlColor());
+        memberEJB.updateMember(member);
+
+        getMessageManager().displayMessage(MessageManager.INFORMATION, "updated");
+        return VIEWNAME;
+    }
+
     public String updatePassword() {
         Member member = profileWebBean.getMember();
         member.setPassword(TeamagUtils.hashPassword(profileWebBean.getPassword()));

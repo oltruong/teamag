@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.utils.MessageManager;
-import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
+
+import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -20,14 +21,8 @@ public final class ScheduleEventTransformer {
 
     public static List<ScheduleEvent> convertAbsenceList(List<Absence> absenceList, MessageManager messageManager) {
         List<ScheduleEvent> eventList = Lists.newArrayListWithExpectedSize(absenceList.size());
-        int count = 0;
-        long memberId = 0;
         for (Absence absence : absenceList) {
-            if (absence.getMember().getId().longValue() != memberId) {
-                count++;
-                memberId = absence.getMember().getId().longValue();
-            }
-            eventList.addAll(convertAbsence(absence, "member" + count, messageManager));
+            eventList.addAll(convertAbsence(absence, "member-" + absence.getMember().getId(), messageManager));
         }
 
 

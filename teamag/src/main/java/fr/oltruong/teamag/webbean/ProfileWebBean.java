@@ -21,6 +21,8 @@ public class ProfileWebBean {
 
     private String passwordAgain;
 
+    private String htmlColor;
+
     public ProfileWebBean(Member member) {
         Preconditions.checkArgument(member != null);
 
@@ -28,6 +30,7 @@ public class ProfileWebBean {
         this.name = member.getName();
         this.company = member.getCompany();
         this.email = member.getEmail();
+        this.htmlColor = member.getAbsenceHTMLColor();
 
     }
 
@@ -61,5 +64,13 @@ public class ProfileWebBean {
 
     public void setPasswordAgain(String passwordAgain) {
         this.passwordAgain = passwordAgain;
+    }
+
+    public String getHtmlColor() {
+        return htmlColor;
+    }
+
+    public void setHtmlColor(String htmlColor) {
+        this.htmlColor = htmlColor.toUpperCase();
     }
 }
