@@ -35,6 +35,7 @@ public class CheckWorkController extends Controller {
 
     @Inject
     private RealizedFormWebBean realizedBean;
+
     @Inject
     private WorkEJB workEJB;
 
@@ -56,7 +57,7 @@ public class CheckWorkController extends Controller {
 
     public String init() {
         memberToCheck = memberInstance.get();
-        memberList = memberEJB.findNonAdminMembers();
+        memberList = memberEJB.findActiveNonAdminMembers();
         realizedBean.setDayCursor(DateTime.now());
         return refresh();
     }
@@ -97,6 +98,7 @@ public class CheckWorkController extends Controller {
             for (Task task : works.keySet()) {
                 TaskWeekBean taskWeek = new TaskWeekBean();
                 taskWeek.setTask(task);
+                boolean emptyWork = true;
                 for (Work work : works.get(task)) {
 
                     if (work.getDay().getWeekOfWeekyear() == weekNumber) {
@@ -111,11 +113,15 @@ public class CheckWorkController extends Controller {
                         } else {
                             mapColumns.get(work.getDayStr()).addTotal(work.getTotal());
                         }
+                        emptyWork &= Float.valueOf(0f).equals(work.getTotal());
 
                     }
-                }
-                taskWeekList.add(taskWeek);
 
+
+                }
+                if (!emptyWork) {
+                    taskWeekList.add(taskWeek);
+                }
             }
 
             realizedBean.getColumnsDay().clear();

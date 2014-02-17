@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Table(name = "TM_MEMBER")
 @Entity
-@NamedQueries({@NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
+@NamedQueries({@NamedQuery(name = "findMembers", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findActiveMembers", query = "SELECT m from Member m where m.active = true order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
 public class Member implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +36,9 @@ public class Member implements Serializable {
     private String comment;
 
     private String absenceHTMLColor;
+
+    @Column(nullable = false)
+    private Boolean active = Boolean.TRUE;
 
     public boolean isSupervisor() {
         return MemberType.SUPERVISOR.equals(memberType) || isAdministrator();
@@ -132,5 +135,13 @@ public class Member implements Serializable {
 
     public void setAbsenceHTMLColor(String absenceHTMLColor) {
         this.absenceHTMLColor = absenceHTMLColor;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

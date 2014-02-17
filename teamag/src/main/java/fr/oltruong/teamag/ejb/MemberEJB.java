@@ -33,8 +33,13 @@ public class MemberEJB
         return query.getResultList();
     }
 
-    public List<Member> findNonAdminMembers() {
-        List<Member> memberList = findMembers();
+    public List<Member> findActiveMembers() {
+        Query query = getEntityManager().createNamedQuery("findActiveMembers");
+        return query.getResultList();
+    }
+
+    public List<Member> findActiveNonAdminMembers() {
+        List<Member> memberList = findActiveMembers();
         List<Member> nonAdminMemberList = Lists.newArrayListWithExpectedSize(memberList.size());
 
         for (Member member : memberList) {
