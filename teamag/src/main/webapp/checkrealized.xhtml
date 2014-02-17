@@ -27,51 +27,90 @@
             <p:panel
                     header="#{i18n.realizedPagerealized} #{checkWorkController.memberToCheck.name}"
                     id="idPanel">
-                <p:commandButton value="#{i18n.realizedPagepreviousWeek}" ajax="false"
-                                 action="#{checkWorkController.previousWeek}"
-                                 icon="ui-icon-arrowthick-1-w"/>
-                <p:commandButton value="#{i18n.realizedPagenextWeek}"
-                                 action="#{checkWorkController.nextWeek}" ajax="false"
-                                 icon="ui-icon-arrowthick-1-e"/>
 
 
-                <p:dataTable id="idTable" var="taskWeek"
-                             value="#{checkWorkController.realizedBean.taskWeeks}"
-                             sortBy="task.description"
-                             sortOrder="ascending"
-                             selection="#{checkWorkController.realizedBean.selectedTaskWeek}"
-                             selectionMode="single" rowKey="#{taskWeek.task.id}">
+                <p:tabView orientation="top">
+                    <p:tab title="#{i18n.realizedfollowedPagePerWeek}">
 
-                    <f:facet name="header">
-                        #{i18n.realizedPageweek} #{checkWorkController.realizedBean.weekNumber}
-                    </f:facet>
-
-                    <p:column headerText="#{i18n.realizedPagetask}"
-                              sortBy="#{taskWeek.task.description}"
-                              footerText="Total">
-                        <h:outputText
-                                value="#{taskWeek.task.description}" size="35"/>
-                    </p:column>
-
-                    <p:columns value="#{checkWorkController.realizedBean.columnsDay}"
-                               var="column">
-                        <f:facet name="header" size="2">
-                            #{column.dayHeader}
-                        </f:facet>
-                        <h:outputText value="#{taskWeek[column.dayNumber].totalEditStr}"/>
-
-                        <f:facet name="footer" size="2">
-                            #{column.total}
-                        </f:facet>
-
-                    </p:columns>
+                        <p:commandButton value="#{i18n.realizedPagepreviousWeek}" ajax="false"
+                                         action="#{checkWorkController.previousWeek}"
+                                         icon="ui-icon-arrowthick-1-w"/>
+                        <p:commandButton value="#{i18n.realizedPagenextWeek}"
+                                         action="#{checkWorkController.nextWeek}" ajax="false"
+                                         icon="ui-icon-arrowthick-1-e"/>
 
 
-                </p:dataTable>
-                <br/>
-                <br/><br/>
-                #{i18n.comment}<br/><br/>
-                <p:outputLabel rows="10" cols="120" value="#{checkWorkController.weekComment.comment}"/>
+                        <p:dataTable id="idTable" var="taskWeek"
+                                     value="#{checkWorkController.realizedBean.taskWeeks}"
+                                     sortBy="task.description"
+                                     sortOrder="ascending"
+                                     selection="#{checkWorkController.realizedBean.selectedTaskWeek}"
+                                     selectionMode="single" rowKey="#{taskWeek.task.id}">
+
+                            <f:facet name="header">
+                                #{i18n.realizedPageweek} #{checkWorkController.realizedBean.weekNumber}
+                            </f:facet>
+
+                            <p:column headerText="#{i18n.realizedPagetask}"
+                                      sortBy="#{taskWeek.task.description}"
+                                      footerText="Total">
+                                <h:outputText
+                                        value="#{taskWeek.task.description}" size="35"/>
+                            </p:column>
+
+                            <p:columns value="#{checkWorkController.realizedBean.columnsDay}"
+                                       var="column">
+                                <f:facet name="header" size="2">
+                                    #{column.dayHeader}
+                                </f:facet>
+                                <h:outputText value="#{taskWeek[column.dayNumber].totalEditStr}"/>
+
+                                <f:facet name="footer" size="2">
+                                    #{column.total}
+                                </f:facet>
+
+                            </p:columns>
+
+
+                        </p:dataTable>
+                        <br/>
+                        <br/><br/>
+                        #{i18n.comment}<br/><br/>
+                        <p:inputTextarea rows="20" cols="120"
+                                         value="#{checkWorkController.weekComment.comment}"/>
+                    </p:tab>
+
+
+                    <p:tab title="#{i18n.realizedfollowedPageSummaryPerMonth}">
+
+
+                        <p:dataTable id="idTableTask" var="task"
+                                     value="#{checkWorkController.taskList}"
+                                     sortBy="total"
+                                     sortOrder="descending"
+                                >
+
+                            <p:column headerText="#{i18n.realizedPagetask}"
+
+                                    >
+                                <h:outputText
+                                        value="#{task.description}" size="35"/>
+                            </p:column>
+
+                            <p:column headerText="#{i18n.total}"
+
+                                    >
+                                <h:outputText
+                                        value="#{task.total}"/>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+
+                    </p:tab>
+                </p:tabView>
+
             </p:panel>
 
         </h:form>

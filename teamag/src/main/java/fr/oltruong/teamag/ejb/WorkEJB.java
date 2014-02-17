@@ -66,7 +66,7 @@ public class WorkEJB extends AbstractEJB {
 
         Map<Task, List<Work>> worksByTask = Maps.newHashMap();
 
-        Query query = getEntityManager().createNamedQuery("findWorksByMember");
+        Query query = getEntityManager().createNamedQuery("findWorksByMemberMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
 
@@ -133,6 +133,7 @@ public class WorkEJB extends AbstractEJB {
                     worksByTask.put(work.getTask(), new ArrayList<Work>());
                 }
                 worksByTask.get(work.getTask()).add(work);
+                work.getTask().addTotal(work.getTotal());
             }
 
         }

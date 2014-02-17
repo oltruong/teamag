@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 @SessionScoped
@@ -32,6 +33,7 @@ public class CheckWorkController extends Controller {
     private Logger logger;
 
     private Map<Task, List<Work>> works;
+
 
     @Inject
     private RealizedFormWebBean realizedBean;
@@ -56,8 +58,11 @@ public class CheckWorkController extends Controller {
     private static final String VIEWNAME = "checkrealized";
 
     public String init() {
-        memberToCheck = memberInstance.get();
+        //    memberToCheck = memberInstance.get();
         memberList = memberEJB.findActiveNonAdminMembers();
+        memberList.add(memberInstance.get());
+
+        memberToCheck = memberList.get(0);
         realizedBean.setDayCursor(DateTime.now());
         return refresh();
     }
@@ -137,6 +142,17 @@ public class CheckWorkController extends Controller {
             logger.debug("No taskMonth found");
         }
 
+    }
+
+    public List<Task> getTaskList() {
+        Set<Task> taskSet = works.keySet();
+        List<Task> taskList = Lists.newArrayListWithCapacity(taskSet.size());
+        for (Task task : taskSet) {
+            if (!Float.valueOf(0f).equals(task.getTotal())) {
+                taskList.add(task);
+            }
+        }
+        return taskList;
     }
 
 

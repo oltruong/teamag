@@ -42,7 +42,7 @@ public class WorkIT extends AbstractEntityIT {
 
         getTransaction().commit();
 
-        Query query = getEntityManager().createNamedQuery("findWorksByMember");
+        Query query = getEntityManager().createNamedQuery("findWorksByMemberMonth");
         query.setParameter("fmemberId", work.getMember().getId());
         query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
 
