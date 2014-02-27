@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.ejb;
 
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +27,13 @@ public abstract class AbstractEJBTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         when(getMockEntityManager().createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
+
+    }
+
+    protected void prepareEJB(AbstractEJB ejb) {
+        TestUtils.setPrivateAttribute(ejb, AbstractEJB.class, getMockEntityManager(), "entityManager");
+        TestUtils.setPrivateAttribute(ejb, AbstractEJB.class, getMockLogger(), "logger");
+
     }
 
     public EntityManager getMockEntityManager() {

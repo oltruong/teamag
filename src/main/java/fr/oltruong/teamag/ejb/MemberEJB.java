@@ -13,19 +13,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Stateless
-public class MemberEJB
-        extends AbstractEJB {
-
-    public void checkMembersNotEmpty() {
-
-        if (findMembers().isEmpty()) {
-            getLogger().info("No member so far. Default admin will be created");
-
-            Member adminMember = generateAdminMember();
-            getEntityManager().persist(adminMember);
-
-        }
-    }
+public class MemberEJB extends AbstractEJB {
 
     @SuppressWarnings("unchecked")
     public List<Member> findMembers() {
@@ -55,7 +43,7 @@ public class MemberEJB
         return getEntityManager().find(Member.class, id);
     }
 
-    public Member findMember(String name, String password)
+    public Member findMemberForAuthentication(String name, String password)
             throws UserNotFoundException {
         checkMembersNotEmpty();
 
@@ -106,17 +94,32 @@ public class MemberEJB
         getEntityManager().merge(member);
     }
 
+
+    private void checkMembersNotEmpty() {
+
+        if (findMembers().isEmpty()) {
+            getLogger().info("No member so far. Default admin will be created");
+
+            Member adminMember = generateAdminMember();
+            getEntityManager().persist(adminMember);
+
+        }
+    }
+
     private Member generateAdminMember() {
+        String defaultValue = "admin";
+
         Member adminMember = new Member();
-        adminMember.setName("admin");
-        adminMember.setPassword(TeamagUtils.hashPassword(""));
+        adminMember.setName(defaultValue);
+        adminMember.setPassword(TeamagUtils.hashPassword(defaultValue));
         adminMember.setCompany("ToBeDefined");
         adminMember.setEmail("tobedefined@email.com");
         adminMember.setMemberType(MemberType.ADMINISTRATOR);
         return adminMember;
     }
 
-    public void removeMember(Member selectedMember) {
+    //TODO enable this feature
+/*    public void removeMember(Member selectedMember) {
 
         Query query = getEntityManager().createNamedQuery("deleteWorksByMember");
         query.setParameter("fmemberId", selectedMember.getId());
@@ -125,5 +128,5 @@ public class MemberEJB
 
 
         getEntityManager().remove(selectedMember);
-    }
+    }*/
 }

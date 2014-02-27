@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.utils.TestUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,17 +20,33 @@ import static org.mockito.Mockito.when;
  */
 public class AbsenceEJBTest extends AbstractEJBTest {
 
-    private AbsenceEJB buildAbsenceEJB() {
-        AbsenceEJB absenceEJB = new AbsenceEJB();
 
-        TestUtils.setPrivateAttribute(absenceEJB, AbstractEJB.class, getMockEntityManager(), "entityManager");
-        TestUtils.setPrivateAttribute(absenceEJB, AbstractEJB.class, getMockLogger(), "logger");
-        return absenceEJB;
+    private AbsenceEJB absenceEJB;
+
+    @Before
+    public void prepare() {
+        absenceEJB = new AbsenceEJB();
+        prepareEJB(absenceEJB);
     }
+
+
+    @Test
+    public void testFindAllAbsences() {
+        List<Absence> absenceList = Lists.newArrayListWithExpectedSize(1);
+        absenceList.add(EntityFactory.createAbsence());
+
+        when(getMockQuery().getResultList()).thenReturn(absenceList);
+
+        List<Absence> allAbsenceList = absenceEJB.findAllAbsences();
+
+        assertThat(allAbsenceList).isEqualTo(absenceList);
+        verify(getMockEntityManager()).createNamedQuery(eq("findAllAbsences"));
+    }
+
 
     @Test
     public void testFindAbsencesByMember() throws Exception {
-        AbsenceEJB absenceEJB = buildAbsenceEJB();
+
 
         List<Absence> absenceList = Lists.newArrayListWithExpectedSize(1);
         absenceList.add(EntityFactory.createAbsence());
@@ -51,7 +67,6 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
     @Test
     public void testDeleteAbsence() throws Exception {
-        AbsenceEJB absenceEJB = buildAbsenceEJB();
 
         Absence absence = EntityFactory.createAbsence();
         when(getMockEntityManager().find(eq(Absence.class), anyLong())).thenReturn(absence);
@@ -67,13 +82,11 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsencesByMemberNull() throws Exception {
-        AbsenceEJB absenceEJB = buildAbsenceEJB();
         absenceEJB.findAbsencesByMember(null);
     }
 
     @Test
     public void testAddAbsence() throws Exception {
-        AbsenceEJB absenceEJB = buildAbsenceEJB();
         Absence absence = EntityFactory.createAbsence();
         absenceEJB.addAbsence(absence);
 

@@ -57,13 +57,13 @@ public class MemberController extends Controller {
     }
 
 
-    public String deleteMember() {
+/*    public String deleteMember() {
         logger.info("Deleting Member " + getSelectedMember().getName());
 
         memberEJB.removeMember(getSelectedMember());
         init();
         return VIEWNAME;
-    }
+    }*/
 
     public List<String> completeCompany(String query) {
 

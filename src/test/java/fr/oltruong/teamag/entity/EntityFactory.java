@@ -23,7 +23,7 @@ public class EntityFactory {
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
         member.setEstimatedworkDays(0f);
-
+        member.setMemberType(MemberType.BASIC);
         return member;
     }
 

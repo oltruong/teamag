@@ -105,7 +105,7 @@ public class LoginBean
 
             passwordHashed = TeamagUtils.hashPassword(password);
 
-            myMember = memberEJB.findMember(username, passwordHashed);
+            myMember = memberEJB.findMemberForAuthentication(username, passwordHashed);
             logger.info(myMember.getName() + " found");
             userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", username), "");
             setMember(myMember);

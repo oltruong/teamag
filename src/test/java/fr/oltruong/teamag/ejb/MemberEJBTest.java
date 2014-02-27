@@ -3,9 +3,9 @@ package fr.oltruong.teamag.ejb;
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.MemberType;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.UserNotFoundException;
-import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,41 +25,52 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     private MemberEJB memberEJB;
 
+    private List<Member> testMemberList;
+
     @Before
     public void init() {
         memberEJB = new MemberEJB();
-        TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockEntityManager(), "entityManager");
-        TestUtils.setPrivateAttribute(memberEJB, AbstractEJB.class, getMockLogger(), "logger");
+        prepareEJB(memberEJB);
+
+        buildMemberList();
+        when(getMockQuery().getResultList()).thenReturn(testMemberList);
 
     }
 
-    private List<Member> buildMemberList() {
-        List<Member> mockList = Lists.newArrayListWithExpectedSize(1);
+    private void buildMemberList() {
+        int numberOfMembers = 7;
+        testMemberList = Lists.newArrayListWithExpectedSize(numberOfMembers);
+        for (int i = 0; i < numberOfMembers; i++) {
+            testMemberList.add(EntityFactory.createMember());
+        }
+    }
 
-        Member newMember = EntityFactory.createMember();
-        mockList.add(newMember);
-        return mockList;
+    @Test
+    public void testFindActiveMembers() {
+
+        List<Member> memberList = memberEJB.findActiveMembers();
+
+        assertThat(memberList).isEqualTo(testMemberList);
+        verify(getMockEntityManager()).createNamedQuery(eq("findActiveMembers"));
     }
 
 
     @Test
     public void testFindMembers() {
 
-        List<Member> mockList = buildMemberList();
-        when(getMockQuery().getResultList()).thenReturn(mockList);
-
         List<Member> memberList = memberEJB.findMembers();
 
-        assertThat(memberList).isEqualTo(mockList);
+        assertThat(memberList).isEqualTo(testMemberList);
         verify(getMockEntityManager()).createNamedQuery(eq("findMembers"));
     }
 
     @Test
     public void testFindByNameNull() {
-
+        List<Member> memberEmptyList = Lists.newArrayListWithExpectedSize(0);
+        when(getMockQuery().getResultList()).thenReturn(memberEmptyList);
 
         try {
-            memberEJB.findMember(null, null);
+            memberEJB.findMemberForAuthentication(null, null);
             fail("UserNotFoundException expected");
         } catch (UserNotFoundException e) {
 
@@ -68,17 +79,46 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     }
 
+
     @Test
-    public void testFindMember() throws UserNotFoundException {
+    public void testFindMember() {
+        Member newMember = EntityFactory.createMember();
+        Long id = Long.valueOf(365l);
+
+        when(getMockEntityManager().find(eq(Member.class), any(Object.class))).thenReturn(newMember);
+
+        Member memberFound = memberEJB.findMember(id);
+
+        assertThat(memberFound).isEqualTo(newMember);
+        verify(getMockEntityManager()).find(eq(Member.class), eq(id));
+
+    }
+
+
+    @Test
+    public void testFindActiveNonAdminMembers() {
+
+        int numberAdminMembers = 3;
+        for (int i = 0; i < numberAdminMembers; i++) {
+            Member member = testMemberList.get(i);
+            member.setMemberType(MemberType.ADMINISTRATOR);
+        }
+
+        List<Member> memberList = memberEJB.findActiveNonAdminMembers();
+
+        assertThat(memberList.size()).isEqualTo(testMemberList.size() - numberAdminMembers);
+
+        assertThat(testMemberList).containsAll(memberList);
+    }
+
+    @Test
+    public void testFindMemberForAuthentication() throws UserNotFoundException {
 
         String name = "FOOONAME";
         String password = "PASSWORD";
 
-        List<Member> mockList = buildMemberList();
 
-        when(getMockQuery().getResultList()).thenReturn(mockList);
-
-        assertThat(memberEJB.findMember(name, password)).isNotNull().isEqualTo(mockList.get(0));
+        assertThat(memberEJB.findMemberForAuthentication(name, password)).isNotNull().isEqualTo(testMemberList.get(0));
         verify(getMockEntityManager()).createNamedQuery(eq("findByNamePassword"));
         verify(getMockQuery()).setParameter("fname", name);
 

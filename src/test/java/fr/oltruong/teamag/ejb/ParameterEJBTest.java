@@ -4,19 +4,13 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Parameter;
 import fr.oltruong.teamag.entity.ParameterName;
 import fr.oltruong.teamag.utils.TestUtils;
-import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Olivier Truong
@@ -27,8 +21,7 @@ public class ParameterEJBTest extends AbstractEJBTest {
     public void testSaveAndReloadParameters() throws Exception {
 
         ParameterEJB parameterEJB = new ParameterEJB();
-        TestUtils.setPrivateAttribute(parameterEJB, AbstractEJB.class, getMockEntityManager(), "entityManager");
-        TestUtils.setPrivateAttribute(parameterEJB, getMockLogger(), "logger");
+        prepareEJB(parameterEJB);
         TestUtils.callPrivateMethod(parameterEJB, "initValue");
 
         Parameter smtpParameter = new Parameter();
@@ -53,8 +46,8 @@ public class ParameterEJBTest extends AbstractEJBTest {
 
         verify(getMockEntityManager()).merge(eq(smtpParameter));
         verify(getMockEntityManager()).merge(eq(emailParameter));
-        verify(getMockEntityManager(),times(2)).createNamedQuery(eq("findParameters"));
-        verify(getMockQuery(),times(2)).getResultList();
+        verify(getMockEntityManager(), times(2)).createNamedQuery(eq("findParameters"));
+        verify(getMockQuery(), times(2)).getResultList();
 
     }
 }

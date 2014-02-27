@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package fr.oltruong.teamag.ejb;
 
@@ -7,13 +7,11 @@ import com.google.common.collect.Maps;
 import fr.oltruong.teamag.entity.Parameter;
 import fr.oltruong.teamag.entity.ParameterName;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
-import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +22,6 @@ import java.util.Map;
  */
 @Singleton
 public class ParameterEJB extends AbstractEJB {
-
-    @Inject
-    private Logger logger;
 
     private Map<ParameterName, Parameter> parameterMap;
 
@@ -66,7 +61,7 @@ public class ParameterEJB extends AbstractEJB {
 
     private void initAndPersistParameterMap() {
 
-        logger.info("Creating parameters Map");
+        getLogger().info("Creating parameters Map");
 
         parameterMap = new HashMap<ParameterName, Parameter>(2);
         Parameter smtpHostParameter = new Parameter(ParameterName.SMTP_HOST);
