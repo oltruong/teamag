@@ -38,6 +38,19 @@ public class EntityFactory {
         return absence;
     }
 
+    public static AbsenceDay createAbsenceDay() {
+
+        AbsenceDay absenceDay = new AbsenceDay();
+
+        DateTime now = DateTime.now();
+        absenceDay.setDay(now);
+        absenceDay.setMonth(Integer.valueOf(now.getMonthOfYear()));
+        absenceDay.setWeek(Integer.valueOf(now.getWeekOfWeekyear()));
+        absenceDay.setMember(createMember());
+        return absenceDay;
+    }
+
+
     public static List<Absence> createAbsenceList(int number) {
         List<Absence> absenceList = Lists.newArrayListWithExpectedSize(number);
         for (int i = 0; i < number; i++) {

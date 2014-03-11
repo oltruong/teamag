@@ -31,6 +31,12 @@ public abstract class AbstractEntityIT {
         entityManagerFactory.close();
     }
 
+
+    protected Object create(Object object) {
+        entityManager.persist(object);
+        return object;
+    }
+
     public EntityManager getEntityManager() {
         return entityManager;
     }
