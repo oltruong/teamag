@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Table(name = "TM_ABSENCE_DAY")
 @Entity
+@NamedQueries({@NamedQuery(name = "findAbsenceDayByAbsenceId", query = "SELECT a FROM AbsenceDay a where a.absence.id=:fAbsenceId"), @NamedQuery(name = "findAllAbsenceDays", query = "SELECT a FROM AbsenceDay a order by a.week, a.member.name")})
 public class AbsenceDay {
 
     @Id
@@ -15,7 +16,6 @@ public class AbsenceDay {
     private Long id;
 
     @Column(nullable = false)
-
     private Integer month;
 
     private Integer week;
@@ -30,7 +30,20 @@ public class AbsenceDay {
     @JoinColumn(nullable = false, name = "MEMBER_FK")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "ABSENCE_FK")
+    private Absence absence;
+
+
     private Float value = Float.valueOf(1f);
+
+    public AbsenceDay() {
+
+    }
+
+    public AbsenceDay(Absence absenceReference) {
+        absence = absenceReference;
+    }
 
     public Long getId() {
         return id;
@@ -44,17 +57,10 @@ public class AbsenceDay {
         return month;
     }
 
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
     public Integer getWeek() {
         return week;
     }
 
-    public void setWeek(Integer week) {
-        this.week = week;
-    }
 
     public DateTime getDay() {
         return day;
@@ -62,6 +68,8 @@ public class AbsenceDay {
 
     public void setDay(DateTime day) {
         this.day = day;
+        this.month = day.getMonthOfYear();
+        this.week = day.getWeekOfWeekyear();
     }
 
     public Member getMember() {
@@ -78,5 +86,13 @@ public class AbsenceDay {
 
     public void setValue(Float value) {
         this.value = value;
+    }
+
+    public Absence getAbsence() {
+        return absence;
+    }
+
+    public void setAbsence(Absence absence) {
+        this.absence = absence;
     }
 }

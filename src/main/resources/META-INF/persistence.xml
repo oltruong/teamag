@@ -6,6 +6,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/teamag</jta-data-source>
         <class>fr.oltruong.teamag.entity.Absence</class>
+        <class>fr.oltruong.teamag.entity.AbsenceDay</class>
         <class>fr.oltruong.teamag.entity.Activity</class>
         <class>fr.oltruong.teamag.entity.BusinessCase</class>
         <class>fr.oltruong.teamag.entity.Member</class>

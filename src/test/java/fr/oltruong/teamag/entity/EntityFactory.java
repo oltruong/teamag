@@ -40,12 +40,10 @@ public class EntityFactory {
 
     public static AbsenceDay createAbsenceDay() {
 
-        AbsenceDay absenceDay = new AbsenceDay();
+        AbsenceDay absenceDay = new AbsenceDay(createAbsence());
 
         DateTime now = DateTime.now();
         absenceDay.setDay(now);
-        absenceDay.setMonth(Integer.valueOf(now.getMonthOfYear()));
-        absenceDay.setWeek(Integer.valueOf(now.getWeekOfWeekyear()));
         absenceDay.setMember(createMember());
         return absenceDay;
     }

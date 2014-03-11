@@ -32,10 +32,17 @@ public abstract class AbstractEntityIT {
     }
 
 
-    protected Object create(Object object) {
+    protected Object createWithoutCommit(Object object) {
         entityManager.persist(object);
         return object;
     }
+
+    protected Object createWithCommit(Object object) {
+        object = createWithoutCommit(object);
+        transaction.commit();
+        return object;
+    }
+
 
     public EntityManager getEntityManager() {
         return entityManager;

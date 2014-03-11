@@ -36,6 +36,9 @@
             <p:menuitem value="#{i18n.menurealizedfollowed}" action="#{checkWorkController.init}" icon="ui-icon-zoomin"
                         rendered="#{loginBean.supervisor}" ajax="false"/>
 
+            <p:menuitem value="Plan de charge" action="#{workLoadController.init}" icon="ui-icon-zoomin"
+                        rendered="#{loginBean.supervisor}" ajax="false"/>
+
 
             <p:submenu label="#{i18n.menuadmin}" rendered="#{loginBean.administrator}">
                 <p:menuitem value="#{i18n.menuteam}" action="#{memberController.init}" icon="ui-icon-person"
