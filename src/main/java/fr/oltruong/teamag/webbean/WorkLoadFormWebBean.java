@@ -6,7 +6,7 @@ import fr.oltruong.teamag.entity.Member;
 import java.util.List;
 
 /**
- * Created by m405640 on 11/03/14.
+ * @author Olivier Truong
  */
 public class WorkLoadFormWebBean {
 

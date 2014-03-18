@@ -4,7 +4,7 @@
     <groupId>fr.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <name>TeamManagement</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/TeaMag</url>

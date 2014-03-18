@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class ActivityEJBTest extends AbstractEJBTest {
 
 
-    protected ActivityEJB activityEJB;
+    private ActivityEJB activityEJB;
 
     @Before
     public void prepare() {
