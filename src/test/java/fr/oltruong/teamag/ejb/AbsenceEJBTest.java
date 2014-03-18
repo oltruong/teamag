@@ -40,7 +40,8 @@ public class AbsenceEJBTest extends AbstractEJBTest {
         List<Absence> allAbsenceList = absenceEJB.findAllAbsences();
 
         assertThat(allAbsenceList).isEqualTo(absenceList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllAbsences"));
+        checkCreateNameQuery("findAllAbsences");
+
     }
 
 
@@ -59,7 +60,8 @@ public class AbsenceEJBTest extends AbstractEJBTest {
         List<Absence> absenceMemberList = absenceEJB.findAbsencesByMember(member);
 
         assertThat(absenceMemberList).isNotNull().isNotEmpty().containsOnly(absenceList.get(0));
-        verify(getMockEntityManager()).createNamedQuery(eq("findAbsencesByMember"));
+        checkCreateNameQuery("findAbsencesByMember");
+
         verify(getMockQuery()).setParameter(eq("fmemberId"), eq(member.getId()));
 
 

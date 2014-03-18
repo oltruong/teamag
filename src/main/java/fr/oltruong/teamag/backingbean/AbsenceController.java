@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.ejb.WorkLoadEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.exception.DateOverlapException;
@@ -36,6 +37,10 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceEJB absenceEJB;
 
+    @Inject
+    private WorkLoadEJB workLoadEJB;
+
+
     private static final String VIEWNAME = "absence";
 
     public String init() {
@@ -52,6 +57,7 @@ public class AbsenceController extends Controller {
             Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(absence);
             newAbsence.setMember(getMember());
             absenceEJB.addAbsence(newAbsence);
+            workLoadEJB.registerAbsence(newAbsence);
             refreshList();
 
             absence = new AbsenceWebBean();
@@ -82,7 +88,9 @@ public class AbsenceController extends Controller {
     }
 
     public void deleteAbsence() {
+        workLoadEJB.removeAbsence(getSelectedAbsence().getId());
         absenceEJB.deleteAbsence(getSelectedAbsence().getId());
+
         refreshList();
 
     }

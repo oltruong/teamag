@@ -31,6 +31,7 @@ public class ProfileController extends Controller {
     private static final String VIEWNAME = "profile";
 
     public String init() {
+
         setProfileWebBean(new ProfileWebBean(memberInstance.get()));
         return VIEWNAME;
     }

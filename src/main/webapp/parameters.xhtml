@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	template="WEB-INF/layouts/template.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
 
-	<ui:define name="title">#{i18n.parameterPagetitle}</ui:define>
+    <ui:define name="title">#{i18n.parameterPagetitle}</ui:define>
 
 
-	<ui:define name="content">
+    <ui:define name="content">
 
-<p:panel header="#{i18n.parameterPageparameters}">
+        <p:panel header="#{i18n.parameterPageparameters}">
 
-	
-	<h:form>
-		<table>
-			<tr>
-				<td><h:outputLabel value="#{i18n.parameterPagesmtpServer}" /></td>
-				<td><p:inputText value="#{parameterController.smtpHostParameterValue}" required="true" size="38" /></td>
-			</tr>
-			<tr>
-				<td><h:outputLabel value="#{i18n.parameterPageadminEmail}" /></td>
-				<td><p:inputText value="#{parameterController.administratorEmailParameterValue}" required="true" size="38" /></td>
-			</tr>
-		</table>
-		<br/>
-		<p:commandButton value="#{i18n.update}" action="#{parameterController.doUpdateParameters}" ajax="false" icon="ui-icon-disk"/>
-		<p:commandButton value="#{i18n.parameterPagetestEmail}" action="#{parameterController.testEmail}" ajax="false" icon="ui-icon-person"/>
-		
-	</h:form>
-</p:panel>
 
-</ui:define>
+            <h:form>
+                <table>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.parameterPagesmtpServer}"/></td>
+                        <td><p:inputText value="#{parameterController.smtpHostParameterValue}" required="true"
+                                         size="38"/></td>
+                    </tr>
+                    <tr>
+                        <td><h:outputLabel value="#{i18n.parameterPageadminEmail}"/></td>
+                        <td><p:inputText value="#{parameterController.administratorEmailParameterValue}" required="true"
+                                         size="38"/></td>
+                    </tr>
+                </table>
+                <br/>
+                <p:commandButton value="#{i18n.update}" action="#{parameterController.doUpdateParameters}" ajax="false"
+                                 icon="ui-icon-disk"/>
+                <p:commandButton value="#{i18n.parameterPagetestEmail}" action="#{parameterController.testEmail}"
+                                 ajax="false" icon="ui-icon-person"/>
+
+
+                <p:commandButton value="Recharger absences" action="#{parameterController.reloadAbsenceDays}"
+                                 ajax="false"
+                                 icon="ui-icon-disk"/>
+
+
+            </h:form>
+        </p:panel>
+
+    </ui:define>
 </ui:composition>
 

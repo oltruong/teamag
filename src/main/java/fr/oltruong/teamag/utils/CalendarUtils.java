@@ -1,16 +1,17 @@
 package fr.oltruong.teamag.utils;
 
 import com.google.common.collect.Lists;
-import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+
+import java.util.List;
 
 public final class CalendarUtils {
 
     private CalendarUtils() {
     }
 
-    private static boolean isDayOff(DateTime day) {
+    public static boolean isDayOff(DateTime day) {
         boolean verdict = false;
 
         int dayOfWeek = day.getDayOfWeek();

@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractEJBTest {
@@ -36,15 +38,19 @@ public abstract class AbstractEJBTest {
 
     }
 
-    public EntityManager getMockEntityManager() {
+    protected void checkCreateNameQuery(String query) {
+        verify(getMockEntityManager()).createNamedQuery(eq(query));
+    }
+
+    protected EntityManager getMockEntityManager() {
         return mockEntityManager;
     }
 
-    public Logger getMockLogger() {
+    protected Logger getMockLogger() {
         return mockLogger;
     }
 
-    public Query getMockQuery() {
+    protected Query getMockQuery() {
         return mockQuery;
     }
 

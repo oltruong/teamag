@@ -1,7 +1,9 @@
 package fr.oltruong.teamag.backingbean;
 
-import java.util.Properties;
-import java.util.logging.Logger;
+import fr.oltruong.teamag.ejb.EmailEJB;
+import fr.oltruong.teamag.ejb.ParameterEJB;
+import fr.oltruong.teamag.ejb.WorkLoadEJB;
+import fr.oltruong.teamag.entity.Parameter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -15,10 +17,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import fr.oltruong.teamag.ejb.EmailEJB;
-import fr.oltruong.teamag.ejb.ParameterEJB;
-import fr.oltruong.teamag.entity.Parameter;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 @ManagedBean
 @ApplicationScoped
@@ -31,6 +31,11 @@ public class ParameterController extends Controller {
     // ======================================
     @Inject
     private ParameterEJB parametersEJB;
+
+
+    @Inject
+    private WorkLoadEJB workLoadEJB;
+
 
     @Inject
     private EmailEJB emailEJB;
@@ -54,6 +59,11 @@ public class ParameterController extends Controller {
         msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("parametersUpdated"));
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
+        return "parameters.xhtml";
+    }
+
+    public String reloadAbsenceDays() {
+        workLoadEJB.reloadAllAbsenceDay();
         return "parameters.xhtml";
     }
 

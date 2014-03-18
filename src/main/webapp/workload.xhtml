@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="WEB-INF/layouts/template.xhtml">
+
+    <ui:define name="title">#{i18n.workloadPagetitle}</ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel header="#{i18n.perWeek}">
+                <p:dataTable value="#{workLoadController.formWebBean.weekLoadWebBeanList}"
+                             sortBy="#{weekLoad.weekNumber}"
+                             sortOrder="ascending" var="weekLoad"
+                             border="1" id="idTableWeek">
+
+                    <p:column headerText="#{i18n.week}"
+                              sortBy="#{weekLoad.weekNumberYear}">
+                        <h:outputText
+                                value="#{weekLoad.weekNumberYear}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText
+                                value="#{weekLoad.firstDay}"/>
+                    </p:column>
+
+                    <p:columns value="#{workLoadController.formWebBean.memberList}"
+                               var="member" style="align:center;">
+                        <f:facet name="header">
+                            <h:outputText value="#{member.name}"/>
+                        </f:facet>
+                        <h:outputText value="#{weekLoad.memberLoadMap[member]}"/>
+                    </p:columns>
+
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel header="#{i18n.export}">
+                <h:commandLink>
+                    <p:graphicImage value="resources/images/csv.png"/>
+                    <p:dataExporter target="idTableWeek" type="csv"
+                                    fileName="#{i18n.workloadPageCSVWeekExport}"></p:dataExporter>
+                </h:commandLink>
+
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

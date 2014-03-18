@@ -38,12 +38,42 @@ public class EntityFactory {
         return absence;
     }
 
+
+    public static Absence createAbsence(DateTime beginDate, Integer beginType, DateTime endDate, Integer endType) {
+        Absence absence = new Absence();
+        absence.setBeginDate(beginDate.withTimeAtStartOfDay());
+        absence.setBeginType(beginType);
+        absence.setEndDate(endDate.withTimeAtStartOfDay());
+        absence.setEndType(endType);
+        absence.setMember(createMember());
+        return absence;
+    }
+
+    public static AbsenceDay createAbsenceDay() {
+
+        AbsenceDay absenceDay = new AbsenceDay(createAbsence());
+
+        DateTime now = DateTime.now();
+        absenceDay.setDay(now);
+        absenceDay.setMember(createMember());
+        return absenceDay;
+    }
+
+
     public static List<Absence> createAbsenceList(int number) {
         List<Absence> absenceList = Lists.newArrayListWithExpectedSize(number);
         for (int i = 0; i < number; i++) {
             absenceList.add(createAbsence());
         }
         return absenceList;
+    }
+
+    public static List<AbsenceDay> createAbsenceDayList(int number) {
+        List<AbsenceDay> absenceDayList = Lists.newArrayListWithExpectedSize(number);
+        for (int i = 0; i < number; i++) {
+            absenceDayList.add(createAbsenceDay());
+        }
+        return absenceDayList;
     }
 
     public static List<Activity> createActivityList(int number) {
