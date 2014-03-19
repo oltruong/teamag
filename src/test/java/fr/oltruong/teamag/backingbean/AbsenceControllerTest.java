@@ -2,6 +2,7 @@ package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.ejb.WorkLoadEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.EntityFactory;
@@ -35,6 +36,8 @@ public class AbsenceControllerTest extends ControllerTest {
     @Mock
     private WorkLoadEJB mockWorkLoadEJB;
 
+    @Mock
+    private EmailEJB mockEmailEJB;
 
     @Mock
     private Instance<Member> mockMemberInstance;
@@ -52,6 +55,7 @@ public class AbsenceControllerTest extends ControllerTest {
         when(mockMemberInstance.get()).thenReturn(mockMember);
         TestUtils.setPrivateAttribute(absenceController, mockAbsenceEJB, "absenceEJB");
         TestUtils.setPrivateAttribute(absenceController, mockWorkLoadEJB, "workLoadEJB");
+        TestUtils.setPrivateAttribute(absenceController, mockEmailEJB, "emailEJB");
         TestUtils.setPrivateAttribute(absenceController, mockMemberInstance, "member");
         TestUtils.setPrivateAttribute(absenceController, Controller.class, mockMessageManager, "messageManager");
 

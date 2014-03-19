@@ -1,6 +1,8 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.ejb.EmailEJB;
+import fr.oltruong.teamag.ejb.MailBean;
 import fr.oltruong.teamag.ejb.WorkLoadEJB;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
@@ -41,7 +43,13 @@ public class AbsenceController extends Controller {
     private WorkLoadEJB workLoadEJB;
 
 
+    @Inject
+    private EmailEJB emailEJB;
+
+
     private static final String VIEWNAME = "absence";
+
+    private final String DATE_FORMAT = "EEEE dd MMMM";
 
     public String init() {
 
@@ -63,12 +71,42 @@ public class AbsenceController extends Controller {
             absence = new AbsenceWebBean();
             getMessageManager().displayMessage(MessageManager.INFORMATION, "absenceAdded");
 
+            emailEJB.sendEmailAdministrator(buildEmailAdd(newAbsence));
+
         } catch (InconsistentDateException e) {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
         } catch (DateOverlapException e) {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "overlappingDates");
         }
     }
+
+    private MailBean buildEmailAdd(Absence absence) {
+
+        MailBean mailBean = new MailBean();
+        mailBean.setSubject(member.get().getName() + ": ajout d'absence " + buildEmailContent(absence));
+
+        mailBean.setContent(buildEmailContent(absence));
+        return mailBean;
+    }
+
+    private String buildEmailContent(Absence absence) {
+        return "du " + absence.getBeginDate().toString(DATE_FORMAT) + decrypt(absence.getBeginType()) + " au " + absence.getEndDate().toString(DATE_FORMAT) + decrypt(absence.getBeginType());
+    }
+
+    private String decrypt(Integer type) {
+        String result = null;
+        if (Absence.AFTERNOON_ONLY.equals(type)) {
+            result = " apres-midi";
+        } else if (Absence.MORNING_ONLY.equals(type)) {
+            result = " matin";
+        } else {
+            result = "";
+        }
+
+
+        return result;
+    }
+
 
     /**
      * Enable the possibility to fill only beginDate or endDate
@@ -91,8 +129,19 @@ public class AbsenceController extends Controller {
         workLoadEJB.removeAbsence(getSelectedAbsence().getId());
         absenceEJB.deleteAbsence(getSelectedAbsence().getId());
 
+        emailEJB.sendEmailAdministrator(buildEmailDelete(getSelectedAbsence()));
+
         refreshList();
 
+
+    }
+
+    private MailBean buildEmailDelete(AbsenceWebBean selectedAbsence) {
+        MailBean mailBean = new MailBean();
+        Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(selectedAbsence);
+        mailBean.setSubject(member.get().getName() + ": suppression d'absence " + buildEmailContent(newAbsence));
+        mailBean.setContent(buildEmailContent(newAbsence));
+        return mailBean;
     }
 
     private void refreshList() {
