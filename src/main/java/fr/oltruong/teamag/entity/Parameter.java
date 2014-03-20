@@ -1,5 +1,7 @@
 package fr.oltruong.teamag.entity;
 
+import fr.oltruong.teamag.entity.enumeration.ParameterName;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

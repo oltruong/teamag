@@ -3,6 +3,8 @@ package fr.oltruong.teamag.entity;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
+import fr.oltruong.teamag.entity.enumeration.MemberType;
+import fr.oltruong.teamag.entity.enumeration.ParameterName;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class EntityFactory {
         member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
-        member.setEstimatedworkDays(0f);
+        member.setEstimatedWorkDays(0f);
         member.setMemberType(MemberType.BASIC);
         return member;
     }

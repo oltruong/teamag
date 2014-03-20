@@ -32,10 +32,12 @@ public class Work {
     @Convert(converter = DateConverter.class)
     private DateTime day;
 
-    @JoinColumn(nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "MEMBER_ID")
     private Member member;
 
-    @JoinColumn(nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "TASK_ID")
     private Task task;
 
     private Float total = 0f;

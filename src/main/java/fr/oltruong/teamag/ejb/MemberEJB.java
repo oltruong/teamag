@@ -2,7 +2,7 @@ package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.MemberType;
+import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
@@ -81,7 +81,7 @@ public class MemberEJB extends AbstractEJB {
         }
 
         member.setPassword(TeamagUtils.hashPassword(""));
-        member.setEstimatedworkDays(0f);
+        member.setEstimatedWorkDays(0f);
         getEntityManager().persist(member);
 
         task.addMember(member);

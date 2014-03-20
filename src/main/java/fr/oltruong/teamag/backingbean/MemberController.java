@@ -3,7 +3,7 @@ package fr.oltruong.teamag.backingbean;
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.MemberType;
+import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TeamagConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.RowEditEvent;
@@ -95,7 +95,7 @@ public class MemberController extends Controller {
     public Float getTotalEstimatedWorkDays() {
         Float total = 0f;
         for (Member member : memberList) {
-            total += member.getEstimatedworkDays();
+            total += member.getEstimatedWorkDays();
         }
         return total;
     }

@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.entity;
 
+import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TeamagConstants;
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ public class Member implements Serializable {
     private MemberType memberType;
 
     @Column(nullable = false)
-    private Float estimatedworkDays;
+    private Float estimatedWorkDays;
 
 
     private String comment;
@@ -108,16 +109,16 @@ public class Member implements Serializable {
         this.memberType = memberType;
     }
 
-    public Float getEstimatedworkDays() {
-        return estimatedworkDays;
+    public Float getEstimatedWorkDays() {
+        return estimatedWorkDays;
     }
 
-    public Float getEstimatedworkMonths() {
-        return estimatedworkDays / TeamagConstants.MONTH_DAYS_RATIO;
+    public Float getEstimatedWorkMonths() {
+        return estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO;
     }
 
-    public void setEstimatedworkDays(Float estimatedworkDays) {
-        this.estimatedworkDays = estimatedworkDays;
+    public void setEstimatedWorkDays(Float estimatedWorkDays) {
+        this.estimatedWorkDays = estimatedWorkDays;
     }
 
     public String getComment() {

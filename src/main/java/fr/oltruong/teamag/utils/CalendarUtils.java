@@ -6,6 +6,9 @@ import org.joda.time.DateTimeConstants;
 
 import java.util.List;
 
+/**
+ * @author Olivier Truong
+ */
 public final class CalendarUtils {
 
     private CalendarUtils() {

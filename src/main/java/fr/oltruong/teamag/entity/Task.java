@@ -1,15 +1,9 @@
 package fr.oltruong.teamag.entity;
 
 import com.google.common.collect.Lists;
+
+import javax.persistence.*;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Table(name = "TM_TASK")
 @NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
@@ -25,6 +19,7 @@ public class Task {
 
     private String project = "";
 
+    @ManyToMany
     private List<Member> members = Lists.newArrayListWithCapacity(1);
 
     @Transient

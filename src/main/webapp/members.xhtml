@@ -61,20 +61,20 @@
                     </p:column>
 
 
-                    <p:column headerText="#{i18n.workDays}" sortBy="#{user.estimatedworkDays}">
+                    <p:column headerText="#{i18n.workDays}" sortBy="#{user.estimatedWorkDays}">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="#{user.estimatedworkDays}"/>
+                                <h:outputText value="#{user.estimatedWorkDays}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <p:inputText value="#{user.estimatedworkDays}"/>
+                                <p:inputText value="#{user.estimatedWorkDays}"/>
                             </f:facet>
                         </p:cellEditor>
 
                     </p:column>
 
-                    <p:column headerText="#{i18n.workMonths}" sortBy="#{user.estimatedworkMonths}">
-                        <h:outputText value="#{user.estimatedworkMonths}">
+                    <p:column headerText="#{i18n.workMonths}" sortBy="#{user.estimatedWorkMonths}">
+                        <h:outputText value="#{user.estimatedWorkMonths}">
                             <f:convertNumber maxFractionDigits="3"/>
                         </h:outputText>
                     </p:column>
@@ -139,33 +139,49 @@
             <h:form>
                 <table>
                     <tr>
-                        <td><h:outputLabel value="#{i18n.name}"/></td>
-                        <td><p:inputText value="#{memberController.member.name}"
-                                         required="true"/></td>
-                        <td><h:outputLabel value="#{i18n.membersPagecompany}"
-                                           for="acCompany"/> <p:autoComplete id="acCompany"
-                                                                             value="#{memberController.member.company}"
-                                                                             completeMethod="#{memberController.completeCompany}"/>
+                        <td>
+                            <h:outputLabel value="#{i18n.name}"/>
                         </td>
-                        <td><h:outputLabel value="#{i18n.membersPageemail}"/></td>
-                        <td><p:inputText value="#{memberController.member.email}"
+                        <td>
+                            <p:inputText value="#{memberController.member.name}"
+                                         required="true"/>
+                        </td>
+                        <td>
+                            <h:outputLabel value="#{i18n.membersPagecompany}"
+                                           for="acCompany"/>
+                            <p:autoComplete id="acCompany"
+                                            value="#{memberController.member.company}"
+                                            completeMethod="#{memberController.completeCompany}"/>
+                        </td>
+                        <td>
+                            <h:outputLabel value="#{i18n.membersPageemail}"/>
+                        </td>
+                        <td>
+                            <p:inputText value="#{memberController.member.email}"
                                          required="true" validatorMessage="e-mail is not valid">
-                            <f:validateRegex
-                                    pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
-                        </p:inputText></td>
-                        <td><h:outputLabel value="#{i18n.type}"/></td>
-                        <td><p:selectOneMenu
-                                value="#{memberController.member.memberType}">
-                            <f:selectItem itemLabel="Select One" itemValue=""/>
-                            <f:selectItems value="#{memberController.membertypeList}"
-                                           var="type" itemLabel="#{type}" itemValue="#{type}"/>
-                        </p:selectOneMenu></td>
+                                <f:validateRegex
+                                        pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]"/>
+                            </p:inputText>
+                        </td>
+                        <td>
+                            <h:outputLabel value="#{i18n.type}"/>
+                        </td>
+                        <td>
+                            <p:selectOneMenu
+                                    value="#{memberController.member.memberType}">
+                                <f:selectItem itemLabel="Select One" itemValue=""/>
+                                <f:selectItems value="#{memberController.membertypeList}"
+                                               var="type" itemLabel="#{type}" itemValue="#{type}"/>
+                            </p:selectOneMenu>
+                        </td>
 
                     </tr>
                     <tr>
-                        <td colspan="6"><p:commandButton value="#{i18n.add}"
-                                                         action="#{memberController.doCreateMember}" ajax="false"
-                                                         icon="ui-icon-plusthick"/></td>
+                        <td colspan="6">
+                            <p:commandButton value="#{i18n.add}"
+                                             action="#{memberController.doCreateMember}" ajax="false"
+                                             icon="ui-icon-plusthick"/>
+                        </td>
                     </tr>
                 </table>
 

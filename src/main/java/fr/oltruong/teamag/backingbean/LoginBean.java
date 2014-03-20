@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
+import fr.oltruong.teamag.backingbean.Controller;
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.exception.UserNotFoundException;
