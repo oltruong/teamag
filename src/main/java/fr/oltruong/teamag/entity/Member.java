@@ -117,6 +117,14 @@ public class Member implements Serializable {
         return estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO;
     }
 
+    public String getEstimatedWorkDaysString() {
+        return String.valueOf(estimatedWorkDays);
+    }
+
+    public String getEstimatedWorkMonthsString() {
+        return String.valueOf((Float) estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO);
+    }
+
     public void setEstimatedWorkDays(Float estimatedWorkDays) {
         this.estimatedWorkDays = estimatedWorkDays;
     }
