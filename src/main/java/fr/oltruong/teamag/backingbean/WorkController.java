@@ -163,7 +163,18 @@ public class WorkController extends Controller {
                 workEJB.createWeekComment(weekComment);
             }
 
+            MailBean email = buildEmailComment(weekComment);
+            mailEJB.sendEmailAdministrator(email);
+
         }
+    }
+
+
+    private MailBean buildEmailComment(WeekComment weekComment) {
+        MailBean email = new MailBean();
+        email.setContent("Semaine " + weekComment.getWeekYear() + "\n" + weekComment.getComment());
+        email.setSubject(getMember().getName() + " Commentaire de Realise");
+        return email;
     }
 
     public List<String> completeProject(String query) {
