@@ -11,7 +11,7 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panel header="#{i18n.realizedfollowedPageChoicePerson}">
+            <p:panel header="#{i18n.realizedfollowedPageChoicePerson}" rendered="#{loginBean.supervisor}">
                 <p:selectOneMenu
                         value="#{checkWorkController.memberToCheck.id}">
                     <f:selectItems value="#{checkWorkController.memberList}"
