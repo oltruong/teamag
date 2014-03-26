@@ -1,0 +1,63 @@
+<h1 class="text-center">{{filteredMembers.length }} Membres</h1>
+<div class="row">
+    <div class="col-md-2">
+        Filtrer&nbsp;: <input ng-model="query">
+        <br/><br/> Trier&nbsp;:
+        <select ng-model="orderProp">
+            <option value="name">Nom asc</option>
+            <option value="-name">Nom desc</option>
+            <option value="company">Entreprise asc</option>
+            <option value="-company">Entreprise desc</option>
+            <option value="estimatedWorkDays">Consommation asc</option>
+            <option value="-estimatedWorkDays">Consommation desc</option>
+        </select>
+
+    </div>
+    <div class="col-md-10">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Entreprise</th>
+                <th>E-mail</th>
+                <th>Actif</th>
+                <th>JHI</th>
+                <th>MHI</th>
+                <th>Remarques</th>
+                <th>Couleur</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="member in (filteredMembers=(members | filter:query | orderBy:orderProp))">
+
+                <td>{{member.id}}</td>
+                <td>{{member.name}}</td>
+                <td>{{member.company}}</td>
+                <td>{{member.email}}</td>
+                <td>{{member.active}}</td>
+                <td>{{member.estimatedWorkDays}}</td>
+                <td>{{member.estimatedWorkMonths}}</td>
+                <td>{{member.comment}}</td>
+                <td style="color: white;background-color: #{{member.absenceHTMLColor}};">{{member.absenceHTMLColor}}
+                </td>
+                <td>{{member.memberType}}</td>
+            </tr>
+
+            </tbody>
+            <tfoot>
+
+            <tr class="success">
+                <td class="text-right" colspan=5">Total&nbsp;:</td>
+                <td>{{totalDays()}}</td>
+                <td>{{totalMonths()}}</td>
+                <td colspan="3"></td>
+            </tr>
+
+            </tfoot>
+        </table>
+
+    </div>
+</div>

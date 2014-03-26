@@ -2,18 +2,35 @@ package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.collections.CollectionUtils;
 
-import javax.ejb.Stateless;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.persistence.Query;
 import java.util.List;
 
-@Stateless
+@Singleton
+@Startup
 public class MemberEJB extends AbstractEJB {
+
+
+    private static List<Member> memberList;
+
+
+    public static List<Member> getMemberList() {
+        return memberList;
+    }
+
+    @PostConstruct
+    public void build() {
+        memberList = findMembers();
+
+    }
 
     @SuppressWarnings("unchecked")
     public List<Member> findMembers() {
@@ -81,7 +98,7 @@ public class MemberEJB extends AbstractEJB {
         }
 
         member.setPassword(TeamagUtils.hashPassword(""));
-        member.setEstimatedWorkDays(0f);
+        member.setEstimatedWorkDays(0d);
         getEntityManager().persist(member);
 
         task.addMember(member);

@@ -24,7 +24,7 @@ public class EntityFactory {
         member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
-        member.setEstimatedWorkDays(0f);
+        member.setEstimatedWorkDays(0d);
         member.setMemberType(MemberType.BASIC);
         return member;
     }
@@ -107,7 +107,7 @@ public class EntityFactory {
     public static BusinessCase createBusinessCase() {
         BusinessCase businessCase = new BusinessCase();
         businessCase.setName("MyBC" + DateTime.now().getMillis());
-        businessCase.setAmount(Float.valueOf(DateTime.now().getMillis()));
+        businessCase.setAmount(Double.valueOf(DateTime.now().getMillis()));
         businessCase.setIdentifier("" + DateTime.now().getMillisOfSecond());
         return businessCase;
     }

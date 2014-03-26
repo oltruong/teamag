@@ -3340,7 +3340,7 @@ jQuery.support = (function( support ) {
 
 	a.style.cssText = "top:1px;float:left;opacity:.5";
 
-	// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+	// SecurityFilter setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
 	support.getSetAttribute = div.className !== "t";
 
 	// IE strips leading whitespace when .innerHTML is used
@@ -3642,7 +3642,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 		// First Try to find as-is property data
 		ret = thisCache[ name ];
 
-		// Test for null|undefined property data
+		// SecurityFilter for null|undefined property data
 		if ( ret == null ) {
 
 			// Try to find the camelCased property
@@ -7070,7 +7070,7 @@ jQuery.extend({
 			val = cssNormalTransform[ name ];
 		}
 
-		// Return, converting to number if forced or a qualifier was provided and val looks numeric
+		// Return, converting to number if forced or a interfaces was provided and val looks numeric
 		if ( extra === "" || extra ) {
 			num = parseFloat( val );
 			return extra === true || jQuery.isNumeric( num ) ? num || 0 : val;
@@ -33374,7 +33374,7 @@ angular.scenario.output('html', function(context, runner, model) {
 
   context.append(
     '<div id="header">' +
-    '  <h1><span class="angular">AngularJS</span>: Scenario Test Runner</h1>' +
+    '  <h1><span class="angular">AngularJS</span>: Scenario SecurityFilter Runner</h1>' +
     '  <ul id="status-legend" class="status-display">' +
     '    <li class="status-error">0 Errors</li>' +
     '    <li class="status-failure">0 Failures</li>' +

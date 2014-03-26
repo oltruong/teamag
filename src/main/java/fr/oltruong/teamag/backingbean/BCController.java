@@ -6,12 +6,13 @@ import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.event.RowEditEvent;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.event.RowEditEvent;
+import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -39,7 +40,7 @@ public class BCController extends Controller {
     private static final String VIEWNAME = "businesscases";
 
 
-    private Float total;
+    private Double total;
 
     public String init() {
         setBcList(this.activityEJB.findBC());
@@ -74,12 +75,12 @@ public class BCController extends Controller {
     }
 
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
     private void computeTotal() {
-        total = 0f;
+        total = 0d;
         for (BusinessCase businessCase : bcList) {
             total += businessCase.getAmount();
         }

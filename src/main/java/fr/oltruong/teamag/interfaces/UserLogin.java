@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.qualifier;
+package fr.oltruong.teamag.interfaces;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;

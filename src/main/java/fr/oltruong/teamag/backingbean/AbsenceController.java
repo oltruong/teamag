@@ -8,7 +8,7 @@ import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
-import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;

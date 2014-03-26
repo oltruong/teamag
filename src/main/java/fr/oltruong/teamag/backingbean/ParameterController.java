@@ -95,7 +95,7 @@ public class ParameterController extends Controller {
             this.logger.info("Message to: " + this.administratorEmailParameter.getValue());
 
             // Set Subject: header field
-            message.setSubject("Test");
+            message.setSubject("SecurityFilter");
 
             // Send the actual HTML message, as big as you like
             message.setContent("this is a test. Please ignore", "text/plain");

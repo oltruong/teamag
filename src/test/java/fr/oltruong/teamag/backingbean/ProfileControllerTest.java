@@ -65,7 +65,7 @@ public class ProfileControllerTest extends ControllerTest {
     public void testUpdatePassword() throws Exception {
 
 
-        String newPassword = "Test" + DateTime.now().toString();
+        String newPassword = "SecurityFilter" + DateTime.now().toString();
         String newPasswordEncrypted = TeamagUtils.hashPassword(newPassword);
 
         profileController.setProfileWebBean(new ProfileWebBean(member));

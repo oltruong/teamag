@@ -90,7 +90,7 @@ public class TaskIT extends AbstractEntityIT {
         myMember.setName("Bob" + Calendar.getInstance().getTimeInMillis());
         myMember.setCompany("my Company");
         myMember.setEmail("email@dummy.com");
-        myMember.setEstimatedWorkDays(0f);
+        myMember.setEstimatedWorkDays(0d);
         task.addMember(myMember);
 
         return task;
