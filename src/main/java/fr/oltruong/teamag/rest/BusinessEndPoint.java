@@ -1,12 +1,13 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.ActivityEJB;
+import fr.oltruong.teamag.entity.BusinessCase;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 /**
@@ -31,5 +32,24 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/activities")
     public Response getActivities() {
         return buildResponseOK(activityEJB.findActivities());
+    }
+
+    @POST
+    @Path("/bc")
+    public Response createBC(BusinessCase businessCase) {
+        try {
+            activityEJB.createBC(businessCase);
+        } catch (ExistingDataException e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        return Response.ok("created").build();
+    }
+
+
+    @DELETE
+    @Path("/bc/{id}")
+    public Response deleteBC(@PathParam("id") Long businessCaseId) {
+        activityEJB.deleteBC(businessCaseId);
+        return Response.noContent().build();
     }
 }

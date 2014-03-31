@@ -11,12 +11,15 @@
 <nav class="navbar navbar-inverse" role="navigation">
     <ul class="nav navbar-nav">
         <li><a href="#/members"><span class="glyphicon glyphicon-user"></span>&nbsp;Membres</a></li>
-        <li><a href="#/businesscases"><span class="glyphicon glyphicon-briefcase"></span>&nbsp;BC</a></li>
+        <li ng-class="{active: location.path == '#/businesscases'}"><a href="#/businesscases"><span
+                class="glyphicon glyphicon-briefcase"></span>&nbsp;BC</a></li>
     </ul>
 </nav>
 
 
 <div ng-view class="container-fluid"></div>
+<br/><br/>
+
 <div class="container text-center">Teamag&nbsp;&copy;2014</div>
 
 

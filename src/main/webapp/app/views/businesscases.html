@@ -6,12 +6,17 @@
         <select ng-model="orderProp">
             <option value="identifier">Num&eacute;ro</option>
             <option value="name">Nom</option>
+            <option value="-name">Nom desc</option>
             <option value="amountDouble">Montant asc</option>
             <option value="-amountDouble">Montant desc</option>
         </select>
-
+        <br/><br/>
+        <a href="#/newBusinessCase" class="btn btn-info">Ajouter un BC</a>
     </div>
     <div class="col-md-10">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -19,6 +24,7 @@
                 <th>Nom</th>
                 <th>MHI</th>
                 <th>Remarques</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -29,6 +35,11 @@
                 <td>{{bc.name}}</td>
                 <td>{{bc.amount}}</td>
                 <td>{{bc.comment}}</td>
+                <td>
+                    <a ng-click="deleteBc(bc.id);" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
             </tr>
 
             </tbody>
@@ -38,34 +49,10 @@
             <tr class="success">
                 <td class="text-right" colspan="2">Total&nbsp;:</td>
                 <td>{{total()}}</td>
-                <td></td>
+                <td colspan="2"></td>
             </tr>
 
             </tfoot>
         </table>
-        <br/>
-
-        <form role="form" action="#">
-            <h2>Ajout de BC</h2>
-
-            <div class="form-group">
-                <label for="identifier">Num&eacute;ro</label>
-                <input type="text" class="form-control" id="identifier" placeholder="1234" ng-model="identifier">
-            </div>
-            <div class="form-group">
-                <label for="name">Nom</label>
-                <input type="text" class="form-control" id="name" placeholder="Project" ng-model="name">
-            </div>
-            <div class="form-group">
-                <label for="amount">Montant (MHI)</label>
-                <input type="text" class="form-control" id="amount" placeholder="15" ng-model="amount">
-            </div>
-            <div class="form-group">
-                <label for="comment">Remarque</label>
-                <input type="text" class="form-control" id="comment" placeholder="" ng-model="comment">
-            </div>
-
-            <button type="submit" class="btn btn-success" ngClick="create()">Cr&eacute;er</button>
-        </form>
     </div>
 </div>

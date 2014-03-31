@@ -32,6 +32,12 @@ public class ActivityEJB extends AbstractEJB {
         return bc;
     }
 
+
+    public void deleteBC(Long businessCaseId) {
+        BusinessCase businessCase = getEntityManager().find(BusinessCase.class, businessCaseId);
+        getEntityManager().remove(businessCase);
+    }
+
     @SuppressWarnings("unchecked")
     public List<Activity> findActivities() {
         Query query = getEntityManager().createNamedQuery("findAllActivities");
