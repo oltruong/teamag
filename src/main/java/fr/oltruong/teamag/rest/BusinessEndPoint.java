@@ -29,6 +29,12 @@ public class BusinessEndPoint extends AbstractEndPoint {
     }
 
     @GET
+    @Path("/bc/{id}")
+    public Response getBC(@PathParam("id") Long businessCaseId) {
+        return buildResponseOK(activityEJB.findBC(businessCaseId));
+    }
+
+    @GET
     @Path("/activities")
     public Response getActivities() {
         return buildResponseOK(activityEJB.findActivities());
@@ -42,7 +48,14 @@ public class BusinessEndPoint extends AbstractEndPoint {
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return Response.ok("created").build();
+        return buildResponseOK();
+    }
+
+    @PUT
+    @Path("/bc/{id}")
+    public Response updateBC(BusinessCase businessCase) {
+        activityEJB.updateBC(businessCase);
+        return buildResponseOK();
     }
 
 
@@ -50,6 +63,6 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/bc/{id}")
     public Response deleteBC(@PathParam("id") Long businessCaseId) {
         activityEJB.deleteBC(businessCaseId);
-        return Response.noContent().build();
+        return buildResponseOK();
     }
 }

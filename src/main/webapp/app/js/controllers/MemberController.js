@@ -1,14 +1,13 @@
 'use strict';
 
-teamagApp.controller('MemberController', ['$scope', '$http',
-    function ($scope, $http) {
+teamagApp.controller('MemberController', ['$scope', '$http', 'Member',
+    function ($scope, $http, Member) {
 
-        $http.get('../resources/member').success(function (data) {
-            $scope.members = data;
-        }).
-            error(function (data, status, headers, config) {
-                alert("error " + status);
-            });
+
+        $scope.members = Member.query(function () {
+        }, function (error) {
+            $scope.error = 'Erreur HTTP ' + error.status;
+        });
 
         $scope.orderProp = 'name';
 

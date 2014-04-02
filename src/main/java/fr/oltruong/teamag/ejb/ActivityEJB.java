@@ -62,4 +62,8 @@ public class ActivityEJB extends AbstractEJB {
     public void updateBC(BusinessCase bcUpdated) {
         getEntityManager().merge(bcUpdated);
     }
+
+    public BusinessCase findBC(Long businessCaseId) {
+        return getEntityManager().find(BusinessCase.class, businessCaseId);
+    }
 }

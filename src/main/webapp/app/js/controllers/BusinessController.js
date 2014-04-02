@@ -1,18 +1,17 @@
 'use strict';
 
-teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$routeParams',
-    function ($scope, $http, $location, $routeParams) {
+teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$routeParams', 'BusinessCase',
+    function ($scope, $http, $location, $routeParams, BusinessCase) {
 
 
         $scope.confirmation = $routeParams.confirmation;
 
-        $http.get('../resources/business/bc').success(function (data) {
-            $scope.businesscases = data;
-        }).
-            error(function (data, status, headers, config) {
-                alert("error " + status);
-            });
-        $scope.orderProp = 'name';
+        $scope.businesscases = BusinessCase.query(function () {
+        }, function (error) {
+            $scope.error = 'Erreur HTTP' + error.status;
+        });
+
+        $scope.orderProp = 'identifier';
         $scope.total = function () {
             var total = 0;
             angular.forEach($scope.filteredBC, function (bc) {
@@ -22,33 +21,45 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
         };
 
         $scope.deleteBc = function ($bcId) {
-            $http.delete('../resources/business/bc/' + $bcId).success(function (data, status, headers, config) {/*success callback*/
-                $http.get('../resources/business/bc').success(function (data) {
-                    $scope.businesscases = data;
-                }).
-                    error(function (data, status, headers, config) {
-                        alert("error " + status);
-                    });
-                $scope.confirmation = "BC supprimé";
-            }).error(function (data, status, headers, config) {
-                $scope.error = 'Erreur HTTP' + status;
+            BusinessCase.delete({id: $bcId}, function () {
+                $scope.businesscases = BusinessCase.query();
+                $scope.confirmation = "BusinessCase supprimé";
+            }, function (error) {
+                $scope.error = 'Erreur HTTP' + error.status;
             });
         };
 
-        $scope.create = function () {
-            $http.post('../resources/business/bc', JSON.stringify($scope.newbc)).success(function (data, status, headers, config) {/*success callback*/
-                if (status == "200") {
-                    $location.path('businesscases').search({confirmation: 'Business Case ' + $scope.newbc.identifier + '-' + $scope.newbc.name + ' ajouté'});
-                    ;
-                } else {
-                    $scope.confirmation = status;
-                }
 
-            }).error(function (data, status, headers, config) {
-                if (status == "406") {
+        $scope.updateBc = function ($bc) {
+            BusinessCase.update({id: $bc.id}, $bc, function () {
+                //  $scope.businesscases = BusinessCase.query();
+                $scope.confirmation = "BusinessCase mis à jour";
+            }, function (error) {
+                $scope.error = 'Erreur HTTP' + error.status;
+            });
+        };
+
+        $scope.refreshBc = function ($bc) {
+
+            var oldbc = BusinessCase.get({id: $bc.id}, function () {
+                $bc.comment = oldbc.comment;
+                $bc.identifier = oldbc.identifier;
+                $bc.name = oldbc.name;
+                $bc.amount = oldbc.amount;
+            }, function (error) {
+                $scope.error = 'Erreur HTTP' + error.status;
+            });
+
+        }
+
+        $scope.create = function () {
+            BusinessCase.save($scope.newbc, function () {
+                $location.path('businesscases').search({confirmation: 'Business Case ' + $scope.newbc.identifier + '-' + $scope.newbc.name + ' ajouté'});
+            }, function (error) {
+                if (error.status == "406") {
                     $scope.warning = "Le BC " + $scope.newbc.identifier + " existe déjà";
                 } else {
-                    $scope.error = 'Erreur HTTP' + status;
+                    $scope.error = 'Erreur HTTP' + error.status;
                 }
             });
         };

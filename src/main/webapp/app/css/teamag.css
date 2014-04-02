@@ -2,3 +2,7 @@
 body {
     font-family: 'Oxygen' !important;
 }
+
+.bg-success, .bg-warning, .bg-danger {
+    /*border-top : 20 px;*/
+}

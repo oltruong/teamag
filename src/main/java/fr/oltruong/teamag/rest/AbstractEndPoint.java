@@ -15,4 +15,9 @@ public abstract class AbstractEndPoint {
     protected Response buildResponseOK(Object object) {
         return Response.ok(object).build();
     }
+
+    protected Response buildResponseOK() {
+        return Response.ok().build();
+    }
+
 }
