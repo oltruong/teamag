@@ -6,7 +6,9 @@
 
 
 <h:head>
-    <title><ui:insert name="title"></ui:insert></title>
+    <title>
+        <ui:insert name="title"></ui:insert>
+    </title>
     <h:outputStylesheet name="css/mycustom.css"/>
     <h:outputScript library="js" name="primefaces.locales.js"/>
 </h:head>
@@ -34,7 +36,7 @@
                         rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="#{i18n.menurealizedfollowed}" action="#{checkWorkController.init}" icon="ui-icon-zoomin"
-                        rendered="#{loginBean.supervisor}" ajax="false"/>
+                        rendered="#{loginBean.loggedIn}" ajax="false"/>
 
             <p:menuitem value="Plan de charge" action="#{workLoadController.init}" icon="ui-icon-zoomin"
                         rendered="#{loginBean.supervisor}" ajax="false"/>

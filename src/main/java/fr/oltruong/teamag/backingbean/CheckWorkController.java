@@ -62,7 +62,7 @@ public class CheckWorkController extends Controller {
         memberList = memberEJB.findActiveNonAdminMembers();
         memberList.add(memberInstance.get());
 
-        memberToCheck = memberList.get(0);
+        memberToCheck = memberList.get(memberList.size() - 1);
         realizedBean.setDayCursor(DateTime.now());
         return refresh();
     }
