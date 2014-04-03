@@ -5,6 +5,11 @@ teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login'
 
 
         $scope.login = function () {
+
+            if (typeof $scope.password == 'undefined') {
+                $scope.password = '';
+            }
+
             Login.get({loginInformation: $scope.username + "-" + $scope.password}, function (member) {
                 userInfo.loggedIn = true;
                 userInfo.name = member.name;
