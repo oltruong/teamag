@@ -85,6 +85,10 @@ public class Member implements Serializable {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getCompany() {
         return company;
     }

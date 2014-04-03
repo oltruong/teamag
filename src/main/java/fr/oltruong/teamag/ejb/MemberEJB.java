@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.enumeration.MemberType;
@@ -13,6 +14,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 @Startup
@@ -20,7 +22,11 @@ public class MemberEJB extends AbstractEJB {
 
 
     private static List<Member> memberList;
+    private static Map<Long, Member> memberMap;
 
+    public static Map<Long, Member> getMemberMap() {
+        return memberMap;
+    }
 
     public static List<Member> getMemberList() {
         return memberList;
@@ -29,6 +35,11 @@ public class MemberEJB extends AbstractEJB {
     @PostConstruct
     public void build() {
         memberList = findMembers();
+
+        memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
+        for (Member member : memberList) {
+            memberMap.put(member.getId(), member);
+        }
 
     }
 
@@ -103,12 +114,13 @@ public class MemberEJB extends AbstractEJB {
 
         task.addMember(member);
         getEntityManager().persist(task);
-
+        build();
         return member;
     }
 
     public void updateMember(Member member) {
         getEntityManager().merge(member);
+        build();
     }
 
 

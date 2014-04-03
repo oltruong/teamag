@@ -1,16 +1,17 @@
 package fr.oltruong.teamag.rest.filter;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -21,39 +22,36 @@ public class SecurityFilter implements ContainerRequestFilter {
 
     private final String AUTHORIZATION_PROPERTY = "Authorization";
 
+    private final String USER_PROPERTY = "userid";
 
     private Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
 
-        MultivaluedMap<String, String> map = containerRequestContext.getHeaders();
+        String authorization = containerRequestContext.getHeaders().getFirst(AUTHORIZATION_PROPERTY);
+        String idMember = containerRequestContext.getHeaders().getFirst(USER_PROPERTY);
 
-        for (String mapString : map.keySet()) {
 
-            StringBuffer stringBuffer = new StringBuffer();
-            for (String value : map.get(mapString)) {
-                stringBuffer.append(value);
-            }
-            logger.info(mapString + " " + stringBuffer.toString());
+        if (!isAllowed(authorization, idMember)) {
+            logger.warn("Unauthorized Access to" + containerRequestContext.getMethod());
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 
-        logger.info("sizer size" + MemberEJB.getMemberList().size());
 
-        final List<String> authorization = containerRequestContext.getHeaders().get(AUTHORIZATION_PROPERTY);
-        // final List<String> authorization = headers.getRequestHeader(AUTHORIZATION_PROPERTY);
+    }
 
-        if (authorization != null) {
-            for (String string : authorization) {
-                System.out.print(string);
-            }
+    private boolean isAllowed(String authorization, String idMember) {
 
-        } else {
-            logger.warn("pas autorise");
+        boolean result = false;
 
-//            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        if (idMember != null && authorization != null) {
+            Member member = MemberEJB.getMemberMap().get(Long.valueOf(idMember));
+
+            result = member != null && member.getPassword().equals(authorization);
         }
+        return result;
 
-        logger.info("fini");
+
     }
 }

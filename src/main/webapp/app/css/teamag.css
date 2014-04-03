@@ -6,3 +6,14 @@ body {
 .bg-success, .bg-warning, .bg-danger {
     /*border-top : 20 px;*/
 }
+
+
+
+#loginli {
+    /*padding-top: 0 !important;*/
+    /*padding-bottom: 0 !important;*/
+    /*padding-right: 100px !important;*/
+    margin-top: -14px !important;
+    margin-bottom: -26px !important;
+
+}

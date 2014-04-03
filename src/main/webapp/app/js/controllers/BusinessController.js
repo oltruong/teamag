@@ -32,7 +32,6 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
 
         $scope.updateBc = function ($bc) {
             BusinessCase.update({id: $bc.id}, $bc, function () {
-                //  $scope.businesscases = BusinessCase.query();
                 $scope.confirmation = "BusinessCase mis à jour";
             }, function (error) {
                 $scope.error = 'Erreur HTTP' + error.status;
