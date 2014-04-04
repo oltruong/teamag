@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
 </head>
 <body ng-controller="NavbarController">
-<nav class="navbar navbar-inverse" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -43,6 +43,13 @@
             <li ng-show="supervisor"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;Plan de charge</a>
             </li>
 
+            <li ng-show="admin" ng-class="{active: routeIs('/businesscases') || routeIs('/newBusinessCase') }"><a
+                    href="#/businesscases"><span
+                    class="glyphicon glyphicon-briefcase"></span>&nbsp;Business Cases</a></li>
+            <li ng-show="admin" ng-class="{active: routeIs('/activities')}"><a href="#/activities"><span
+                    class="glyphicon glyphicon-th-list"></span>&nbsp;Activit&eacute;s</a></li>
+
+
             <li class="dropdown" ng-show="admin">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span>&nbsp;Administration
                     <b class="caret"></b></a>
@@ -50,11 +57,7 @@
                     <li ng-class="{active: routeIs('/members')}"><a href="#/members"><span
                             class="glyphicon glyphicon-user"></span>&nbsp;Mon &eacute;quipe</a></li>
                     <li class="divider"></li>
-                    <li ng-class="{active: routeIs('/businesscases')}"><a href="#/businesscases"><span
-                            class="glyphicon glyphicon-briefcase"></span>&nbsp;Budget</a></li>
-                    <li ng-class="{active: routeIs('/activities')}"><a href="#/activities"><span
-                            class="glyphicon glyphicon-briefcase"></span>&nbsp;Activit&eacute;</a></li>
-                    <li class="divider"></li>
+
                     <li><a href="#"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Param&egrave;tres</a></li>
                     <li class="divider"></li>
                     <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Reporting</a></li>

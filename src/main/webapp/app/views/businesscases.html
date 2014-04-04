@@ -1,17 +1,20 @@
 <h1 class="text-center">{{filteredBC.length }} Business Case</h1>
 <div class="row">
     <div class="col-md-2">
+        <a href="#/activities" class="btn btn-primary"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Liste
+            des activit&eacute;s</a>
+        <br/><br/><br/>
         Filtrer&nbsp;: <input ng-model="query">
         <br/><br/> Trier&nbsp;:
         <select ng-model="orderProp">
-            <option value="identifier">Num&eacute;ro</option>
+            <option value="identifier">Identifiant</option>
             <option value="name">Nom</option>
             <option value="-name">Nom desc</option>
             <option value="amount">Montant asc</option>
             <option value="-amount">Montant desc</option>
         </select>
         <br/><br/>
-        <a href="#/newBusinessCase" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
+        <a href="#/newBusinessCase" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
             un BC</a>
     </div>
     <div class="col-md-10">
