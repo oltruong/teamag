@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Table(name = "TM_ACTIVITY")
 @Entity
-@NamedQueries({@NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.bc.identifier, a.name"),
+@NamedQueries({@NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.name"),
         @NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc")})
 public class Activity {
 
@@ -16,8 +16,17 @@ public class Activity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "BC_FK")
+    @JoinColumn(name = "BC_FK")
     private BusinessCase bc;
+
+
+    @Column(nullable = false)
+    private Boolean delegated = Boolean.FALSE;
+
+
+    private Double amount;
+
+    private String comment;
 
     public Long getId() {
         return id;
@@ -43,4 +52,27 @@ public class Activity {
         this.bc = bc;
     }
 
+    public Boolean getDelegated() {
+        return delegated;
+    }
+
+    public void setDelegated(Boolean delegated) {
+        this.delegated = delegated;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

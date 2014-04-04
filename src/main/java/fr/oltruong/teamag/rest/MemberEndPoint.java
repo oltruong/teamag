@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 
 import javax.ejb.EJB;
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("member")
 @Stateless
-@SecurityChecked
+@AdminChecked
 public class MemberEndPoint extends AbstractEndPoint {
 
     @EJB
@@ -23,7 +24,7 @@ public class MemberEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getMembers() {
-        return Response.ok(memberEJB.findActiveMembers()).build();
+        return Response.ok(memberEJB.findMembers()).build();
     }
 
 

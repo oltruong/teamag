@@ -33,15 +33,19 @@ public class SecurityFilter implements ContainerRequestFilter {
         String idMember = containerRequestContext.getHeaders().getFirst(USER_PROPERTY);
 
 
-        if (!isAllowed(authorization, idMember)) {
-            logger.warn("Unauthorized Access to" + containerRequestContext.getMethod());
+        if (!isAllowed(authorization,idMember)) {
+            logger.warn("Unauthorized Access to member of id[" + idMember+"]"+ containerRequestContext.getRequest().getMethod());
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 
 
     }
 
-    private boolean isAllowed(String authorization, String idMember) {
+    protected boolean isAllowed(String authorization, String idMember){
+        return isLoggedIn(authorization,idMember);
+    }
+
+    protected boolean isLoggedIn(String authorization, String idMember) {
 
         boolean result = false;
 

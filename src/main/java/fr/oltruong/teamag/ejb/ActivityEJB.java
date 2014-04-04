@@ -38,6 +38,12 @@ public class ActivityEJB extends AbstractEJB {
         getEntityManager().remove(businessCase);
     }
 
+
+    public void deleteActivity(Long activityId) {
+        Activity activity = getEntityManager().find(Activity.class, activityId);
+        getEntityManager().remove(activity);
+    }
+
     @SuppressWarnings("unchecked")
     public List<Activity> findActivities() {
         Query query = getEntityManager().createNamedQuery("findAllActivities");
@@ -63,7 +69,16 @@ public class ActivityEJB extends AbstractEJB {
         getEntityManager().merge(bcUpdated);
     }
 
+
+    public void updateActivity(Activity activityToUpdate) {
+        getEntityManager().merge(activityToUpdate);
+    }
+
     public BusinessCase findBC(Long businessCaseId) {
         return getEntityManager().find(BusinessCase.class, businessCaseId);
+    }
+
+    public Activity findActivity(Long activityId) {
+        return getEntityManager().find(Activity.class, activityId);
     }
 }

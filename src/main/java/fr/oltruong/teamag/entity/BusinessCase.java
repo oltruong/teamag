@@ -66,4 +66,8 @@ public class BusinessCase {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getSummary() {
+        return this.identifier + "-" + this.name;
+    }
 }

@@ -26,6 +26,18 @@ public class AbsenceEJB extends AbstractEJB {
         return (List<Absence>) query.getResultList();
     }
 
+
+    @SuppressWarnings("unchecked")
+    public List<Absence> findAbsencesByMemberId(Long memberId) {
+
+        Preconditions.checkArgument(memberId != null);
+        Query query = getEntityManager().createNamedQuery("findAbsencesByMember");
+        query.setParameter("fmemberId", memberId);
+
+        return (List<Absence>) query.getResultList();
+    }
+
+
     public void addAbsence(Absence absence) {
         getEntityManager().persist(absence);
     }

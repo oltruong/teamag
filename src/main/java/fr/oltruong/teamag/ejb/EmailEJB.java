@@ -27,7 +27,11 @@ public class EmailEJB {
     public void sendEmailAdministrator(MailBean email) {
 
         email.setRecipient(parameterEJB.getAdministratorEmail());
-        sendEmail(email);
+        if ( this.parameterEJB.getSmtpHost()!=null){
+            sendEmail(email);
+        } else {
+            logger.warn("no email will be sent as SMTP HOST is not defined");
+        }
     }
 
     private void sendEmail(MailBean email) {

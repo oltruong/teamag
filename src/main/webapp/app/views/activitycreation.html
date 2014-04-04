@@ -1,0 +1,45 @@
+<div class="col-md-3">
+    <a href="#/activities" class="btn btn-info"> <span
+            class="glyphicon glyphicon-arrow-left"></span>&nbsp;Retour &agrave;
+        la liste des Activit&eacute;s</a>
+</div>
+
+<div class="col-md-6">
+
+    <div class="bg-warning">{{warning}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+    <form role="form">
+        <h2 class="text-center">Ajout d'activit&eacute;</h2>
+
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name" placeholder="Project" ng-model="newActivity.name">
+        </div>
+
+
+        <div class="form-group">
+            <label for="bc">BC</label>&nbsp;
+            <select id="bc" ng-model="newActivity.bc"
+                    ng-options="businessCase.summary for businessCase in businesscases"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="delegated">D&eacute;l&eacute;gu&eacute;</label>
+            <input type="checkbox" class="form-control" id="delegated" ng-model="newActivity.delegated">
+        </div>
+
+
+        <div class="form-group">
+            <label for="amount">Montant (MHI)</label>
+            <input type="number" step="any" class="form-control" id="amount" ng-model="newActivity.amount">
+        </div>
+        <div class="form-group">
+            <label for="comment">Remarque</label>
+            <input type="text" class="form-control" id="comment" placeholder="" ng-model="newActivity.comment">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" ng-click="create();">Ajouter</button>
+        </div>
+    </form>
+</div>
