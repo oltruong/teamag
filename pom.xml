@@ -29,6 +29,7 @@
         <version.guava>16.0.1</version.guava>
         <version.eclipselink>2.5.0</version.eclipselink>
         <version.logback>1.0.13</version.logback>
+        <version.genson>0.98</version.genson>
         <version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
 
         <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
@@ -56,7 +57,7 @@
         <dependency>
             <groupId>com.owlike</groupId>
             <artifactId>genson</artifactId>
-            <version>0.98</version>
+            <version>${version.genson}</version>
         </dependency>
 
 
