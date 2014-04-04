@@ -144,6 +144,7 @@ public class MemberEJB extends AbstractEJB {
         adminMember.setCompany("ToBeDefined");
         adminMember.setEmail("tobedefined@email.com");
         adminMember.setMemberType(MemberType.ADMINISTRATOR);
+        adminMember.setEstimatedWorkDays(Double.valueOf(0d));
         return adminMember;
     }
 
