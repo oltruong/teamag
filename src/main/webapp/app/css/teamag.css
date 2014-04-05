@@ -11,3 +11,7 @@ body {
     margin-top: -14px !important;
     margin-bottom: -26px !important;
 }
+
+.navbar-right {
+    margin-right: 10px !important;
+}

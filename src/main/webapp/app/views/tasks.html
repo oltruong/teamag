@@ -1,0 +1,79 @@
+<h1 class="text-center">{{filteredTasks.length }} T&acirc;ches</h1>
+<div class="row">
+    <div class="col-md-2">
+        <br/><br/>
+        <br/><br/><br/>
+        Filtrer&nbsp;: <input ng-model="query">
+        <br/><br/> Trier&nbsp;:
+        <select ng-model="orderProp">
+            <option value="project">Projet</option>
+            <option value="-project">Projet desc</option>
+            <option value="name">Nom</option>
+            <option value="-name">Nom desc</option>
+        </select>
+        <br/><br/>
+        <a href="#/newTask" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
+            une t&acirc;che</a>
+    </div>
+    <div class="col-md-10">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Projet</th>
+                <th>Nom</th>
+                <th>D&eacute;l&eacute;gu&eacute;e</th>
+                <th>T&acirc;che parent</th>
+                <th>Activit&eacute; parente</th>
+                <th>Montant</th>
+                <th>Remarque</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="task in (filteredTasks= (tasks | filter:query | orderBy:orderProp))">
+
+                <td><span ng-show="!editing">{{task.project}}</span><input ng-model="task.project" ng-show="editing"/>
+                </td>
+                <td><span ng-show="!editing">{{task.name}}</span> <input ng-model="task.name" ng-show="editing"/></td>
+                <td><input type="checkbox" ng-model="task.delegated" ng-disabled="!editing"></td>
+
+                <td><span ng-show="!editing">{{task.task.description}}</span> <input ng-model="task.task"
+                                                                                     ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{task.activity.description}}</span> <input ng-model="task.activity"
+                                                                                         ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{task.amount}}</span><input type="number" step="any"
+                                                                          ng-model="task.amount"
+                                                                          ng-show="editing"/></td>
+
+                <td><span ng-show="!editing">{{task.comment}}</span><input ng-model="task.comment" ng-show="editing"/>
+                </td>
+                <td>
+                    <a ng-show="editing" ng-click="updateTask(task);editing=false;" class="btn btn-success btn-sm"
+                       title="Valider">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+
+                    <a ng-show="editing" ng-click="refreshTask(task);editing=false;" class="btn btn-warning btn-sm"
+                       title="Annuler la modification">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+
+                    <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn-sm" title="Modifier">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a ng-show="!editing" ng-click="deleteTask(task.id);" class="btn btn-danger btn-sm"
+                       title="Supprimer">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+</div>

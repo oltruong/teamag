@@ -43,6 +43,11 @@
             <li ng-show="supervisor"><a href="#"><span class="glyphicon glyphicon-list"></span>&nbsp;Plan de charge</a>
             </li>
 
+
+            <li ng-show="admin" ng-class="{active: routeIs('/tasks') || routeIs('/newTask') }"><a href="#/tasks"><span
+                    class="glyphicon glyphicon-tasks"></span>&nbsp;T&acirc;ches</a>
+            </li>
+
             <li ng-show="admin" ng-class="{active: routeIs('/businesscases') || routeIs('/newBusinessCase') }"><a
                     href="#/businesscases"><span
                     class="glyphicon glyphicon-briefcase"></span>&nbsp;Business Cases</a></li>
@@ -112,6 +117,7 @@
 <script src="js/controllers/LoginController.js"></script>
 <script src="js/controllers/MemberController.js"></script>
 <script src="js/controllers/BusinessController.js"></script>
+<script src="js/controllers/TaskController.js"></script>
 <script src="js/controllers/ActivityController.js"></script>
 <script src="js/controllers/NavbarController.js"></script>
 <script src="js/controllers/HomeController.js"></script>
@@ -119,6 +125,7 @@
 <script src="js/services/Activity.js"></script>
 <script src="js/services/Member.js"></script>
 <script src="js/services/Login.js"></script>
+<script src="js/services/Task.js"></script>
 <script src="js/services/localStorage.js"></script>
 <script src="js/services/userInfo.js"></script>
 

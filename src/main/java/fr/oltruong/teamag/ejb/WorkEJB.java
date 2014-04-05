@@ -330,4 +330,31 @@ public class WorkEJB extends AbstractEJB {
         getEntityManager().remove(weekCommentDb);
     }
 
+    public void createTask(Task task) throws ExistingDataException {
+        Query query = getEntityManager().createNamedQuery("findTaskByName");
+        query.setParameter("fname", task.getName());
+        query.setParameter("fproject", task.getProject());
+
+        Task taskDB = null;
+        @SuppressWarnings("unchecked")
+        List<Task> allTaskList = query.getResultList();
+
+        if (CollectionUtils.isNotEmpty(allTaskList)) {
+            throw new ExistingDataException();
+        } else {
+            getEntityManager().persist(task);
+        }
+    }
+
+    public Task findTask(Long taskId) {
+        return getEntityManager().find(Task.class, taskId);
+    }
+
+    public void deleteTask(Long taskId) {
+        getEntityManager().remove(findTask(taskId));
+    }
+
+    public void updateTask(Task taskToUpdate) {
+        getEntityManager().merge(taskToUpdate);
+    }
 }

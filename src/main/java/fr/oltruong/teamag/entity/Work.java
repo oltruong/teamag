@@ -40,10 +40,10 @@ public class Work {
     @JoinColumn(nullable = false, name = "TASK_ID")
     private Task task;
 
-    private Float total = 0f;
+    private Double total = 0d;
 
     @Transient
-    private Float totalEdit = null;
+    private Double totalEdit = null;
 
     @Transient
     @Inject
@@ -89,16 +89,16 @@ public class Work {
         this.task = task;
     }
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Float total) {
+    public void setTotal(Double total) {
         this.total = total;
         totalEdit = total;
     }
 
-    public Float getTotalEdit() {
+    public Double getTotalEdit() {
         if (totalEdit == null) {
             totalEdit = total;
         }
@@ -106,7 +106,7 @@ public class Work {
     }
 
     public String getTotalEditStr() {
-        Float value = getTotalEdit();
+        Double value = getTotalEdit();
         if (value.floatValue() == 0f) {
             return "";
         }
@@ -118,16 +118,16 @@ public class Work {
             String totalEditFormatted = totalEditStr.replace(",", ".");
 
             try {
-                totalEdit = Float.valueOf(totalEditFormatted);
+                totalEdit = Double.valueOf(totalEditFormatted);
             } catch (NumberFormatException ex) {
                 logger.error("Incorrect value " + totalEditStr);
             }
         } else {   // Blank means 0
-            totalEdit = 0f;
+            totalEdit = 0d;
         }
     }
 
-    public void setTotalEdit(Float totalEdit) {
+    public void setTotalEdit(Double totalEdit) {
 
         this.totalEdit = totalEdit;
     }
