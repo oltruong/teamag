@@ -41,10 +41,22 @@
                 <td><span ng-show="!editing">{{task.name}}</span> <input ng-model="task.name" ng-show="editing"/></td>
                 <td><input type="checkbox" ng-model="task.delegated" ng-disabled="!editing"></td>
 
-                <td><span ng-show="!editing">{{task.task.description}}</span> <input ng-model="task.task"
-                                                                                     ng-show="editing"/></td>
-                <td><span ng-show="!editing">{{task.activity.description}}</span> <input ng-model="task.activity"
-                                                                                         ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{task.task.description}}</span>
+
+                    <select ng-show="editing" ng-model="task.task"
+                            ng-options="task.description for task in tasks">
+                        <option value="">&nbsp;</option>
+                    </select>
+
+                </td>
+                <td><span ng-show="!editing">{{task.activity.name}}</span>
+
+                    <select ng-show="editing" ng-model="task.activity"
+                            ng-options="activity.name for activity in activities">
+                        <option value="">&nbsp;</option>
+                    </select>
+
+                </td>
                 <td><span ng-show="!editing">{{task.amount}}</span><input type="number" step="any"
                                                                           ng-model="task.amount"
                                                                           ng-show="editing"/></td>

@@ -1,12 +1,44 @@
 'use strict';
 
-teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeParams', 'Task',
-    function ($scope, $http, $location, $routeParams, Task) {
+teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeParams', 'Task', 'Activity',
+    function ($scope, $http, $location, $routeParams, Task, Activity) {
 
 
         $scope.confirmation = $routeParams.confirmation;
 
         $scope.tasks = Task.query(function () {
+            var tasksLength = $scope.tasks.length;
+            for (var i = 0; i < tasksLength; i++) {
+
+                if ($scope.tasks[i].task != null) {
+                    for (var j = 0; j < tasksLength; j++) {
+                        if ($scope.tasks[i].task.id == $scope.tasks[j].id) {
+                            $scope.tasks[i].task = $scope.tasks[j];
+                        }
+                    }
+                }
+
+            }
+
+            $scope.activities = Activity.query(function (data) {
+                var activitiesLength = $scope.activities.length;
+                for (var i = 0; i < tasksLength; i++) {
+
+                    if ($scope.tasks[i].activity != null) {
+                        for (var j = 0; j < activitiesLength; j++) {
+                            if ($scope.tasks[i].activity.id == $scope.activities[j].id) {
+                                $scope.tasks[i].activity = $scope.activities[j];
+                            }
+                        }
+                    }
+
+                }
+
+            }, function (error) {
+                $scope.error = 'Erreur HTTP' + error.status;
+            });
+
+
         }, function (error) {
             $scope.error = 'Erreur HTTP' + error.status;
         });
@@ -25,11 +57,17 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
 
         $scope.updateTask = function ($task) {
-            Task.update({id: $task.id}, $task, function () {
-                $scope.confirmation = "Tâche mise à jour";
-            }, function (error) {
-                $scope.error = 'Erreur HTTP' + error.status;
-            });
+            if ($task.task != null && $task.id == $task.task.id) {
+                alert('vous ne pouvez assigner la même tâche en parente!');
+                $task.task = null;
+            } else {
+                Task.update({id: $task.id}, $task, function () {
+                    $scope.confirmation = "Tâche mise à jour";
+                }, function (error) {
+                    $scope.error = 'Erreur HTTP' + error.status;
+                });
+            }
+
         };
 
         $scope.refreshTask = function ($task) {

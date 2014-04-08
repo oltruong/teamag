@@ -355,6 +355,31 @@ public class WorkEJB extends AbstractEJB {
     }
 
     public void updateTask(Task taskToUpdate) {
+        if (isLoop(taskToUpdate)) {
+            throw new IllegalArgumentException();
+        }
         getEntityManager().merge(taskToUpdate);
+    }
+
+    private boolean isLoop(Task taskToUpdate) {
+        boolean result = false;
+        result = (taskToUpdate != null && taskToUpdate.getTask() != null && taskToUpdate.getId().equals(taskToUpdate.getTask().getId()));
+        if (!result && taskToUpdate.getTask() != null) {
+            List<Long> idList = Lists.newArrayList();
+            idList.add(taskToUpdate.getId());
+
+            Task task = taskToUpdate;
+            boolean finished = false;
+            while (!result && task.getTask() != null) {
+                task = task.getTask();
+                if (idList.contains(task.getId())) {
+                    result = true;
+                }
+                idList.add(task.getId());
+            }
+
+        }
+
+        return result;
     }
 }

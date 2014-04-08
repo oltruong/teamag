@@ -6,14 +6,29 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
 
         $scope.confirmation = $routeParams.confirmation;
 
-        $scope.activities = Activity.query(function () {
+        $scope.activities = Activity.query(function (data) {
+
+            $scope.businesscases = BusinessCase.query(function (data) {
+
+                var activitiesLength = $scope.activities.length;
+                var bcLength = $scope.businesscases.length;
+                for (var i = 0; i < activitiesLength; i++) {
+
+                    if ($scope.activities[i].bc != null) {
+                        for (var j = 0; j < bcLength; j++) {
+                            if ($scope.activities[i].bc.id == $scope.businesscases[j].id) {
+                                $scope.activities[i].bc = $scope.businesscases[j];
+                            }
+                        }
+                    }
+
+                }
+
+            }, function (error) {
+                $scope.error = 'Erreur HTTP' + error.status;
+            });
+
         }, function (error) {
-            $scope.error = 'Erreur HTTP' + error.status;
-        });
-
-
-        $scope.businesscases = BusinessCase.query(function (data) {
-       }, function (error) {
             $scope.error = 'Erreur HTTP' + error.status;
         });
 

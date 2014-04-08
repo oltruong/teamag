@@ -44,9 +44,20 @@
                                                                              ng-show="editing"/></td>
                 <td><span ng-show="!editing">{{activity.bc.summary}}</span>
 
-                    <select ng-model="activity.bc"
-                            ng-options="businessCase.summary for businessCase in businesscases"
-                            ng-show="editing"></select>
+                    <select ng-show="editing" ng-model="activity.bc"
+                            ng-options="businessCase.summary for businessCase in businesscases">
+                        <option value="">&nbsp;</option>
+                    </select>
+
+
+                    <select ng-show="false" ng-model="activity.bc">
+
+                        <option ng-model="businessCase" ng-repeat="businessCase in businesscases"
+                                ng-selected="activity.bc.id==businessCase.id">
+                            {{businessCase.summary}}
+                        </option>
+                    </select>
+
                 </td>
 
 
