@@ -1,14 +1,17 @@
 package fr.oltruong.teamag.rest;
 
+import com.google.common.collect.Lists;
 import fr.oltruong.teamag.ejb.WorkEJB;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
+import fr.oltruong.teamag.webbean.TaskWebBean;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -24,7 +27,42 @@ public class TaskEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getTasks() {
-        return Response.ok(workEJB.findAllTasks()).build();
+        List<TaskWebBean> taskWebBeanList = buildTask();
+
+
+        return buildResponseOK(taskWebBeanList);
+    }
+
+    private List<TaskWebBean> buildTask() {
+
+        List<Task> taskList = workEJB.findAllTasks();
+
+        List<TaskWebBean> taskWebBeanList = Lists.newArrayListWithExpectedSize(taskList.size());
+
+        for (Task task : taskList) {
+            taskWebBeanList.add(transformTask(task));
+        }
+        return taskWebBeanList;
+    }
+
+
+    private TaskWebBean transformTask(Task task) {
+        TaskWebBean taskWebBean = new TaskWebBean();
+        taskWebBean.setActivity(task.getActivity());
+        taskWebBean.setAmount(task.getAmount());
+        taskWebBean.setComment(task.getComment());
+        taskWebBean.setDelegated(task.getDelegated());
+        taskWebBean.setId(task.getId());
+        taskWebBean.setName(task.getName());
+        taskWebBean.setProject(task.getProject());
+        taskWebBean.setTotal(task.getTotal());
+        taskWebBean.setDescription(task.getDescription());
+
+        if (task.getTask() != null) {
+            taskWebBean.setTask(transformTask(task.getTask()));
+        }
+
+        return taskWebBean;
     }
 
     @GET

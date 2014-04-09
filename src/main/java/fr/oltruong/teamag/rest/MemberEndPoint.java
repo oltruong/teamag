@@ -1,13 +1,12 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.interfaces.AdminChecked;
-import fr.oltruong.teamag.interfaces.SecurityChecked;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 /**
@@ -25,6 +24,28 @@ public class MemberEndPoint extends AbstractEndPoint {
     @GET
     public Response getMembers() {
         return Response.ok(memberEJB.findMembers()).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response getMember(@PathParam("id") Long memberId) {
+        return buildResponseOK(memberEJB.findMember(memberId));
+    }
+
+
+    @POST
+    public Response createMember(Member member) {
+        memberEJB.createMemberWithAbsenceTask(member);
+        return buildResponseOK();
+    }
+
+
+    @PUT
+    @Path("/{id}")
+    public Response updateMember(@PathParam("id") Long memberId, Member member) {
+        member.setId(memberId);
+        memberEJB.updateMember(member);
+        return buildResponseOK();
     }
 
 

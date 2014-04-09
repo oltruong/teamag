@@ -64,6 +64,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/activity/{id}")
     public Response updateActivity(@PathParam("id") Long activityId, Activity activity) {
         activity.setId(activityId);
+
         activityEJB.updateActivity(activity);
         return buildResponseOK();
     }

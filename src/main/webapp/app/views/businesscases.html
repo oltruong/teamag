@@ -1,6 +1,6 @@
 <h1 class="text-center">{{filteredBC.length }} Business Case</h1>
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2 hidden-print">
         <br/><br/>
         <a href="#/activities" class="btn btn-primary"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Liste
             des activit&eacute;s</a>
@@ -29,7 +29,7 @@
                 <th>Nom</th>
                 <th>MHI</th>
                 <th>Remarques</th>
-                <th></th>
+                <th class="hidden-print"></th>
             </tr>
             </thead>
             <tbody>
@@ -42,7 +42,7 @@
                 <td><span ng-show="!editing">{{bc.amount}}</span><input type="number" step="any" ng-model="bc.amount"
                                                                         ng-show="editing"/></td>
                 <td><span ng-show="!editing">{{bc.comment}}</span><input ng-model="bc.comment" ng-show="editing"/></td>
-                <td>
+                <td class="hidden-print">
                     <a ng-show="editing" ng-click="updateBc(bc);editing=false;" class="btn btn-success btn-sm"
                        title="Valider">
                         <span class="glyphicon glyphicon-ok"></span>
@@ -68,7 +68,7 @@
 
             <tr class="success">
                 <td class="text-right" colspan="2">Total&nbsp;:</td>
-                <td>{{total()}}</td>
+                <td>{{total() | number:2}}</td>
                 <td colspan="2"></td>
             </tr>
 

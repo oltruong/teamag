@@ -70,6 +70,23 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
         };
 
+
+        $scope.mergeTask = function ($task) {
+            if ($task.task != null && $task.id == $task.task.id) {
+                alert('vous ne pouvez fusionner la même tâche en parente!');
+                $task.task = null;
+            } else {
+                alert('fusion');
+//                Task.update({id: $task.id}, $task, function () {
+//                    $scope.confirmation = "Tâche mise à jour";
+//                }, function (error) {
+//                    $scope.error = 'Erreur HTTP' + error.status;
+//                });
+            }
+
+        };
+
+
         $scope.refreshTask = function ($task) {
 
             var oldTask = Task.get({id: $task.id}, function () {

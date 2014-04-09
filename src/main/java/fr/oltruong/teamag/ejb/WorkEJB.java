@@ -300,6 +300,14 @@ public class WorkEJB extends AbstractEJB {
         return query.getResultList();
     }
 
+
+    public List<Work> findWorkByTask(Long taskId) {
+        Query query = getEntityManager().createNamedQuery("findWorksByTask");
+        query.setParameter("fTaskId", taskId);
+        return query.getResultList();
+
+    }
+
     public WeekComment findWeekComment(Member member, int weekYear, int year) {
 
         WeekComment result = null;
