@@ -13,6 +13,7 @@
         <class>fr.oltruong.teamag.entity.Task</class>
         <class>fr.oltruong.teamag.entity.WeekComment</class>
         <class>fr.oltruong.teamag.entity.Work</class>
+        <class>fr.oltruong.teamag.entity.WorkLoad</class>
         <class>fr.oltruong.teamag.entity.converter.DateConverter</class>
         <properties>
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>

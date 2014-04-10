@@ -27,10 +27,12 @@ public class TaskEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getTasks() {
-        List<TaskWebBean> taskWebBeanList = buildTask();
 
+//        List<TaskWebBean> taskWebBeanList = buildTask();
+//
+//        buildResponseOK(taskWebBeanList);
 
-        return buildResponseOK(taskWebBeanList);
+        return buildResponseOK(workEJB.findAllTasks());
     }
 
     private List<TaskWebBean> buildTask() {

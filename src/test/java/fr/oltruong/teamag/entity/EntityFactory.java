@@ -127,4 +127,12 @@ public class EntityFactory {
     }
 
 
+    public static WorkLoad createWorkLoad() {
+        WorkLoad workLoad = new WorkLoad(createBusinessCase(), createMember());
+        workLoad.setEstimated(Double.valueOf(12d));
+        workLoad.setRealized(Double.valueOf(10d));
+        return workLoad;
+    }
+
+
 }

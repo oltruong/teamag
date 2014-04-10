@@ -7,6 +7,7 @@ teamagApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'LoginController'});
     $routeProvider.when('/members', {templateUrl: 'views/members.html', controller: 'MemberController'});
     $routeProvider.when('/works/:taskId', {templateUrl: 'views/works.html', controller: 'WorkTaskController'});
+    $routeProvider.when('/workload', {templateUrl: 'views/workLoad.html', controller: 'WorkLoadController'});
     $routeProvider.when('/tasks', {templateUrl: 'views/tasks.html', controller: 'TaskController'});
     $routeProvider.when('/newTask', {templateUrl: 'views/tasks.html', controller: 'TaskController'});
     $routeProvider.when('/activities', {templateUrl: 'views/activity.html', controller: 'ActivityController'});

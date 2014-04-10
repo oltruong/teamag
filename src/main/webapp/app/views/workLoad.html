@@ -1,0 +1,75 @@
+<h1 class="text-center">Plan de charge</h1>
+<div class="row">
+    <div class="col-md-12">
+        <input ng-model="queryBC" placeholder="Filtrer BC">&nbsp; <input ng-model="queryMember"
+                                                                         placeholder="Filtrer Nom">
+
+        <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
+            <span class="glyphicon glyphicon-pencil">&nbsp;&Eacute;diter</span>
+        </a>
+        <a ng-show="editing" ng-click="editing=false;"
+           class="btn btn-warning btn"
+           title="Annuler la modification">
+            <span class="glyphicon glyphicon-remove">&nbsp;Annuler la modification</span>
+        </a>
+        <a ng-show="editing" ng-click="update();editing=false;"
+           class="btn btn-success btn"
+           title="Valider">
+            <span class="glyphicon glyphicon-ok">&nbsp;Sauvegarder</span>
+        </a>
+        <br/>
+
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th ng-class="displayTotalClass()">Solde : {{sumBC()-sumMember()/21| number:2}}</th>
+                <th>Total</th>
+                <th>Pr&eacute;vu</th>
+                <th ng-repeat="member in (workloadContainer.memberList  | filter:filterMemberName | orderBy:orderMember)">
+                    {{member.name}}
+                </th>
+            </tr>
+
+            <tr>
+                <th><br/><br/>BusinessCase</th>
+                <th><span class="text-primary">{{sumMember()/21| number:2}}</span><br/><br/>{{sumBC()| number:2}}</th>
+                <th><br/><span ng-class="displayClassSum((sumMember()/21)-sumWorkLoad())">{{(sumMember()/21)-sumWorkLoad()| number:2}}</span><br/><span
+                        ng-class="displayClassSum(sumBC()-sumWorkLoad())">{{sumBC()-sumWorkLoad()|
+                    number:2}}</span>
+                </th>
+
+                <th ng-repeat="member in (workloadContainer.memberList  | filter:filterMemberName | orderBy:orderMember)">
+                    <span class="text-primary">{{member.estimatedWorkDays/21| number:2}}</span><br/><span
+                        ng-class="displayClass(member)"
+                        >{{(member.estimatedWorkDays/21)- totalMember(member)|
+                number:2}}</span><br/>&nbsp;
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| orderBy:orderProp)">
+
+                <td>{{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}</td>
+                <td>{{workLoadContainer.businessCase.amount}}</td>
+                <td ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
+                    {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}
+                </td>
+                <td ng-repeat="workload in (workLoadContainer.workLoadList  | filter:filterMember | orderBy:orderContainerMember)"
+                    title="charge de {{workload.member.name}} pour BC {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}">
+                    <span ng-show="!editing"
+                          ng-class="displayClassWorkLoad(workload)">{{workload.estimated| number:2}}</span><input
+                        type="number" step="any"
+                        ng-model="workload.estimated"
+                        ng-show="editing" size="3">
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

@@ -3,6 +3,8 @@ package fr.oltruong.teamag.ejb;
 import com.google.common.base.Strings;
 import fr.oltruong.teamag.entity.Activity;
 import fr.oltruong.teamag.entity.BusinessCase;
+import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.WorkLoad;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -29,6 +31,18 @@ public class ActivityEJB extends AbstractEJB {
             }
         }
         getEntityManager().persist(bc);
+
+
+        //Create WorkLoad
+        List<Member> memberList = MemberEJB.getMemberList();
+        if (memberList != null) {
+            for (Member member : memberList) {
+                WorkLoad workLoad = new WorkLoad(bc, member);
+                persist(workLoad);
+            }
+        }
+
+
         return bc;
     }
 
