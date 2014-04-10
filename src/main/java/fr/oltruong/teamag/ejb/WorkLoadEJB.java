@@ -25,7 +25,7 @@ public class WorkLoadEJB extends AbstractEJB {
 
     public Map<Integer, Map<Member, Float>> buildWeekLoad() {
         String qlString = "SELECT SUM(a.value), a.week, a.month, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week, a.month";
-        Query q = getEntityManager().createQuery(qlString);
+        Query q = createQuery(qlString);
         List<Object[]> results = q.getResultList();
 
 
@@ -58,7 +58,7 @@ public class WorkLoadEJB extends AbstractEJB {
 
         List<AbsenceDay> absenceDayList = query.getResultList();
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().remove(absenceDay);
+            remove(absenceDay);
         }
 
     }
@@ -66,14 +66,14 @@ public class WorkLoadEJB extends AbstractEJB {
     public void registerAbsence(Absence newAbsence) {
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(newAbsence);
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().persist(absenceDay);
+            persist(absenceDay);
         }
     }
 
     public void reloadAllAbsenceDay() {
         List<AbsenceDay> absenceDayList = getAllAbsenceDay();
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().remove(absenceDay);
+            remove(absenceDay);
         }
 
         List<Absence> absenceList = findAllAbsences();
@@ -141,7 +141,7 @@ public class WorkLoadEJB extends AbstractEJB {
 
     public void updateWorkLoad(List<WorkLoad> workLoadList) {
         for (WorkLoad workLoad : workLoadList) {
-//            WorkLoad workLoadDb = getEntityManager().find(WorkLoad.class, workLoad.getId());
+//            WorkLoad workLoadDb = .find(WorkLoad.class, workLoad.getId());
 //            workLoadDb.setEstimated(workLoad.getEstimated());
             merge(workLoad);
         }

@@ -14,10 +14,6 @@ public abstract class AbstractEJB {
     @Inject
     private Logger logger;
 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
     public Logger getLogger() {
         return logger;
     }
@@ -35,5 +31,19 @@ public abstract class AbstractEJB {
         entityManager.merge(object);
     }
 
+    protected void remove(Object object) {
+        entityManager.remove(object);
+    }
 
+    protected <T extends Object> T find(Class<T> className, Long id) {
+        return entityManager.find(className, id);
+    }
+
+    protected void flush() {
+        entityManager.flush();
+    }
+
+    protected Query createQuery(String name) {
+        return entityManager.createQuery(name);
+    }
 }
