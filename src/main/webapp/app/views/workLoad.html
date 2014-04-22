@@ -53,7 +53,9 @@
 
             <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| orderBy:orderProp)">
 
-                <td>{{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}</td>
+                <td title="{{workLoadContainer.businessCase.comment}}">
+                    {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}
+                </td>
                 <td>{{workLoadContainer.businessCase.amount}}</td>
                 <td ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
                     {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}
