@@ -36,7 +36,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     @POST
     public Response createMember(Member member) {
         memberEJB.createMemberWithAbsenceTask(member);
-        return buildResponseOK();
+        return buildResponseCreated();
     }
 
 

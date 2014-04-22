@@ -20,4 +20,8 @@ public abstract class AbstractEndPoint {
         return Response.ok().build();
     }
 
+    protected Response buildResponseCreated() {
+        return Response.status(Response.Status.CREATED).build();
+    }
+
 }

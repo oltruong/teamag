@@ -56,7 +56,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return buildResponseOK();
+        return buildResponseCreated();
     }
 
 
@@ -86,7 +86,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return buildResponseOK();
+        return buildResponseCreated();
     }
 
     @PUT
