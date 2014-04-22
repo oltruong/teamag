@@ -40,7 +40,8 @@
             </li>
 
 
-            <li ng-show="admin"><a href="#/workload"><span class="glyphicon glyphicon-list"></span>&nbsp;Plan de
+            <li ng-show="admin" ng-class="{active: routeIs('/workload')}"><a href="#/workload"><span
+                    class="glyphicon glyphicon-list"></span>&nbsp;Plan de
                 charge</a>
             </li>
 
@@ -105,7 +106,6 @@
 
 <div class="container text-center">&copy;&nbsp;Teamag-2014
 </div>
-
 
 
 <script src="../webjars/angularjs/1.3.0-beta.4/angular.min.js"></script>
