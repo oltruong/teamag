@@ -53,6 +53,7 @@ public class BCController extends Controller {
 
     public String doCreateBC() {
         this.tabIndex = 0;
+
         getLogger().info("Creation of a business case");
 
         if (StringUtils.isBlank(this.bc.getName())) {
