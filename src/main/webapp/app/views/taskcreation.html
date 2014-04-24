@@ -1,0 +1,59 @@
+<div class="col-md-3">
+    <br/><br/>
+    <a href="#/tasks" class="btn btn-info"> <span
+            class="glyphicon glyphicon-arrow-left"></span>&nbsp;Retour &agrave;
+        la liste des T&acirc;ches</a>
+</div>
+
+<div class="col-md-6">
+
+    <div class="bg-warning">{{warning}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+    <form role="form">
+        <h2 class="text-center">Ajout de t&acirc;che</h2>
+
+
+        <div class="form-group">
+            <label for="project">Projet</label>
+            <input type="text" class="form-control" id="project" placeholder="" ng-model="newTask.project">
+        </div>
+
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name" placeholder="" ng-model="newTask.name">
+        </div>
+
+        <div class="form-group">
+            <label for="parentTask">T&acirc;che parente</label>&nbsp;
+            <select id="parentTask" ng-model="newTask.task"
+                    ng-options="task.description for task in tasks"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="activity">Activit&eacute;</label>&nbsp;
+            <select id="activity" ng-model="newTask.activity"
+                    ng-options="activity.name for activity in activities"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="delegated">D&eacute;l&eacute;gu&eacute;e</label>&nbsp;
+            <input type="checkbox" id="delegated" ng-model="newTask.delegated">
+        </div>
+
+
+        <div class="form-group">
+            <label for="amount">Montant (MHI)</label>
+            <input type="number" step="any" class="form-control" id="amount" ng-model="newTask.amount">
+        </div>
+        <div class="form-group">
+            <label for="comment">Remarque</label>
+            <input type="text" class="form-control" id="comment" placeholder="" ng-model="newTask.comment">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" ng-click="create();"><span
+                    class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
+            </button>
+        </div>
+    </form>
+</div>

@@ -26,8 +26,8 @@
         </div>
 
         <div class="form-group">
-            <label for="delegated">D&eacute;l&eacute;gu&eacute;</label>
-            <input type="checkbox" class="form-control" id="delegated" ng-model="newActivity.delegated">
+            <label for="delegated">D&eacute;l&eacute;gu&eacute;e</label>&nbsp;
+            <input type="checkbox" id="delegated" ng-model="newActivity.delegated">
         </div>
 
 
@@ -40,7 +40,9 @@
             <input type="text" class="form-control" id="comment" placeholder="" ng-model="newActivity.comment">
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success" ng-click="create();">Ajouter</button>
+            <button type="submit" class="btn btn-success" ng-click="create();"><span
+                    class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
+            </button>
         </div>
     </form>
 </div>

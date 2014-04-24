@@ -102,14 +102,15 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
         $scope.create = function () {
             Task.save($scope.newTask, function () {
-                $location.path('tasks').search({confirmation: 'Task ' + $scope.newTask.project + '-' + $scope.newTask.name + ' ajouté'});
+                $location.path('tasks').search({confirmation: 'Tâche ' + $scope.newTask.project + '-' + $scope.newTask.name + ' ajoutée'});
             }, function (error) {
                 if (error.status == "406") {
-                    $scope.warning = "Le BC " + $scope.newTask.project + '-' + $scope.newTask.name + " existe déjà";
+                    $scope.warning = "Création invalide";
                 } else {
                     $scope.error = 'Erreur HTTP' + error.status;
                 }
             });
         };
+
     }
 ]);
