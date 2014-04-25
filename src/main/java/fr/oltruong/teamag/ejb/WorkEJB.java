@@ -1,7 +1,9 @@
 package fr.oltruong.teamag.ejb;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.WeekComment;
@@ -390,5 +392,38 @@ public class WorkEJB extends AbstractEJB {
         }
 
         return result;
+    }
+
+    public Multimap<Task, Work> findWorksNotNull(Long memberId, int weekNumber) {
+        Query query = createNamedQuery("findWorksByMemberMonth");
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber));
+
+        List<Work> workList = query.getResultList();
+
+        Multimap<Task, Work> multimap = ArrayListMultimap.create();
+        for (Work work : workList) {
+            multimap.put(work.getTask(), work);
+        }
+        return multimap;
+    }
+
+    public List<Work> findWorksList(Long memberId, int weekNumber) {
+        Query query = createNamedQuery("findWorksByMemberMonth");
+//        Query query = createNamedQuery("findWorksByMemberMonthNotNull");
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
+
+
+        List<Work> workList = query.getResultList();
+
+        List<Work> filteredWorkList = Lists.newArrayListWithCapacity(workList.size());
+        for (Work work : workList) {
+            if (work.getDay().getWeekOfWeekyear() == weekNumber) {
+                filteredWorkList.add(work);
+            }
+        }
+
+        return filteredWorkList;
     }
 }
