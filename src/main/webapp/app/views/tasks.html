@@ -14,6 +14,8 @@
             <option value="-activity.name">Activit&eacute; desc</option>
         </select>
         <br/><br/>
+        T&acirc;ches orphelines <input type="checkbox" ng-model="orphanOnly"/>
+        <br/><br/>
         <a href="#/newTask" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
             une t&acirc;che</a>
     </div>
@@ -31,12 +33,12 @@
                 <th>Activit&eacute;</th>
                 <th>Montant</th>
                 <th>Remarque</th>
-                <th></th>
+                <th class="col-md-2"></th>
             </tr>
             </thead>
             <tbody>
 
-            <tr ng-repeat="task in (filteredTasks= (tasks | filter:query | orderBy:orderProp))">
+            <tr ng-repeat="task in (filteredTasks= (tasks | filter:query | filter:filterTask | orderBy:orderProp))">
 
                 <td><span ng-show="!editing">{{task.project}}</span><input ng-model="task.project" ng-show="editing"/>
                 </td>
@@ -46,7 +48,8 @@
                 <td><span ng-show="!editing">{{task.task.description}}</span>
 
                     <select ng-show="editing" ng-model="task.task"
-                            ng-options="task.description for task in tasks">
+                            ng-options="task.description for task in ( tasks |orderBy:'description') "
+                            ng-change="updateTask(task);">
                         <option value="">&nbsp;</option>
                     </select>
 
@@ -54,7 +57,7 @@
                 <td><span ng-show="!editing">{{task.activity.name}}</span>
 
                     <select ng-show="editing" ng-model="task.activity"
-                            ng-options="activity.name for activity in activities">
+                            ng-options="activity.name for activity in activities" ng-change="updateTask(task);">
                         <option value="">&nbsp;</option>
                     </select>
 

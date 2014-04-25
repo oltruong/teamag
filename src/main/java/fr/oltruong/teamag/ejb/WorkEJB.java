@@ -311,11 +311,11 @@ public class WorkEJB extends AbstractEJB {
 
     }
 
-    public WeekComment findWeekComment(Member member, int weekYear, int year) {
+    public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
 
         WeekComment result = null;
         Query query = createNamedQuery("findWeekComment");
-        query.setParameter("fmember", member);
+        query.setParameter("fmemberId", memberId);
         query.setParameter("fweekYear", weekYear);
         query.setParameter("fyear", year);
 
@@ -326,6 +326,7 @@ public class WorkEJB extends AbstractEJB {
 
         return result;
     }
+
 
     public WeekComment createWeekComment(WeekComment weekComment) {
         persist(weekComment);
@@ -424,6 +425,21 @@ public class WorkEJB extends AbstractEJB {
             }
         }
 
-        return filteredWorkList;
+        List<Task> tasksNotEmpty = Lists.newArrayList();
+        for (Work work : filteredWorkList) {
+            if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
+                tasksNotEmpty.add(work.getTask());
+            }
+        }
+
+        List<Work> newFilteredWorkList = Lists.newArrayListWithCapacity(filteredWorkList.size());
+        for (Work work : filteredWorkList) {
+            if (tasksNotEmpty.contains(work.getTask())) {
+                newFilteredWorkList.add(work);
+            }
+        }
+
+
+        return newFilteredWorkList;
     }
 }

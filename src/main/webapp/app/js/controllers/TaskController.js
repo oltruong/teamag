@@ -112,5 +112,13 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
             });
         };
 
+        $scope.filterTask = function (task) {
+            if ($scope.orphanOnly) {
+                return (task.task == null && task.activity == null);
+            } else {
+                return true;
+            }
+        };
+
     }
 ]);

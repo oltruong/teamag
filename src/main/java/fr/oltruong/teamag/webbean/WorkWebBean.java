@@ -51,4 +51,5 @@ public class WorkWebBean {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
 }

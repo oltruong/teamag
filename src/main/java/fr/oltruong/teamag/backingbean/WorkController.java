@@ -232,7 +232,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = workEJB.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());

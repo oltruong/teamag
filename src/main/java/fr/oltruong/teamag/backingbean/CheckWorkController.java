@@ -92,7 +92,7 @@ public class CheckWorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberToCheck, realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = workEJB.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (works != null) {
             Integer weekNumber = realizedBean.getWeekNumber();
