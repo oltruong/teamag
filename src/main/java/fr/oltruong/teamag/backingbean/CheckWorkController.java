@@ -118,7 +118,7 @@ public class CheckWorkController extends Controller {
                         } else {
                             mapColumns.get(work.getDayStr()).addTotal(work.getTotal());
                         }
-                        emptyWork &= Float.valueOf(0f).equals(work.getTotal());
+                        emptyWork &= Double.valueOf(0d).equals(work.getTotal());
 
                     }
 

@@ -34,7 +34,7 @@ public class WorkEJB extends AbstractEJB {
 
             boolean empty = true;
             for (Work work : workList) {
-                empty &= !Float.valueOf(0f).equals(work.getTotal());
+                empty &= !Double.valueOf(0d).equals(work.getTotal());
             }
             if (empty) {
                 emptyWorkTasks.add(task);
