@@ -32,6 +32,9 @@
         <version.genson>0.98</version.genson>
         <version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
 
+        <version.arquillian>1.1.4.Final</version.arquillian>
+        <version.arquillian.glassfish>1.0.0.CR4</version.arquillian.glassfish>
+
         <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
         <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
         <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
@@ -57,6 +60,19 @@
 
 
     </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
@@ -195,6 +211,20 @@
             <version>${version.mockito}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+            <version>${version.arquillian.glassfish}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 

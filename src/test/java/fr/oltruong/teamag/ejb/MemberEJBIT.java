@@ -1,15 +1,16 @@
 package fr.oltruong.teamag.ejb;
 
+import fr.oltruong.teamag.entity.EntityFactory;
+import fr.oltruong.teamag.entity.Member;
+import org.junit.Ignore;
+
+import javax.inject.Inject;
+import javax.naming.NamingException;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
-
-import javax.naming.NamingException;
-
-import org.junit.Ignore;
-
-import fr.oltruong.teamag.entity.Member;
 
 public class MemberEJBIT extends AbstractEJBIT {
 
@@ -17,18 +18,15 @@ public class MemberEJBIT extends AbstractEJBIT {
     // = Unit tests =
     // ======================================
 
-    // FIXME
-    @Ignore("too long")
+    @Inject
+    private MemberEJB memberEJB;
+
+    @Ignore("Create a permGenSpace + require Guava 14.0")
     public void createMember() throws NamingException {
 
         // Creates an instance of member
-        Member member = new Member();
+        Member member = EntityFactory.createMember();
 
-        member.setName("Carot");
-        member.setCompany("My company");
-        member.setEmail("dummy@email.com");
-        // Looks up for the EJB
-        MemberEJB memberEJB = (MemberEJB) getContext().lookup("java:global/classes/MemberEJB");
 
         // Persists the member to the database
         member = memberEJB.createMemberWithAbsenceTask(member);
