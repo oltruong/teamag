@@ -1,10 +1,9 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.AbsenceDay;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.entity.*;
 import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 
 import javax.ejb.Stateless;
@@ -20,13 +19,13 @@ public class WorkLoadEJB extends AbstractEJB {
 
 
     public List<AbsenceDay> getAllAbsenceDay() {
-        return getEntityManager().createNamedQuery("findAllAbsenceDays").getResultList();
+        return createNamedQuery("findAllAbsenceDays").getResultList();
 
     }
 
     public Map<Integer, Map<Member, Float>> buildWeekLoad() {
         String qlString = "SELECT SUM(a.value), a.week, a.month, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week, a.month";
-        Query q = getEntityManager().createQuery(qlString);
+        Query q = createQuery(qlString);
         List<Object[]> results = q.getResultList();
 
 
@@ -53,13 +52,13 @@ public class WorkLoadEJB extends AbstractEJB {
     public void removeAbsence(Long id) {
 
         Preconditions.checkArgument(id != null);
-        Query query = getEntityManager().createNamedQuery("findAbsenceDayByAbsenceId");
+        Query query = createNamedQuery("findAbsenceDayByAbsenceId");
         query.setParameter("fAbsenceId", id);
 
 
         List<AbsenceDay> absenceDayList = query.getResultList();
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().remove(absenceDay);
+            remove(absenceDay);
         }
 
     }
@@ -67,14 +66,14 @@ public class WorkLoadEJB extends AbstractEJB {
     public void registerAbsence(Absence newAbsence) {
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(newAbsence);
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().persist(absenceDay);
+            persist(absenceDay);
         }
     }
 
     public void reloadAllAbsenceDay() {
         List<AbsenceDay> absenceDayList = getAllAbsenceDay();
         for (AbsenceDay absenceDay : absenceDayList) {
-            getEntityManager().remove(absenceDay);
+            remove(absenceDay);
         }
 
         List<Absence> absenceList = findAllAbsences();
@@ -84,8 +83,67 @@ public class WorkLoadEJB extends AbstractEJB {
     }
 
     private List<Absence> findAllAbsences() {
-        return getEntityManager().createNamedQuery("findAllAbsences").getResultList();
+        return createNamedQuery("findAllAbsences").getResultList();
     }
 
 
+    public Map<BusinessCase, List<WorkLoad>> buildWorkLoadMap() {
+
+        List<WorkLoad> workLoadList = findAllWorkLoad();
+        Map<BusinessCase, List<WorkLoad>> map = Maps.newHashMap();
+        BusinessCase businessCase = null;
+        for (WorkLoad workLoad : workLoadList) {
+            if (!workLoad.getBusinessCase().equals(businessCase)) {
+                businessCase = workLoad.getBusinessCase();
+                List<WorkLoad> workLoads = Lists.newArrayList();
+                workLoads.add(workLoad);
+                map.put(businessCase, workLoads);
+            } else {
+                List<WorkLoad> workLoads = map.get(businessCase);
+                workLoads.add(workLoad);
+                map.put(businessCase, workLoads);
+            }
+        }
+        return map;
+    }
+
+    public List<WorkLoad> findAllWorkLoad() {
+        List<WorkLoad> workLoadList = createNamedQuery("findAllWorkLoad").getResultList();
+
+        if (workLoadList == null || workLoadList.isEmpty()) {
+
+            workLoadList = createWorkLoads();
+        }
+
+        return workLoadList;
+    }
+
+    private List<WorkLoad> createWorkLoads() {
+        List<WorkLoad> workLoadList;
+        getLogger().warn("Creation of workLoad");
+        List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
+
+        List<Member> memberList = MemberEJB.getMemberList();
+
+
+        workLoadList = Lists.newArrayListWithExpectedSize(businessCaseList.size() * memberList.size());
+
+        for (BusinessCase businessCase : businessCaseList) {
+            for (Member member : memberList) {
+                WorkLoad workLoad = new WorkLoad(businessCase, member);
+                persist(workLoad);
+                workLoadList.add(workLoad);
+            }
+        }
+        return workLoadList;
+    }
+
+
+    public void updateWorkLoad(List<WorkLoad> workLoadList) {
+        for (WorkLoad workLoad : workLoadList) {
+//            WorkLoad workLoadDb = .find(WorkLoad.class, workLoad.getId());
+//            workLoadDb.setEstimated(workLoad.getEstimated());
+            merge(workLoad);
+        }
+    }
 }

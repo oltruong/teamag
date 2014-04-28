@@ -13,26 +13,38 @@ public class AbsenceEJB extends AbstractEJB {
 
 
     public List<Absence> findAllAbsences() {
-        return getEntityManager().createNamedQuery("findAllAbsences").getResultList();
+        return createNamedQuery("findAllAbsences").getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public List<Absence> findAbsencesByMember(Member member) {
 
         Preconditions.checkArgument(member != null);
-        Query query = getEntityManager().createNamedQuery("findAbsencesByMember");
+        Query query = createNamedQuery("findAbsencesByMember");
         query.setParameter("fmemberId", member.getId());
 
         return (List<Absence>) query.getResultList();
     }
 
+
+    @SuppressWarnings("unchecked")
+    public List<Absence> findAbsencesByMemberId(Long memberId) {
+
+        Preconditions.checkArgument(memberId != null);
+        Query query = createNamedQuery("findAbsencesByMember");
+        query.setParameter("fmemberId", memberId);
+
+        return (List<Absence>) query.getResultList();
+    }
+
+
     public void addAbsence(Absence absence) {
-        getEntityManager().persist(absence);
+        persist(absence);
     }
 
     public void deleteAbsence(Long absenceId) {
-        Absence absenceDB = getEntityManager().find(Absence.class, absenceId);
-        getEntityManager().remove(absenceDB);
+        Absence absenceDB = find(Absence.class, absenceId);
+        remove(absenceDB);
     }
 
 }

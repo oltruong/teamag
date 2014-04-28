@@ -40,12 +40,12 @@ public class ParameterEJB extends AbstractEJB {
     @Lock(LockType.WRITE)
     private void saveParameters() {
         for (Parameter parameter : parameterMap.values()) {
-            this.getEntityManager().merge(parameter);
+            merge(parameter);
         }
     }
 
     private void loadParameters() {
-        Query query = this.getEntityManager().createNamedQuery("findParameters");
+        Query query = createNamedQuery("findParameters");
         @SuppressWarnings("unchecked")
         List<Parameter> parameterList = query.getResultList();
         if (CollectionUtils.isNotEmpty(parameterList)) {
@@ -67,8 +67,8 @@ public class ParameterEJB extends AbstractEJB {
         Parameter smtpHostParameter = new Parameter(ParameterName.SMTP_HOST);
         Parameter administratorEmailParameter = new Parameter(ParameterName.ADMINISTRATOR_EMAIL);
 
-        this.getEntityManager().persist(smtpHostParameter);
-        this.getEntityManager().persist(administratorEmailParameter);
+        persist(smtpHostParameter);
+        persist(administratorEmailParameter);
 
         parameterMap.put(ParameterName.SMTP_HOST, smtpHostParameter);
         parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);

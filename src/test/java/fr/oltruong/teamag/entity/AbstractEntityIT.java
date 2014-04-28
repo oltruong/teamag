@@ -31,7 +31,6 @@ public abstract class AbstractEntityIT {
         entityManagerFactory.close();
     }
 
-
     protected Object createWithoutCommit(Object object) {
         entityManager.persist(object);
         return object;
@@ -43,6 +42,14 @@ public abstract class AbstractEntityIT {
         return object;
     }
 
+
+    protected void commit() {
+        getTransaction().commit();
+    }
+
+    protected void persist(Object object) {
+        entityManager.persist(object);
+    }
 
     public EntityManager getEntityManager() {
         return entityManager;

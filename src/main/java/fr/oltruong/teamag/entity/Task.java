@@ -22,8 +22,25 @@ public class Task {
     @ManyToMany
     private List<Member> members = Lists.newArrayListWithCapacity(1);
 
+
+    @ManyToOne
+    @JoinColumn(name = "TASK_PARENT_FK")
+    private Task task;
+
+    @ManyToOne
+    @JoinColumn(name = "ACTIVITY_FK")
+    private Activity activity;
+
+    @Column(nullable = false)
+    private Boolean delegated = Boolean.FALSE;
+
+    private String comment;
+
+    private Double amount;
+
     @Transient
-    private Float total;
+    private Double total;
+
 
     public Long getId() {
         return id;
@@ -63,15 +80,15 @@ public class Task {
         }
     }
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Float total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
-    public void addTotal(Float value) {
+    public void addTotal(Double value) {
         if (total == null) {
             total = value;
         } else {
@@ -106,5 +123,46 @@ public class Task {
 
     public String getDescription() {
         return this.getProject() + "-" + this.getName();
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public Boolean getDelegated() {
+        return delegated;
+    }
+
+    public void setDelegated(Boolean delegated) {
+        this.delegated = delegated;
+    }
+
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -11,9 +11,11 @@ import javax.persistence.*;
 @Table(name = "TM_WORK")
 @Entity
 @NamedQueries({@NamedQuery(name = "findWorksByMemberMonth", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
+        @NamedQuery(name = "findWorksByMemberMonthNotNull", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.total<>0 and w.month=:fmonth order by w.task.name, w.day"),
         @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
         @NamedQuery(name = "deleteWorksByMember", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
         @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
+        @NamedQuery(name = "findWorksByTask", query = "SELECT w FROM Work w WHERE (w.total<>0 and w.task.id=:fTaskId) ORDER by w.member.name,w.day"),
         @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
         @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
@@ -40,10 +42,10 @@ public class Work {
     @JoinColumn(nullable = false, name = "TASK_ID")
     private Task task;
 
-    private Float total = 0f;
+    private Double total = 0d;
 
     @Transient
-    private Float totalEdit = null;
+    private Double totalEdit = null;
 
     @Transient
     @Inject
@@ -89,16 +91,16 @@ public class Work {
         this.task = task;
     }
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Float total) {
+    public void setTotal(Double total) {
         this.total = total;
         totalEdit = total;
     }
 
-    public Float getTotalEdit() {
+    public Double getTotalEdit() {
         if (totalEdit == null) {
             totalEdit = total;
         }
@@ -106,7 +108,7 @@ public class Work {
     }
 
     public String getTotalEditStr() {
-        Float value = getTotalEdit();
+        Double value = getTotalEdit();
         if (value.floatValue() == 0f) {
             return "";
         }
@@ -118,16 +120,16 @@ public class Work {
             String totalEditFormatted = totalEditStr.replace(",", ".");
 
             try {
-                totalEdit = Float.valueOf(totalEditFormatted);
+                totalEdit = Double.valueOf(totalEditFormatted);
             } catch (NumberFormatException ex) {
                 logger.error("Incorrect value " + totalEditStr);
             }
         } else {   // Blank means 0
-            totalEdit = 0f;
+            totalEdit = 0d;
         }
     }
 
-    public void setTotalEdit(Float totalEdit) {
+    public void setTotalEdit(Double totalEdit) {
 
         this.totalEdit = totalEdit;
     }
@@ -139,5 +141,9 @@ public class Work {
     public boolean hasChanged() {
         return total.floatValue() != totalEdit.floatValue();
     }
+
+
+
+
 
 }

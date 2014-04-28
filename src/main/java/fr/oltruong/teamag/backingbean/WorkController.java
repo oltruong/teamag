@@ -11,7 +11,7 @@ import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
 import fr.oltruong.teamag.exception.ExistingDataException;
-import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
@@ -232,7 +232,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = workEJB.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());

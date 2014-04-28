@@ -7,12 +7,12 @@ import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TestUtils;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.primefaces.event.RowEditEvent;
 
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
@@ -65,8 +65,8 @@ public class BCControllerTest extends ControllerTest {
     }
 
 
-    private Float getSumBc(List<BusinessCase> bcList) {
-        Float result = 0f;
+    private Double getSumBc(List<BusinessCase> bcList) {
+        Double result = 0d;
         for (BusinessCase businessCase : bcList) {
             result += businessCase.getAmount();
         }

@@ -1,10 +1,9 @@
 package fr.oltruong.teamag.webbean;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import fr.oltruong.teamag.entity.Task;
+
+import java.util.List;
 
 public class RealizedReportBean {
     private String name;
@@ -28,7 +27,7 @@ public class RealizedReportBean {
     }
 
     public String getTotalRealized() {
-        Float total = 0f;
+        Double total = 0d;
         for (Task task : tasks) {
             total += task.getTotal();
         }
@@ -36,7 +35,7 @@ public class RealizedReportBean {
     }
 
     public String getTotalWorkRealized() {
-        Float total = 0f;
+        Double total = 0d;
         for (Task task : tasks) {
 
             if (task.getId().intValue() != 1) {

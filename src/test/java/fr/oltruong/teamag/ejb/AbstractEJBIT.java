@@ -1,41 +1,22 @@
 package fr.oltruong.teamag.ejb;
 
-import javax.ejb.embeddable.EJBContainer;
-import javax.naming.Context;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
+//@RunWith(Arquillian.class)
 public abstract class AbstractEJBIT {
 
-    // ======================================
-    // = Attributes =
-    // ======================================
-    private static EJBContainer ejbContainer;
 
-    private static Context context;
-
-    // ======================================
-    // = Lifecycle Methods =
-    // ======================================
-
-    @BeforeClass
-    public static void initContainer() throws Exception {
-        // Map<String, Object> properties = Maps.newHashMap();
-        // properties.put(EJBContainer.MODULES, new File("target/teamag/WEB-INF/classes"));
-        ejbContainer = EJBContainer.createEJBContainer();
-        context = ejbContainer.getContext();
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+                .addPackages(true, "fr.oltruong.teamag")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml");
+        return archive;
     }
 
-    @AfterClass
-    public static void closeContainer() throws Exception {
-        if (ejbContainer != null) {
-            ejbContainer.close();
-        }
-    }
-
-    public static Context getContext() {
-        return context;
-    }
 
 }

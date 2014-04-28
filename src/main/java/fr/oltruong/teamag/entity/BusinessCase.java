@@ -24,7 +24,7 @@ public class BusinessCase {
     private String comment;
 
     @Column
-    private Float amount = 0f;
+    private Double amount = 0d;
 
     public String getIdentifier() {
         return identifier;
@@ -42,11 +42,12 @@ public class BusinessCase {
         this.name = name;
     }
 
-    public Float getAmount() {
+    public Double getAmount() {
         return this.amount;
     }
 
-    public void setAmount(Float amount) {
+
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -64,5 +65,9 @@ public class BusinessCase {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSummary() {
+        return this.identifier + "-" + this.name;
     }
 }

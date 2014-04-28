@@ -1,28 +1,56 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.collections.CollectionUtils;
 
-import javax.ejb.Stateless;
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Map;
 
-@Stateless
+@Singleton
+@Startup
 public class MemberEJB extends AbstractEJB {
+
+
+    private static List<Member> memberList;
+    private static Map<Long, Member> memberMap;
+
+    public static Map<Long, Member> getMemberMap() {
+        return memberMap;
+    }
+
+    public static List<Member> getMemberList() {
+        return memberList;
+    }
+
+    @PostConstruct
+    public void build() {
+        memberList = findMembers();
+
+        memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
+        for (Member member : memberList) {
+            memberMap.put(member.getId(), member);
+        }
+
+    }
 
     @SuppressWarnings("unchecked")
     public List<Member> findMembers() {
-        Query query = getEntityManager().createNamedQuery("findMembers");
+        Query query = createNamedQuery("findMembers");
         return query.getResultList();
     }
 
     public List<Member> findActiveMembers() {
-        Query query = getEntityManager().createNamedQuery("findActiveMembers");
+        Query query = createNamedQuery("findActiveMembers");
         return query.getResultList();
     }
 
@@ -40,14 +68,14 @@ public class MemberEJB extends AbstractEJB {
 
 
     public Member findMember(Long id) {
-        return getEntityManager().find(Member.class, id);
+        return find(Member.class, id);
     }
 
     public Member findMemberForAuthentication(String name, String password)
             throws UserNotFoundException {
         checkMembersNotEmpty();
 
-        Query query = getEntityManager().createNamedQuery("findByNamePassword");
+        Query query = createNamedQuery("findByNamePassword");
         query.setParameter("fname", name);
         query.setParameter("fpassword", password);
         @SuppressWarnings("unchecked")
@@ -63,7 +91,7 @@ public class MemberEJB extends AbstractEJB {
     public Member createMemberWithAbsenceTask(Member member) {
 
         // Adding default task
-        Query query = getEntityManager().createNamedQuery("findTaskByName");
+        Query query = createNamedQuery("findTaskByName");
         query.setParameter("fname", "Absence");
         query.setParameter("fproject", "");
 
@@ -76,22 +104,23 @@ public class MemberEJB extends AbstractEJB {
             getLogger().info("Task is not found. Will be created");
             Task newTask = new Task();
             newTask.setName("Absence");
-            getEntityManager().persist(newTask);
+            persist(newTask);
             task = newTask;
         }
 
         member.setPassword(TeamagUtils.hashPassword(""));
-        member.setEstimatedWorkDays(0f);
-        getEntityManager().persist(member);
+        member.setEstimatedWorkDays(0d);
+        persist(member);
 
         task.addMember(member);
-        getEntityManager().persist(task);
-
+        persist(task);
+        build();
         return member;
     }
 
     public void updateMember(Member member) {
-        getEntityManager().merge(member);
+        merge(member);
+        build();
     }
 
 
@@ -101,7 +130,7 @@ public class MemberEJB extends AbstractEJB {
             getLogger().info("No member so far. Default admin will be created");
 
             Member adminMember = generateAdminMember();
-            getEntityManager().persist(adminMember);
+            persist(adminMember);
 
         }
     }
@@ -115,13 +144,14 @@ public class MemberEJB extends AbstractEJB {
         adminMember.setCompany("ToBeDefined");
         adminMember.setEmail("tobedefined@email.com");
         adminMember.setMemberType(MemberType.ADMINISTRATOR);
+        adminMember.setEstimatedWorkDays(Double.valueOf(0d));
         return adminMember;
     }
 
     //TODO enable this feature
 /*    public void removeMember(Member selectedMember) {
 
-        Query query = getEntityManager().createNamedQuery("deleteWorksByMember");
+        Query query = createNamedQuery("deleteWorksByMember");
         query.setParameter("fmemberId", selectedMember.getId());
         int rowsNumberDeleted = query.executeUpdate();
         getLogger().debug("Works deleted : " + rowsNumberDeleted);

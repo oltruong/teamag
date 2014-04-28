@@ -92,15 +92,15 @@ public class MemberController extends Controller {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public Float getTotalEstimatedWorkDays() {
-        Float total = 0f;
+    public Double getTotalEstimatedWorkDays() {
+        Double total = 0d;
         for (Member member : memberList) {
             total += member.getEstimatedWorkDays();
         }
         return total;
     }
 
-    public Float getTotalEstimatedWorkMonths() {
+    public Double getTotalEstimatedWorkMonths() {
         return (getTotalEstimatedWorkDays() / TeamagConstants.MONTH_DAYS_RATIO);
     }
 

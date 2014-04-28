@@ -8,7 +8,7 @@ import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.WeekComment;
 import fr.oltruong.teamag.entity.Work;
-import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
 import fr.oltruong.teamag.webbean.TaskWeekBean;
@@ -92,7 +92,7 @@ public class CheckWorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberToCheck, realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = workEJB.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (works != null) {
             Integer weekNumber = realizedBean.getWeekNumber();
@@ -118,7 +118,7 @@ public class CheckWorkController extends Controller {
                         } else {
                             mapColumns.get(work.getDayStr()).addTotal(work.getTotal());
                         }
-                        emptyWork &= Float.valueOf(0f).equals(work.getTotal());
+                        emptyWork &= Double.valueOf(0d).equals(work.getTotal());
 
                     }
 

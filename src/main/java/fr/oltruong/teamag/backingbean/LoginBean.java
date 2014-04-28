@@ -1,10 +1,9 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.backingbean.Controller;
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.exception.UserNotFoundException;
-import fr.oltruong.teamag.qualifier.UserLogin;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.utils.TeamagConstants;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.slf4j.Logger;

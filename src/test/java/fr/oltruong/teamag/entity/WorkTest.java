@@ -1,11 +1,10 @@
 package fr.oltruong.teamag.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
-import fr.oltruong.teamag.utils.TestUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WorkTest {
 
@@ -15,18 +14,18 @@ public class WorkTest {
 
         TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
 
-        work.setTotal(1.1f);
+        work.setTotal(1.1d);
 
-        assertThat(work.getTotalEdit()).isEqualTo(Float.valueOf(1.1f));
+        assertThat(work.getTotalEdit()).isEqualTo(Double.valueOf(1.1d));
 
         work.setTotalEditStr("5");
-        assertThat(work.getTotalEdit()).isEqualTo(Float.valueOf(5f));
+        assertThat(work.getTotalEdit()).isEqualTo(Double.valueOf(5f));
 
         work.setTotalEditStr("sdqsd");
-        assertThat(work.getTotalEdit()).isEqualTo(Float.valueOf(5f));
+        assertThat(work.getTotalEdit()).isEqualTo(Double.valueOf(5f));
 
         work.setTotalEditStr(" ");
-        assertThat(work.getTotalEdit()).isEqualTo(Float.valueOf(0f));
+        assertThat(work.getTotalEdit()).isEqualTo(Double.valueOf(0f));
 
     }
 

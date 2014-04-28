@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-md-2">
+        <br/><br/>
+        <br/><br/><br/>
+        <select ng-model="selectedMember" ng-options="member.name for member in members"
+                ng-change="findWorks()"></select>
+        <br/><br/>
+        <button class="btn btn-sm btn-info" ng-click="decreaseWeek()">S. {{weekNumber-1}}</button>
+        <button class="btn btn-sm btn-info" ng-click="increaseWeek()">S. {{weekNumber+1}}</button>
+        <br/><br/>
+        Macro t&acirc;che&nbsp;<input type="checkbox" ng-model="macroTask" ng-change="findWorks()"/>
+    </div>
+    <div class="col-md-10">
+
+        <h1 class="text-center">Suivi de r&eacute;alis&eacute; {{selectedMember.name}} - Semaine {{weekNumber}}</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>T&acirc;che</th>
+                <th ng-repeat="day in days">{{day}}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="task in tasks">
+                <td>{{task}}</td>
+                <td ng-repeat="day in days">{{findAmount(task,day)}}
+                </th>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/>
+
+        <div>{{weekcomment.comment}}</div>
+
+    </div>
+</div>

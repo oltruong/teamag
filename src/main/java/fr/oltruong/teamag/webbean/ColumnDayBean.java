@@ -6,13 +6,13 @@ public class ColumnDayBean implements Comparable<ColumnDayBean> {
 
     private DateTime day;
 
-    private Float total = 0f;
+    private Double total = 0d;
 
-    public Float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void addTotal(Float total) {
+    public void addTotal(Double total) {
         this.total += total;
     }
 

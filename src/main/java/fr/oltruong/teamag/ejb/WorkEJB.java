@@ -1,7 +1,9 @@
 package fr.oltruong.teamag.ejb;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import fr.oltruong.teamag.entity.Member;
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.WeekComment;
@@ -32,7 +34,7 @@ public class WorkEJB extends AbstractEJB {
 
             boolean empty = true;
             for (Work work : workList) {
-                empty &= !Float.valueOf(0f).equals(work.getTotal());
+                empty &= !Double.valueOf(0d).equals(work.getTotal());
             }
             if (empty) {
                 emptyWorkTasks.add(task);
@@ -66,7 +68,7 @@ public class WorkEJB extends AbstractEJB {
 
         Map<Task, List<Work>> worksByTask = Maps.newHashMap();
 
-        Query query = getEntityManager().createNamedQuery("findWorksByMemberMonth");
+        Query query = createNamedQuery("findWorksByMemberMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
 
@@ -78,7 +80,7 @@ public class WorkEJB extends AbstractEJB {
 
     @SuppressWarnings("unchecked")
     public List<Task> findAllTasks() {
-        return getEntityManager().createNamedQuery("findAllTasks").getResultList();
+        return createNamedQuery("findAllTasks").getResultList();
     }
 
     public List<Task> findAllNonAdminTasks() {
@@ -110,13 +112,13 @@ public class WorkEJB extends AbstractEJB {
 
     public List<Task> findTasksByProject(String project) {
 
-        Query query = getEntityManager().createNamedQuery("findTaskByProject");
+        Query query = createNamedQuery("findTaskByProject");
         query.setParameter("fproject", project);
         return query.getResultList();
     }
 
     public int getSumWorks(Member member, DateTime month) {
-        Query query = getEntityManager().createNamedQuery("countWorksMemberMonth");
+        Query query = createNamedQuery("countWorksMemberMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
         Number sumOfPrice = (Number) query.getSingleResult();
@@ -159,7 +161,7 @@ public class WorkEJB extends AbstractEJB {
                     work.setMonth(month);
                     work.setTask(task);
 
-                    getEntityManager().persist(work);
+                    persist(work);
 
                     workList.add(work);
                 }
@@ -173,7 +175,7 @@ public class WorkEJB extends AbstractEJB {
     }
 
     public void removeTask(Task task, Member member, DateTime month) {
-        Query query = getEntityManager().createNamedQuery("deleteWorksByMemberTaskMonth");
+        Query query = createNamedQuery("deleteWorksByMemberTaskMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("ftaskId", task.getId());
         query.setParameter("fmonth", month);
@@ -184,31 +186,31 @@ public class WorkEJB extends AbstractEJB {
 
         // Delete of task for user
 
-        Task taskDb = getEntityManager().find(Task.class, task.getId());
+        Task taskDb = find(Task.class, task.getId());
 
-        Member memberDb = getEntityManager().find(Member.class, member.getId());
+        Member memberDb = find(Member.class, member.getId());
 
         taskDb.getMembers().remove(memberDb);
 
         if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
             getLogger().info("Task has no more Members on it. It will be deleted");
-            getEntityManager().remove(taskDb);
+            remove(taskDb);
         } else {
             getLogger().debug("Task updated");
-            getEntityManager().persist(taskDb);
+            persist(taskDb);
         }
     }
 
     private boolean taskHasNoWorks(Task taskDb) {
 
-        Query query = getEntityManager().createNamedQuery("countWorksTask");
+        Query query = createNamedQuery("countWorksTask");
         query.setParameter("fTaskId", taskDb.getId());
         int total = ((Number) query.getSingleResult()).intValue();
         return total == 0;
     }
 
     public List<Task> findMemberTasks(Member member) {
-        Query query = getEntityManager().createNamedQuery("findAllTasks");
+        Query query = createNamedQuery("findAllTasks");
 
         @SuppressWarnings("unchecked")
         List<Task> allTaskList = query.getResultList();
@@ -235,7 +237,7 @@ public class WorkEJB extends AbstractEJB {
     }
 
     public void createTask(DateTime month, Member member, Task task) throws ExistingDataException {
-        Query query = getEntityManager().createNamedQuery("findTaskByName");
+        Query query = createNamedQuery("findTaskByName");
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
 
@@ -252,7 +254,7 @@ public class WorkEJB extends AbstractEJB {
             } else {
                 getLogger().debug("Affecting to member " + member.getId());
                 myTask.addMember(member);
-                getEntityManager().merge(myTask);
+                merge(myTask);
                 taskDB = myTask;
             }
         } else
@@ -263,12 +265,12 @@ public class WorkEJB extends AbstractEJB {
             // Reset task ID
             task.setId(null);
             task.addMember(member);
-            getEntityManager().persist(task);
+            persist(task);
             taskDB = task;
 
         }
 
-        getEntityManager().flush();
+        flush();
 
         getLogger().debug("Creation of WORK objects");
         List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
@@ -280,31 +282,40 @@ public class WorkEJB extends AbstractEJB {
             work.setMonth(month);
             work.setTask(taskDB);
 
-            getEntityManager().persist(work);
+            persist(work);
         }
 
     }
 
+
     public void updateWorks(List<Work> workList) {
         for (Work work : workList) {
             work.setTotal(work.getTotalEdit());
-            getEntityManager().merge(work);
+            merge(work);
         }
     }
 
     @SuppressWarnings("unchecked")
     public List<Work> getWorksMonth(DateTime month) {
-        Query query = getEntityManager().createNamedQuery("findWorksMonth");
+        Query query = createNamedQuery("findWorksMonth");
         query.setParameter("fmonth", month);
 
         return query.getResultList();
     }
 
-    public WeekComment findWeekComment(Member member, int weekYear, int year) {
+
+    public List<Work> findWorkByTask(Long taskId) {
+        Query query = createNamedQuery("findWorksByTask");
+        query.setParameter("fTaskId", taskId);
+        return query.getResultList();
+
+    }
+
+    public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
 
         WeekComment result = null;
-        Query query = getEntityManager().createNamedQuery("findWeekComment");
-        query.setParameter("fmember", member);
+        Query query = createNamedQuery("findWeekComment");
+        query.setParameter("fmemberId", memberId);
         query.setParameter("fweekYear", weekYear);
         query.setParameter("fyear", year);
 
@@ -316,18 +327,119 @@ public class WorkEJB extends AbstractEJB {
         return result;
     }
 
+
     public WeekComment createWeekComment(WeekComment weekComment) {
-        getEntityManager().persist(weekComment);
+        persist(weekComment);
         return weekComment;
     }
 
     public void updateWeekComment(WeekComment weekComment) {
-        getEntityManager().merge(weekComment);
+        merge(weekComment);
     }
 
     public void removeWeekComment(WeekComment weekComment) {
-        WeekComment weekCommentDb = getEntityManager().find(WeekComment.class, weekComment.getId());
-        getEntityManager().remove(weekCommentDb);
+        WeekComment weekCommentDb = find(WeekComment.class, weekComment.getId());
+        remove(weekCommentDb);
     }
 
+    public void createTask(Task task) throws ExistingDataException {
+        Query query = createNamedQuery("findTaskByName");
+        query.setParameter("fname", task.getName());
+        query.setParameter("fproject", task.getProject());
+
+        Task taskDB = null;
+        @SuppressWarnings("unchecked")
+        List<Task> allTaskList = query.getResultList();
+
+        if (CollectionUtils.isNotEmpty(allTaskList)) {
+            throw new ExistingDataException();
+        } else {
+            persist(task);
+        }
+    }
+
+    public Task findTask(Long taskId) {
+        return find(Task.class, taskId);
+    }
+
+    public void deleteTask(Long taskId) {
+        remove(findTask(taskId));
+    }
+
+    public void updateTask(Task taskToUpdate) {
+        if (isLoop(taskToUpdate)) {
+            throw new IllegalArgumentException();
+        }
+        merge(taskToUpdate);
+    }
+
+    private boolean isLoop(Task taskToUpdate) {
+        boolean result = false;
+        result = (taskToUpdate != null && taskToUpdate.getTask() != null && taskToUpdate.getId().equals(taskToUpdate.getTask().getId()));
+        if (!result && taskToUpdate.getTask() != null) {
+            List<Long> idList = Lists.newArrayList();
+            idList.add(taskToUpdate.getId());
+
+            Task task = taskToUpdate;
+            boolean finished = false;
+            while (!result && task.getTask() != null) {
+                task = task.getTask();
+                if (idList.contains(task.getId())) {
+                    result = true;
+                }
+                idList.add(task.getId());
+            }
+
+        }
+
+        return result;
+    }
+
+    public Multimap<Task, Work> findWorksNotNull(Long memberId, int weekNumber) {
+        Query query = createNamedQuery("findWorksByMemberMonth");
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber));
+
+        List<Work> workList = query.getResultList();
+
+        Multimap<Task, Work> multimap = ArrayListMultimap.create();
+        for (Work work : workList) {
+            multimap.put(work.getTask(), work);
+        }
+        return multimap;
+    }
+
+    public List<Work> findWorksList(Long memberId, int weekNumber) {
+        Query query = createNamedQuery("findWorksByMemberMonth");
+//        Query query = createNamedQuery("findWorksByMemberMonthNotNull");
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
+
+
+        List<Work> workList = query.getResultList();
+
+        List<Work> filteredWorkList = Lists.newArrayListWithCapacity(workList.size());
+        for (Work work : workList) {
+            if (work.getDay().getWeekOfWeekyear() == weekNumber) {
+                filteredWorkList.add(work);
+            }
+        }
+
+        List<Task> tasksNotEmpty = Lists.newArrayList();
+        for (Work work : filteredWorkList) {
+            if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
+                tasksNotEmpty.add(work.getTask());
+            }
+        }
+
+        List<Work> newFilteredWorkList = Lists.newArrayListWithCapacity(filteredWorkList.size());
+        for (Work work : filteredWorkList) {
+            if (tasksNotEmpty.contains(work.getTask())) {
+                newFilteredWorkList.add(work);
+            }
+        }
+
+
+        return newFilteredWorkList;
+    }
 }

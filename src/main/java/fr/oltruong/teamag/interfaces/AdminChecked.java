@@ -1,14 +1,14 @@
-package fr.oltruong.teamag.qualifier;
+package fr.oltruong.teamag.interfaces;
 
-import javax.inject.Qualifier;
+import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Qualifier
+@NameBinding
 @Retention(RUNTIME)
 @Target({FIELD, TYPE, METHOD})
-public @interface UserLogin {
+public @interface AdminChecked {
 }

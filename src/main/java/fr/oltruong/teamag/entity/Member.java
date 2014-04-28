@@ -31,7 +31,7 @@ public class Member implements Serializable {
     private MemberType memberType;
 
     @Column(nullable = false)
-    private Float estimatedWorkDays;
+    private Double estimatedWorkDays;
 
 
     private String comment;
@@ -85,6 +85,10 @@ public class Member implements Serializable {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getCompany() {
         return company;
     }
@@ -109,15 +113,23 @@ public class Member implements Serializable {
         this.memberType = memberType;
     }
 
-    public Float getEstimatedWorkDays() {
+    public Double getEstimatedWorkDays() {
         return estimatedWorkDays;
     }
 
-    public Float getEstimatedWorkMonths() {
+    public Double getEstimatedWorkMonths() {
         return estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO;
     }
 
-    public void setEstimatedWorkDays(Float estimatedWorkDays) {
+    public String getEstimatedWorkDaysString() {
+        return String.valueOf(estimatedWorkDays);
+    }
+
+    public String getEstimatedWorkMonthsString() {
+        return String.valueOf((Double) estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO);
+    }
+
+    public void setEstimatedWorkDays(Double estimatedWorkDays) {
         this.estimatedWorkDays = estimatedWorkDays;
     }
 

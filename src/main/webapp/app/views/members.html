@@ -1,0 +1,90 @@
+<h1 class="text-center">{{filteredMembers.length }} Membres</h1>
+<div class="row">
+    <div class="col-md-2">
+        Filtrer&nbsp;: <input ng-model="query">
+        <br/><br/> Trier&nbsp;:
+        <select ng-model="orderProp">
+            <option value="name">Nom asc</option>
+            <option value="-name">Nom desc</option>
+            <option value="company">Entreprise asc</option>
+            <option value="-company">Entreprise desc</option>
+            <option value="estimatedWorkDays">Consommation asc</option>
+            <option value="-estimatedWorkDays">Consommation desc</option>
+        </select>
+
+    </div>
+    <div class="col-md-10">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Entreprise</th>
+                <th>E-mail</th>
+                <th>Actif</th>
+                <th>JHI</th>
+                <th>MHI</th>
+                <th>Remarques</th>
+                <th>Couleur</th>
+                <th>Type</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="member in (filteredMembers=(members | filter:query | orderBy:orderProp))">
+
+                <td>{{member.id}}</td>
+                <td><span ng-show="!editing">{{member.name}}</span> <input ng-model="member.name"
+                                                                           ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{member.company}}</span> <input ng-model="member.company"
+                                                                              ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{member.email}}</span> <input ng-model="member.email"
+                                                                            ng-show="editing"/></td>
+                <td><input type="checkbox" ng-model="member.active" ng-disabled="!editing"></td>
+                <td><span ng-show="!editing">{{member.estimatedWorkDays}}</span><input type="number" step="any"
+                                                                                       ng-model="member.estimatedWorkDays"
+                                                                                       ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{member.estimatedWorkDays/21| number:2}}</span><span ng-show="editing">{{member.estimatedWorkDays/21| number:2}}</span>
+                </td>
+                <td><span ng-show="!editing">{{member.comment}}</span> <input ng-model="member.comment"
+                                                                              ng-show="editing"/></td>
+                <td style="color: white;background-color: #{{member.absenceHTMLColor}};">{{member.absenceHTMLColor}}
+                </td>
+                <td><span ng-show="!editing">{{member.memberType}}</span><input ng-model="member.memberType"
+                                                                                ng-show="editing"/></td>
+                <td class="hidden-print">
+                    <a ng-show="editing" ng-click="updateMember(member);editing=false;" class="btn btn-success btn-sm"
+                       title="Valider">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+
+                    <a ng-show="editing" ng-click="refreshMember(member);editing=false;" class="btn btn-warning btn-sm"
+                       title="Annuler la modification">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+
+                    <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn-sm" title="Modifier">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+            <tfoot>
+
+            <tr class="success">
+                <td class="text-right" colspan=5">Total&nbsp;:</td>
+                <td>{{totalDays()| number:1}}</td>
+                <td>{{totalDays()/21| number:2}}</td>
+                <td colspan="3"></td>
+            </tr>
+
+            </tfoot>
+        </table>
+
+    </div>
+</div>
