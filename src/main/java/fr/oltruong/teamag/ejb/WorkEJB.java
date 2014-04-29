@@ -418,28 +418,21 @@ public class WorkEJB extends AbstractEJB {
 
         List<Work> workList = query.getResultList();
 
-        List<Work> filteredWorkList = Lists.newArrayListWithCapacity(workList.size());
-        for (Work work : workList) {
-            if (work.getDay().getWeekOfWeekyear() == weekNumber) {
-                filteredWorkList.add(work);
-            }
-        }
+        workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != weekNumber);
 
         List<Task> tasksNotEmpty = Lists.newArrayList();
-        for (Work work : filteredWorkList) {
+        for (Work work : workList) {
             if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
                 tasksNotEmpty.add(work.getTask());
             }
         }
 
-        List<Work> newFilteredWorkList = Lists.newArrayListWithCapacity(filteredWorkList.size());
-        for (Work work : filteredWorkList) {
-            if (tasksNotEmpty.contains(work.getTask())) {
-                newFilteredWorkList.add(work);
-            }
-        }
+
+        workList.removeIf(work -> !tasksNotEmpty.contains(work.getTask()));
 
 
-        return newFilteredWorkList;
+        return workList;
     }
+
+
 }
