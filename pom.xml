@@ -11,7 +11,7 @@
 
     <properties>
 
-        <version.java>1.7</version.java>
+        <version.java>1.8</version.java>
         <version.javaee>7.0</version.javaee>
         <version.glassfish>4.0</version.glassfish>
         <version.primefaces>4.0</version.primefaces>
