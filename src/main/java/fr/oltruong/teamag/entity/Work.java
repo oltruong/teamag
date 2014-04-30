@@ -6,7 +6,17 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "TM_WORK")
 @Entity
@@ -25,12 +35,12 @@ public class Work {
     private Long id;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    //  @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime month;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime day;
 
@@ -141,9 +151,6 @@ public class Work {
     public boolean hasChanged() {
         return total.floatValue() != totalEdit.floatValue();
     }
-
-
-
 
 
 }

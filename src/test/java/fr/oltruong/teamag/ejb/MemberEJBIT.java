@@ -21,7 +21,8 @@ public class MemberEJBIT extends AbstractEJBIT {
     @Inject
     private MemberEJB memberEJB;
 
-    @Ignore("Create a permGenSpace + require Guava 14.0")
+    //    @Ignore("Create a permGenSpace + require Guava 14.0")
+    @Ignore
     public void createMember() throws NamingException {
 
         // Creates an instance of member

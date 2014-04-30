@@ -2,8 +2,8 @@ package fr.oltruong.teamag.entity;
 
 import org.junit.Test;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.persistence.RollbackException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +33,7 @@ public class AbsenceIT extends AbstractEntityIT {
 
     }
 
-    @Test(expected = RollbackException.class)
+    @Test(expected = PersistenceException.class)
     public void testCreationMissingEndDate() {
         Absence absence = EntityFactory.createAbsence();
         absence.setEndDate(null);

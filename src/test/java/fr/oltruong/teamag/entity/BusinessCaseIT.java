@@ -2,6 +2,7 @@ package fr.oltruong.teamag.entity;
 
 import org.junit.Test;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
         assertThat(businessCase.getId()).isNotNull();
     }
 
-    @Test(expected = RollbackException.class)
+    @Test(expected = PersistenceException.class)
     public void testException() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setName(null);
