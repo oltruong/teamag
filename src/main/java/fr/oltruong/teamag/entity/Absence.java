@@ -15,7 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table(name = "TM_ABSENCE", schema = "teamag")
+@Table(name = "TM_ABSENCE")
 @Entity
 @NamedQueries({@NamedQuery(name = "findAbsencesByMember", query = "SELECT a FROM Absence a WHERE a.member.id=:fmemberId order by a.beginDate"), @NamedQuery(name = "findAllAbsences", query = "SELECT a FROM Absence a order by a.member.name, a.beginDate")})
 public class Absence {
