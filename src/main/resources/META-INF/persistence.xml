@@ -4,7 +4,6 @@
 
     <persistence-unit name="ejbPU" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
         <jta-data-source>java:/jdbc/teamag</jta-data-source>
         <class>fr.oltruong.teamag.entity.Absence</class>
         <class>fr.oltruong.teamag.entity.AbsenceDay</class>
@@ -17,9 +16,7 @@
         <class>fr.oltruong.teamag.entity.WorkLoad</class>
         <class>fr.oltruong.teamag.entity.converter.DateConverter</class>
         <properties>
-            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
-            <property name="eclipselink.logging.level" value="INFO"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
