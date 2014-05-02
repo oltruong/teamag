@@ -43,7 +43,7 @@ public class ScheduleControllerTest extends ControllerTest {
     @Test
     public void testInit() throws Exception {
 
-        List<Absence> absenceList = EntityFactory.createAbsenceList(99);
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         for (Absence absence : absenceList) {
             absence.getMember().setId(Long.valueOf(32l));
         }

@@ -12,6 +12,7 @@ import fr.oltruong.teamag.interfaces.SupervisorChecked;
 import fr.oltruong.teamag.webbean.WorkWebBean;
 import org.joda.time.DateTime;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @Path("checkWork")
 @SupervisorChecked
+@Stateless
 public class CheckWorkEndPoint extends AbstractEndPoint {
 
     @Inject

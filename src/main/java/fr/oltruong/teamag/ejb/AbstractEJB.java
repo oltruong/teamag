@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.List;
 
 public abstract class AbstractEJB {
 
@@ -22,6 +23,10 @@ public abstract class AbstractEJB {
         return entityManager.createNamedQuery(name);
     }
 
+    protected List getNamedQueryList(String name) {
+        return entityManager.createNamedQuery(name).getResultList();
+    }
+
 
     protected void persist(Object object) {
         entityManager.persist(object);
@@ -29,6 +34,11 @@ public abstract class AbstractEJB {
 
     protected void merge(Object object) {
         entityManager.merge(object);
+    }
+
+
+    protected void remove(Class className, Long id) {
+        remove(find(className, id));
     }
 
     protected void remove(Object object) {

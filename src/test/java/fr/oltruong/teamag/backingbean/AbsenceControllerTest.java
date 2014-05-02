@@ -23,7 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Olivier Truong
@@ -64,8 +66,7 @@ public class AbsenceControllerTest extends ControllerTest {
     @Test
     public void testInit() throws Exception {
 
-        int absenceNumber = 5;
-        List<Absence> absenceList = EntityFactory.createAbsenceList(absenceNumber);
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         when(mockAbsenceEJB.findAbsencesByMember(eq(mockMember))).thenReturn(absenceList);
         String view = absenceController.init();
 

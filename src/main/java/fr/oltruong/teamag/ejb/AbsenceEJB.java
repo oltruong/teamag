@@ -13,7 +13,7 @@ public class AbsenceEJB extends AbstractEJB {
 
 
     public List<Absence> findAllAbsences() {
-        return createNamedQuery("findAllAbsences").getResultList();
+        return getNamedQueryList("findAllAbsences");
     }
 
     @SuppressWarnings("unchecked")
@@ -43,8 +43,8 @@ public class AbsenceEJB extends AbstractEJB {
     }
 
     public void deleteAbsence(Long absenceId) {
-        Absence absenceDB = find(Absence.class, absenceId);
-        remove(absenceDB);
+        remove(Absence.class, absenceId);
+
     }
 
 }

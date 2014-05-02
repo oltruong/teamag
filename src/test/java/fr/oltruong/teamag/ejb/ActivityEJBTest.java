@@ -11,7 +11,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -30,7 +33,7 @@ public class ActivityEJBTest extends AbstractEJBTest {
 
     @Test
     public void testFindBC() throws Exception {
-        List<BusinessCase> businessCaseList = EntityFactory.createBCList(7);
+        List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(getMockQuery().getResultList()).thenReturn(businessCaseList);
 
         List<BusinessCase> businessCaseFoundList = activityEJB.findBC();
@@ -55,7 +58,7 @@ public class ActivityEJBTest extends AbstractEJBTest {
     @Test(expected = ExistingDataException.class)
     public void testCreateBC_existingData() throws Exception {
 
-        List<BusinessCase> businessCaseList = EntityFactory.createBCList(7);
+        List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(getMockQuery().getResultList()).thenReturn(businessCaseList);
 
         BusinessCase businessCaseCreated = activityEJB.createBC(businessCaseList.get(0));
@@ -78,7 +81,7 @@ public class ActivityEJBTest extends AbstractEJBTest {
     @Test
     public void testFindActivities() throws Exception {
 
-        List<Activity> activityList = EntityFactory.createActivityList(7);
+        List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(getMockQuery().getResultList()).thenReturn(activityList);
 
         List<Activity> activityFoundList = activityEJB.findActivities();
@@ -104,7 +107,7 @@ public class ActivityEJBTest extends AbstractEJBTest {
 
     @Test(expected = ExistingDataException.class)
     public void testCreateActivity_existingData() throws Exception {
-        List<Activity> activityList = EntityFactory.createActivityList(7);
+        List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(getMockQuery().getResultList()).thenReturn(activityList);
 
         activityEJB.createActivity(activityList.get(0));

@@ -40,7 +40,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
         workLoadContainer.setMemberList(MemberEJB.getMemberList());
 
 
-        List<WorkLoad> workLoadList = workLoadEJB.findAllWorkLoad();
+        List<WorkLoad> workLoadList = workLoadEJB.findOrCreateAllWorkLoad();
         BusinessCase businessCase = null;
         WorkLoadContainer currentContainer = null;
 

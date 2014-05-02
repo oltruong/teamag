@@ -51,7 +51,7 @@ public class AbsenceWebBeanTransformerTest {
 
     @Test
     public void testTransformList() throws Exception {
-        List<Absence> absenceList = EntityFactory.createAbsenceList(99);
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         List<AbsenceWebBean> absenceWebBeanList = AbsenceWebBeanTransformer.transformList(absenceList);
 
         assertThat(absenceWebBeanList).hasSameSizeAs(absenceList);
