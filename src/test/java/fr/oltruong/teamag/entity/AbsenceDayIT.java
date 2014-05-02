@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
         assertThat(absenceDay.getId()).isNotNull();
     }
 
-    @Test(expected = RollbackException.class)
+    @Test(expected = PersistenceException.class)
     public void testCreate_memberNull() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
         absenceDay.setMember(null);

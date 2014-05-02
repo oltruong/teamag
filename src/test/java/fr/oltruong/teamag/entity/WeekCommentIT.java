@@ -2,7 +2,7 @@ package fr.oltruong.teamag.entity;
 
 import org.junit.Test;
 
-import javax.persistence.RollbackException;
+import javax.persistence.PersistenceException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +21,7 @@ public class WeekCommentIT extends AbstractEntityIT {
         assertThat(weekComment.getId()).isNotNull();
     }
 
-    @Test(expected = RollbackException.class)
+    @Test(expected = PersistenceException.class)
     public void testCreation_noMember() {
         WeekComment weekComment = EntityFactory.createWeekComment();
         weekComment.setMember(null);

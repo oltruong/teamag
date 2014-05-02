@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import org.junit.Test;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MemberIT extends AbstractEntityIT {
         assertThat(member.getId()).isNotNull();
     }
 
-    @Test(expected = RollbackException.class)
+    @Test(expected = PersistenceException.class)
     public void testException() {
         Member member = EntityFactory.createMember();
         member.setEmail(null);

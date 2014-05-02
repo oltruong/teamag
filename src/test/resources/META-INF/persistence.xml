@@ -3,7 +3,8 @@
              version="1.0">
 
     <persistence-unit name="testPersistence" transaction-type="RESOURCE_LOCAL">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
         <class>fr.oltruong.teamag.entity.Absence</class>
         <class>fr.oltruong.teamag.entity.AbsenceDay</class>
         <class>fr.oltruong.teamag.entity.Activity</class>
@@ -17,19 +18,17 @@
         <class>fr.oltruong.teamag.entity.converter.DateConverter</class>
 
         <properties>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-            <property name="javax.persistence.jdbc.url"
-                      value="jdbc:derby:target/testPersistenceDemo;create=true"/>
-            <property name="javax.persistence.jdbc.user" value="APP"/>
-            <property name="javax.persistence.jdbc.password" value="APP"/>
-            <property name="javax.persistence.logging.level" value="FINE"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test"/>
+            <property name="javax.persistence.logging.level" value="INFO"/>
         </properties>
     </persistence-unit>
 
 
     <persistence-unit name="ejbPU" transaction-type="JTA">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>jdbc/__default</jta-data-source>
         <class>fr.oltruong.teamag.entity.Absence</class>
         <class>fr.oltruong.teamag.entity.Activity</class>
@@ -40,8 +39,8 @@
         <class>fr.oltruong.teamag.entity.Work</class>
 
         <properties>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <property name="eclipselink.logging.level" value="INFO"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create-tables"/>
+            <property name="javax.persistence.logging.level" value="INFO"/>
         </properties>
     </persistence-unit>
 

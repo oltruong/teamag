@@ -8,11 +8,18 @@ import fr.oltruong.teamag.entity.enumeration.ParameterName;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * @author Olivier Truong
  */
 public class EntityFactory {
+
+    private static final int MINIMUM = 3;
+
+    private static final int MAXIMUM = 10;
+
     private EntityFactory() {
 
     }
@@ -51,6 +58,7 @@ public class EntityFactory {
         return absence;
     }
 
+
     public static AbsenceDay createAbsenceDay() {
 
         AbsenceDay absenceDay = new AbsenceDay(createAbsence());
@@ -59,40 +67,6 @@ public class EntityFactory {
         absenceDay.setDay(now);
         absenceDay.setMember(createMember());
         return absenceDay;
-    }
-
-
-    public static List<Absence> createAbsenceList(int number) {
-        List<Absence> absenceList = Lists.newArrayListWithExpectedSize(number);
-        for (int i = 0; i < number; i++) {
-            absenceList.add(createAbsence());
-        }
-        return absenceList;
-    }
-
-    public static List<AbsenceDay> createAbsenceDayList(int number) {
-        List<AbsenceDay> absenceDayList = Lists.newArrayListWithExpectedSize(number);
-        for (int i = 0; i < number; i++) {
-            absenceDayList.add(createAbsenceDay());
-        }
-        return absenceDayList;
-    }
-
-    public static List<Activity> createActivityList(int number) {
-        List<Activity> activityList = Lists.newArrayListWithExpectedSize(number);
-        for (int i = 0; i < number; i++) {
-            activityList.add(createActivity());
-        }
-        return activityList;
-    }
-
-
-    public static List<BusinessCase> createBCList(int number) {
-        List<BusinessCase> bcList = Lists.newArrayListWithExpectedSize(number);
-        for (int i = 0; i < number; i++) {
-            bcList.add(createBusinessCase());
-        }
-        return bcList;
     }
 
 
@@ -129,9 +103,26 @@ public class EntityFactory {
 
     public static WorkLoad createWorkLoad() {
         WorkLoad workLoad = new WorkLoad(createBusinessCase(), createMember());
-        workLoad.setEstimated(Double.valueOf(12d));
+        workLoad.setEstimated(Double.valueOf(Double.valueOf(12d)));
         workLoad.setRealized(Double.valueOf(10d));
         return workLoad;
+    }
+
+
+    public static <E> List<E> createList(Supplier<E> supplier) {
+
+        int listSize = Math.abs(new Random().nextInt(MAXIMUM - MINIMUM)) + MINIMUM;
+        return createList(supplier, listSize);
+    }
+
+    public static <E> List<E> createList(Supplier<E> supplier, int listSize) {
+
+
+        List<E> objectList = Lists.newArrayListWithExpectedSize(listSize);
+        for (int i = 0; i < listSize; i++) {
+            objectList.add(supplier.get());
+        }
+        return objectList;
     }
 
 

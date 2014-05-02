@@ -4,7 +4,17 @@ package fr.oltruong.teamag.entity;
 import fr.oltruong.teamag.entity.converter.DateConverter;
 import org.joda.time.DateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Table(name = "TM_ABSENCE_DAY")
 @Entity
@@ -12,7 +22,7 @@ import javax.persistence.*;
 public class AbsenceDay {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -22,7 +32,7 @@ public class AbsenceDay {
 
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    // @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime day;
 

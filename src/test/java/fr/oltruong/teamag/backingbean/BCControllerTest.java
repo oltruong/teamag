@@ -18,7 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Olivier Truong
@@ -49,8 +52,8 @@ public class BCControllerTest extends ControllerTest {
 
     @Test
     public void testInit() throws Exception {
-        List<Activity> activityList = EntityFactory.createActivityList(5);
-        List<BusinessCase> bcList = EntityFactory.createBCList(5);
+        List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
+        List<BusinessCase> bcList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(mockActivityEJB.findActivities()).thenReturn(activityList);
         when(mockActivityEJB.findBC()).thenReturn(bcList);
 

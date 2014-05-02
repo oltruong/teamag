@@ -6,7 +6,6 @@ import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TestUtils;
-import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.primefaces.model.ScheduleEvent;
 
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
@@ -41,8 +41,8 @@ public class ScheduleEventTransformerTest {
     @Test
     public void testConvertAbsenceFullDayList() {
 
-        int absenceCount = 98;
-        List<Absence> absenceList = EntityFactory.createAbsenceList(absenceCount);
+
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
 
         long count = 0l;
         for (Absence absence : absenceList) {
@@ -71,7 +71,7 @@ public class ScheduleEventTransformerTest {
     @Test
     public void testConvertAbsenceList() {
 
-        List<Absence> absenceList = EntityFactory.createAbsenceList(1);
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence, 1);
         absenceList.get(0).getMember().setId(Long.valueOf(365l));
 
         List<ScheduleEvent> eventList = ScheduleEventTransformer.convertAbsenceList(absenceList, mockMessageManager);

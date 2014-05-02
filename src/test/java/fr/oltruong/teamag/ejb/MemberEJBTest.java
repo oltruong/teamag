@@ -7,16 +7,21 @@ import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.enumeration.MemberType;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.persistence.Query;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.refEq;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Olivier Truong
@@ -39,12 +44,32 @@ public class MemberEJBTest extends AbstractEJBTest {
     }
 
     private void buildMemberList() {
-        int numberOfMembers = 7;
-        testMemberList = Lists.newArrayListWithExpectedSize(numberOfMembers);
-        for (int i = 0; i < numberOfMembers; i++) {
-            testMemberList.add(EntityFactory.createMember());
+
+        testMemberList = EntityFactory.createList(EntityFactory::createMember);
+
+        Long counter = Long.valueOf(1l);
+        for (Member member : testMemberList) {
+            member.setId(counter);
+            counter++;
         }
     }
+
+    @Test
+    public void testBuild_empty() {
+        when(getMockQuery().getResultList()).thenReturn(null);
+        memberEJB.build();
+
+        assertThat(MemberEJB.getMemberList()).isNotNull().isEmpty();
+        assertThat(MemberEJB.getMemberMap()).isNotNull().isEmpty();
+    }
+
+    @Test
+    public void testBuild() {
+        memberEJB.build();
+        assertThat(MemberEJB.getMemberList()).isEqualTo(testMemberList).hasSize(MemberEJB.getMemberMap().size());
+        testMemberList.forEach(member -> assertThat(MemberEJB.getMemberMap().get(member.getId())).isEqualTo(member));
+    }
+
 
     @Test
     public void testFindActiveMembers() {
@@ -105,11 +130,13 @@ public class MemberEJBTest extends AbstractEJBTest {
             member.setMemberType(MemberType.ADMINISTRATOR);
         }
 
+        int numberAdminMember = testMemberList.size() - numberAdminMembers;
         List<Member> memberList = memberEJB.findActiveNonAdminMembers();
 
-        assertThat(memberList.size()).isEqualTo(testMemberList.size() - numberAdminMembers);
+        assertThat(memberList.size()).isEqualTo(numberAdminMember);
 
-        assertThat(testMemberList).containsAll(memberList);
+        memberList.forEach(member -> assertThat(!member.isAdministrator()));
+
     }
 
     @Test
@@ -125,13 +152,16 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     }
 
-    @Ignore("FIXME")
+    @Test
     public void testCreateMemberWithAbsenceTask() {
 
         List<Task> taskList = buildEmptyTaskList();
-        taskList.add(new Task());
+        Task task = new Task();
+        taskList.add(task);
+
+
         testCreateMember(taskList);
-        verify(getMockEntityManager()).persist(isA(Task.class));
+        verify(getMockEntityManager()).persist(refEq(task));
 
     }
 
@@ -144,6 +174,26 @@ public class MemberEJBTest extends AbstractEJBTest {
 
     }
 
+    private void testCreateMember(List<Task> taskList) {
+        //   when(getMockQuery().getResultList()).thenReturn(taskList);
+
+        Query mockQueryTask = mock(Query.class);
+        when(getMockEntityManager().createNamedQuery(eq("findTaskByName"))).thenReturn(mockQueryTask);
+        when(mockQueryTask.getResultList()).thenReturn(taskList);
+
+        Member member = EntityFactory.createMember();
+        Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
+
+        assertThat(memberCreated).isEqualTo(member);
+        verify(getMockEntityManager()).createNamedQuery(eq("findTaskByName"));
+        verify(mockQueryTask).setParameter(eq("fname"), isA(String.class));
+        verify(mockQueryTask).setParameter(eq("fproject"), isA(String.class));
+
+
+        verify(getMockEntityManager()).persist(eq(member));
+    }
+
+
     @Test
     public void testUpdateMember() {
         Member member = EntityFactory.createMember();
@@ -152,25 +202,11 @@ public class MemberEJBTest extends AbstractEJBTest {
         verify(getMockEntityManager()).merge(eq(member));
     }
 
-    private void testCreateMember(List<Task> taskList) {
-        when(getMockQuery().getResultList()).thenReturn(taskList);
-
-        Member member = EntityFactory.createMember();
-        Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
-
-        assertThat(memberCreated).isEqualTo(member);
-        verify(getMockEntityManager()).createNamedQuery(eq("findTaskByName"));
-        verify(getMockQuery()).setParameter(eq("fname"), isA(String.class));
-        verify(getMockQuery()).setParameter(eq("fproject"), isA(String.class));
-
-
-        verify(getMockEntityManager()).persist(eq(member));
-    }
 
     private List<Task> buildEmptyTaskList() {
 
-        List<Task> taskList = Lists.newArrayListWithCapacity(1);
-        return taskList;
+        return Lists.newArrayListWithCapacity(1);
+
     }
 
 }

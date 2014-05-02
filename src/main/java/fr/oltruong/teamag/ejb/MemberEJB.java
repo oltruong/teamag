@@ -36,34 +36,30 @@ public class MemberEJB extends AbstractEJB {
     public void build() {
         memberList = findMembers();
 
-        memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
-        for (Member member : memberList) {
-            memberMap.put(member.getId(), member);
+        if (memberList != null) {
+            memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
+            memberList.forEach(member -> memberMap.put(member.getId(), member));
+        } else {
+            memberList = Lists.newArrayListWithExpectedSize(0);
+            memberMap = Maps.newHashMapWithExpectedSize(0);
         }
 
     }
 
     @SuppressWarnings("unchecked")
     public List<Member> findMembers() {
-        Query query = createNamedQuery("findMembers");
-        return query.getResultList();
+        return getNamedQueryList("findMembers");
     }
 
     public List<Member> findActiveMembers() {
-        Query query = createNamedQuery("findActiveMembers");
-        return query.getResultList();
+        return getNamedQueryList("findActiveMembers");
     }
 
     public List<Member> findActiveNonAdminMembers() {
         List<Member> memberList = findActiveMembers();
-        List<Member> nonAdminMemberList = Lists.newArrayListWithExpectedSize(memberList.size());
+        memberList.removeIf(member -> member.isAdministrator());
 
-        for (Member member : memberList) {
-            if (!member.isAdministrator()) {
-                nonAdminMemberList.add(member);
-            }
-        }
-        return nonAdminMemberList;
+        return memberList;
     }
 
 
@@ -127,7 +123,7 @@ public class MemberEJB extends AbstractEJB {
     private void checkMembersNotEmpty() {
 
         if (findMembers().isEmpty()) {
-            getLogger().info("No member so far. Default admin will be created");
+            getLogger().warn("No member so far. Default admin will be created");
 
             Member adminMember = generateAdminMember();
             persist(adminMember);

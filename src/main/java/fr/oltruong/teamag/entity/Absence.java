@@ -1,19 +1,19 @@
 package fr.oltruong.teamag.entity;
 
 import fr.oltruong.teamag.entity.converter.DateConverter;
+import org.joda.time.DateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.joda.time.DateTime;
 
 @Table(name = "TM_ABSENCE")
 @Entity
@@ -27,19 +27,19 @@ public class Absence {
     public static final Integer AFTERNOON_ONLY = 2;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
+    //  @Temporal(TemporalType.DATE)
     private DateTime beginDate;
 
     @Column(nullable = false)
     private Integer beginType = ALL_DAY;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
+    //  @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime endDate;
 

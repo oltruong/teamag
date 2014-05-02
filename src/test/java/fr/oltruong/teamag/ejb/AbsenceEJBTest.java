@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.ejb;
 
-import com.google.common.collect.Lists;
 import fr.oltruong.teamag.entity.Absence;
 import fr.oltruong.teamag.entity.EntityFactory;
 import fr.oltruong.teamag.entity.Member;
@@ -23,22 +22,22 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
     private AbsenceEJB absenceEJB;
 
+    private List<Absence> absenceList;
+
     @Before
     public void prepare() {
         absenceEJB = new AbsenceEJB();
+        absenceList = EntityFactory.createList(EntityFactory::createAbsence);
+        when(getMockQuery().getResultList()).thenReturn(absenceList);
+
         prepareEJB(absenceEJB);
     }
 
 
     @Test
     public void testFindAllAbsences() {
-        List<Absence> absenceList = Lists.newArrayListWithExpectedSize(1);
-        absenceList.add(EntityFactory.createAbsence());
-
-        when(getMockQuery().getResultList()).thenReturn(absenceList);
 
         List<Absence> allAbsenceList = absenceEJB.findAllAbsences();
-
         assertThat(allAbsenceList).isEqualTo(absenceList);
         checkCreateNameQuery("findAllAbsences");
 
@@ -48,18 +47,12 @@ public class AbsenceEJBTest extends AbstractEJBTest {
     @Test
     public void testFindAbsencesByMember() throws Exception {
 
-
-        List<Absence> absenceList = Lists.newArrayListWithExpectedSize(1);
-        absenceList.add(EntityFactory.createAbsence());
-
-        when(getMockQuery().getResultList()).thenReturn(absenceList);
-
         Member member = EntityFactory.createMember();
         member.setId(Long.valueOf(327l));
 
         List<Absence> absenceMemberList = absenceEJB.findAbsencesByMember(member);
 
-        assertThat(absenceMemberList).isNotNull().isNotEmpty().containsOnly(absenceList.get(0));
+        assertThat(absenceMemberList).isNotNull().isNotEmpty().isEqualTo(absenceList);
         checkCreateNameQuery("findAbsencesByMember");
 
         verify(getMockQuery()).setParameter(eq("fmemberId"), eq(member.getId()));
@@ -95,5 +88,23 @@ public class AbsenceEJBTest extends AbstractEJBTest {
         verify(getMockEntityManager()).persist(eq(absence));
 
 
+    }
+
+    @Test
+    public void testFindAbsencesByMemberId() {
+
+
+        List<Absence> absences = absenceEJB.findAbsencesByMemberId(idTest);
+
+        assertThat(absences).isEqualTo(absenceList);
+        verify(mockEntityManager).createNamedQuery(eq("findAbsencesByMember"));
+        verify(mockQuery).setParameter(eq("fmemberId"), eq(idTest));
+
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testFindAbsencesByMemberId_null() {
+        absenceEJB.findAbsencesByMemberId(null);
     }
 }

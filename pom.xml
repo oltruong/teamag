@@ -4,16 +4,15 @@
     <groupId>fr.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
     <name>TeamManagement</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/TeaMag</url>
 
     <properties>
 
-        <version.java>1.7</version.java>
+        <version.java>1.8</version.java>
         <version.javaee>7.0</version.javaee>
-        <version.glassfish>4.0</version.glassfish>
         <version.primefaces>4.0</version.primefaces>
         <version.primefaces-theme>1.0.10</version.primefaces-theme>
         <version.junit>4.11</version.junit>
@@ -30,17 +29,18 @@
         <version.eclipselink>2.5.0</version.eclipselink>
         <version.logback>1.1.2</version.logback>
         <version.genson>0.98</version.genson>
-        <version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
+        <version.jacoco-plugin>0.7.0.201403182114</version.jacoco-plugin>
 
+        <version.h2>1.4.177</version.h2>
         <version.arquillian>1.1.4.Final</version.arquillian>
-        <version.arquillian.glassfish>1.0.0.CR4</version.arquillian.glassfish>
+
 
         <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
         <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
         <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
-        <version.maven-failsafe-plugin>2.16</version.maven-failsafe-plugin>
+        <version.maven-failsafe-plugin>2.17</version.maven-failsafe-plugin>
         <version.maven-war-plugin>2.3</version.maven-war-plugin>
-        <version.maven-surefire-plugin>2.14.1</version.maven-surefire-plugin>
+        <version.maven-surefire-plugin>2.17</version.maven-surefire-plugin>
         <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
         <version.maven-dependency-plugin>2.7</version.maven-dependency-plugin>
         <version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
@@ -58,7 +58,8 @@
 
         <sonar.sources>src/main</sonar.sources>
 
-
+        <version.wildfly>8.0.0.Final</version.wildfly>
+        <version.hibernate>4.3.5.Final</version.hibernate>
     </properties>
 
 
@@ -169,24 +170,12 @@
         <!-- Provided dependencies -->
 
         <dependency>
-            <groupId>org.glassfish.main.extras</groupId>
-            <artifactId>glassfish-embedded-all</artifactId>
-            <version>${version.glassfish}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${version.javaee}</version>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>${version.eclipselink}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- TEST dependencies -->
 
@@ -213,16 +202,36 @@
         </dependency>
 
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${version.h2}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
-            <version>${version.arquillian.glassfish}</version>
-            <scope>test</scope>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-arquillian-container-embedded</artifactId>
+            <version>${version.wildfly}</version>
         </dependency>
 
 
@@ -355,11 +364,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>glassfish-maven-repository.dev.java.net</id>
-            <name>GlassFish Maven Repository</name>
-            <url>http://download.java.net/maven/glassfish/</url>
-        </repository>
         <repository>
             <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>

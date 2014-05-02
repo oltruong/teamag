@@ -16,14 +16,16 @@ import static org.mockito.Mockito.when;
 
 public abstract class AbstractEJBTest {
 
+    protected Long idTest = Long.valueOf(123l);
+
     @Mock
-    private EntityManager mockEntityManager;
+    protected EntityManager mockEntityManager;
 
     @Mock
     private Logger mockLogger;
 
     @Mock
-    private Query mockQuery;
+    protected Query mockQuery;
 
     @Before
     public void setup() {

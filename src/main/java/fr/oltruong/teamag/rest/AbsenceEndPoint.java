@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.interfaces.SecurityChecked;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 
 import javax.ejb.EJB;
@@ -15,11 +16,11 @@ import javax.ws.rs.core.Response;
  */
 @Path("absence")
 @Stateless
-//@SecurityChecked
+@SecurityChecked
 public class AbsenceEndPoint extends AbstractEndPoint {
 
     @EJB
-    AbsenceEJB absenceEJB;
+    private AbsenceEJB absenceEJB;
 
 
     @GET
