@@ -5,7 +5,7 @@
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
     <version>0.5.0-SNAPSHOT</version>
-    <name>TeamManagement</name>
+    <name>TEAMAG</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/TeaMag</url>
 
