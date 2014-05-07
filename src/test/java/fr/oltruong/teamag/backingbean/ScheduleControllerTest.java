@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.EntityFactory;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;

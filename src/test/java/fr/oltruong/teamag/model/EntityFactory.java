@@ -1,10 +1,10 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
-import fr.oltruong.teamag.entity.enumeration.ParameterName;
+import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.model.enumeration.ParameterName;
 import org.joda.time.DateTime;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.entity.Parameter;
-import fr.oltruong.teamag.entity.enumeration.ParameterName;
+import fr.oltruong.teamag.model.Parameter;
+import fr.oltruong.teamag.model.enumeration.ParameterName;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Test;
 

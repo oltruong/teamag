@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.ejb.ActivityEJB;
-import fr.oltruong.teamag.entity.Activity;
-import fr.oltruong.teamag.entity.BusinessCase;
+import fr.oltruong.teamag.model.Activity;
+import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
 import org.apache.commons.lang3.StringUtils;

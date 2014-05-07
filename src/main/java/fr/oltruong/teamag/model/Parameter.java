@@ -1,6 +1,6 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
-import fr.oltruong.teamag.entity.enumeration.ParameterName;
+import fr.oltruong.teamag.model.enumeration.ParameterName;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

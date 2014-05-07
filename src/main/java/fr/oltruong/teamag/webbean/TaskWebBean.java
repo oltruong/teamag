@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.webbean;
 
-import fr.oltruong.teamag.entity.Activity;
+import fr.oltruong.teamag.model.Activity;
 
 /**
  * @author Olivier Truong

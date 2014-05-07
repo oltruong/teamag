@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.webbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.model.Task;
 
 import java.util.List;
 

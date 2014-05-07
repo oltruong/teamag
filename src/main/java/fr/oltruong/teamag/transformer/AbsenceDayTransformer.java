@@ -2,8 +2,8 @@ package fr.oltruong.teamag.transformer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.AbsenceDay;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import org.joda.time.MutableDateTime;
 

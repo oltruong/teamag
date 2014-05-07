@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.transformer;
 
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.EntityFactory;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 import org.joda.time.DateTime;

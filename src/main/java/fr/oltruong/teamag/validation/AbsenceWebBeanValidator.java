@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.validation;
 
 import com.google.common.base.Preconditions;
-import fr.oltruong.teamag.entity.Absence;
+import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;

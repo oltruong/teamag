@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
 import com.google.common.collect.Lists;
 

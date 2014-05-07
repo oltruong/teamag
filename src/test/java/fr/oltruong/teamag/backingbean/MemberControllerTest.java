@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
+import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Ignore;

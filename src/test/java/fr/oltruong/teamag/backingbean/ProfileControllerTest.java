@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.EntityFactory;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import fr.oltruong.teamag.utils.TestUtils;

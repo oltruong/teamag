@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.webbean;
 
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.entity.Task;
-import fr.oltruong.teamag.entity.Work;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.Work;
 
 import java.util.Collection;
 import java.util.Map;

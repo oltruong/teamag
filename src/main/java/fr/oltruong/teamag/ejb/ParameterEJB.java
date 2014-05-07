@@ -4,8 +4,8 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.entity.Parameter;
-import fr.oltruong.teamag.entity.enumeration.ParameterName;
+import fr.oltruong.teamag.model.Parameter;
+import fr.oltruong.teamag.model.enumeration.ParameterName;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.annotation.PostConstruct;

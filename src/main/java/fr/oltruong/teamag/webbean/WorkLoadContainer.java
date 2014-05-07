@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.webbean;
 
-import fr.oltruong.teamag.entity.BusinessCase;
-import fr.oltruong.teamag.entity.WorkLoad;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.model.WorkLoad;
 
 import java.util.List;
 

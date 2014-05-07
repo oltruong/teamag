@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.entity.converter;
+package fr.oltruong.teamag.model.converter;
 
 import org.joda.time.DateTime;
 import org.junit.Before;

@@ -2,9 +2,9 @@ package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Maps;
 import fr.oltruong.teamag.ejb.WorkEJB;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.Task;
-import fr.oltruong.teamag.entity.Work;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.utils.TeamagConstants;
 import fr.oltruong.teamag.webbean.RealizedReportBean;
 import org.joda.time.DateTime;

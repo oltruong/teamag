@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.rest.filter;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,7 +3,7 @@ package fr.oltruong.teamag.backingbean;
 import fr.oltruong.teamag.ejb.EmailEJB;
 import fr.oltruong.teamag.ejb.ParameterEJB;
 import fr.oltruong.teamag.ejb.WorkLoadEJB;
-import fr.oltruong.teamag.entity.Parameter;
+import fr.oltruong.teamag.model.Parameter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;

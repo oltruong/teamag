@@ -2,7 +2,7 @@ package fr.oltruong.teamag.webbean;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Member;
 import org.joda.time.DateTime;
 
 import java.util.List;

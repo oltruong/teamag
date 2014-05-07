@@ -1,10 +1,10 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.entity.EntityFactory;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.Task;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
+import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;

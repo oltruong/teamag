@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.AbsenceEJB;
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.transformer.ScheduleEventTransformer;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;

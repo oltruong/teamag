@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.ejb;
 
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.AbsenceDay;
-import fr.oltruong.teamag.entity.BusinessCase;
-import fr.oltruong.teamag.entity.EntityFactory;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.WorkLoad;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.AbsenceDay;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;

@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.ejb;
 
 import com.google.common.base.Preconditions;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.Member;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;

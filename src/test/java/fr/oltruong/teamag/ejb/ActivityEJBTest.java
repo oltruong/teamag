@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.ejb;
 
-import fr.oltruong.teamag.entity.Activity;
-import fr.oltruong.teamag.entity.BusinessCase;
-import fr.oltruong.teamag.entity.EntityFactory;
+import fr.oltruong.teamag.model.Activity;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import org.junit.Before;
 import org.junit.Test;

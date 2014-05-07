@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.ActivityEJB;
-import fr.oltruong.teamag.entity.Activity;
-import fr.oltruong.teamag.entity.BusinessCase;
+import fr.oltruong.teamag.model.Activity;
+import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 

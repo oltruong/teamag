@@ -1,6 +1,6 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
-import fr.oltruong.teamag.entity.enumeration.MemberType;
+import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TeamagConstants;
 
 import javax.persistence.*;

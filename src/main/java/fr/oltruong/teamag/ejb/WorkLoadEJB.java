@@ -2,11 +2,11 @@ package fr.oltruong.teamag.ejb;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.entity.Absence;
-import fr.oltruong.teamag.entity.AbsenceDay;
-import fr.oltruong.teamag.entity.BusinessCase;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.WorkLoad;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.AbsenceDay;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 
 import javax.ejb.Stateless;

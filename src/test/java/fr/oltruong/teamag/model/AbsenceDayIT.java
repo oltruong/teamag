@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
 
 import org.junit.Before;
@@ -6,7 +6,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.RollbackException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

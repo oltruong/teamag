@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.ejb;
 
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.Task;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Task;
 import org.junit.Ignore;
 
 import javax.inject.Inject;

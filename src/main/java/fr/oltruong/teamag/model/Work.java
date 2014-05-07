@@ -1,6 +1,6 @@
-package fr.oltruong.teamag.entity;
+package fr.oltruong.teamag.model;
 
-import fr.oltruong.teamag.entity.converter.DateConverter;
+import fr.oltruong.teamag.model.converter.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;

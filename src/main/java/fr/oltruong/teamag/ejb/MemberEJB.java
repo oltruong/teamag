@@ -2,9 +2,9 @@ package fr.oltruong.teamag.ejb;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.entity.Member;
-import fr.oltruong.teamag.entity.Task;
-import fr.oltruong.teamag.entity.enumeration.MemberType;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.collections.CollectionUtils;

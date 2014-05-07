@@ -2,7 +2,7 @@ package fr.oltruong.teamag.webbean;
 
 
 import com.google.common.base.Preconditions;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Member;
 
 /**
  * @author Olivier Truong

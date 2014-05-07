@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.webbean;
 
-import fr.oltruong.teamag.entity.EntityFactory;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.Member;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

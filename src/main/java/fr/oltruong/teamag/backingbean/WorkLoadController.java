@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
 import fr.oltruong.teamag.ejb.WorkLoadEJB;
-import fr.oltruong.teamag.entity.AbsenceDay;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.AbsenceDay;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.WeekLoadWebBean;
 import fr.oltruong.teamag.webbean.WorkLoadFormWebBean;

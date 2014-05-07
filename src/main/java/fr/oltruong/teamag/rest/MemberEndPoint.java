@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.rest;
 
 import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.entity.Member;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 
 import javax.ejb.EJB;
