@@ -55,7 +55,7 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
             BusinessCase.save($scope.newbc, function () {
                 $location.path('businesscases').search({confirmation: 'Business Case ' + $scope.newbc.identifier + '-' + $scope.newbc.name + ' ajouté'});
             }, function (error) {
-                if (error.status == "406") {
+                if (error.status === "406") {
                     $scope.warning = "Le BC " + $scope.newbc.identifier + " existe déjà";
                 } else {
                     $scope.error = 'Erreur HTTP' + error.status;

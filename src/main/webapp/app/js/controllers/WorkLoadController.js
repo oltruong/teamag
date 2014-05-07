@@ -26,7 +26,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
 
                 angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
-                    if (workLoad.member.id == $member.id) {
+                    if (workLoad.member.id === $member.id) {
                         total += workLoad.estimated;
                     }
 
@@ -47,7 +47,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
         };
 
         $scope.displayClassWorkLoad = function ($workload) {
-            if ($workload.estimated == 0) {
+            if ($workload.estimated === 0) {
                 return 'hidden';
             } else if ($workload.estimated < 0) {
                 return 'text-danger';
@@ -119,7 +119,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             var total = 0;
             angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
 
-                if ($workLoadContainer == workLoadContainer) {
+                if ($workLoadContainer === workLoadContainer) {
 
                     angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
                         total += workLoad.estimated;

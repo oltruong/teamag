@@ -14,8 +14,8 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
 
         $scope.findAmount = function ($task, $day) {
             for (var i = 0; i < $scope.works.length; i++) {
-                if ($scope.works[i].task == $task && $scope.works[i].day == $day) {
-                    if ($scope.works[i].amount == 0) {
+                if ($scope.works[i].task === $task && $scope.works[i].day === $day) {
+                    if ($scope.works[i].amount === 0) {
                         return '';
                     } else {
                         return $scope.works[i].amount;
@@ -32,14 +32,14 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                 $scope.works = data;
                 $scope.days = new Array();
                 for (var i = 0; i < $scope.works.length; i++) {
-                    if ($scope.days.indexOf($scope.works[i].day) == -1) {
+                    if ($scope.days.indexOf($scope.works[i].day) === -1) {
                         $scope.days.push($scope.works[i].day);
                     }
                 }
 
                 $scope.tasks = new Array();
                 for (var i = 0; i < $scope.works.length; i++) {
-                    if ($scope.tasks.indexOf($scope.works[i].task) == -1) {
+                    if ($scope.tasks.indexOf($scope.works[i].task) === -1) {
                         $scope.tasks.push($scope.works[i].task);
                     }
                 }

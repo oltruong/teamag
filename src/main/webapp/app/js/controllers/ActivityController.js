@@ -14,7 +14,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
                 var bcLength = $scope.businesscases.length;
                 for (var i = 0; i < activitiesLength; i++) {
 
-                    if ($scope.activities[i].bc != null) {
+                    if ($scope.activities[i].bc !== null) {
                         for (var j = 0; j < bcLength; j++) {
                             if ($scope.activities[i].bc.id == $scope.businesscases[j].id) {
                                 $scope.activities[i].bc = $scope.businesscases[j];
@@ -77,7 +77,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
             Activity.save($scope.newActivity, function () {
                 $location.path('activities').search({confirmation: 'Activité ' + $scope.newActivity.name + ' ajoutée'});
             }, function (error) {
-                if (error.status == "406") {
+                if (error.status === "406") {
                     $scope.warning = "L'activité " + $scope.newActivity.name + " sur BC " + $scope.newActivity.bc.identifier + "-" + $scope.newActivity.bc.name + " existe déjà";
                 } else {
                     $scope.error = 'Erreur HTTP' + error.status;
