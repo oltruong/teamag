@@ -5,9 +5,9 @@ module.exports = function(config){
     files : [
       'app/lib/angular/angular.js',
       'app/lib/angular/angular-*.js',
-      'test/lib/angular/angular-mocks.js',
+      '../../../test/webapp/lib/angular/angular-mocks.js',
       'app/js/**/*.js',
-      'test/unit/**/*.js'
+      '../../../test/webapp/unit/**/*.js'
     ],
 
     exclude : [

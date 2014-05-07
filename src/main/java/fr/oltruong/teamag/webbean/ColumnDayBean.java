@@ -38,4 +38,15 @@ public class ColumnDayBean implements Comparable<ColumnDayBean> {
 
         return day.compareTo(arg0.getDay());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

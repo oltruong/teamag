@@ -1,12 +1,11 @@
 package fr.oltruong.teamag.webbean;
 
-import java.util.Collection;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
 import fr.oltruong.teamag.entity.Task;
 import fr.oltruong.teamag.entity.Work;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class TaskWeekBean implements Comparable<TaskWeekBean> {
 
@@ -65,4 +64,18 @@ public class TaskWeekBean implements Comparable<TaskWeekBean> {
         return task.compareTo(otherTask.getTask());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TaskWebBean) {
+            return task.equals((TaskWebBean) ((TaskWebBean) obj).getTask());
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

@@ -2,7 +2,17 @@ package fr.oltruong.teamag.entity;
 
 import com.google.common.collect.Lists;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
 @Table(name = "TM_TASK")
@@ -108,6 +118,11 @@ public class Task {
         }
         Task member0 = (Task) otherTask;
         return this.id.equals(member0.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     @Override
