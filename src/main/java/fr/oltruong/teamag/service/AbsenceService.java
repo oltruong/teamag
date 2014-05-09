@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.base.Preconditions;
 import fr.oltruong.teamag.model.Absence;
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Stateless
-public class AbsenceEJB extends AbstractEJB {
+public class AbsenceService extends AbstractService {
 
 
     public List<Absence> findAllAbsences() {

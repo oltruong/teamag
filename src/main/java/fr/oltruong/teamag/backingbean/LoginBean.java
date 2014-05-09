@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.interfaces.UserLogin;
@@ -24,7 +24,7 @@ public class LoginBean
     @Inject
     private Logger logger;
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
     @Inject
     private HttpServletRequest servletRequest;
     private Member member;

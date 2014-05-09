@@ -7,6 +7,8 @@ import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.model.enumeration.ParameterName;
 import org.joda.time.DateTime;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -72,17 +74,24 @@ public class EntityFactory {
 
     public static Activity createActivity() {
         Activity activity = new Activity();
+        activity.setId(null);
         activity.setName("MyActivity" + DateTime.now().getMillis());
         activity.setBc(createBusinessCase());
+        activity.setComment("MyComment" + LocalDate.now().toString());
+        activity.setDelegated(Boolean.FALSE);
+        activity.setAmount(Double.valueOf(LocalDate.now().getDayOfMonth()));
         return activity;
     }
 
 
     public static BusinessCase createBusinessCase() {
+        DateTime now = DateTime.now();
         BusinessCase businessCase = new BusinessCase();
-        businessCase.setName("MyBC" + DateTime.now().getMillis());
-        businessCase.setAmount(Double.valueOf(DateTime.now().getMillis()));
-        businessCase.setIdentifier("" + DateTime.now().getMillisOfSecond());
+        businessCase.setName("MyBC" + now.getMillis());
+        businessCase.setAmount(Double.valueOf(now.getMillis()));
+        businessCase.setIdentifier("" + now.getMillisOfSecond());
+        businessCase.setComment("Comment" + now.toString());
+        businessCase.setId(null);
         return businessCase;
     }
 
@@ -108,6 +117,18 @@ public class EntityFactory {
         return workLoad;
     }
 
+
+    public static Task createTask() {
+        Task task = new Task();
+
+        task.setName("createTask" + Calendar.getInstance().getTimeInMillis());
+        task.setProject("my project");
+
+        task.addMember(createMember());
+
+        return task;
+
+    }
 
     public static <E> List<E> createList(Supplier<E> supplier) {
 

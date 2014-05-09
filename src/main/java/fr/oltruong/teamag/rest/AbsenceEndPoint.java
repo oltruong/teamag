@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.ejb.AbsenceEJB;
+import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 
@@ -20,13 +20,13 @@ import javax.ws.rs.core.Response;
 public class AbsenceEndPoint extends AbstractEndPoint {
 
     @EJB
-    private AbsenceEJB absenceEJB;
+    private AbsenceService absenceService;
 
 
     @GET
     @Path("/{id}")
     public Response getAbsences(@PathParam("id") Long memberId) {
-        return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceEJB.findAbsencesByMemberId(memberId)));
+        return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMemberId(memberId)));
     }
 
 

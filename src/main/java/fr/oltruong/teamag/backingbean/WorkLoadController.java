@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.ejb.WorkLoadEJB;
+import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.utils.CalendarUtils;
@@ -21,10 +21,10 @@ import java.util.List;
 public class WorkLoadController extends Controller {
 
     @Inject
-    private WorkLoadEJB workLoadEJB;
+    private WorkLoadService workLoadEJB;
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
 
     private WorkLoadFormWebBean formWebBean;

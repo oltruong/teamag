@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.AbsenceService;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.transformer.ScheduleEventTransformer;
@@ -24,10 +24,10 @@ public class ScheduleController extends Controller {
     private ScheduleModel eventModel;
 
     @Inject
-    private AbsenceEJB absenceEJB;
+    private AbsenceService absenceService;
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberService;
 
     private static final String VIEWNAME = "schedule";
 
@@ -42,7 +42,7 @@ public class ScheduleController extends Controller {
     private void fillEventModel() {
 
         eventModel = new DefaultScheduleModel();
-        members = memberEJB.findMembers();
+        members = memberService.findMembers();
         fillAbsences();
         fillDaysOff();
 
@@ -54,7 +54,7 @@ public class ScheduleController extends Controller {
     }
 
     private void fillAbsences() {
-        List<Absence> absenceList = absenceEJB.findAllAbsences();
+        List<Absence> absenceList = absenceService.findAllAbsences();
         List<ScheduleEvent> eventList = ScheduleEventTransformer.convertAbsenceList(absenceList, getMessageManager());
         fillEventList(eventList);
     }

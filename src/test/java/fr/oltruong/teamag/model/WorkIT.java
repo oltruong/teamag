@@ -17,13 +17,13 @@ public class WorkIT extends AbstractEntityIT {
         Work work = createWork();
 
 
-        getEntityManager().persist(work.getTask().getMembers().get(0));
+        entityManager.persist(work.getTask().getMembers().get(0));
         work.setMember(work.getTask().getMembers().get(0));
-        getEntityManager().persist(work.getTask());
+        entityManager.persist(work.getTask());
 
-        getEntityManager().persist(work);
+        entityManager.persist(work);
 
-        getTransaction().commit();
+        transaction.commit();
 
 
         assertThat(work.getId()).isNotNull();
@@ -34,15 +34,15 @@ public class WorkIT extends AbstractEntityIT {
 
         Work work = createWork();
 
-        getEntityManager().persist(work.getTask().getMembers().get(0));
+        entityManager.persist(work.getTask().getMembers().get(0));
         work.setMember(work.getTask().getMembers().get(0));
-        getEntityManager().persist(work.getTask());
+        entityManager.persist(work.getTask());
 
-        getEntityManager().persist(work);
+        entityManager.persist(work);
 
-        getTransaction().commit();
+        transaction.commit();
 
-        Query query = getEntityManager().createNamedQuery("findWorksByMemberMonth");
+        Query query = entityManager.createNamedQuery("findWorksByMemberMonth");
         query.setParameter("fmemberId", work.getMember().getId());
         query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
 

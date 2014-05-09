@@ -3,15 +3,15 @@ package fr.oltruong.teamag.backingbean;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.ejb.EmailEJB;
-import fr.oltruong.teamag.ejb.MailBean;
-import fr.oltruong.teamag.ejb.WorkEJB;
+import fr.oltruong.teamag.exception.ExistingDataException;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
-import fr.oltruong.teamag.exception.ExistingDataException;
-import fr.oltruong.teamag.interfaces.UserLogin;
+import fr.oltruong.teamag.service.EmailService;
+import fr.oltruong.teamag.service.MailBean;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
@@ -45,9 +45,9 @@ public class WorkController extends Controller {
     @Inject
     private RealizedFormWebBean realizedBean;
     @Inject
-    private WorkEJB workEJB;
+    private WorkService workService;
     @Inject
-    private EmailEJB mailEJB;
+    private EmailService mailService;
 
     private WeekComment weekComment;
 
@@ -65,7 +65,7 @@ public class WorkController extends Controller {
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workEJB.findOrCreateWorks(getMember(), firstDayOfMonth);
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth);
 
         initTaskWeek();
         return VIEWNAME;
@@ -83,9 +83,9 @@ public class WorkController extends Controller {
         } else {
 
             try {
-                workEJB.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
+                workService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workEJB.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1));
+                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1));
                 initTaskWeek();
 
                 FacesMessage msg = null;
@@ -105,7 +105,7 @@ public class WorkController extends Controller {
     public String deleteTask() {
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        workEJB.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
+        workService.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
 
         initInformation(realizedBean.getDayCursor());
         return VIEWNAME;
@@ -127,7 +127,7 @@ public class WorkController extends Controller {
     public String update() {
 
         List<Work> changedWorks = findChangedWorks(realizedBean.getTaskWeeks());
-        workEJB.updateWorks(changedWorks);
+        workService.updateWorks(changedWorks);
 
         updateComment();
 
@@ -154,17 +154,17 @@ public class WorkController extends Controller {
     private void updateComment() {
         if (Strings.isNullOrEmpty(weekComment.getComment())) {
             if (weekComment.getId() != null) {
-                workEJB.removeWeekComment(weekComment);
+                workService.removeWeekComment(weekComment);
             }
         } else {
             if (weekComment.getId() != null) {
-                workEJB.updateWeekComment(weekComment);
+                workService.updateWeekComment(weekComment);
             } else {
-                workEJB.createWeekComment(weekComment);
+                workService.createWeekComment(weekComment);
             }
 
             MailBean email = buildEmailComment(weekComment);
-            mailEJB.sendEmailAdministrator(email);
+            mailService.sendEmailAdministrator(email);
 
         }
     }
@@ -178,7 +178,7 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeProject(String query) {
-        List<Task> tasks = workEJB.findAllNonAdminTasks();
+        List<Task> tasks = workService.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -194,9 +194,9 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeName(String query) {
-//        List<Task> tasks = workEJB.findTasksByProject(newTask.getProject());
+//        List<Task> tasks = workService.findTasksByProject(newTask.getProject());
 
-        List<Task> tasks = workEJB.findAllNonAdminTasks();
+        List<Task> tasks = workService.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -213,13 +213,13 @@ public class WorkController extends Controller {
     }
 
     private void sendNotification() {
-        int total = workEJB.getSumWorks(getMember(), realizedBean.getCurrentMonth());
+        int total = workService.getSumWorks(getMember(), realizedBean.getCurrentMonth());
 
         int nbWorkingDays = CalendarUtils.getWorkingDays(realizedBean.getCurrentMonth()).size();
         if (total == nbWorkingDays) {
 
             MailBean email = buildEmail();
-            mailEJB.sendEmailAdministrator(email);
+            mailService.sendEmailAdministrator(email);
         }
     }
 
@@ -232,7 +232,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = workService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());

@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.base.Strings;
 import fr.oltruong.teamag.model.Activity;
@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Stateless
-public class ActivityEJB extends AbstractEJB {
+public class ActivityService extends AbstractService {
 
     @SuppressWarnings("unchecked")
     public List<BusinessCase> findBC() {
@@ -34,7 +34,7 @@ public class ActivityEJB extends AbstractEJB {
 
 
         //Create WorkLoad
-        List<Member> memberList = MemberEJB.getMemberList();
+        List<Member> memberList = MemberService.getMemberList();
         if (memberList != null) {
             for (Member member : memberList) {
                 WorkLoad workLoad = new WorkLoad(bc, member);

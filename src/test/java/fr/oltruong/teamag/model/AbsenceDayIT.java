@@ -22,7 +22,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreateAndFind() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
 
         assertThat(absenceDay.getId()).isNull();
@@ -54,7 +54,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
         absenceDay.setMember(absenceDay.getAbsence().getMember());
         createWithoutCommit(absenceDay.getAbsence());
         absenceDay = (AbsenceDay) createWithCommit(absenceDay);
-        List<Object[]> objects = getEntityManager().createQuery("SELECT SUM(a.value), a.week, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week").getResultList();
+        List<Object[]> objects = entityManager.createQuery("SELECT SUM(a.value), a.week, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week").getResultList();
 
         assertThat(objects).isNotNull().isNotEmpty();
     }

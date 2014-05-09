@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import org.slf4j.Logger;
 
@@ -14,7 +14,7 @@ import java.util.Properties;
 
 // from http://www.tutorialspoint.com/java/java_sending_email.htm
 @Stateless
-public class EmailEJB {
+public class EmailService {
 
     @Inject
     private Logger logger;
@@ -22,7 +22,7 @@ public class EmailEJB {
     private static final String SENDER = "TEAMAG";
 
     @Inject
-    private ParameterEJB parameterEJB;
+    private ParameterService parameterEJB;
 
     public void sendEmailAdministrator(MailBean email) {
 

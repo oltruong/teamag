@@ -1,15 +1,20 @@
 package fr.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.WorkEJB;
-import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.webbean.TaskWebBean;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -22,17 +27,17 @@ import java.util.List;
 public class TaskEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkEJB workEJB;
+    WorkService workEJB;
 
 
     @GET
     public Response getTasks() {
 
-//        List<TaskWebBean> taskWebBeanList = buildTask();
-//
-//        buildResponseOK(taskWebBeanList);
+        List<TaskWebBean> taskWebBeanList = buildTask();
 
-        return buildResponseOK(workEJB.findAllTasks());
+        return buildResponseOK(taskWebBeanList);
+
+//        return buildResponseOK(workEJB.findAllTasks());
     }
 
     private List<TaskWebBean> buildTask() {

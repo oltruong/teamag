@@ -30,9 +30,9 @@ public class WorkLoadIT extends AbstractEntityIT {
         assertThat(workLoad.getId()).isNotNull();
 
 
-        WorkLoad workLoadDB = getEntityManager().find(WorkLoad.class, workLoad.getId());
+        WorkLoad workLoadDB = entityManager.find(WorkLoad.class, workLoad.getId());
 
 
-        assertThat(workLoadDB).isEqualTo(workLoad);
+        assertThat(workLoadDB).isEqualToComparingFieldByField(workLoad).isEqualTo(workLoad);
     }
 }

@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.model.Member;
@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 
 
-public class MemberEJBIT extends AbstractEJBIT {
+public class MemberServiceIT extends AbstractServiceIT {
 
     // ======================================
     // = Unit tests =
     // ======================================
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
     //    @Ignore("Create a permGenSpace + require Guava 14.0")
     @Ignore

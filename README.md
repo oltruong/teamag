@@ -1,6 +1,6 @@
 # TEAMAG
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
-* Team management web application using JavaEE 7 to learn while getting a useful tool for my job :)
+* Team management web application using Java8/JavaEE 7 to learn while getting a useful tool for my job :)
 
 
 ## Frameworks and librairies used
@@ -16,13 +16,13 @@
 
 ### Required software
 
-* [Java7] (http://www.oracle.com/technetwork/java/index.html)
+* [Java8] (http://www.oracle.com/technetwork/java/index.html)
 * [Maven] (http://maven.apache.org)
-* [JavaEE 7 server] (https://glassfish.java.net/): for example Glassfish
+* [JavaEE 7 server with Java 8] (http://www.wildfly.org/): for example WildFly
 
 ### Default configuration
-* Datasource : jdbc/teamag
-* Default user/pwd : admin/admin
+* Datasource : java:/jdbc/teamag
+* Default user login/password : admin/admin
 
 ## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">TEAMAG</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Olivier Truong</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/oltruong/TeaMag" rel="dct:source">https://github.com/oltruong/TeaMag</a>.

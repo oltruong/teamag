@@ -18,18 +18,14 @@ public class AbsenceIT extends AbstractEntityIT {
         Absence absence = EntityFactory.createAbsence();
 
         assertThat(absence.getId()).isNull();
-        getEntityManager().persist(absence.getMember());
-        getEntityManager().persist(absence);
-        getTransaction().commit();
+        entityManager.persist(absence.getMember());
+        entityManager.persist(absence);
+        transaction.commit();
         assertThat(absence.getId()).isNotNull();
 
-        Absence absenceDB = getEntityManager().find(Absence.class, absence.getId());
+        Absence absenceDB = entityManager.find(Absence.class, absence.getId());
 
-        assertThat(absence.getBeginDate()).isEqualTo(absenceDB.getBeginDate());
-        assertThat(absence.getEndDate()).isEqualTo(absenceDB.getEndDate());
-        assertThat(absence.getBeginType()).isEqualTo(absenceDB.getBeginType());
-        assertThat(absence.getEndType()).isEqualTo(absenceDB.getEndType());
-        assertThat(absence.getMember()).isEqualTo(absenceDB.getMember());
+        assertThat(absence).isEqualTo(absenceDB);
 
     }
 
@@ -37,9 +33,9 @@ public class AbsenceIT extends AbstractEntityIT {
     public void testCreationMissingEndDate() {
         Absence absence = EntityFactory.createAbsence();
         absence.setEndDate(null);
-        getEntityManager().persist(absence.getMember());
-        getEntityManager().persist(absence);
-        getTransaction().commit();
+        entityManager.persist(absence.getMember());
+        entityManager.persist(absence);
+        transaction.commit();
     }
 
     @Test
@@ -51,15 +47,15 @@ public class AbsenceIT extends AbstractEntityIT {
         member2.setName("BUDDY");
         absence2.setMember(member2);
 
-        getEntityManager().persist(absence.getMember());
-        getEntityManager().persist(absence);
+        entityManager.persist(absence.getMember());
+        entityManager.persist(absence);
 
-        getEntityManager().persist(absence2.getMember());
-        getEntityManager().persist(absence2);
+        entityManager.persist(absence2.getMember());
+        entityManager.persist(absence2);
 
-        getTransaction().commit();
+        transaction.commit();
 
-        Query query = getEntityManager().createNamedQuery("findAbsencesByMember");
+        Query query = entityManager.createNamedQuery("findAbsencesByMember");
         query.setParameter("fmemberId", member2.getId());
         List<Absence> absenceList = query.getResultList();
 

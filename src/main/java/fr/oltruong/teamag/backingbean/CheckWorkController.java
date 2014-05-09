@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.ejb.WorkEJB;
+import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
@@ -39,10 +39,10 @@ public class CheckWorkController extends Controller {
     private RealizedFormWebBean realizedBean;
 
     @Inject
-    private WorkEJB workEJB;
+    private WorkService workEJB;
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
     private WeekComment weekComment;
 

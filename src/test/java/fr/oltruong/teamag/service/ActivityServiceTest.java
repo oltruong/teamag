@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
@@ -20,14 +20,14 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olivier Truong
  */
-public class ActivityEJBTest extends AbstractEJBTest {
+public class ActivityServiceTest extends AbstractServiceTest {
 
 
-    private ActivityEJB activityEJB;
+    private ActivityService activityEJB;
 
     @Before
     public void prepare() {
-        activityEJB = new ActivityEJB();
+        activityEJB = new ActivityService();
         prepareEJB(activityEJB);
     }
 

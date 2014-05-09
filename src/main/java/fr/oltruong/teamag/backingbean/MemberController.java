@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TeamagConstants;
@@ -23,7 +23,7 @@ public class MemberController extends Controller {
     private org.slf4j.Logger logger;
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
     @Inject
     private Member member;
     private List<Member> memberList = Lists.newArrayList();

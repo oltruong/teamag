@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 public class LoginEndPoint extends AbstractEndPoint {
 
     @EJB
-    MemberEJB memberEJB;
+    MemberService memberEJB;
 
     @GET
     @Path("/{loginInformation}")

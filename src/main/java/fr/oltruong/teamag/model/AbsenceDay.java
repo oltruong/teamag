@@ -59,9 +59,6 @@ public class AbsenceDay {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getMonth() {
         return month;
@@ -102,7 +99,4 @@ public class AbsenceDay {
         return absence;
     }
 
-    public void setAbsence(Absence absence) {
-        this.absence = absence;
-    }
 }

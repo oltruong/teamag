@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Singleton
 @Startup
-public class MemberEJB extends AbstractEJB {
+public class MemberService extends AbstractService {
 
 
     private static List<Member> memberList;

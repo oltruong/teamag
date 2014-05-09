@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -33,7 +34,7 @@ public class Task {
     private List<Member> members = Lists.newArrayListWithCapacity(1);
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TASK_PARENT_FK")
     private Task task;
 
@@ -180,4 +181,6 @@ public class Task {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+
 }

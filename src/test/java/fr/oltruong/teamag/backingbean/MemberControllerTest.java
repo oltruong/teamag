@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberControllerTest {
 
     @Mock
-    private MemberEJB mockMemberEJB;
+    private MemberService mockMemberEJB;
 
     private MemberController memberController;
 

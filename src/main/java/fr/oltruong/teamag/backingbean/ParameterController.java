@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.EmailEJB;
-import fr.oltruong.teamag.ejb.ParameterEJB;
-import fr.oltruong.teamag.ejb.WorkLoadEJB;
+import fr.oltruong.teamag.service.EmailService;
+import fr.oltruong.teamag.service.ParameterService;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.model.Parameter;
 
 import javax.annotation.PostConstruct;
@@ -30,15 +30,15 @@ public class ParameterController extends Controller {
     // = Attributes =
     // ======================================
     @Inject
-    private ParameterEJB parametersEJB;
+    private ParameterService parametersEJB;
 
 
     @Inject
-    private WorkLoadEJB workLoadEJB;
+    private WorkLoadService workLoadEJB;
 
 
     @Inject
-    private EmailEJB emailEJB;
+    private EmailService emailService;
 
     private Parameter smtpHostParameter;
 

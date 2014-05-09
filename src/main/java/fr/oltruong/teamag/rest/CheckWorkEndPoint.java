@@ -5,7 +5,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
-import fr.oltruong.teamag.ejb.WorkEJB;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.interfaces.SupervisorChecked;
@@ -30,7 +30,7 @@ import java.util.List;
 public class CheckWorkEndPoint extends AbstractEndPoint {
 
     @Inject
-    private WorkEJB workEJB;
+    private WorkService workEJB;
 
 
     @GET

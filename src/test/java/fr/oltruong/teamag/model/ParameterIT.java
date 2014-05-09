@@ -13,8 +13,8 @@ public class ParameterIT extends AbstractEntityIT {
     public void testCreation() {
         Parameter parameter = EntityFactory.createParameter();
         assertThat(parameter.getId()).isNull();
-        getEntityManager().persist(parameter);
-        getTransaction().commit();
+        entityManager.persist(parameter);
+        transaction.commit();
 
         assertThat(parameter.getId()).isNotNull();
     }

@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.Parameter;
@@ -15,12 +15,12 @@ import static org.mockito.Mockito.*;
 /**
  * @author Olivier Truong
  */
-public class ParameterEJBTest extends AbstractEJBTest {
+public class ParameterServiceTest extends AbstractServiceTest {
 
     @Test
     public void testSaveAndReloadParameters() throws Exception {
 
-        ParameterEJB parameterEJB = new ParameterEJB();
+        ParameterService parameterEJB = new ParameterService();
         prepareEJB(parameterEJB);
         TestUtils.callPrivateMethod(parameterEJB, "initValue");
 

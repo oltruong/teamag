@@ -1,7 +1,7 @@
 /**
  *
  */
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Maps;
 import fr.oltruong.teamag.model.Parameter;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Olivier Truong
  */
 @Singleton
-public class ParameterEJB extends AbstractEJB {
+public class ParameterService extends AbstractService {
 
     private Map<ParameterName, Parameter> parameterMap;
 

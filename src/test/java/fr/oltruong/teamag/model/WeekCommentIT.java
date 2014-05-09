@@ -15,9 +15,9 @@ public class WeekCommentIT extends AbstractEntityIT {
     public void testCreation() {
         WeekComment weekComment = EntityFactory.createWeekComment();
         assertThat(weekComment.getId()).isNull();
-        getEntityManager().persist(weekComment.getMember());
-        getEntityManager().persist(weekComment);
-        getTransaction().commit();
+        entityManager.persist(weekComment.getMember());
+        entityManager.persist(weekComment);
+        transaction.commit();
         assertThat(weekComment.getId()).isNotNull();
     }
 
@@ -26,8 +26,8 @@ public class WeekCommentIT extends AbstractEntityIT {
         WeekComment weekComment = EntityFactory.createWeekComment();
         weekComment.setMember(null);
         assertThat(weekComment.getId()).isNull();
-        getEntityManager().persist(weekComment);
-        getTransaction().commit();
+        entityManager.persist(weekComment);
+        transaction.commit();
 
     }
 }

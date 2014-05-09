@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
@@ -9,13 +9,13 @@ import javax.naming.NamingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WorkEJBIT extends AbstractEJBIT {
+public class WorkServiceIT extends AbstractServiceIT {
 
     // ======================================
     // = Unit tests =
     // ======================================
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
     // FIXME
     @Ignore("too long")

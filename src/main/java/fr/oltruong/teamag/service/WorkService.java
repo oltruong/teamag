@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Stateless
-public class WorkEJB extends AbstractEJB {
+public class WorkService extends AbstractService {
 
     public Map<Task, List<Work>> findWorksNotNull(Member member, DateTime month) {
 

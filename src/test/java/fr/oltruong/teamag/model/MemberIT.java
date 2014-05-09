@@ -15,27 +15,31 @@ public class MemberIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
         Member member = EntityFactory.createMember();
-        getEntityManager().persist(member);
+        entityManager.persist(member);
         assertThat(member.getId()).isNotNull();
+
+        Member memberDB = entityManager.find(Member.class, member.getId());
+
+        assertThat(memberDB).isEqualToComparingFieldByField(member).isEqualTo(member);
     }
 
     @Test(expected = PersistenceException.class)
     public void testException() {
         Member member = EntityFactory.createMember();
         member.setEmail(null);
-        getEntityManager().persist(member);
-        getTransaction().commit();
+        entityManager.persist(member);
+        transaction.commit();
     }
 
     @Test
     public void testFindMembers() {
 
         Member member = EntityFactory.createMember();
-        getEntityManager().persist(member);
+        entityManager.persist(member);
 
-        getTransaction().commit();
+        transaction.commit();
         @SuppressWarnings("unchecked")
-        List<Member> listMembers = getEntityManager().createNamedQuery("findMembers").getResultList();
+        List<Member> listMembers = entityManager.createNamedQuery("findMembers").getResultList();
 
         assertThat(listMembers).isNotNull().isNotEmpty();
 
@@ -45,10 +49,10 @@ public class MemberIT extends AbstractEntityIT {
     @Test
     public void testFindMemberByNameAndPassword() throws Exception {
         Member member = EntityFactory.createMember();
-        getEntityManager().persist(member);
-        getTransaction().commit();
+        entityManager.persist(member);
+        transaction.commit();
 
-        Query query = getEntityManager().createNamedQuery("findByNamePassword");
+        Query query = entityManager.createNamedQuery("findByNamePassword");
         query.setParameter("fname", member.getName());
         query.setParameter("fpassword", Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
 

@@ -1,6 +1,13 @@
 package fr.oltruong.teamag.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Table(name = "TM_WORK_LOAD")
 @Entity
@@ -37,25 +44,16 @@ public class WorkLoad {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Member getMember() {
         return member;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
 
     public BusinessCase getBusinessCase() {
         return businessCase;
     }
 
-    public void setBusinessCase(BusinessCase businessCase) {
-        this.businessCase = businessCase;
-    }
 
     public Double getEstimated() {
         return estimated;

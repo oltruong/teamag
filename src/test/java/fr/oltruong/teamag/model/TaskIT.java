@@ -11,27 +11,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TaskIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
-        Task task = createTask();
-        getEntityManager().persist(task.getMembers().get(0));
-        getEntityManager().persist(task);
+        Task task = EntityFactory.createTask();
+        entityManager.persist(task.getMembers().get(0));
+        entityManager.persist(task);
 
-        getTransaction().commit();
+        transaction.commit();
 
         assertThat(task.getId()).isNotNull();
 
     }
 
+
+
+
     @Test
     public void testNamedQueryFindAllTasks() {
 
-        Task task = createTask();
+        Task task = EntityFactory.createTask();
 
-        getEntityManager().persist(task.getMembers().get(0));
-        getEntityManager().persist(task);
+        entityManager.persist(task.getMembers().get(0));
+        entityManager.persist(task);
 
-        getTransaction().commit();
+        transaction.commit();
         @SuppressWarnings("unchecked")
-        List<Task> listTasks = getEntityManager().createNamedQuery("findAllTasks").getResultList();
+        List<Task> listTasks = entityManager.createNamedQuery("findAllTasks").getResultList();
 
         assertThat(listTasks).isNotNull().isNotEmpty();
 
@@ -45,8 +48,8 @@ public class TaskIT extends AbstractEntityIT {
 
         String name = "myName" + Calendar.getInstance().getTimeInMillis();
 
-        Task task1 = createTask();
-        Task task2 = createTask();
+        Task task1 = EntityFactory.createTask();
+        Task task2 = EntityFactory.createTask();
 
         task2.setName(name);
         task1.setMembers(null);
@@ -55,12 +58,12 @@ public class TaskIT extends AbstractEntityIT {
         task2.setProject("");
 
 
-        getEntityManager().persist(task1);
-        getEntityManager().persist(task2);
+        entityManager.persist(task1);
+        entityManager.persist(task2);
 
-        getTransaction().commit();
+        transaction.commit();
 
-        Query query = getEntityManager().createNamedQuery("findTaskByName");
+        Query query = entityManager.createNamedQuery("findTaskByName");
         query.setParameter("fname", name);
         query.setParameter("fproject", "");
 
@@ -69,7 +72,7 @@ public class TaskIT extends AbstractEntityIT {
 
         assertThat(listTasks).isNotNull().isNotEmpty().hasSize(1).contains(task2);
 
-        Query query2 = getEntityManager().createNamedQuery("findTaskByName");
+        Query query2 = entityManager.createNamedQuery("findTaskByName");
         query2.setParameter("fname", task1.getName());
         query2.setParameter("fproject", task1.getProject());
 
@@ -80,19 +83,5 @@ public class TaskIT extends AbstractEntityIT {
 
     }
 
-    private Task createTask() {
-        Task task = new Task();
 
-        task.setName("createTask" + Calendar.getInstance().getTimeInMillis());
-        task.setProject("my project");
-
-        Member myMember = new Member();
-        myMember.setName("Bob" + Calendar.getInstance().getTimeInMillis());
-        myMember.setCompany("my Company");
-        myMember.setEmail("email@dummy.com");
-        myMember.setEstimatedWorkDays(0d);
-        task.addMember(myMember);
-
-        return task;
-    }
 }

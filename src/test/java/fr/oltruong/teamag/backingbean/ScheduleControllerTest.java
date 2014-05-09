@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.AbsenceService;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 public class ScheduleControllerTest extends ControllerTest {
 
     @Mock
-    private AbsenceEJB mockAbsenceEJB;
+    private AbsenceService mockAbsenceService;
 
     @Mock
-    private MemberEJB mockMemberEJB;
+    private MemberService mockMemberService;
 
     private ScheduleController scheduleController;
 
@@ -33,8 +33,8 @@ public class ScheduleControllerTest extends ControllerTest {
     public void setup() {
         super.setup();
         scheduleController = new ScheduleController();
-        TestUtils.setPrivateAttribute(scheduleController, mockAbsenceEJB, "absenceEJB");
-        TestUtils.setPrivateAttribute(scheduleController, mockMemberEJB, "memberEJB");
+        TestUtils.setPrivateAttribute(scheduleController, mockAbsenceService, "absenceService");
+        TestUtils.setPrivateAttribute(scheduleController, mockMemberService, "memberService");
         TestUtils.setPrivateAttribute(scheduleController, Controller.class, mockMessageManager, "messageManager");
 
     }
@@ -48,14 +48,14 @@ public class ScheduleControllerTest extends ControllerTest {
             absence.getMember().setId(Long.valueOf(32l));
         }
 
-        when(mockAbsenceEJB.findAllAbsences()).thenReturn(absenceList);
+        when(mockAbsenceService.findAllAbsences()).thenReturn(absenceList);
 
         String view = scheduleController.init();
 
 
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(scheduleController, "VIEWNAME"));
-        verify(mockAbsenceEJB).findAllAbsences();
-        verify(mockMemberEJB).findMembers();
+        verify(mockAbsenceService).findAllAbsences();
+        verify(mockMemberService).findMembers();
         assertThat(scheduleController.getEventModel().getEventCount()).isGreaterThan(0);
 
     }

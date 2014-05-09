@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.ejb.WorkEJB;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.Work;
@@ -23,7 +23,7 @@ import java.util.Set;
 public class ReportingController {
 
     @Inject
-    private WorkEJB workEJB;
+    private WorkService workEJB;
     private List<RealizedReportBean> realizedPersons;
     private List<RealizedReportBean> realizedCompanies;
     private MutableDateTime month;

@@ -13,9 +13,9 @@ import javax.persistence.Persistence;
  */
 public abstract class AbstractEntityIT {
 
-    EntityManagerFactory entityManagerFactory;
-    EntityManager entityManager;
-    EntityTransaction transaction;
+    protected EntityManagerFactory entityManagerFactory;
+    protected EntityManager entityManager;
+    protected EntityTransaction transaction;
 
     @Before
     public void setup() {
@@ -44,18 +44,12 @@ public abstract class AbstractEntityIT {
 
 
     protected void commit() {
-        getTransaction().commit();
+        transaction.commit();
     }
 
     protected void persist(Object object) {
         entityManager.persist(object);
     }
 
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
 
-    public EntityTransaction getTransaction() {
-        return transaction;
-    }
 }

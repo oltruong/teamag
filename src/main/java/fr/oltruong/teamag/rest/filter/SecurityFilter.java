@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest.filter;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         boolean result = false;
 
         if (idMember != null && authorization != null) {
-            Member member = MemberEJB.getMemberMap().get(Long.valueOf(idMember));
+            Member member = MemberService.getMemberMap().get(Long.valueOf(idMember));
 
             result = member != null && member.getPassword().equals(authorization);
         }

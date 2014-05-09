@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.EntityFactory;
@@ -26,16 +26,16 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olivier Truong
  */
-public class MemberEJBTest extends AbstractEJBTest {
+public class MemberServiceTest extends AbstractServiceTest {
 
 
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
     private List<Member> testMemberList;
 
     @Before
     public void init() {
-        memberEJB = new MemberEJB();
+        memberEJB = new MemberService();
         prepareEJB(memberEJB);
 
         buildMemberList();
@@ -59,15 +59,15 @@ public class MemberEJBTest extends AbstractEJBTest {
         when(getMockQuery().getResultList()).thenReturn(null);
         memberEJB.build();
 
-        assertThat(MemberEJB.getMemberList()).isNotNull().isEmpty();
-        assertThat(MemberEJB.getMemberMap()).isNotNull().isEmpty();
+        assertThat(MemberService.getMemberList()).isNotNull().isEmpty();
+        assertThat(MemberService.getMemberMap()).isNotNull().isEmpty();
     }
 
     @Test
     public void testBuild() {
         memberEJB.build();
-        assertThat(MemberEJB.getMemberList()).isEqualTo(testMemberList).hasSize(MemberEJB.getMemberMap().size());
-        testMemberList.forEach(member -> assertThat(MemberEJB.getMemberMap().get(member.getId())).isEqualTo(member));
+        assertThat(MemberService.getMemberList()).isEqualTo(testMemberList).hasSize(MemberService.getMemberMap().size());
+        testMemberList.forEach(member -> assertThat(MemberService.getMemberMap().get(member.getId())).isEqualTo(member));
     }
 
 

@@ -1,9 +1,9 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.EmailEJB;
-import fr.oltruong.teamag.ejb.MailBean;
-import fr.oltruong.teamag.ejb.WorkLoadEJB;
+import fr.oltruong.teamag.service.AbsenceService;
+import fr.oltruong.teamag.service.EmailService;
+import fr.oltruong.teamag.service.MailBean;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.exception.DateOverlapException;
@@ -37,14 +37,14 @@ public class AbsenceController extends Controller {
     private List<AbsenceWebBean> absencesList;
 
     @Inject
-    private AbsenceEJB absenceEJB;
+    private AbsenceService absenceService;
 
     @Inject
-    private WorkLoadEJB workLoadEJB;
+    private WorkLoadService workLoadService;
 
 
     @Inject
-    private EmailEJB emailEJB;
+    private EmailService emailService;
 
 
     private static final String VIEWNAME = "absence";
@@ -64,14 +64,14 @@ public class AbsenceController extends Controller {
             AbsenceWebBeanValidator.validate(absence, absencesList);
             Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(absence);
             newAbsence.setMember(getMember());
-            absenceEJB.addAbsence(newAbsence);
-            workLoadEJB.registerAbsence(newAbsence);
+            absenceService.addAbsence(newAbsence);
+            workLoadService.registerAbsence(newAbsence);
             refreshList();
 
             absence = new AbsenceWebBean();
             getMessageManager().displayMessage(MessageManager.INFORMATION, "absenceAdded");
 
-            emailEJB.sendEmailAdministrator(buildEmailAdd(newAbsence));
+            emailService.sendEmailAdministrator(buildEmailAdd(newAbsence));
 
         } catch (InconsistentDateException e) {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
@@ -126,10 +126,10 @@ public class AbsenceController extends Controller {
     }
 
     public void deleteAbsence() {
-        workLoadEJB.removeAbsence(getSelectedAbsence().getId());
-        absenceEJB.deleteAbsence(getSelectedAbsence().getId());
+        workLoadService.removeAbsence(getSelectedAbsence().getId());
+        absenceService.deleteAbsence(getSelectedAbsence().getId());
 
-        emailEJB.sendEmailAdministrator(buildEmailDelete(getSelectedAbsence()));
+        emailService.sendEmailAdministrator(buildEmailDelete(getSelectedAbsence()));
 
         refreshList();
 
@@ -145,7 +145,7 @@ public class AbsenceController extends Controller {
     }
 
     private void refreshList() {
-        absencesList = AbsenceWebBeanTransformer.transformList(absenceEJB.findAbsencesByMember(getMember()));
+        absencesList = AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMember(getMember()));
     }
 
     public AbsenceWebBean getAbsence() {

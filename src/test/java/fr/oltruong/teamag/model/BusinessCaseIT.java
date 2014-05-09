@@ -8,23 +8,29 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BusinessCaseIT extends AbstractEntityIT {
+
+
     @Test
-    public void testCreation() {
+    public void testCreateAndFind() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
 
-        getEntityManager().persist(businessCase);
-        getTransaction().commit();
+        entityManager.persist(businessCase);
+        transaction.commit();
 
         assertThat(businessCase.getId()).isNotNull();
+
+        BusinessCase businessCaseDB = entityManager.find(BusinessCase.class, businessCase.getId());
+        assertThat(businessCaseDB).isEqualToComparingFieldByField(businessCase).isEqualTo(businessCase);
     }
+
 
     @Test(expected = PersistenceException.class)
     public void testException() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setName(null);
 
-        getEntityManager().persist(businessCase);
-        getTransaction().commit();
+        entityManager.persist(businessCase);
+        transaction.commit();
 
     }
 
@@ -33,11 +39,11 @@ public class BusinessCaseIT extends AbstractEntityIT {
 
         BusinessCase businessCase = EntityFactory.createBusinessCase();
 
-        getEntityManager().persist(businessCase);
+        entityManager.persist(businessCase);
 
-        getTransaction().commit();
+        transaction.commit();
         @SuppressWarnings("unchecked")
-        List<BusinessCase> businessCaseList = getEntityManager().createNamedQuery("findAllBC").getResultList();
+        List<BusinessCase> businessCaseList = entityManager.createNamedQuery("findAllBC").getResultList();
 
         assertThat(businessCaseList).isNotNull().isNotEmpty();
 

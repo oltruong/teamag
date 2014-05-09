@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.ActivityEJB;
+import fr.oltruong.teamag.service.ActivityService;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
@@ -23,7 +23,7 @@ public class BCController extends Controller {
 
 
     @Inject
-    private ActivityEJB activityEJB;
+    private ActivityService activityEJB;
 
     @Inject
     private BusinessCase bc;

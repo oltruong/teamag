@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.utils.MessageManager;
@@ -32,7 +32,7 @@ public class ProfileControllerTest extends ControllerTest {
     private Member member;
 
     @Mock
-    private MemberEJB mockMemberEJB;
+    private MemberService mockMemberEJB;
 
     private ProfileController profileController;
 

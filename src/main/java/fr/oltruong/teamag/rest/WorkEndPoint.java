@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.WorkEJB;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.webbean.WorkWebBean;
@@ -23,7 +23,7 @@ import java.util.List;
 public class WorkEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkEJB workEJB;
+    WorkService workEJB;
 
     @GET
     @Path("/{taskId}")

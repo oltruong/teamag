@@ -3,11 +3,13 @@
 teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
     function ($scope, $http, WorkLoad) {
 
-
         $http.get('../resources/workload/').success(function (data) {
 
 
             $scope.workloadContainer = data;
+        }, function (error) {
+            alert('oups');
+
         });
 
         //      $scope.workloadContainer = WorkLoad.query();

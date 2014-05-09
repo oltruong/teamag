@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,15 +9,15 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Olivier Truong
  */
-public class WorkEJBTest extends AbstractEJBTest {
+public class WorkServiceTest extends AbstractServiceTest {
 
 
-    private WorkEJB workEJB;
+    private WorkService workEJB;
 
 
     @Before
     public void init() {
-        workEJB = new WorkEJB();
+        workEJB = new WorkService();
         prepareEJB(workEJB);
 
     }

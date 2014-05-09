@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.EntityFactory;
@@ -17,27 +17,27 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olivier Truong
  */
-public class AbsenceEJBTest extends AbstractEJBTest {
+public class AbsenceServiceTest extends AbstractServiceTest {
 
 
-    private AbsenceEJB absenceEJB;
+    private AbsenceService absenceService;
 
     private List<Absence> absenceList;
 
     @Before
     public void prepare() {
-        absenceEJB = new AbsenceEJB();
+        absenceService = new AbsenceService();
         absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         when(getMockQuery().getResultList()).thenReturn(absenceList);
 
-        prepareEJB(absenceEJB);
+        prepareEJB(absenceService);
     }
 
 
     @Test
     public void testFindAllAbsences() {
 
-        List<Absence> allAbsenceList = absenceEJB.findAllAbsences();
+        List<Absence> allAbsenceList = absenceService.findAllAbsences();
         assertThat(allAbsenceList).isEqualTo(absenceList);
         checkCreateNameQuery("findAllAbsences");
 
@@ -50,7 +50,7 @@ public class AbsenceEJBTest extends AbstractEJBTest {
         Member member = EntityFactory.createMember();
         member.setId(Long.valueOf(327l));
 
-        List<Absence> absenceMemberList = absenceEJB.findAbsencesByMember(member);
+        List<Absence> absenceMemberList = absenceService.findAbsencesByMember(member);
 
         assertThat(absenceMemberList).isNotNull().isNotEmpty().isEqualTo(absenceList);
         checkCreateNameQuery("findAbsencesByMember");
@@ -68,7 +68,7 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
         Long absenceId = Long.valueOf(325l);
 
-        absenceEJB.deleteAbsence(absenceId);
+        absenceService.deleteAbsence(absenceId);
 
         verify(getMockEntityManager()).find(eq(Absence.class), eq(absenceId));
         verify(getMockEntityManager()).remove(eq(absence));
@@ -77,13 +77,13 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsencesByMemberNull() throws Exception {
-        absenceEJB.findAbsencesByMember(null);
+        absenceService.findAbsencesByMember(null);
     }
 
     @Test
     public void testAddAbsence() throws Exception {
         Absence absence = EntityFactory.createAbsence();
-        absenceEJB.addAbsence(absence);
+        absenceService.addAbsence(absence);
 
         verify(getMockEntityManager()).persist(eq(absence));
 
@@ -94,7 +94,7 @@ public class AbsenceEJBTest extends AbstractEJBTest {
     public void testFindAbsencesByMemberId() {
 
 
-        List<Absence> absences = absenceEJB.findAbsencesByMemberId(idTest);
+        List<Absence> absences = absenceService.findAbsencesByMemberId(idTest);
 
         assertThat(absences).isEqualTo(absenceList);
         verify(mockEntityManager).createNamedQuery(eq("findAbsencesByMember"));
@@ -105,6 +105,6 @@ public class AbsenceEJBTest extends AbstractEJBTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsencesByMemberId_null() {
-        absenceEJB.findAbsencesByMemberId(null);
+        absenceService.findAbsencesByMemberId(null);
     }
 }

@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.ejb.ActivityEJB;
+import fr.oltruong.teamag.service.ActivityService;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 public class BusinessEndPoint extends AbstractEndPoint {
 
     @EJB
-    ActivityEJB activityEJB;
+    ActivityService activityEJB;
 
 
     @GET

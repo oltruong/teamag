@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.ejb.WorkLoadEJB;
+import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.interfaces.AdminChecked;
@@ -26,7 +26,7 @@ import java.util.List;
 public class WorkLoadEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkLoadEJB workLoadEJB;
+    WorkLoadService workLoadEJB;
 
 
     @GET
@@ -37,7 +37,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
 
     private WorkLoadMemberContainer buildWorkLoadContainer() {
         WorkLoadMemberContainer workLoadContainer = new WorkLoadMemberContainer();
-        workLoadContainer.setMemberList(MemberEJB.getMemberList());
+        workLoadContainer.setMemberList(MemberService.getMemberList());
 
 
         List<WorkLoad> workLoadList = workLoadEJB.findOrCreateAllWorkLoad();

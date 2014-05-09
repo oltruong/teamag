@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.utils.MessageManager;
@@ -24,7 +24,7 @@ public class ProfileController extends Controller {
     private Instance<Member> memberInstance;
 
     @Inject
-    private MemberEJB memberEJB;
+    private MemberService memberEJB;
 
     private ProfileWebBean profileWebBean;
 

@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.rest.filter;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
-import fr.oltruong.teamag.interfaces.AdminChecked;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.interfaces.SupervisorChecked;
 
 import javax.ws.rs.ext.Provider;
@@ -18,6 +17,6 @@ public class SupervisorFilter extends SecurityFilter {
     }
 
     private boolean isSupervisor(String idMember) {
-        return MemberEJB.getMemberMap().get(Long.valueOf(idMember)).isSupervisor();
+        return MemberService.getMemberMap().get(Long.valueOf(idMember)).isSupervisor();
     }
 }

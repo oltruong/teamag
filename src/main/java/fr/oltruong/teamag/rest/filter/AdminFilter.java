@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest.filter;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 
 import javax.ws.rs.ext.Provider;
@@ -17,6 +17,6 @@ public class AdminFilter extends SecurityFilter {
     }
 
     private boolean isAdmin(String idMember) {
-        return MemberEJB.getMemberMap().get(Long.valueOf(idMember)).isAdministrator();
+        return MemberService.getMemberMap().get(Long.valueOf(idMember)).isAdministrator();
     }
 }

@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Olivier Truong
  */
 @Stateless
-public class WorkLoadEJB extends AbstractEJB {
+public class WorkLoadService extends AbstractService {
 
 
     public List<AbsenceDay> getAllAbsenceDay() {
@@ -89,7 +89,7 @@ public class WorkLoadEJB extends AbstractEJB {
 
 
     public List<WorkLoad> findOrCreateAllWorkLoad() {
-        List<WorkLoad> workLoadList = getNamedQueryList("findOrCreateAllWorkLoad");
+        List<WorkLoad> workLoadList = getNamedQueryList("findAllWorkLoad");
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads();
@@ -107,7 +107,7 @@ public class WorkLoadEJB extends AbstractEJB {
         getLogger().info("Creation of workLoad");
         List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
 
-        List<Member> memberList = MemberEJB.getMemberList();
+        List<Member> memberList = MemberService.getMemberList();
 
 
         workLoadList = buildAndSaveWorkLoadList(businessCaseList, memberList);

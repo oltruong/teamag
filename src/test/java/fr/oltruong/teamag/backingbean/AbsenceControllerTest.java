@@ -1,12 +1,12 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.ejb.AbsenceEJB;
-import fr.oltruong.teamag.ejb.EmailEJB;
-import fr.oltruong.teamag.ejb.WorkLoadEJB;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.EntityFactory;
 import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.service.AbsenceService;
+import fr.oltruong.teamag.service.EmailService;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
@@ -33,13 +33,13 @@ import static org.mockito.Mockito.when;
 public class AbsenceControllerTest extends ControllerTest {
 
     @Mock
-    private AbsenceEJB mockAbsenceEJB;
+    private AbsenceService mockAbsenceService;
 
     @Mock
-    private WorkLoadEJB mockWorkLoadEJB;
+    private WorkLoadService mockWorkLoadService;
 
     @Mock
-    private EmailEJB mockEmailEJB;
+    private EmailService mockEmailService;
 
     @Mock
     private Instance<Member> mockMemberInstance;
@@ -55,9 +55,9 @@ public class AbsenceControllerTest extends ControllerTest {
         super.setup();
         absenceController = new AbsenceController();
         when(mockMemberInstance.get()).thenReturn(mockMember);
-        TestUtils.setPrivateAttribute(absenceController, mockAbsenceEJB, "absenceEJB");
-        TestUtils.setPrivateAttribute(absenceController, mockWorkLoadEJB, "workLoadEJB");
-        TestUtils.setPrivateAttribute(absenceController, mockEmailEJB, "emailEJB");
+        TestUtils.setPrivateAttribute(absenceController, mockAbsenceService, "absenceService");
+        TestUtils.setPrivateAttribute(absenceController, mockWorkLoadService, "workLoadService");
+        TestUtils.setPrivateAttribute(absenceController, mockEmailService, "emailService");
         TestUtils.setPrivateAttribute(absenceController, mockMemberInstance, "member");
         TestUtils.setPrivateAttribute(absenceController, Controller.class, mockMessageManager, "messageManager");
 
@@ -67,11 +67,11 @@ public class AbsenceControllerTest extends ControllerTest {
     public void testInit() throws Exception {
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
-        when(mockAbsenceEJB.findAbsencesByMember(eq(mockMember))).thenReturn(absenceList);
+        when(mockAbsenceService.findAbsencesByMember(eq(mockMember))).thenReturn(absenceList);
         String view = absenceController.init();
 
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(absenceController, "VIEWNAME"));
-        verify(mockAbsenceEJB).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService).findAbsencesByMember(eq(mockMember));
 
         assertThat(absenceController.getAbsencesList()).hasSameSizeAs(absenceList);
 
@@ -85,12 +85,12 @@ public class AbsenceControllerTest extends ControllerTest {
         absenceController.addAbsence();
 
         ArgumentCaptor<Absence> argument = ArgumentCaptor.forClass(Absence.class);
-        verify(mockAbsenceEJB).addAbsence(argument.capture());
+        verify(mockAbsenceService).addAbsence(argument.capture());
         assertThat(argument.getValue().getBeginDate().withTimeAtStartOfDay()).isEqualTo(absenceWebBean.getBeginDateTime().withTimeAtStartOfDay());
         assertThat(argument.getValue().getEndDate().withTimeAtStartOfDay()).isEqualTo(absenceWebBean.getEndDateTime().withTimeAtStartOfDay());
         assertThat(argument.getValue().getBeginType().intValue()).isEqualTo(absenceWebBean.getBeginType());
         assertThat(argument.getValue().getEndType().intValue()).isEqualTo(absenceWebBean.getEndType());
-        verify(mockAbsenceEJB).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService).findAbsencesByMember(eq(mockMember));
         verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString());
 
 
@@ -138,8 +138,8 @@ public class AbsenceControllerTest extends ControllerTest {
         absenceController.addAbsence();
 
         ArgumentCaptor<Absence> argument = ArgumentCaptor.forClass(Absence.class);
-        verify(mockAbsenceEJB, never()).addAbsence(isA(Absence.class));
-        verify(mockAbsenceEJB, never()).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService, never()).addAbsence(isA(Absence.class));
+        verify(mockAbsenceService, never()).findAbsencesByMember(eq(mockMember));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
     }
 
@@ -156,8 +156,8 @@ public class AbsenceControllerTest extends ControllerTest {
         absenceController.addAbsence();
 
         ArgumentCaptor<Absence> argument = ArgumentCaptor.forClass(Absence.class);
-        verify(mockAbsenceEJB, never()).addAbsence(isA(Absence.class));
-        verify(mockAbsenceEJB, never()).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService, never()).addAbsence(isA(Absence.class));
+        verify(mockAbsenceService, never()).findAbsencesByMember(eq(mockMember));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
     }
 
@@ -170,7 +170,7 @@ public class AbsenceControllerTest extends ControllerTest {
         absenceController.setSelectedAbsence(absenceWebBean);
         absenceController.deleteAbsence();
 
-        verify(mockAbsenceEJB).deleteAbsence(eq(absenceWebBean.getId()));
-        verify(mockAbsenceEJB).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService).deleteAbsence(eq(absenceWebBean.getId()));
+        verify(mockAbsenceService).findAbsencesByMember(eq(mockMember));
     }
 }

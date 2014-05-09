@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.AbsenceDay;
@@ -29,14 +29,14 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olivier Truong
  */
-public class WorkLoadEJBTest extends AbstractEJBTest {
+public class WorkLoadServiceTest extends AbstractServiceTest {
 
-    private WorkLoadEJB workLoadEJB;
+    private WorkLoadService workLoadEJB;
 
     @Before
     public void prepare() {
         super.setup();
-        workLoadEJB = new WorkLoadEJB();
+        workLoadEJB = new WorkLoadService();
         prepareEJB(workLoadEJB);
     }
 
@@ -159,7 +159,7 @@ public class WorkLoadEJBTest extends AbstractEJBTest {
         List<WorkLoad> workLoadReturnedList = workLoadEJB.findOrCreateAllWorkLoad();
 
         assertThat(workLoadReturnedList).isEqualTo(workLoadList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findOrCreateAllWorkLoad"));
+        verify(getMockEntityManager()).createNamedQuery(eq("findAllWorkLoad"));
 
     }
 
@@ -176,7 +176,7 @@ public class WorkLoadEJBTest extends AbstractEJBTest {
 
         when(mockQueryBC.getResultList()).thenReturn(bcList);
 
-        TestUtils.setPrivateAttribute(new MemberEJB(), memberList, "memberList");
+        TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
 
 
         List<WorkLoad> workLoadReturnedList = workLoadEJB.findOrCreateAllWorkLoad();
@@ -185,7 +185,7 @@ public class WorkLoadEJBTest extends AbstractEJBTest {
         assertThat(workLoadReturnedList).doesNotHaveDuplicates().hasSize(memberList.size() * bcList.size());
         verify(getMockEntityManager(), times(memberList.size() * bcList.size())).persist(isA(WorkLoad.class));
 
-        verify(getMockEntityManager()).createNamedQuery(eq("findOrCreateAllWorkLoad"));
+        verify(getMockEntityManager()).createNamedQuery(eq("findAllWorkLoad"));
         verify(getMockEntityManager()).createNamedQuery(eq("findAllBC"));
 
     }

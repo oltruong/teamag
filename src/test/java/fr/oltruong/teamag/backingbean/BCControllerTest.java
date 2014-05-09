@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.ejb.ActivityEJB;
+import fr.oltruong.teamag.service.ActivityService;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.EntityFactory;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class BCControllerTest extends ControllerTest {
 
     @Mock
-    private ActivityEJB mockActivityEJB;
+    private ActivityService mockActivityEJB;
 
     @Mock
     private RowEditEvent mockRowEditEvent;

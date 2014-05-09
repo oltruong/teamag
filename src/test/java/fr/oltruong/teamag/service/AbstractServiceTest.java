@@ -1,4 +1,4 @@
-package fr.oltruong.teamag.ejb;
+package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
@@ -14,7 +14,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public abstract class AbstractEJBTest {
+public abstract class AbstractServiceTest {
 
     protected Long idTest = Long.valueOf(123l);
 
@@ -34,9 +34,9 @@ public abstract class AbstractEJBTest {
 
     }
 
-    protected void prepareEJB(AbstractEJB ejb) {
-        TestUtils.setPrivateAttribute(ejb, AbstractEJB.class, getMockEntityManager(), "entityManager");
-        TestUtils.setPrivateAttribute(ejb, AbstractEJB.class, getMockLogger(), "logger");
+    protected void prepareEJB(AbstractService ejb) {
+        TestUtils.setPrivateAttribute(ejb, AbstractService.class, getMockEntityManager(), "entityManager");
+        TestUtils.setPrivateAttribute(ejb, AbstractService.class, getMockLogger(), "logger");
 
     }
 

@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.ejb.MemberEJB;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 
@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 public class MemberEndPoint extends AbstractEndPoint {
 
     @EJB
-    MemberEJB memberEJB;
+    MemberService memberEJB;
 
 
     @GET
