@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.enumeration.MemberType;
@@ -36,7 +36,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Before
     public void init() {
         memberEJB = new MemberService();
-        prepareEJB(memberEJB);
+        prepareService(memberEJB);
 
         buildMemberList();
         when(getMockQuery().getResultList()).thenReturn(testMemberList);

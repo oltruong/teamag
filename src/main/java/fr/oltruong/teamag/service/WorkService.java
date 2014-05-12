@@ -4,11 +4,11 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -435,4 +435,7 @@ public class WorkService extends AbstractService {
     }
 
 
+    public List<Task> findTaskWithActivity() {
+        return getNamedQueryList("findAllTasksWithActivity");
+    }
 }

@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.model;
 
 
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

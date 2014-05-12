@@ -58,6 +58,10 @@
                     class="glyphicon glyphicon-th-list"></span>&nbsp;Activit&eacute;s</a></li>
 
 
+            <li ng-show="admin" ng-class="{active: routeIs('/realized')}"><a href="#/realized"><span
+                    class="glyphicon glyphicon-import"></span>&nbsp;R&eacute;alis&eacute;</a></li>
+
+
             <li class="dropdown" ng-show="admin">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-lock"></span>&nbsp;Administration
                     <b class="caret"></b></a>
@@ -124,6 +128,7 @@
 <script src="js/controllers/TaskController.js"></script>
 <script src="js/controllers/WorkTaskController.js"></script>
 <script src="js/controllers/WorkLoadController.js"></script>
+<script src="js/controllers/RealizedController.js"></script>
 <script src="js/controllers/ActivityController.js"></script>
 <script src="js/controllers/NavbarController.js"></script>
 <script src="js/controllers/HomeController.js"></script>
@@ -135,6 +140,7 @@
 <script src="js/services/Task.js"></script>
 <script src="js/services/Work.js"></script>
 <script src="js/services/WorkLoad.js"></script>
+<script src="js/services/WorkRealized.js"></script>
 <script src="js/services/localStorage.js"></script>
 <script src="js/services/userInfo.js"></script>
 

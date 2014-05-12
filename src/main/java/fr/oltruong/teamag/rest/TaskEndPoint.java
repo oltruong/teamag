@@ -27,28 +27,30 @@ import java.util.List;
 public class TaskEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkService workEJB;
+    WorkService workService;
 
 
     @GET
     public Response getTasks() {
 
-        List<TaskWebBean> taskWebBeanList = buildTask();
+        return buildResponseOK(buildTask(workService.findAllTasks()));
 
-        return buildResponseOK(taskWebBeanList);
-
-//        return buildResponseOK(workEJB.findAllTasks());
     }
 
-    private List<TaskWebBean> buildTask() {
+    @GET
+    @Path("/withactivity")
+    public Response getTasksWithActivity() {
+        System.out.println("WITH ACTIVITY!!!!!!!!!!!!!!");
+        return buildResponseOK(buildTask(workService.findTaskWithActivity()));
+    }
 
-        List<Task> taskList = workEJB.findAllTasks();
+    private List<TaskWebBean> buildTask(List<Task> taskList) {
+
 
         List<TaskWebBean> taskWebBeanList = Lists.newArrayListWithExpectedSize(taskList.size());
 
-        for (Task task : taskList) {
-            taskWebBeanList.add(transformTask(task));
-        }
+        taskList.forEach(task -> taskWebBeanList.add(transformTask(task)));
+
         return taskWebBeanList;
     }
 
@@ -75,13 +77,13 @@ public class TaskEndPoint extends AbstractEndPoint {
     @GET
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long taskId) {
-        return buildResponseOK(workEJB.findTask(taskId));
+        return buildResponseOK(workService.findTask(taskId));
     }
 
     @POST
     public Response createTask(Task task) {
         try {
-            workEJB.createTask(task);
+            workService.createTask(task);
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
@@ -93,7 +95,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @Path("/{id}")
     public Response updateTask(@PathParam("id") Long taskId, Task task) {
         task.setId(taskId);
-        workEJB.updateTask(task);
+        workService.updateTask(task);
         return buildResponseOK();
     }
 
@@ -101,7 +103,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{id}")
     public Response deleteTask(@PathParam("id") Long taskId) {
-        workEJB.deleteTask(taskId);
+        workService.deleteTask(taskId);
         return buildResponseOK();
     }
 

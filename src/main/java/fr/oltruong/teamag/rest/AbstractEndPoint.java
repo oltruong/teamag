@@ -24,4 +24,8 @@ public abstract class AbstractEndPoint {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    protected Response buildResponseNoContent() {
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
 }

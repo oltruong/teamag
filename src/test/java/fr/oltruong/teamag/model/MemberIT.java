@@ -2,6 +2,7 @@ package fr.oltruong.teamag.model;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;

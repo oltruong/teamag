@@ -18,7 +18,9 @@ import java.util.List;
 
 @Table(name = "TM_TASK")
 @NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
+        @NamedQuery(name = "findAllTasksWithActivity", query = "SELECT t from Task t where t.activity is not null order by t.name, t.project"),
         @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)")})
+
 @Entity
 public class Task {
     @Id

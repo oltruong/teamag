@@ -1,0 +1,25 @@
+<div class="col-md-12">
+    <h1 class="text-center">Realise par mois</h1>
+
+    <p>{{error}}</p>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Activit&eacute;</th>
+            <th>T&acirc;che</th>
+            <th ng-repeat="date in months">{{date}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="task in tasks">
+            <td>{{task.activity.name}}</td>
+            <td>{{task.name}}</td>
+            <td ng-repeat="taskMonth0 in taskMonth[task.id]"><input style="width:60px" type="number" step="any" size="2"
+                                                                    maxlength="2"
+                                                                    ng-value="taskMonth0"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

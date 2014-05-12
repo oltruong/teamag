@@ -21,7 +21,7 @@ public class ParameterServiceTest extends AbstractServiceTest {
     public void testSaveAndReloadParameters() throws Exception {
 
         ParameterService parameterEJB = new ParameterService();
-        prepareEJB(parameterEJB);
+        prepareService(parameterEJB);
         TestUtils.callPrivateMethod(parameterEJB, "initValue");
 
         Parameter smtpParameter = new Parameter();

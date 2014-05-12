@@ -18,7 +18,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     @Before
     public void init() {
         workEJB = new WorkService();
-        prepareEJB(workEJB);
+        prepareService(workEJB);
 
     }
 

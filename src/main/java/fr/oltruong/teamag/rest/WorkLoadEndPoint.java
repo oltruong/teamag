@@ -26,7 +26,7 @@ import java.util.List;
 public class WorkLoadEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkLoadService workLoadEJB;
+    WorkLoadService workLoadService;
 
 
     @GET
@@ -40,7 +40,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
         workLoadContainer.setMemberList(MemberService.getMemberList());
 
 
-        List<WorkLoad> workLoadList = workLoadEJB.findOrCreateAllWorkLoad();
+        List<WorkLoad> workLoadList = workLoadService.findOrCreateAllWorkLoad();
         BusinessCase businessCase = null;
         WorkLoadContainer currentContainer = null;
 
@@ -73,7 +73,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     public Response updateWorkLoad(List<WorkLoadContainer> workLoadContainerList) {
 
         for (WorkLoadContainer workLoadContainer : workLoadContainerList) {
-            workLoadEJB.updateWorkLoad(workLoadContainer.getWorkLoadList());
+            workLoadService.updateWorkLoad(workLoadContainer.getWorkLoadList());
         }
 
         return buildResponseOK();

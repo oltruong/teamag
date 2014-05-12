@@ -15,6 +15,7 @@
         <class>fr.oltruong.teamag.model.WeekComment</class>
         <class>fr.oltruong.teamag.model.Work</class>
         <class>fr.oltruong.teamag.model.WorkLoad</class>
+        <class>fr.oltruong.teamag.model.WorkRealized</class>
         <class>fr.oltruong.teamag.model.converter.DateConverter</class>
 
         <properties>

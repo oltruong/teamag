@@ -2,7 +2,7 @@ package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
     @Before
     public void prepare() {
         activityEJB = new ActivityService();
-        prepareEJB(activityEJB);
+        prepareService(activityEJB);
     }
 
     @Test

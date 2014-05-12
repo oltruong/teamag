@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.service.MemberService;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TeamagUtils;

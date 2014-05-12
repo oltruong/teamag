@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.model;
 
 import com.google.common.collect.Lists;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.junit.Test;
 
 import javax.persistence.Query;

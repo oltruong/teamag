@@ -1,14 +1,24 @@
-package fr.oltruong.teamag.model;
+package fr.oltruong.teamag.model.builder;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.AbsenceDay;
+import fr.oltruong.teamag.model.Activity;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Parameter;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.WeekComment;
+import fr.oltruong.teamag.model.WorkLoad;
+import fr.oltruong.teamag.model.WorkRealized;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.model.enumeration.ParameterName;
 import org.joda.time.DateTime;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -121,7 +131,7 @@ public class EntityFactory {
     public static Task createTask() {
         Task task = new Task();
 
-        task.setName("createTask" + Calendar.getInstance().getTimeInMillis());
+        task.setName("createTask" + Instant.now().getEpochSecond());
         task.setProject("my project");
 
         task.addMember(createMember());
@@ -130,10 +140,26 @@ public class EntityFactory {
 
     }
 
+    public static WorkRealized createWorkRealized() {
+        LocalDate now = LocalDate.now();
+
+
+        Task task = createTask();
+
+        WorkRealized workRealized = new WorkRealized();
+        workRealized.setId(null);
+        workRealized.setMember(task.getMembers().get(0));
+        workRealized.setMonth(now.getMonth());
+        workRealized.setYear(now.getYear());
+        workRealized.setRealized(2.5d);
+        workRealized.setTask(task);
+        return workRealized;
+    }
+
     public static <E> List<E> createList(Supplier<E> supplier) {
 
-        int listSize = Math.abs(new Random().nextInt(MAXIMUM - MINIMUM)) + MINIMUM;
-        return createList(supplier, listSize);
+        int randomListSize = Math.abs(new Random().nextInt(MAXIMUM - MINIMUM)) + MINIMUM;
+        return createList(supplier, randomListSize);
     }
 
     public static <E> List<E> createList(Supplier<E> supplier, int listSize) {

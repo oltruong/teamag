@@ -3,7 +3,7 @@
 teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'CheckWork',
     function ($scope, $http, Member, CheckWork) {
 
-        $scope.weekNumber = 17;
+        $scope.weekNumber = -1;
         $scope.macroTask = false;
         $scope.members = Member.query(function () {
             $scope.selectedMember = $scope.members[0];
@@ -48,6 +48,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                 $http.get('../resources/checkWork/weekComment/' + $scope.selectedMember.id + '/' + $scope.weekNumber).success(function (data) {
 
                     $scope.weekcomment = data;
+                    $scope.weekNumber = $scope.weekcomment.weekYear;
                 });
 
             }, function (error) {
@@ -57,7 +58,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
         };
 
         $scope.decreaseWeek = function () {
-            $scope.weekNumber = $scope.weekNumber - 1;
+            $scope.weekNumber--;
             $scope.findWorks();
         };
 

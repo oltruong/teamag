@@ -34,7 +34,7 @@ public abstract class AbstractServiceTest {
 
     }
 
-    protected void prepareEJB(AbstractService ejb) {
+    protected void prepareService(AbstractService ejb) {
         TestUtils.setPrivateAttribute(ejb, AbstractService.class, getMockEntityManager(), "entityManager");
         TestUtils.setPrivateAttribute(ejb, AbstractService.class, getMockLogger(), "logger");
 

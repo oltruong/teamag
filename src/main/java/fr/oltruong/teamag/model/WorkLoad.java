@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Table(name = "TM_WORK_LOAD")
 @Entity
@@ -32,7 +33,7 @@ public class WorkLoad {
     private Double realized = 0d;
 
     public WorkLoad() {
-
+LocalDate localDate = LocalDate.now();
     }
 
     public WorkLoad(BusinessCase businessCase, Member member) {
