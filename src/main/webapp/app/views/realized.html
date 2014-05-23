@@ -1,7 +1,16 @@
 <div class="col-md-12">
-    <h1 class="text-center">Realise par mois</h1>
+    <h1 class="text-center">Realise de {{selectedMember.name}}</h1>
 
-    <p>{{error}}</p>
+    <div class="bg-success">{{confirmation}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+
+    <select ng-model="selectedMember" ng-options="member.name for member in members"
+            ng-change="loadRealized()"></select>
+    <a ng-click="save();" class="btn btn-success btn"
+       title="Sauver">
+        <span class="glyphicon glyphicon-save">&nbsp;Sauver</span>
+    </a>
 
     <table class="table table-striped">
         <thead>
@@ -12,12 +21,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="task in tasks">
-            <td>{{task.activity.name}}</td>
-            <td>{{task.name}}</td>
-            <td ng-repeat="taskMonth0 in taskMonth[task.id]"><input style="width:60px" type="number" step="any" size="2"
-                                                                    maxlength="2"
-                                                                    ng-value="taskMonth0"/>
+        <tr ng-repeat="workRealized in worksRealized">
+            <td>{{workRealized.task.activity.name}}</td>
+            <td>{{workRealized.task.name}}</td>
+            <td ng-repeat="realizedMonth in workRealized.workRealizedList | orderBy: orderProp"><input type="number"
+                                                                                                       step="any"
+                                                                                                       ng-model="realizedMonth.realized"/>
             </td>
         </tr>
         </tbody>

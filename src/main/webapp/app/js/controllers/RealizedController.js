@@ -1,8 +1,15 @@
 'use strict';
 
-teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'WorkRealized',
-    function ($scope, $http, Task, WorkRealized) {
+teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member', 'WorkRealized',
+    function ($scope, $http, Task, Member, WorkRealized) {
 
+
+        $scope.members = Member.query(function () {
+            $scope.selectedMember = $scope.members[0];
+            $scope.loadRealized();
+        }, function (error) {
+            $scope.error = 'Erreur HTTP ' + error.status;
+        });
 
         var month_name = new Array(12);
         month_name[0] = "Janv";
@@ -23,38 +30,29 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'WorkReal
             $scope.months[i] = month_name[i];
         }
 
-        $http.get('../resources/task/withactivity').success(function (data) {
-            $scope.tasks = data;
 
-            $scope.taskMonth = {};
+        $scope.orderProp = 'month';
 
-            angular.forEach($scope.tasks, function (task) {
-                var taskmonths = new Array(12);
-                for (var i = 0; i < 12; i++) {
-                    taskmonths[i] = i + 2;
-                }
-                $scope.taskMonth[task.id] = taskmonths;
+        $scope.loadRealized = function () {
+            $http.get('../resources/workrealized/' + $scope.selectedMember.id).success(function (data) {
+                $scope.worksRealized = data;
+            }, function (error) {
+                $scope.error = error;
+
             });
+        }
 
+        $scope.save = function () {
+            $http.put('../resources/workrealized/', $scope.worksRealized).success(function (data) {
+                $scope.confirmation = 'Mise à jour effectuée';
+                $scope.error = '';
+            }, function (error) {
 
-//            $scope.dummyObject = {};
-//            $scope.dummyObject.prop = "monguidon";
-//            $scope.dummyObject.prop2 = "selle";
-//
-//            for (var task in data) {
-//                var taskmonths = new Array(12);
-//                for (var i = 0; i < 12; i++) {
-//                    taskmonths[i] = task.name + i + 2;
-//                }
-//                alert('taskname' + task.name + task.activity);
-//                $scope.taskMonth[task.name] = taskmonths;
-//
-
-
-        }, function (error) {
-            $scope.error = error;
-
-        });
+            }).error(function (data, status, headers, config) {
+                $scope.confirmation = '';
+                $scope.error = 'Erreur HTTP' + status;
+            });
+        }
 
 
     }

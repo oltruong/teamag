@@ -62,6 +62,7 @@
 
         <version.wildfly>8.0.0.Final</version.wildfly>
         <version.hibernate>4.3.5.Final</version.hibernate>
+
     </properties>
 
 

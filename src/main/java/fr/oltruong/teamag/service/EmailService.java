@@ -50,7 +50,9 @@ public class EmailService {
         } catch (MessagingException messagingException) {
             this.logger.error("Error in sending message [" + messagingException.getMessage() + "]");
         }
+
     }
+
 
     private MimeMessage buildMessage(MailBean email, Session session) throws MessagingException {
         MimeMessage message = new MimeMessage(session);

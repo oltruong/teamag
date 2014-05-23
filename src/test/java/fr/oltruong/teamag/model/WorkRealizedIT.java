@@ -29,9 +29,6 @@ public class WorkRealizedIT extends AbstractEntityIT {
 
         assertThat(workRealized.getId()).isNull();
 
-        persist(workRealized.getMember());
-        persist(workRealized.getTask());
-
         persist(workRealized);
         commit();
         return workRealized;
@@ -41,12 +38,10 @@ public class WorkRealizedIT extends AbstractEntityIT {
     @Test(expected = PersistenceException.class)
     public void testCreate_taskNull() {
         WorkRealized workRealized = EntityFactory.createWorkRealized();
-        workRealized.setTask(null);
-        persist(workRealized.getMember());
+        workRealized.setTaskId(null);
         persist(workRealized);
         commit();
     }
-
 
     @Test
     public void test_namedQuery_FindAllWorkRealized() throws Exception {
@@ -66,18 +61,14 @@ public class WorkRealizedIT extends AbstractEntityIT {
 
         WorkRealized workRealized = createWorkRealized();
         transaction.begin();
-        WorkRealized workRealized2 = createWorkRealized();
 
-        transaction.begin();
         WorkRealized workRealizedWithoutMember = EntityFactory.createWorkRealized();
-        workRealizedWithoutMember.setMember(null);
-        workRealizedWithoutMember.getTask().setMembers(null);
-        persist(workRealizedWithoutMember.getTask());
+        workRealizedWithoutMember.setMemberId(null);
         persist(workRealizedWithoutMember);
         commit();
 
         Query query = entityManager.createNamedQuery("findAllWorkRealizedByMember");
-        query.setParameter("fMemberId", workRealized.getMember().getId());
+        query.setParameter("fMemberId", workRealized.getMemberId());
         assertThat(query.getResultList()).containsExactly(workRealized);
 
     }

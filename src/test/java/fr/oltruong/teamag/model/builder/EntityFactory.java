@@ -148,11 +148,11 @@ public class EntityFactory {
 
         WorkRealized workRealized = new WorkRealized();
         workRealized.setId(null);
-        workRealized.setMember(task.getMembers().get(0));
-        workRealized.setMonth(now.getMonth());
+        workRealized.setMemberId(11l);
+        workRealized.setMonth(now.getMonth().getValue());
         workRealized.setYear(now.getYear());
         workRealized.setRealized(2.5d);
-        workRealized.setTask(task);
+        workRealized.setTaskId(12l);
         return workRealized;
     }
 

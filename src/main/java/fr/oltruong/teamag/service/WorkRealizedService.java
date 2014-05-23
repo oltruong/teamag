@@ -25,7 +25,12 @@ public class WorkRealizedService extends AbstractService {
     public void createOrUpdate(List<WorkRealized> workRealizedList) {
         if (workRealizedList != null) {
             workRealizedList.forEach(workRealized -> {
-                if (workRealized.getId() != null) {
+
+                if (workRealized.getRealized() == 0) {
+                    if (workRealized.getId() != null) {
+                        remove(WorkRealized.class, workRealized.getId());
+                    }
+                } else if (workRealized.getId() != null) {
                     merge(workRealized);
                 } else {
                     persist(workRealized);

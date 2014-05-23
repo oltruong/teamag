@@ -35,9 +35,9 @@
                 <th>Remarques</th>
                 <th></th>
             </tr>
+
             </thead>
             <tbody>
-
             <tr ng-repeat="activity in (filteredActivities= (activities | filter:query | orderBy:orderProp))">
 
                 <td><span ng-show="!editing">{{activity.name}}</span> <input ng-model="activity.name"
