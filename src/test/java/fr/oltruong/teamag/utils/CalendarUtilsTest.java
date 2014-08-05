@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.utils;
 
 import com.google.common.collect.Lists;
-import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.junit.Test;
 
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,13 +31,23 @@ public class CalendarUtilsTest {
         checkContains(daysOff, 9, 6);
         checkContains(daysOff, 14, 7);
         checkContains(daysOff, 15, 8);
+
         checkContains(daysOff, 1, 11);
         checkContains(daysOff, 11, 11);
+        checkNotContains(daysOff, 3, 11);
         checkContains(daysOff, 25, 12);
 
     }
 
     private void checkContains(List<DateTime> daysOff, int day, int month) {
+        assertThat(contains(daysOff, day, month)).isTrue();
+    }
+
+    private void checkNotContains(List<DateTime> daysOff, int day, int month) {
+        assertThat(contains(daysOff, day, month)).isFalse();
+    }
+
+    private boolean contains(List<DateTime> daysOff, int day, int month) {
         DateTime dayOffCheck = DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day);
         boolean found = false;
         for (DateTime dayOff : daysOff) {
@@ -46,7 +56,7 @@ public class CalendarUtilsTest {
                 break;
             }
         }
-        assertThat(found).isTrue();
+        return found;
     }
 
 

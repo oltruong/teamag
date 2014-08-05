@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.service;
 
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.mockito.Mock;
@@ -27,8 +28,11 @@ public abstract class AbstractServiceTest {
     @Mock
     protected Query mockQuery;
 
+    protected Long randomLong;
+
     @Before
     public void setup() {
+        randomLong = EntityFactory.createRandomLong();
         MockitoAnnotations.initMocks(this);
         when(getMockEntityManager().createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
 

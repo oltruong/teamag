@@ -11,7 +11,7 @@
 
     <properties>
 
-        <version.java>1.8</version.java>
+        <java.version>1.8</java.version>
         <version.javaee>7.0</version.javaee>
         <version.primefaces>4.0</version.primefaces>
         <version.primefaces-theme>1.0.10</version.primefaces-theme>
@@ -63,6 +63,7 @@
         <version.wildfly>8.0.0.Final</version.wildfly>
         <version.hibernate>4.3.5.Final</version.hibernate>
 
+        <sonar-maven-plugin.version>2.4</sonar-maven-plugin.version>
     </properties>
 
 
@@ -258,8 +259,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.maven-compiler-plugin}</version>
                 <configuration>
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
@@ -350,6 +351,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>${version.build-helper-maven-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

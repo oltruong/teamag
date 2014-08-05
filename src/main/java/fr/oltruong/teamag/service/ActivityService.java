@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.base.Strings;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.WorkLoad;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;

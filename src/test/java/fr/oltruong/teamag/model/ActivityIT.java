@@ -22,8 +22,9 @@ public class ActivityIT extends AbstractEntityIT {
         Activity activityDB = entityManager.find(Activity.class, activity.getId());
 
         assertThat(activity).isEqualToComparingFieldByField(activityDB).isEqualTo(activityDB);
+        assertThat(activity).isEqualToComparingFieldByField(activityDB).isEqualTo(activityDB);
 
-        assertThat(entityManager.find(Activity.class, activity.getId() + 1)).isNull();
+
 
     }
 

@@ -93,6 +93,29 @@ public class WorkLoadService extends AbstractService {
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads();
+        } else {
+            List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
+
+            List<Member> memberList = MemberService.getMemberList();
+            if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
+                for (Member member : memberList) {
+                    for (BusinessCase businessCase : businessCaseList) {
+
+                        boolean found = false;
+                        for (WorkLoad workLoad : workLoadList) {
+                            if (businessCase.getId().equals(workLoad.getBusinessCase().getId()) && member.getId().equals(workLoad.getMember().getId())) {
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            getLogger().warn("Creating missing workLoad businessCase" + businessCase.getId() + " member:" + member.getId());
+                            WorkLoad workLoad = new WorkLoad(businessCase, member);
+                            persist(workLoad);
+                            workLoadList.add(workLoad);
+                        }
+                    }
+                }
+            }
         }
 
         return workLoadList;

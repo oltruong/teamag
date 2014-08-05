@@ -36,6 +36,10 @@ public class EntityFactory {
 
     }
 
+    public static Long createRandomLong() {
+        return Long.valueOf(new Random().nextLong());
+    }
+
     public static Member createMember() {
         Member member = new Member();
 

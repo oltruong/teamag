@@ -5,17 +5,17 @@
                                                                          placeholder="Filtrer Nom">
 
         <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
-            <span class="glyphicon glyphicon-pencil">&nbsp;&Eacute;diter</span>
+            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&Eacute;diter
         </a>
         <a ng-show="editing" ng-click="editing=false;"
            class="btn btn-warning btn"
            title="Annuler la modification">
-            <span class="glyphicon glyphicon-remove">&nbsp;Annuler la modification</span>
+            <span class="glyphicon glyphicon-remove"></span>&nbsp;Annuler la modification
         </a>
         <a ng-show="editing" ng-click="update();editing=false;"
            class="btn btn-success btn"
            title="Valider">
-            <span class="glyphicon glyphicon-ok">&nbsp;Sauvegarder</span>
+            <span class="glyphicon glyphicon-ok"></span>&nbsp;Sauvegarder
         </a>
         <br/>
 
@@ -35,7 +35,9 @@
 
             <tr>
                 <th><br/><br/>BusinessCase</th>
-                <th><span class="text-primary">{{sumMember()/21| number:2}}</span><br/><br/>{{sumBC()| number:2}}</th>
+                <th class="border-right"><span class="text-primary">{{sumMember()/21| number:2}}</span><br/><br/>{{sumBC()|
+                    number:2}}
+                </th>
                 <th><br/><span ng-class="displayClassSum((sumMember()/21)-sumWorkLoad())">{{(sumMember()/21)-sumWorkLoad()| number:2}}</span><br/><span
                         ng-class="displayClassSum(sumBC()-sumWorkLoad())">{{sumBC()-sumWorkLoad()|
                     number:2}}</span>
@@ -56,7 +58,7 @@
                 <td title="{{workLoadContainer.businessCase.comment}}">
                     {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}
                 </td>
-                <td>{{workLoadContainer.businessCase.amount}}</td>
+                <td class="border-right">{{workLoadContainer.businessCase.amount}}</td>
                 <td ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
                     {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}
                 </td>
