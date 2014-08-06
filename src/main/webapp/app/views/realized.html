@@ -1,0 +1,34 @@
+<div class="col-md-12">
+    <h1 class="text-center">Realise de {{selectedMember.name}}</h1>
+
+    <div class="bg-success">{{confirmation}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+
+    <select ng-model="selectedMember" ng-options="member.name for member in members"
+            ng-change="loadRealized()"></select>
+    <a ng-click="save();" class="btn btn-success btn"
+       title="Sauver">
+        <span class="glyphicon glyphicon-save">&nbsp;Sauver</span>
+    </a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Activit&eacute;</th>
+            <th>T&acirc;che</th>
+            <th ng-repeat="date in months">{{date}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="workRealized in worksRealized">
+            <td>{{workRealized.task.activity.name}}</td>
+            <td>{{workRealized.task.name}}</td>
+            <td ng-repeat="realizedMonth in workRealized.workRealizedList | orderBy: orderProp"><input type="number"
+                                                                                                       step="any"
+                                                                                                       ng-model="realizedMonth.realized"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

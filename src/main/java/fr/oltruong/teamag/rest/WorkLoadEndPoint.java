@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.service.MemberService;
-import fr.oltruong.teamag.service.WorkLoadService;
+import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.WorkLoad;
-import fr.oltruong.teamag.interfaces.AdminChecked;
+import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.webbean.WorkLoadContainer;
 import fr.oltruong.teamag.webbean.WorkLoadMemberContainer;
 
@@ -26,7 +26,7 @@ import java.util.List;
 public class WorkLoadEndPoint extends AbstractEndPoint {
 
     @EJB
-    WorkLoadService workLoadEJB;
+    WorkLoadService workLoadService;
 
 
     @GET
@@ -40,7 +40,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
         workLoadContainer.setMemberList(MemberService.getMemberList());
 
 
-        List<WorkLoad> workLoadList = workLoadEJB.findOrCreateAllWorkLoad();
+        List<WorkLoad> workLoadList = workLoadService.findOrCreateAllWorkLoad();
         BusinessCase businessCase = null;
         WorkLoadContainer currentContainer = null;
 
@@ -72,8 +72,8 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     @PUT
     public Response updateWorkLoad(List<WorkLoadContainer> workLoadContainerList) {
 
-        for (WorkLoadContainer workLoadContainer : workLoadContainerList) {
-            workLoadEJB.updateWorkLoad(workLoadContainer.getWorkLoadList());
+        if (workLoadContainerList != null) {
+            workLoadContainerList.forEach(workLoadContainer -> workLoadService.updateWorkLoad(workLoadContainer.getWorkLoadList()));
         }
 
         return buildResponseOK();

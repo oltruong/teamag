@@ -1,9 +1,9 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.service.AbsenceService;
-import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.service.AbsenceService;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.transformer.ScheduleEventTransformer;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
@@ -60,9 +60,7 @@ public class ScheduleController extends Controller {
     }
 
     private void fillEventList(List<ScheduleEvent> eventList) {
-        for (ScheduleEvent event : eventList) {
-            eventModel.addEvent(event);
-        }
+        eventList.forEach(event -> eventModel.addEvent(event));
     }
 
     public ScheduleModel getEventModel() {

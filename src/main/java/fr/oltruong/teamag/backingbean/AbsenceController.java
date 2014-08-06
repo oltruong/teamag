@@ -107,7 +107,6 @@ public class AbsenceController extends Controller {
         return result;
     }
 
-
     /**
      * Enable the possibility to fill only beginDate or endDate
      *

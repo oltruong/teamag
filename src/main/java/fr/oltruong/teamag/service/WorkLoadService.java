@@ -25,32 +25,6 @@ public class WorkLoadService extends AbstractService {
 
     }
 
-    //FIXME USE LATER
-//    public Map<Integer, Map<Member, Float>> buildWeekLoad() {
-//        String qlString = "SELECT SUM(a.value), a.week, a.month, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week, a.month";
-//        Query q = createQuery(qlString);
-//        List<Object[]> results = q.getResultList();
-//
-//
-//        Map<Integer, Map<Member, Float>> map = Maps.newHashMap();
-//
-//        int weekCursor = 0;
-//
-//        for (Object[] object : results) {
-//            int week = ((Integer) object[1]).intValue();
-//            if (week == 1 && ((Integer) object[2]).intValue() == 12) {
-//                week = 53;
-//            }
-//            if (weekCursor != week) {
-//                weekCursor = week;
-//                Map<Member, Float> memberFloatMap = Maps.newHashMap();
-//                map.put(Integer.valueOf(week), memberFloatMap);
-//            }
-//            map.get(Integer.valueOf(week)).put(((Member) object[3]), ((Float) object[0]));
-//        }
-//        return map;
-//    }
-
 
     public void removeAbsence(Long id) {
 
@@ -93,6 +67,29 @@ public class WorkLoadService extends AbstractService {
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads();
+        } else {
+            List<BusinessCase> businessCaseList = getNamedQueryList("findAllBC");
+
+            List<Member> memberList = MemberService.getMemberList();
+            if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
+                for (Member member : memberList) {
+                    for (BusinessCase businessCase : businessCaseList) {
+
+                        boolean found = false;
+                        for (WorkLoad workLoad : workLoadList) {
+                            if (businessCase.getId().equals(workLoad.getBusinessCase().getId()) && member.getId().equals(workLoad.getMember().getId())) {
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            getLogger().warn("Creating missing workLoad businessCase" + businessCase.getId() + " member:" + member.getId());
+                            WorkLoad workLoad = new WorkLoad(businessCase, member);
+                            persist(workLoad);
+                            workLoadList.add(workLoad);
+                        }
+                    }
+                }
+            }
         }
 
         return workLoadList;

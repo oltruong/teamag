@@ -15,13 +15,14 @@
         <class>fr.oltruong.teamag.model.WeekComment</class>
         <class>fr.oltruong.teamag.model.Work</class>
         <class>fr.oltruong.teamag.model.WorkLoad</class>
+        <class>fr.oltruong.teamag.model.WorkRealized</class>
         <class>fr.oltruong.teamag.model.converter.DateConverter</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/test"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test"/>
             <property name="javax.persistence.logging.level" value="INFO"/>
         </properties>
     </persistence-unit>

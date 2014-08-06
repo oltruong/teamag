@@ -3,7 +3,7 @@ package fr.oltruong.teamag.backingbean;
 import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Absence;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;

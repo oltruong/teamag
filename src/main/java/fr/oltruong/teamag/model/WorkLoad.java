@@ -8,10 +8,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Table(name = "TM_WORK_LOAD")
 @Entity
-@NamedQueries({@NamedQuery(name = "findAllWorkLoad", query = "SELECT w FROM WorkLoad w order by w.businessCase.name, w.member.name")})
+@NamedQueries({@NamedQuery(name = "findAllWorkLoad", query = "SELECT w FROM WorkLoad w order by w.businessCase.id, w.member.id")})
 public class WorkLoad {
 
     @Id
@@ -32,7 +33,7 @@ public class WorkLoad {
     private Double realized = 0d;
 
     public WorkLoad() {
-
+        LocalDate localDate = LocalDate.now();
     }
 
     public WorkLoad(BusinessCase businessCase, Member member) {
@@ -69,5 +70,17 @@ public class WorkLoad {
 
     public void setRealized(Double realized) {
         this.realized = realized;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setBusinessCase(BusinessCase businessCase) {
+        this.businessCase = businessCase;
     }
 }

@@ -1,7 +1,7 @@
 package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.Absence;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.Member;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
         absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         when(getMockQuery().getResultList()).thenReturn(absenceList);
 
-        prepareEJB(absenceService);
+        prepareService(absenceService);
     }
 
 

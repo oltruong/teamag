@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.model;
 
-import org.junit.Before;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,10 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WorkLoadIT extends AbstractEntityIT {
 
-    @Before
-    public void prepareTest() {
-        super.setup();
-    }
 
     @Test
     public void testCreation() {

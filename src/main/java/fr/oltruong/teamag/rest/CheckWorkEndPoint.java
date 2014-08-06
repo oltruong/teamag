@@ -5,10 +5,11 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
-import fr.oltruong.teamag.service.WorkService;
-import fr.oltruong.teamag.model.Task;
-import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.interfaces.SupervisorChecked;
+import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.WeekComment;
+import fr.oltruong.teamag.model.Work;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.webbean.WorkWebBean;
 import org.joda.time.DateTime;
 
@@ -18,6 +19,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,13 +39,25 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
     @GET
     @Path("/weekComment/{memberId}/{weekNumber}")
     public Response getWeekComment(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber) {
-        return buildResponseOK(workEJB.findWeekComment(memberId, weekNumber, 2014));
+
+        if (weekNumber == -1) {
+            weekNumber = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        }
+        WeekComment weekComment = workEJB.findWeekComment(memberId, weekNumber, 2014);
+        if (weekComment == null) {
+            weekComment = new WeekComment();
+            weekComment.setWeekYear(weekNumber);
+        }
+        return buildResponseOK(weekComment);
     }
 
     @GET
     @Path("/byWeek/{memberId}/{weekNumber}/{macroTask}")
     public Response getWeekInformation(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber, @PathParam("macroTask") boolean macroTask) {
 
+        if (weekNumber == -1) {
+            weekNumber = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        }
 
         List<Work> workList = workEJB.findWorksList(memberId, weekNumber);
         if (macroTask) {

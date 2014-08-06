@@ -15,16 +15,23 @@
             <h:form>
                 <table>
                     <tr>
-                        <td><h:outputLabel value="#{i18n.realizedPageproject}" for="acProject"/>
+                        <td>
+                            <h:outputLabel value="#{i18n.realizedPageproject}" for="acProject"/>
                             <p:autoComplete id="acProject"
                                             value="#{workController.newTask.project}"
-                                            completeMethod="#{workController.completeProject}"/></td>
-                        <td><h:outputLabel value="-#{i18n.name}" for="acName"/> <p:autoComplete
-                                id="acName" value="#{workController.newTask.name}"
-                                completeMethod="#{workController.completeName}"/></td>
-                        <td><p:commandButton value="#{i18n.add}"
+                                            completeMethod="#{workController.completeProject}"/>
+                        </td>
+                        <td>
+                            <h:outputLabel value="-#{i18n.name}" for="acName"/>
+                            <p:autoComplete
+                                    id="acName" value="#{workController.newTask.name}"
+                                    completeMethod="#{workController.completeName}"/>
+                        </td>
+                        <td>
+                            <p:commandButton value="#{i18n.add}"
                                              action="#{workController.doCreateActivity}" ajax="false"
-                                             icon="ui-icon-plusthick"/></td>
+                                             icon="ui-icon-plusthick"/>
+                        </td>
                     </tr>
                 </table>
 
@@ -92,7 +99,7 @@
                 <br/>
                 <b>#{i18n.realizedPagetaskdeletionWarning}</b>
                 <br/><br/>
-                #{i18n.comment}<br/>
+                #{i18n.weekComment}<br/>
                 <p:inputTextarea rows="10" cols="120" maxlength="3000" value="#{workController.weekComment.comment}"/>
             </p:panel>
         </h:form>

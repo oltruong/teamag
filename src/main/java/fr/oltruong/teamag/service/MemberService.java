@@ -2,10 +2,10 @@ package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.enumeration.MemberType;
-import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -31,6 +31,7 @@ public class MemberService extends AbstractService {
     public static List<Member> getMemberList() {
         return memberList;
     }
+
 
     @PostConstruct
     public void build() {

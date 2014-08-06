@@ -26,7 +26,7 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
                     if ($scope.tasks[i].activity !== null) {
                         for (var j = 0; j < activitiesLength; j++) {
-                            if ($scope.tasks[i].activity.id == $scope.activities[j].id) {
+                            if ($scope.tasks[i].activity.id === $scope.activities[j].id) {
                                 $scope.tasks[i].activity = $scope.activities[j];
                             }
                         }
@@ -104,7 +104,7 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
             Task.save($scope.newTask, function () {
                 $location.path('tasks').search({confirmation: 'Tâche ' + $scope.newTask.project + '-' + $scope.newTask.name + ' ajoutée'});
             }, function (error) {
-                if (error.status == "406") {
+                if (error.status === "406") {
                     $scope.warning = "Création invalide";
                 } else {
                     $scope.error = 'Erreur HTTP' + error.status;

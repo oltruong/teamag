@@ -29,7 +29,6 @@ public class WorkServiceIT extends AbstractServiceIT {
         member.setEmail("dyummy@email.com");
 
 
-        // Persists the member to the database
         member = memberEJB.createMemberWithAbsenceTask(member);
         assertThat(member.getId()).isNotNull();
 

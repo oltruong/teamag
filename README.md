@@ -18,7 +18,7 @@
 
 * [Java8] (http://www.oracle.com/technetwork/java/index.html)
 * [Maven] (http://maven.apache.org)
-* [JavaEE 7 server with Java 8] (http://www.wildfly.org/): for example WildFly
+* JavaEE 7 server: for example [WildFly] (http://www.wildfly.org/)
 
 ### Default configuration
 * Datasource : java:/jdbc/teamag

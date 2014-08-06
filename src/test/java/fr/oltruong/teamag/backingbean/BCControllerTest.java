@@ -3,7 +3,7 @@ package fr.oltruong.teamag.backingbean;
 import fr.oltruong.teamag.service.ActivityService;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TestUtils;

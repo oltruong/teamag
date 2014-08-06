@@ -16,7 +16,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
 
                     if ($scope.activities[i].bc !== null) {
                         for (var j = 0; j < bcLength; j++) {
-                            if ($scope.activities[i].bc.id == $scope.businesscases[j].id) {
+                            if ($scope.activities[i].bc.id === $scope.businesscases[j].id) {
                                 $scope.activities[i].bc = $scope.businesscases[j];
                             }
                         }

@@ -53,7 +53,5 @@ public abstract class AbstractService {
         entityManager.flush();
     }
 
-    protected Query createQuery(String name) {
-        return entityManager.createQuery(name);
-    }
+
 }

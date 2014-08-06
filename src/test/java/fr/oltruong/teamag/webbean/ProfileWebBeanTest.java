@@ -1,6 +1,6 @@
 package fr.oltruong.teamag.webbean;
 
-import fr.oltruong.teamag.model.EntityFactory;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.Member;
 import org.junit.Test;
 

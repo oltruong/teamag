@@ -1,7 +1,5 @@
 package fr.oltruong.teamag.service;
 
-import org.slf4j.Logger;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.Message;
@@ -14,31 +12,30 @@ import java.util.Properties;
 
 // from http://www.tutorialspoint.com/java/java_sending_email.htm
 @Stateless
-public class EmailService {
+public class EmailService extends AbstractService {
 
-    @Inject
-    private Logger logger;
 
     private static final String SENDER = "TEAMAG";
 
     @Inject
-    private ParameterService parameterEJB;
+    private ParameterService parameterService;
+
 
     public void sendEmailAdministrator(MailBean email) {
-
-        email.setRecipient(parameterEJB.getAdministratorEmail());
-        if ( this.parameterEJB.getSmtpHost()!=null){
+        email.setRecipient(parameterService.getAdministratorEmail());
+        if (parameterService.getSmtpHost() != null) {
             sendEmail(email);
         } else {
-            logger.warn("no email will be sent as SMTP HOST is not defined");
+            getLogger().warn("no email will be sent as SMTP HOST is not defined");
         }
     }
+
 
     private void sendEmail(MailBean email) {
 
         Properties properties = System.getProperties();
 
-        properties.setProperty("mail.smtp.host", this.parameterEJB.getSmtpHost());
+        properties.setProperty("mail.smtp.host", parameterService.getSmtpHost());
 
         Session session = Session.getDefaultInstance(properties);
 
@@ -46,16 +43,17 @@ public class EmailService {
             MimeMessage message = buildMessage(email, session);
 
             Transport.send(message);
-            this.logger.debug("Message successfully sent");
         } catch (MessagingException messagingException) {
-            this.logger.error("Error in sending message [" + messagingException.getMessage() + "]");
+            getLogger().error("Error in sending message [" + messagingException.getMessage() + "]");
         }
+
     }
+
 
     private MimeMessage buildMessage(MailBean email, Session session) throws MessagingException {
         MimeMessage message = new MimeMessage(session);
 
-        message.setFrom(new InternetAddress(SENDER + "<" + this.parameterEJB.getAdministratorEmail() + ">"));
+        message.setFrom(new InternetAddress(SENDER + "<" + parameterService.getAdministratorEmail() + ">"));
 
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(email.getRecipient()));
 
@@ -64,4 +62,6 @@ public class EmailService {
         message.setContent(email.getContent(), "text/plain");
         return message;
     }
+
+
 }

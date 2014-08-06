@@ -15,3 +15,12 @@ body {
 .navbar-right {
     margin-right: 10px !important;
 }
+
+.border-right {
+    border-right-style: solid;
+    border-right-width: 2px;
+}
+
+td > input {
+    size: 10px;
+}

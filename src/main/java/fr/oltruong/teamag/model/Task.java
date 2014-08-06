@@ -18,7 +18,9 @@ import java.util.List;
 
 @Table(name = "TM_TASK")
 @NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
+        @NamedQuery(name = "findAllTasksWithActivity", query = "SELECT t from Task t where t.activity is not null order by t.name, t.project"),
         @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)")})
+
 @Entity
 public class Task {
     @Id
@@ -110,6 +112,23 @@ public class Task {
     public int compareTo(Task task) {
 
         return (project + name).compareTo(task.project + task.name);
+    }
+
+
+    public boolean isNonAdmin() {
+        return !isAdmin();
+    }
+
+    public boolean isAdmin() {
+        boolean verdict = false;
+        if (this.getMembers() != null && !this.getMembers().isEmpty()) {
+            for (Member member : this.getMembers()) {
+                verdict |= member.isAdministrator();
+            }
+        } else {
+            verdict = true;
+        }
+        return verdict;
     }
 
     @Override
