@@ -1,5 +1,6 @@
 package fr.oltruong.teamag.service;
 
+import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.BusinessCase;
@@ -166,9 +167,22 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindOrCreateAllWorkLoad_create() {
+    public void testFindOrCreateAllWorkLoad_create_null() {
         when(getMockQuery().getResultList()).thenReturn(null);
 
+        testFindOrCreateAllWorkLoad_create();
+
+    }
+
+    @Test
+    public void testFindOrCreateAllWorkLoad_create_empty() {
+        when(getMockQuery().getResultList()).thenReturn(Lists.newArrayList());
+
+        testFindOrCreateAllWorkLoad_create();
+
+    }
+
+    private void testFindOrCreateAllWorkLoad_create() {
         Query mockQueryBC = mock(Query.class);
         when(getMockEntityManager().createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
 
@@ -189,7 +203,6 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
         verify(getMockEntityManager()).createNamedQuery(eq("findAllWorkLoad"));
         verify(getMockEntityManager()).createNamedQuery(eq("findAllBC"));
-
     }
 
 

@@ -153,25 +153,13 @@ public class WorkService extends AbstractService {
 
         List<Task> nonAdminTaskList = Lists.newArrayListWithCapacity(taskList.size());
 
-        for (Task task : taskList) {
-            if (isTaskNonAdmin(task)) {
+        taskList.forEach(task -> {
+            if (task.isNonAdmin()) {
                 nonAdminTaskList.add(task);
             }
+        });
 
-        }
         return nonAdminTaskList;
-    }
-
-    private boolean isTaskNonAdmin(Task task) {
-        boolean verdict = false;
-        if (task.getMembers() != null && !task.getMembers().isEmpty()) {
-            for (Member member : task.getMembers()) {
-                verdict |= !member.isAdministrator();
-            }
-        } else {
-            verdict = true;
-        }
-        return verdict;
     }
 
 

@@ -114,6 +114,23 @@ public class Task {
         return (project + name).compareTo(task.project + task.name);
     }
 
+
+    public boolean isNonAdmin() {
+        return !isAdmin();
+    }
+
+    public boolean isAdmin() {
+        boolean verdict = false;
+        if (this.getMembers() != null && !this.getMembers().isEmpty()) {
+            for (Member member : this.getMembers()) {
+                verdict |= member.isAdministrator();
+            }
+        } else {
+            verdict = true;
+        }
+        return verdict;
+    }
+
     @Override
     public boolean equals(Object otherTask) {
         if (!(otherTask instanceof Task)) {

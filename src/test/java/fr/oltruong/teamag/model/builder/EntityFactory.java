@@ -161,7 +161,6 @@ public class EntityFactory {
     }
 
     public static <E> List<E> createList(Supplier<E> supplier) {
-
         int randomListSize = Math.abs(new Random().nextInt(MAXIMUM - MINIMUM)) + MINIMUM;
         return createList(supplier, randomListSize);
     }

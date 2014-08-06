@@ -144,7 +144,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
     public void testUpdateActivity() {
         Activity activity = EntityFactory.createActivity();
 
-        activityService.merge(activity);
+        activityService.updateActivity(activity);
         verify(getMockEntityManager()).merge(eq(activity));
     }
 
