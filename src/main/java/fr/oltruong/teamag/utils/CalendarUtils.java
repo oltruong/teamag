@@ -3,6 +3,7 @@ package fr.oltruong.teamag.utils;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.MutableDateTime;
 
 import java.util.List;
 
@@ -93,6 +94,56 @@ public final class CalendarUtils {
         }
         return listWorkingDays;
 
+    }
+
+    public static boolean isInFirstWorkingWeekOfMonth(DateTime day) {
+
+
+        DateTime firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthOfYear());
+        return (firstWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear());
+
+
+    }
+
+    private static DateTime findFirstWorkingDayMonth(int monthOfYear) {
+
+        MutableDateTime dayOfMonth = MutableDateTime.now();
+        dayOfMonth.setDayOfMonth(1);
+        dayOfMonth.setMonthOfYear(monthOfYear);
+
+        while (isDayOff(dayOfMonth.toDateTime())) {
+            dayOfMonth.addDays(1);
+        }
+
+        return dayOfMonth.toDateTime();
+    }
+
+    public static boolean isInLastWorkingWeekOfMonth(DateTime day) {
+
+
+        DateTime lastWorkingDayOfMonth = findLastWorkingDayMonth(day.getMonthOfYear());
+        return (lastWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear());
+
+
+    }
+
+    private static DateTime findLastWorkingDayMonth(int monthOfYear) {
+
+        MutableDateTime dayOfMonth = MutableDateTime.now();
+        dayOfMonth.setDayOfMonth(1);
+        if (monthOfYear == 12) {
+            dayOfMonth.addYears(1);
+            dayOfMonth.setMonthOfYear(1);
+        } else {
+            dayOfMonth.setMonthOfYear(monthOfYear + 1);
+        }
+
+        dayOfMonth.addDays(-1);
+        while (isDayOff(dayOfMonth.toDateTime())) {
+            dayOfMonth.addDays(-1);
+        }
+
+        return dayOfMonth.toDateTime();
     }
 
 }

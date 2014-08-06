@@ -1,12 +1,14 @@
 package fr.oltruong.teamag.webbean;
 
 import com.google.common.collect.Lists;
+import fr.oltruong.teamag.utils.CalendarUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+
+import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import javax.inject.Inject;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
 
 public class RealizedFormWebBean {
 
@@ -27,16 +29,12 @@ public class RealizedFormWebBean {
 
 
     public boolean getIsFirstWeek() {
-        logger.debug("day cursor" + dayCursor.getDayOfMonth());
-        logger.debug("weekNumberMonth" + weekNumberMonth);
-        return weekNumberMonth == 1;
+
+        return CalendarUtils.isInFirstWorkingWeekOfMonth(dayCursor);
     }
 
     public boolean getIsLastWeek() {
-        logger.debug("day cursor" + dayCursor.getDayOfMonth());
-        logger.debug("weekNumberMonth" + weekNumberMonth);
-        return weekNumberMonth == 5;
-        // return CalendarUtils.isLastWeek( dayCursor );
+        return CalendarUtils.isInLastWorkingWeekOfMonth(dayCursor);
     }
 
     public void addColumnDay(ColumnDayBean columnDay) {
@@ -76,11 +74,20 @@ public class RealizedFormWebBean {
         weekNumberMonth += 1;
         dayCursor = dayCursor.plusWeeks(1);
 
+        while (dayCursor.getMonthOfYear() != currentMonth.getMonthOfYear()) {
+            dayCursor = dayCursor.plusDays(-1);
+        }
+
     }
 
     public void decrementWeek() {
         weekNumberMonth -= 1;
         dayCursor = dayCursor.plusWeeks(-1);
+
+        while (dayCursor.getMonthOfYear() != currentMonth.getMonthOfYear()) {
+            dayCursor = dayCursor.plusDays(1);
+        }
+
     }
 
     public DateTime getCurrentMonth() {
