@@ -12,6 +12,7 @@ import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -35,11 +36,16 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
     private WorkLoadService workLoadService;
 
+    @Mock
+    private WorkService mockWorkService;
+
+
     @Before
     public void prepare() {
         super.setup();
         workLoadService = new WorkLoadService();
         prepareService(workLoadService);
+        TestUtils.setPrivateAttribute(workLoadService, mockWorkService, "workService");
     }
 
     @Test
@@ -68,6 +74,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
         when(getMockQuery().getResultList()).thenReturn(absenceDayList);
 
+
         workLoadService.removeAbsence(idTest);
 
         checkCreateNameQuery("findAbsenceDayByAbsenceId");
@@ -75,7 +82,10 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         verify(getMockQuery()).setParameter(eq("fAbsenceId"), eq(idTest));
         verify(getMockQuery()).getResultList();
 
-        absenceDayList.forEach(absenceDay -> verify(getMockEntityManager()).remove(eq(absenceDay)));
+        absenceDayList.forEach(absenceDay -> verify(mockWorkService).removeWorkAbsence(eq(absenceDay)));
+
+
+        absenceDayList.forEach(absenceDay -> verify(mockEntityManager).remove(eq(absenceDay)));
 
 
     }
@@ -85,7 +95,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         when(getMockQuery().getResultList()).thenReturn(null);
 
         workLoadService.removeAbsence(Long.valueOf(123l));
-        verify(getMockEntityManager(), never()).remove(any());
+        verify(mockEntityManager, never()).remove(any());
 
     }
 
@@ -101,7 +111,11 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(absence);
 
-        absenceDayList.forEach(absenceDay -> verify(getMockEntityManager()).persist(refEq(absenceDay)));
+        absenceDayList.forEach(absenceDay -> {
+            verify(mockEntityManager).persist(refEq(absenceDay));
+            verify(mockWorkService).updateWorkAbsence(refEq(absenceDay));
+        });
+
 
     }
 
@@ -117,8 +131,8 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         Query mockQueryAbsenceDay = mock(Query.class);
         Query mockQueryAbsence = mock(Query.class);
 
-        when(getMockEntityManager().createNamedQuery(eq("findAllAbsenceDays"))).thenReturn(mockQueryAbsenceDay);
-        when(getMockEntityManager().createNamedQuery(eq("findAllAbsences"))).thenReturn(mockQueryAbsence);
+        when(mockEntityManager.createNamedQuery(eq("findAllAbsenceDays"))).thenReturn(mockQueryAbsenceDay);
+        when(mockEntityManager.createNamedQuery(eq("findAllAbsences"))).thenReturn(mockQueryAbsence);
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         when(mockQueryAbsence.getResultList()).thenReturn(absenceList);
@@ -128,11 +142,11 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
         workLoadService.reloadAllAbsenceDay();
 
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllAbsenceDays"));
-        absenceDayList.forEach(absenceDay -> verify(getMockEntityManager()).remove(eq(absenceDay)));
+        verify(mockEntityManager).createNamedQuery(eq("findAllAbsenceDays"));
+        absenceDayList.forEach(absenceDay -> verify(mockEntityManager).remove(eq(absenceDay)));
 
 
-        absenceList.forEach(absence -> AbsenceDayTransformer.transformAbsence(absence).forEach(absenceDay -> verify(getMockEntityManager()).persist(refEq(absenceDay))));
+        absenceList.forEach(absence -> AbsenceDayTransformer.transformAbsence(absence).forEach(absenceDay -> verify(mockEntityManager).persist(refEq(absenceDay))));
 
     }
 
@@ -141,15 +155,15 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         Query mockQueryAbsenceDay = mock(Query.class);
         Query mockQueryAbsence = mock(Query.class);
 
-        when(getMockEntityManager().createNamedQuery(eq("findAllAbsenceDays"))).thenReturn(mockQueryAbsenceDay);
-        when(getMockEntityManager().createNamedQuery(eq("findAllAbsences"))).thenReturn(mockQueryAbsence);
+        when(mockEntityManager.createNamedQuery(eq("findAllAbsenceDays"))).thenReturn(mockQueryAbsenceDay);
+        when(mockEntityManager.createNamedQuery(eq("findAllAbsences"))).thenReturn(mockQueryAbsence);
 
         when(mockQueryAbsenceDay.getResultList()).thenReturn(null);
         when(mockQueryAbsence.getResultList()).thenReturn(null);
 
         workLoadService.reloadAllAbsenceDay();
-        verify(getMockEntityManager(), never()).remove(any());
-        verify(getMockEntityManager(), never()).persist(any());
+        verify(mockEntityManager, never()).remove(any());
+        verify(mockEntityManager, never()).persist(any());
     }
 
 
@@ -162,7 +176,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         List<WorkLoad> workLoadReturnedList = workLoadService.findOrCreateAllWorkLoad();
 
         assertThat(workLoadReturnedList).isEqualTo(workLoadList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllWorkLoad"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllWorkLoad"));
 
     }
 
@@ -184,7 +198,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
     private void testFindOrCreateAllWorkLoad_create() {
         Query mockQueryBC = mock(Query.class);
-        when(getMockEntityManager().createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
+        when(mockEntityManager.createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
 
 
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
@@ -199,10 +213,10 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
 
         assertThat(workLoadReturnedList).doesNotHaveDuplicates().hasSize(memberList.size() * bcList.size());
-        verify(getMockEntityManager(), times(memberList.size() * bcList.size())).persist(isA(WorkLoad.class));
+        verify(mockEntityManager, times(memberList.size() * bcList.size())).persist(isA(WorkLoad.class));
 
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllWorkLoad"));
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllBC"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllWorkLoad"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllBC"));
     }
 
 
@@ -215,13 +229,13 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
         //Dunno why IntellIj won't accept a single line here...
         workLoadList.forEach(workLoad -> {
-            verify(getMockEntityManager()).merge(eq(workLoad));
+            verify(mockEntityManager).merge(eq(workLoad));
         });
     }
 
     @Test
     public void testUpdateWorkLoad_null() {
         workLoadService.updateWorkLoad(null);
-        verify(getMockEntityManager(), never()).merge(any());
+        verify(mockEntityManager, never()).merge(any());
     }
 }

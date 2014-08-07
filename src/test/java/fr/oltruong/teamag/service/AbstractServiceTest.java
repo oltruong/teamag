@@ -34,23 +34,20 @@ public abstract class AbstractServiceTest {
     public void setup() {
         randomLong = EntityFactory.createRandomLong();
         MockitoAnnotations.initMocks(this);
-        when(getMockEntityManager().createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
+        when(mockEntityManager.createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
 
     }
 
     protected void prepareService(AbstractService service) {
-        TestUtils.setPrivateAttribute(service, AbstractService.class, getMockEntityManager(), "entityManager");
+        TestUtils.setPrivateAttribute(service, AbstractService.class, mockEntityManager, "entityManager");
         TestUtils.setPrivateAttribute(service, AbstractService.class, getMockLogger(), "logger");
 
     }
 
     protected void checkCreateNameQuery(String query) {
-        verify(getMockEntityManager()).createNamedQuery(eq(query));
+        verify(mockEntityManager).createNamedQuery(eq(query));
     }
 
-    protected EntityManager getMockEntityManager() {
-        return mockEntityManager;
-    }
 
     protected Logger getMockLogger() {
         return mockLogger;

@@ -105,7 +105,7 @@ public final class CalendarUtils {
 
     }
 
-    private static DateTime findFirstWorkingDayMonth(int monthOfYear) {
+    public static DateTime findFirstWorkingDayMonth(int monthOfYear) {
 
         MutableDateTime dayOfMonth = MutableDateTime.now();
         dayOfMonth.setDayOfMonth(1);

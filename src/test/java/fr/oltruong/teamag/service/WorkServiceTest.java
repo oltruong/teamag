@@ -3,8 +3,10 @@ package fr.oltruong.teamag.service;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -22,10 +24,15 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     private WorkService workService;
 
+    @Mock
+    private AbsenceDayService absenceDayService;
 
     @Before
     public void init() {
+        super.setup();
         workService = new WorkService();
+
+        TestUtils.setPrivateAttribute(workService, absenceDayService, "absenceDayService");
         prepareService(workService);
 
     }
@@ -49,7 +56,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         List<Task> taskListFound = supplier.get();
 
         assertThat(taskListFound).isEqualTo(taskList);
-        verify(getMockEntityManager()).createNamedQuery(eq(namedQuery));
+        verify(mockEntityManager).createNamedQuery(eq(namedQuery));
 
     }
 
@@ -70,6 +77,6 @@ public class WorkServiceTest extends AbstractServiceTest {
         assertThat(taskListFound).hasSize(taskList.size() - 2);
 
         taskListFound.forEach(task -> assertThat(task.isAdmin()).isFalse());
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllTasks"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllTasks"));
     }
 }

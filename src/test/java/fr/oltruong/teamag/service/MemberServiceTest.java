@@ -77,7 +77,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         List<Member> memberList = memberEJB.findActiveMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findActiveMembers"));
+        verify(mockEntityManager).createNamedQuery(eq("findActiveMembers"));
     }
 
 
@@ -87,7 +87,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         List<Member> memberList = memberEJB.findMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findMembers"));
+        verify(mockEntityManager).createNamedQuery(eq("findMembers"));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         } catch (UserNotFoundException e) {
 
         }
-        verify(getMockEntityManager()).createNamedQuery(eq("findByNamePassword"));
+        verify(mockEntityManager).createNamedQuery(eq("findByNamePassword"));
 
     }
 
@@ -111,12 +111,12 @@ public class MemberServiceTest extends AbstractServiceTest {
         Member newMember = EntityFactory.createMember();
         Long id = Long.valueOf(365l);
 
-        when(getMockEntityManager().find(eq(Member.class), any(Object.class))).thenReturn(newMember);
+        when(mockEntityManager.find(eq(Member.class), any(Object.class))).thenReturn(newMember);
 
         Member memberFound = memberEJB.findMember(id);
 
         assertThat(memberFound).isEqualTo(newMember);
-        verify(getMockEntityManager()).find(eq(Member.class), eq(id));
+        verify(mockEntityManager).find(eq(Member.class), eq(id));
 
     }
 
@@ -147,7 +147,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
         assertThat(memberEJB.findMemberForAuthentication(name, password)).isNotNull().isEqualTo(testMemberList.get(0));
-        verify(getMockEntityManager()).createNamedQuery(eq("findByNamePassword"));
+        verify(mockEntityManager).createNamedQuery(eq("findByNamePassword"));
         verify(getMockQuery()).setParameter("fname", name);
 
     }
@@ -161,7 +161,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
         testCreateMember(taskList);
-        verify(getMockEntityManager()).persist(refEq(task));
+        verify(mockEntityManager).persist(refEq(task));
 
     }
 
@@ -170,7 +170,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
         List<Task> taskList = buildEmptyTaskList();
         testCreateMember(taskList);
-        verify(getMockEntityManager(), times(2)).persist(isA(Task.class));
+        verify(mockEntityManager, times(2)).persist(isA(Task.class));
 
     }
 
@@ -178,19 +178,19 @@ public class MemberServiceTest extends AbstractServiceTest {
         //   when(getMockQuery().getResultList()).thenReturn(taskList);
 
         Query mockQueryTask = mock(Query.class);
-        when(getMockEntityManager().createNamedQuery(eq("findTaskByName"))).thenReturn(mockQueryTask);
+        when(mockEntityManager.createNamedQuery(eq("findTaskByName"))).thenReturn(mockQueryTask);
         when(mockQueryTask.getResultList()).thenReturn(taskList);
 
         Member member = EntityFactory.createMember();
         Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
 
         assertThat(memberCreated).isEqualTo(member);
-        verify(getMockEntityManager()).createNamedQuery(eq("findTaskByName"));
+        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
         verify(mockQueryTask).setParameter(eq("fname"), isA(String.class));
         verify(mockQueryTask).setParameter(eq("fproject"), isA(String.class));
 
 
-        verify(getMockEntityManager()).persist(eq(member));
+        verify(mockEntityManager).persist(eq(member));
     }
 
 
@@ -199,7 +199,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         Member member = EntityFactory.createMember();
         memberEJB.updateMember(member);
 
-        verify(getMockEntityManager()).merge(eq(member));
+        verify(mockEntityManager).merge(eq(member));
     }
 
 

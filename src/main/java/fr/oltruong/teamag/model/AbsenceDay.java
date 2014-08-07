@@ -18,7 +18,8 @@ import javax.persistence.Table;
 
 @Table(name = "TM_ABSENCE_DAY")
 @Entity
-@NamedQueries({@NamedQuery(name = "findAbsenceDayByAbsenceId", query = "SELECT a FROM AbsenceDay a where a.absence.id=:fAbsenceId"), @NamedQuery(name = "findAllAbsenceDays", query = "SELECT a FROM AbsenceDay a order by a.week, a.member.name")})
+@NamedQueries({@NamedQuery(name = "findAbsenceDayByAbsenceId", query = "SELECT a FROM AbsenceDay a where a.absence.id=:fAbsenceId"), @NamedQuery(name = "findAllAbsenceDays", query = "SELECT a FROM AbsenceDay a order by a.week, a.member.name"),
+        @NamedQuery(name = "findAbsenceDayByMemberAndMonth", query = "SELECT a FROM AbsenceDay a where (a.month=:fMonth and a.member.id=:fMemberId)")})
 public class AbsenceDay {
 
     @Id

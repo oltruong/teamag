@@ -46,7 +46,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
         List<BusinessCase> businessCaseFoundList = activityService.findBC();
 
         assertThat(businessCaseFoundList).isEqualTo(businessCaseList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllBC"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllBC"));
         verify(getMockQuery()).getResultList();
     }
 
@@ -64,12 +64,12 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         assertThat(businessCaseCreated).isEqualTo(businessCase);
 
-        verify(getMockEntityManager()).createNamedQuery(eq("findBCByNumber"));
+        verify(mockEntityManager).createNamedQuery(eq("findBCByNumber"));
         verify(getMockQuery()).setParameter(eq("fidentifier"), isA(String.class));
 
-        verify(getMockEntityManager()).persist(eq(businessCase));
+        verify(mockEntityManager).persist(eq(businessCase));
 
-        verify(getMockEntityManager()).persist(any(WorkLoad.class));
+        verify(mockEntityManager).persist(any(WorkLoad.class));
 
 
     }
@@ -92,9 +92,9 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         assertThat(businessCaseCreated).isEqualTo(businessCase);
 
-        verify(getMockEntityManager(), never()).createNamedQuery(eq("findBCByNumber"));
+        verify(mockEntityManager, never()).createNamedQuery(eq("findBCByNumber"));
         verify(getMockQuery(), never()).setParameter(eq("fidentifier"), isA(String.class));
-        verify(getMockEntityManager()).persist(eq(businessCase));
+        verify(mockEntityManager).persist(eq(businessCase));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
         List<Activity> activityFoundList = activityService.findActivities();
 
         assertThat(activityFoundList).isEqualTo(activityList);
-        verify(getMockEntityManager()).createNamedQuery(eq("findAllActivities"));
+        verify(mockEntityManager).createNamedQuery(eq("findAllActivities"));
         verify(getMockQuery()).getResultList();
     }
 
@@ -116,13 +116,13 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         Activity activity = EntityFactory.createActivity();
 
-        when(getMockEntityManager().find(eq(Activity.class), anyLong())).thenReturn(activity);
+        when(mockEntityManager.find(eq(Activity.class), anyLong())).thenReturn(activity);
 
         Activity activityFound = activityService.findActivity(randomLong);
 
         assertThat(activityFound).isEqualToComparingFieldByField(activity);
 
-        verify(getMockEntityManager()).find(eq(Activity.class), eq(randomLong));
+        verify(mockEntityManager).find(eq(Activity.class), eq(randomLong));
     }
 
 
@@ -132,12 +132,12 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         Activity activity = EntityFactory.createActivity();
 
-        when(getMockEntityManager().find(eq(Activity.class), anyLong())).thenReturn(activity);
+        when(mockEntityManager.find(eq(Activity.class), anyLong())).thenReturn(activity);
 
         activityService.deleteActivity(randomLong);
 
-        verify(getMockEntityManager()).find(eq(Activity.class), eq(randomLong));
-        verify(getMockEntityManager()).remove(eq(activity));
+        verify(mockEntityManager).find(eq(Activity.class), eq(randomLong));
+        verify(mockEntityManager).remove(eq(activity));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
         Activity activity = EntityFactory.createActivity();
 
         activityService.updateActivity(activity);
-        verify(getMockEntityManager()).merge(eq(activity));
+        verify(mockEntityManager).merge(eq(activity));
     }
 
     @Test
@@ -155,10 +155,10 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         assertThat(activityCreated).isEqualTo(activity);
 
-        verify(getMockEntityManager()).createNamedQuery(eq("findActivity"));
+        verify(mockEntityManager).createNamedQuery(eq("findActivity"));
         verify(getMockQuery()).setParameter(eq("fname"), eq(activity.getName()));
         verify(getMockQuery()).setParameter(eq("fbc"), eq(activity.getBc()));
-        verify(getMockEntityManager()).persist(eq(activity));
+        verify(mockEntityManager).persist(eq(activity));
     }
 
 
@@ -176,7 +176,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         activityService.updateBC(businessCase);
 
-        verify(getMockEntityManager()).merge(eq(businessCase));
+        verify(mockEntityManager).merge(eq(businessCase));
     }
 
 
@@ -185,23 +185,23 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
 
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        when(getMockEntityManager().find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
+        when(mockEntityManager.find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
         activityService.deleteBC(randomLong);
 
-        verify(getMockEntityManager()).find(eq(BusinessCase.class), eq(randomLong));
-        verify(getMockEntityManager()).remove(eq(businessCase));
+        verify(mockEntityManager).find(eq(BusinessCase.class), eq(randomLong));
+        verify(mockEntityManager).remove(eq(businessCase));
     }
 
     @Test
     public void testFindSingleBC() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        when(getMockEntityManager().find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
+        when(mockEntityManager.find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
 
         BusinessCase businessCaseFound = activityService.findBC(randomLong);
 
         assertThat(businessCaseFound).isEqualToComparingFieldByField(businessCase);
 
-        verify(getMockEntityManager()).find(eq(BusinessCase.class), eq(randomLong));
+        verify(mockEntityManager).find(eq(BusinessCase.class), eq(randomLong));
 
     }
 }

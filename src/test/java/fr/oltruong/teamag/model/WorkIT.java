@@ -1,12 +1,10 @@
 package fr.oltruong.teamag.model;
 
-import fr.oltruong.teamag.utils.TestUtils;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.Query;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
-        Work work = createWork();
+        Work work = EntityFactory.createWork();
 
 
         entityManager.persist(work.getTask().getMembers().get(0));
@@ -32,7 +30,7 @@ public class WorkIT extends AbstractEntityIT {
     @Test
     public void testNamedQuery() {
 
-        Work work = createWork();
+        Work work = EntityFactory.createWork();
 
         entityManager.persist(work.getTask().getMembers().get(0));
         work.setMember(work.getTask().getMembers().get(0));
@@ -54,35 +52,32 @@ public class WorkIT extends AbstractEntityIT {
 
     }
 
-    private Member createMember() {
-        Member member = new Member();
 
-        member.setName("Carot" + Calendar.getInstance().getTimeInMillis());
-        member.setCompany("my company");
-        member.setEmail("email@dummy.com");
-        member.setEstimatedWorkDays(0d);
-        return member;
+    @Test
+    public void testNamedQuery_findWorkDaysByMemberMonthNotNull() {
+
+        Work work = EntityFactory.createWork();
+
+        entityManager.persist(work.getTask().getMembers().get(0));
+        work.setMember(work.getTask().getMembers().get(0));
+        entityManager.persist(work.getTask());
+
+        entityManager.persist(work);
+
+        transaction.commit();
+
+        Query query = entityManager.createNamedQuery("findWorkDaysByMemberMonth");
+        query.setParameter("fmemberId", work.getMember().getId());
+        query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
+
+        List<Object[]> objects = query.getResultList();
+
+        assertThat(objects).isNotNull().isNotEmpty();
+
+        assertThat(objects.get(0)[0]).isNotNull().isEqualTo(work.getDay().withTimeAtStartOfDay());
+        assertThat(objects.get(0)[1]).isNotNull().isEqualTo(work.getTotal());
+
+
     }
 
-    private Task createTask() {
-        Task task = new Task();
-
-        task.setName("Activity");
-        task.setProject("my project");
-
-        task.addMember(createMember());
-
-        return task;
-    }
-
-    private Work createWork() {
-        Work work = new Work();
-
-        TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
-        work.setMember(createMember());
-        work.setDay(DateTime.now());
-        work.setTask(createTask());
-        work.setMonth(DateTime.now().withDayOfMonth(1));
-        return work;
-    }
 }

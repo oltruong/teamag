@@ -11,11 +11,14 @@ import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Parameter;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
+import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.model.WorkRealized;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.model.enumeration.ParameterName;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -38,6 +41,10 @@ public class EntityFactory {
 
     public static Long createRandomLong() {
         return Long.valueOf(new Random().nextLong());
+    }
+
+    public static Integer createRandomInteger() {
+        return Integer.valueOf(new Random().nextInt());
     }
 
     public static Member createMember() {
@@ -142,6 +149,20 @@ public class EntityFactory {
 
         return task;
 
+    }
+
+
+    public static Work createWork() {
+        Work work = new Work();
+
+        TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
+        work.setMember(createMember());
+        work.setDay(DateTime.now());
+        work.setTask(createTask());
+        work.setMonth(DateTime.now().withDayOfMonth(1));
+
+        work.setTotal(Double.valueOf(0.5d));
+        return work;
     }
 
     public static WorkRealized createWorkRealized() {

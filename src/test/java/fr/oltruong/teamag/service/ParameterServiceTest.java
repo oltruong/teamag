@@ -44,9 +44,9 @@ public class ParameterServiceTest extends AbstractServiceTest {
         assertThat(parameterEJB.getAdministratorEmail()).isEqualTo(emailParameter.getValue());
         assertThat(parameterEJB.getSmtpHost()).isEqualTo(smtpParameter.getValue());
 
-        verify(getMockEntityManager()).merge(eq(smtpParameter));
-        verify(getMockEntityManager()).merge(eq(emailParameter));
-        verify(getMockEntityManager(), times(2)).createNamedQuery(eq("findParameters"));
+        verify(mockEntityManager).merge(eq(smtpParameter));
+        verify(mockEntityManager).merge(eq(emailParameter));
+        verify(mockEntityManager, times(2)).createNamedQuery(eq("findParameters"));
         verify(getMockQuery(), times(2)).getResultList();
 
     }

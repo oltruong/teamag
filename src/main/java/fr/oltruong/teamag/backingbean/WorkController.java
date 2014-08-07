@@ -61,14 +61,44 @@ public class WorkController extends Controller {
 
     public String initInformation(DateTime dateTime) {
 
-        realizedBean.setDayCursor(dateTime);
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         works = workService.findOrCreateWorks(getMember(), firstDayOfMonth);
 
+
+        DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
+
+        if (firstIncompleteDay != null) {
+            realizedBean.setDayCursor(firstIncompleteDay);
+        } else {
+            realizedBean.setDayCursor(dateTime);
+        }
         initTaskWeek();
         return VIEWNAME;
+    }
+
+    private DateTime findFirstIncompleteDay(DateTime firstDayOfMonth) {
+
+        DateTime result = null;
+
+        Map<DateTime, Double> map = workService.findWorkDays(getMember(), firstDayOfMonth);
+
+
+        if (map != null && !map.isEmpty()) {
+
+            for (DateTime day : map.keySet()) {
+                if (map.get(day).doubleValue() != 1d) {
+                    if (result == null || day.isBefore(result)) {
+                        result = day;
+                    }
+                }
+            }
+
+        }
+
+        return result;
+
     }
 
     public String doCreateActivity() {

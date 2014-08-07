@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import fr.oltruong.teamag.exception.ExistingDataException;
+import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
@@ -14,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +24,11 @@ import java.util.Map;
 
 @Stateless
 public class WorkService extends AbstractService {
+
+
+    @Inject
+    private AbsenceDayService absenceDayService;
+
 
     public Map<Task, List<Work>> findWorksNotNull(Member member, DateTime month) {
 
@@ -142,6 +149,23 @@ public class WorkService extends AbstractService {
 
     }
 
+    public Map<DateTime, Double> findWorkDays(Member member, DateTime month) {
+        Query query = createNamedQuery("findWorkDaysByMemberMonth");
+        query.setParameter("fmemberId", member.getId());
+        query.setParameter("fmonth", month);
+
+
+        List<Object[]> objects = query.getResultList();
+
+
+        Map<DateTime, Double> map = Maps.newHashMapWithExpectedSize(objects.size());
+
+        objects.forEach(object -> map.put((DateTime) object[0], (Double) object[1]));
+
+        return map;
+
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Task> findAllTasks() {
@@ -201,6 +225,10 @@ public class WorkService extends AbstractService {
         List<Work> workList = null;
 
         List<Task> taskList = findMemberTasks(member);
+
+        List<AbsenceDay> absenceDayList = absenceDayService.findAbsenceDayList(member.getId(), month.getMonthOfYear());
+
+
         if (CollectionUtils.isNotEmpty(taskList)) {
 
             List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
@@ -208,7 +236,17 @@ public class WorkService extends AbstractService {
             workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
             for (Task task : taskList) {
                 for (DateTime day : workingDays) {
-                    Work work = createWork(member, month, task, day);
+
+
+                    Double total = 0d;
+                    if (Long.valueOf(1l).equals(task.getId())) {//Absence Task
+                        AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
+                        if (absenceDay != null) {
+                            total = Double.valueOf(absenceDay.getValue().toString());
+                        }
+                    }
+                    Work work = createWork(member, month, task, day, total);
+
 
                     workList.add(work);
                 }
@@ -221,12 +259,29 @@ public class WorkService extends AbstractService {
 
     }
 
+    private AbsenceDay findAbsenceDay(List<AbsenceDay> absenceDayList, DateTime day) {
+        if (absenceDayList != null) {
+            for (AbsenceDay absenceDay : absenceDayList) {
+                if (absenceDay.getDay().isEqual(day)) {
+                    return absenceDay;
+                }
+            }
+        }
+
+        return null;
+    }
+
     private Work createWork(Member member, DateTime month, Task task, DateTime day) {
+        return createWork(member, month, task, day, 0d);
+    }
+
+    private Work createWork(Member member, DateTime month, Task task, DateTime day, Double value) {
         Work work = new Work();
         work.setDay(day);
         work.setMember(member);
         work.setMonth(month);
         work.setTask(task);
+        work.setTotal(value);
 
         persist(work);
         return work;
@@ -490,4 +545,45 @@ public class WorkService extends AbstractService {
     public List<Task> findTaskWithActivity() {
         return getNamedQueryList("findAllTasksWithActivity");
     }
+
+
+    private Work findAbsenceWork(AbsenceDay absenceDay) {
+        Work absenceWork = null;
+
+        Query query = createNamedQuery("findAbsenceWorkByMemberDay");
+        query.setParameter("fmemberId", absenceDay.getMember().getId());
+        query.setParameter("fday", absenceDay.getDay());
+
+
+        List<Work> workAbsenceList = query.getResultList();
+        if (workAbsenceList != null && !workAbsenceList.isEmpty()) {
+            absenceWork = workAbsenceList.get(0);
+
+        }
+        return absenceWork;
+    }
+
+    public void updateWorkAbsence(AbsenceDay absenceDay) {
+        if (absenceDay.getDay().getMonthOfYear() >= DateTime.now().getMonthOfYear()) {
+
+            Work absenceWork = findAbsenceWork(absenceDay);
+            if (absenceWork != null) {
+                absenceWork.setTotal(Double.parseDouble(absenceDay.getValue().toString()));
+                merge(absenceWork);
+            }
+
+        }
+    }
+
+    public void removeWorkAbsence(AbsenceDay absenceDay) {
+        if (absenceDay.getDay().getMonthOfYear() >= DateTime.now().getMonthOfYear()) {
+            Work absenceWork = findAbsenceWork(absenceDay);
+            if (absenceWork != null) {
+
+                absenceWork.setTotal(0d);
+                merge(absenceWork);
+            }
+        }
+    }
+
 }

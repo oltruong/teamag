@@ -22,11 +22,13 @@ import javax.persistence.Transient;
 @Entity
 @NamedQueries({@NamedQuery(name = "findWorksByMemberMonth", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
         @NamedQuery(name = "findWorksByMemberMonthNotNull", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.total<>0 and w.month=:fmonth order by w.task.name, w.day"),
+        @NamedQuery(name = "findWorkDaysByMemberMonth", query = "SELECT w.day, sum(w.total) FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth group by w.day order by w.day"),
         @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
         @NamedQuery(name = "deleteWorksByMember", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
         @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
         @NamedQuery(name = "findWorksByTask", query = "SELECT w FROM Work w WHERE (w.total<>0 and w.task.id=:fTaskId) ORDER by w.member.name,w.day"),
         @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
+        @NamedQuery(name = "findAbsenceWorkByMemberDay", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.id=1)"),
         @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
 

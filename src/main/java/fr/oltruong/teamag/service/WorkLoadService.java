@@ -10,6 +10,7 @@ import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -19,6 +20,9 @@ import java.util.List;
 @Stateless
 public class WorkLoadService extends AbstractService {
 
+
+    @Inject
+    private WorkService workService;
 
     public List<AbsenceDay> getAllAbsenceDay() {
         return getNamedQueryList("findAllAbsenceDays");
@@ -34,20 +38,31 @@ public class WorkLoadService extends AbstractService {
 
         List<AbsenceDay> absenceDayList = query.getResultList();
         if (absenceDayList != null) {
-            absenceDayList.forEach(absenceDay -> remove(absenceDay));
+            absenceDayList.forEach(absenceDay -> {
+                remove(absenceDay);
+                workService.removeWorkAbsence(absenceDay);
+            });
         }
 
     }
 
+
     public void registerAbsence(Absence newAbsence) {
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(newAbsence);
-        absenceDayList.forEach(absenceDay -> persist(absenceDay));
+        absenceDayList.forEach(absenceDay -> {
+            persist(absenceDay);
+            workService.updateWorkAbsence(absenceDay);
+        });
     }
+
 
     public void reloadAllAbsenceDay() {
         List<AbsenceDay> absenceDayList = getAllAbsenceDay();
         if (absenceDayList != null) {
-            absenceDayList.forEach(absenceDay -> remove(absenceDay));
+            absenceDayList.forEach(absenceDay -> {
+                remove(absenceDay);
+                workService.removeWorkAbsence(absenceDay);
+            });
         }
 
         List<Absence> absenceList = findAllAbsences();
