@@ -14,6 +14,7 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
@@ -584,6 +585,19 @@ public class WorkService extends AbstractService {
                 merge(absenceWork);
             }
         }
+    }
+
+
+    @Schedule(hour = "1", dayOfMonth = "1,2")
+    public void initMonthlyWorkInformation() {
+
+        getLogger().info("Initiating Monthly Work Information");
+        List<Member> memberList = MemberService.getMemberList();
+        if (memberList != null) {
+            memberList.forEach(member -> findOrCreateWorks(member, DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1)));
+        }
+        getLogger().info("End initiating Monthly Work Information");
+
     }
 
 }
