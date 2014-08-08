@@ -100,7 +100,7 @@ public final class CalendarUtils {
 
 
         DateTime firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthOfYear());
-        return (firstWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear());
+        return firstWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
 
 
     }
@@ -122,7 +122,7 @@ public final class CalendarUtils {
 
 
         DateTime lastWorkingDayOfMonth = findLastWorkingDayMonth(day.getMonthOfYear());
-        return (lastWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear());
+        return lastWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
 
 
     }

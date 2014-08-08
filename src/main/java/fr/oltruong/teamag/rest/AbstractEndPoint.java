@@ -22,7 +22,11 @@ public abstract class AbstractEndPoint {
 
     protected Response buildResponseCreated() {
         return Response.status(Response.Status.CREATED).build();
+    }    protected Response buildResponseNotAcceptable() {
+        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
+
+
 
     protected Response buildResponseNoContent() {
         return Response.status(Response.Status.NO_CONTENT).build();

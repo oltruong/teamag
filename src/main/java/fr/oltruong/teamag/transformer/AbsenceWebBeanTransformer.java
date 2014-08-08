@@ -40,9 +40,7 @@ public final class AbsenceWebBeanTransformer {
     public static List<AbsenceWebBean> transformList(List<Absence> absenceList) {
         Preconditions.checkArgument(absenceList != null);
         List<AbsenceWebBean> absenceWebBeanList = Lists.newArrayListWithExpectedSize(absenceList.size());
-        for (Absence absence : absenceList) {
-            absenceWebBeanList.add(transform(absence));
-        }
+        absenceList.forEach(absence -> absenceWebBeanList.add(transform(absence)));
         return absenceWebBeanList;
     }
 }

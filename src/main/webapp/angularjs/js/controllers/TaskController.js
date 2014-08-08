@@ -77,11 +77,6 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
                 $task.task = null;
             } else {
 
-//                Task.update({id: $task.id}, $task, function () {
-//                    $scope.confirmation = "Tâche mise à jour";
-//                }, function (error) {
-//                    $scope.error = 'Erreur HTTP' + error.status;
-//                });
             }
 
         };

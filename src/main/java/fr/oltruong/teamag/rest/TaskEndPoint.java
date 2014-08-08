@@ -40,7 +40,6 @@ public class TaskEndPoint extends AbstractEndPoint {
     @GET
     @Path("/withactivity")
     public Response getTasksWithActivity() {
-        System.out.println("WITH ACTIVITY!!!!!!!!!!!!!!");
         return buildResponseOK(buildTask(workService.findTaskWithActivity()));
     }
 

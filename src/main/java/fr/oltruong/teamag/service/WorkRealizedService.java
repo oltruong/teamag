@@ -11,11 +11,12 @@ import java.util.List;
  */
 @Stateless
 public class WorkRealizedService extends AbstractService {
-
+    @SuppressWarnings("unchecked")
     public List<WorkRealized> getAllWorkRealized() {
         return getNamedQueryList("findAllWorkRealized");
     }
 
+    @SuppressWarnings("unchecked")
     public List<WorkRealized> getWorkRealizedbyMember(Long memberId) {
         Query query = createNamedQuery("findAllWorkRealizedByMember");
         query.setParameter("fMemberId", memberId);

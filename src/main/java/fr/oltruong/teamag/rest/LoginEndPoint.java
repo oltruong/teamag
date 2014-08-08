@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 public class LoginEndPoint extends AbstractEndPoint {
 
     @EJB
-    MemberService memberEJB;
+    MemberService memberService;
 
     @GET
     @Path("/{loginInformation}")
@@ -34,7 +34,7 @@ public class LoginEndPoint extends AbstractEndPoint {
 
             Member member;
             try {
-                member = memberEJB.findMemberForAuthentication(username, TeamagUtils.hashPassword(password));
+                member = memberService.findMemberForAuthentication(username, TeamagUtils.hashPassword(password));
                 response = buildResponseOK(member);
             } catch (UserNotFoundException e) {
                 response = Response.status(Response.Status.NOT_FOUND).build();

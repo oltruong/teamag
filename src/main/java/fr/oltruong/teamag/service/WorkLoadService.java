@@ -24,12 +24,13 @@ public class WorkLoadService extends AbstractService {
     @Inject
     private WorkService workService;
 
+    @SuppressWarnings("unchecked")
     public List<AbsenceDay> getAllAbsenceDay() {
         return getNamedQueryList("findAllAbsenceDays");
 
     }
 
-
+    @SuppressWarnings("unchecked")
     public void removeAbsence(Long id) {
 
         Preconditions.checkArgument(id != null);
@@ -72,17 +73,20 @@ public class WorkLoadService extends AbstractService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private List<Absence> findAllAbsences() {
         return getNamedQueryList("findAllAbsences");
     }
 
 
     public List<WorkLoad> findOrCreateAllWorkLoad() {
+        @SuppressWarnings("unchecked")
         List<WorkLoad> workLoadList = getNamedQueryList("findAllWorkLoad");
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads();
         } else {
+            @SuppressWarnings("unchecked")
             List<BusinessCase> businessCaseList = getNamedQueryList("findAllBC");
 
             List<Member> memberList = MemberService.getMemberList();
@@ -117,6 +121,7 @@ public class WorkLoadService extends AbstractService {
     private List<WorkLoad> createWorkLoads() {
         List<WorkLoad> workLoadList;
         getLogger().info("Creation of workLoad");
+        @SuppressWarnings("unchecked")
         List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
 
         List<Member> memberList = MemberService.getMemberList();

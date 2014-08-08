@@ -88,7 +88,7 @@ public class WorkController extends Controller {
         if (map != null && !map.isEmpty()) {
 
             for (DateTime day : map.keySet()) {
-                if (map.get(day).doubleValue() != 1d) {
+                if (Math.abs(map.get(day).doubleValue() - 1d) > 0.01) {
                     if (result == null || day.isBefore(result)) {
                         result = day;
                     }

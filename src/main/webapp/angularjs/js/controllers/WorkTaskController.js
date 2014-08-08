@@ -1,7 +1,7 @@
 'use strict';
 
 teamagApp.controller('WorkTaskController', ['$scope', '$http', '$location', '$routeParams', 'Work',
-    function ($scope, $http, $location, $routeParams, Work) {
+    function ($scope, $http, $location, $routeParams) {
 
         $scope.taskId = $routeParams.taskId;
 
@@ -11,20 +11,6 @@ teamagApp.controller('WorkTaskController', ['$scope', '$http', '$location', '$ro
             $scope.works = data;
         });
 
-//        $scope.works = Work.get({id: $scope.taskId}, function (data) {
-//            $scope.works = data;
-//            alert('coucoucoucou2');
-//        }, function (error) {
-//            alert(':(:(:(:(:(');
-//            $scope.error = 'Erreur HTTP' + error.status;
-//        });
-
-
-//        Work.get({id: $scope.taskId}, function (data) {
-//            alert('hello world!');
-//        }, function (error) {
-//            alert('goodbye world!');
-//        });
 
         $scope.orderProp = 'member';
 

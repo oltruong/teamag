@@ -135,10 +135,8 @@ public class WorkService extends AbstractService {
 
     }
 
-
+    @SuppressWarnings("unchecked")
     private List<Work> findWorkList(Member member, DateTime month) {
-
-        Map<Task, List<Work>> worksByTask = Maps.newHashMap();
 
         Query query = createNamedQuery("findWorksByMemberMonth");
         query.setParameter("fmemberId", member.getId());
@@ -154,7 +152,7 @@ public class WorkService extends AbstractService {
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
 
-
+        @SuppressWarnings("unchecked")
         List<Object[]> objects = query.getResultList();
 
 
@@ -239,7 +237,8 @@ public class WorkService extends AbstractService {
 
 
                     Double total = 0d;
-                    if (Long.valueOf(1l).equals(task.getId())) {//Absence Task
+                    //Absence Task
+                    if (Long.valueOf(1L).equals(task.getId())) {
                         AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
                         if (absenceDay != null) {
                             total = Double.valueOf(absenceDay.getValue().toString());
@@ -370,9 +369,7 @@ public class WorkService extends AbstractService {
                 merge(myTask);
                 taskDB = myTask;
             }
-        } else
-
-        {
+        } else {
             getLogger().debug("new task creation");
 
             // Reset task ID
@@ -410,10 +407,11 @@ public class WorkService extends AbstractService {
         return query.getResultList();
     }
 
-
+    @SuppressWarnings("unchecked")
     public List<Work> findWorkByTask(Long taskId) {
         Query query = createNamedQuery("findWorksByTask");
         query.setParameter("fTaskId", taskId);
+
         return query.getResultList();
 
     }
@@ -426,6 +424,7 @@ public class WorkService extends AbstractService {
         query.setParameter("fweekYear", weekYear);
         query.setParameter("fyear", year);
 
+        @SuppressWarnings("unchecked")
         List<WeekComment> weekCommentList = query.getResultList();
         if (!weekCommentList.isEmpty()) {
             result = weekCommentList.get(0);
@@ -518,7 +517,6 @@ public class WorkService extends AbstractService {
 
     public List<Work> findWorksList(Long memberId, int weekNumber) {
         Query query = createNamedQuery("findWorksByMemberMonth");
-//        Query query = createNamedQuery("findWorksByMemberMonthNotNull");
         query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
 

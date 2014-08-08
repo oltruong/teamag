@@ -143,7 +143,6 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
     @GET
     @Path("/{memberId}")
     public Response getWorkRealized(@PathParam("memberId") Long memberId) {
-        System.out.println("AAAAAA getWorkRealized" + memberId);
         List<WorkRealizedWrapper> workRealizedWrapperList = buildWorkRealizedWrapper(workRealizedService.getWorkRealizedbyMember(memberId));
         workRealizedWrapperList.forEach(workRealizedWrapper -> workRealizedWrapper.getWorkRealizedList().forEach(workRealized -> workRealized.setMemberId(memberId)));
 

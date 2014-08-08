@@ -60,6 +60,12 @@ public class AbsenceWebBeanTransformerTest {
         }
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testTransformList_null() throws Exception {
+
+        AbsenceWebBeanTransformer.transformList(null);
+    }
+
     private AbsenceWebBean buildAbsenceWebBean() {
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
         absenceWebBean.setId(Long.valueOf(326l));

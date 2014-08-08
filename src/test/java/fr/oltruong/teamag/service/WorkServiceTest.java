@@ -79,4 +79,6 @@ public class WorkServiceTest extends AbstractServiceTest {
         taskListFound.forEach(task -> assertThat(task.isAdmin()).isFalse());
         verify(mockEntityManager).createNamedQuery(eq("findAllTasks"));
     }
+
+
 }

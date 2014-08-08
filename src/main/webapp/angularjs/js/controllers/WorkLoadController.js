@@ -1,24 +1,18 @@
 'use strict';
 
 teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
-    function ($scope, $http, WorkLoad) {
+    function ($scope, $http) {
 
         $http.get('../resources/workload/').success(function (data) {
 
 
             $scope.workloadContainer = data;
         }, function (error) {
-            alert('oups');
+
 
         });
 
-        //      $scope.workloadContainer = WorkLoad.query();
 
-//        $scope.workloadContainer = WorkLoad.query(function () {
-//            alert('ok');
-//        }, function (error) {
-//            $scope.error = 'Erreur HTTP ' + error.status;
-//        });
         $scope.orderMember = 'name';
         $scope.orderContainerMember = 'member.name';
         $scope.orderProp = 'businessCase.identifier';
