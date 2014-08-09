@@ -1,0 +1,26 @@
+body {
+    font-family: 'Oxygen' !important;
+    padding-top: 40px;
+}
+
+.bg-success, .bg-warning, .bg-danger {
+    /*border-top : 20 px;*/
+}
+
+#loginli {
+    margin-top: -14px !important;
+    margin-bottom: -26px !important;
+}
+
+.navbar-right {
+    margin-right: 10px !important;
+}
+
+.border-right {
+    border-right-style: solid;
+    border-right-width: 2px;
+}
+
+td > input {
+    size: 10px;
+}

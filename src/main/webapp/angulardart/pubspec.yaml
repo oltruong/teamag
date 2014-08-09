@@ -1,0 +1,12 @@
+name: teamag
+description: Teamag UI using angularDart
+dependencies:
+  angular: 0.10.0
+  browser: any
+  js: any
+  shadow_dom: any
+  unittest: any
+transformers:
+- angular
+
+
