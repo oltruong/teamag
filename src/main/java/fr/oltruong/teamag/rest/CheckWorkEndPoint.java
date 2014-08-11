@@ -10,6 +10,7 @@ import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.service.WorkService;
+import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.WorkWebBean;
 import org.joda.time.DateTime;
 
@@ -19,8 +20,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,17 +32,15 @@ import java.util.List;
 public class CheckWorkEndPoint extends AbstractEndPoint {
 
     @Inject
-    private WorkService workEJB;
+    private WorkService workService;
 
 
     @GET
     @Path("/weekComment/{memberId}/{weekNumber}")
     public Response getWeekComment(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber) {
 
-        if (weekNumber == -1) {
-            weekNumber = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-        }
-        WeekComment weekComment = workEJB.findWeekComment(memberId, weekNumber, 2014);
+        weekNumber = parseWeekNumber(weekNumber);
+        WeekComment weekComment = workService.findWeekComment(memberId, weekNumber, 2014);
         if (weekComment == null) {
             weekComment = new WeekComment();
             weekComment.setWeekYear(weekNumber);
@@ -51,15 +48,22 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
         return buildResponseOK(weekComment);
     }
 
+    private int parseWeekNumber(int weekNumber) {
+
+        int weekNumberResult = weekNumber;
+        if (weekNumberResult == -1) {
+            weekNumberResult = CalendarUtils.getCurrentWeekNumber();
+        }
+        return weekNumberResult;
+    }
+
     @GET
     @Path("/byWeek/{memberId}/{weekNumber}/{macroTask}")
     public Response getWeekInformation(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber, @PathParam("macroTask") boolean macroTask) {
 
-        if (weekNumber == -1) {
-            weekNumber = LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-        }
+        weekNumber = parseWeekNumber(weekNumber);
 
-        List<Work> workList = workEJB.findWorksList(memberId, weekNumber);
+        List<Work> workList = workService.findWorksList(memberId, weekNumber);
         if (macroTask) {
             workList = transformMacro(workList);
         }

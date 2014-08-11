@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.MutableDateTime;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 
 /**
@@ -144,6 +146,11 @@ public final class CalendarUtils {
         }
 
         return dayOfMonth.toDateTime();
+    }
+
+
+    public static int getCurrentWeekNumber(){
+        return LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
     }
 
 }

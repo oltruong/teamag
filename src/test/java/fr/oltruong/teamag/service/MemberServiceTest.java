@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.enumeration.MemberType;
-import fr.oltruong.teamag.exception.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -175,7 +175,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     private void testCreateMember(List<Task> taskList) {
-        //   when(getMockQuery().getResultList()).thenReturn(taskList);
+
 
         Query mockQueryTask = mock(Query.class);
         when(mockEntityManager.createNamedQuery(eq("findTaskByName"))).thenReturn(mockQueryTask);

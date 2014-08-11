@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -118,5 +120,10 @@ public class CalendarUtilsTest {
         assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(29, 12))).isTrue();
         assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 12))).isTrue();
 
+    }
+
+    @Test
+    public void testGetCurrentWeek() {
+        assertThat(CalendarUtils.getCurrentWeekNumber()).isEqualTo(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
     }
 }

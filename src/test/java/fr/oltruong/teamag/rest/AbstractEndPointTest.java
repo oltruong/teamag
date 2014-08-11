@@ -42,4 +42,6 @@ public abstract class AbstractEndPointTest {
         assertThat(response).isNotNull();
         assertThat(response.getStatusInfo()).isEqualTo(expectedStatus);
     }
+
+
 }
