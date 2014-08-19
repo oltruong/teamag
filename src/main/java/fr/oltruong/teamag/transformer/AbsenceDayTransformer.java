@@ -43,7 +43,8 @@ public final class AbsenceDayTransformer {
         MutableDateTime beginMutableTime = absence.getBeginDate().withTimeAtStartOfDay().toMutableDateTime();
         MutableDateTime endMutableTime = absence.getEndDate().withTimeAtStartOfDay().toMutableDateTime();
 
-        while (!beginMutableTime.isEqual(endMutableTime)) {//days between
+        //days between
+        while (!beginMutableTime.isEqual(endMutableTime)) {
             if (!CalendarUtils.isDayOff(beginMutableTime.toDateTime())) {
                 AbsenceDay absenceDay = new AbsenceDay(absence);
                 absenceDay.setDay(beginMutableTime.toDateTime());

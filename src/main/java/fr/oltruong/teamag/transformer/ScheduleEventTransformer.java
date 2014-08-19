@@ -51,9 +51,11 @@ public final class ScheduleEventTransformer {
 
         List<ScheduleEvent> eventList = Lists.newArrayList();
 
-        if (absence.getBeginDate().withTimeAtStartOfDay().isEqual(absence.getEndDate().withTimeAtStartOfDay())) {//Same day
+        //Same day
+        if (absence.getBeginDate().withTimeAtStartOfDay().isEqual(absence.getEndDate().withTimeAtStartOfDay())) {
             eventList.add(buildBeginDayEvent(absence, className, messageManager));
-        } else {//Several days
+            //Several days
+        } else {
 
             MutableDateTime beginMutableTime = absence.getBeginDate().withTimeAtStartOfDay().toMutableDateTime();
             MutableDateTime endMutableTime = absence.getEndDate().withTimeAtStartOfDay().toMutableDateTime();
