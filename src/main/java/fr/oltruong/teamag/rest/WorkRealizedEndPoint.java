@@ -121,7 +121,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
         return null;
     }
 
-    private TaskWebBean transformTask(Task task) {
+    public TaskWebBean transformTask(Task task) {
         TaskWebBean taskWebBean = new TaskWebBean();
         taskWebBean.setActivity(task.getActivity());
         taskWebBean.setAmount(task.getAmount());
@@ -153,14 +153,18 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
     @PUT
     public Response updateWorkRealized(List<WorkRealizedWrapper> workRealizedWrapperList) {
 
+        Response response;
         if (workRealizedWrapperList != null) {
             workRealizedWrapperList.forEach(workRealizedWrapper -> {
                 workRealizedWrapper.getWorkRealizedList().removeIf(workRealized -> (workRealized.getId() == null && workRealized.getRealized() == 0));
                 workRealizedService.createOrUpdate(workRealizedWrapper.getWorkRealizedList());
             });
+            response = buildResponseOK();
+        } else {
+            response = buildResponseNotAcceptable();
         }
 
-        return buildResponseOK();
+        return response;
     }
 
 }

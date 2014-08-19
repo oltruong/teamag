@@ -1,7 +1,7 @@
 'use strict';
 
 teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member', 'WorkRealized',
-    function ($scope, $http, Task, Member, WorkRealized) {
+    function ($scope, $http, Task, Member) {
 
 
         $scope.members = Member.query(function () {
@@ -11,26 +11,12 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
             $scope.error = 'Erreur HTTP ' + error.status;
         });
 
-        var month_name = new Array(12);
-        month_name[0] = "Janv";
-        month_name[1] = "Fev";
-        month_name[2] = "Mars";
-        month_name[3] = "Avril";
-        month_name[4] = "Mai";
-        month_name[5] = "Juin";
-        month_name[6] = "Juil";
-        month_name[7] = "Août";
-        month_name[8] = "Sept";
-        month_name[9] = "Oct";
-        month_name[10] = "Nov";
-        month_name[11] = "Dec";
+        $scope.months = ["Janv", "Fev", "Mars", "Avril", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Dec"];
+        $scope.months_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-        $scope.months = new Array(12);
-        for (var i = 0; i < 12; i++) {
-            $scope.months[i] = month_name[i];
-        }
+        $scope.nonEmptyTask = false;
 
-
+        $scope.orderActivity = 'activity';
         $scope.orderProp = 'month';
 
         $scope.loadRealized = function () {
@@ -40,7 +26,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
                 $scope.error = error;
 
             });
-        }
+        };
 
         $scope.save = function () {
             $http.put('../resources/workrealized/', $scope.worksRealized).success(function (data) {
@@ -52,8 +38,53 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
                 $scope.confirmation = '';
                 $scope.error = 'Erreur HTTP' + status;
             });
-        }
+        };
 
 
+        $scope.displayTotalRealized = function (workRealized) {
+            var total = 0;
+            angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                total += realizedMonth.realized;
+            });
+            return total;
+        };
+
+
+        $scope.displayRealized = function (realized) {
+            return realized !== 0;
+        };
+
+        $scope.displayTotalMonth = function (monthNumber) {
+
+            var total = 0;
+            angular.forEach($scope.worksRealized, function (workRealized) {
+
+                angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                    if (realizedMonth.month === monthNumber) {
+                        total += realizedMonth.realized;
+                    }
+
+                });
+            });
+            return total;
+        };
+
+        $scope.filterActivity = function (workRealized) {
+            var re = new RegExp($scope.queryActivity, 'i');
+            return re.test(workRealized.task.name) || re.test(workRealized.task.activity.name);
+        };
+
+        $scope.filterNonEmptyTask = function (workRealized) {
+            if ($scope.nonEmptyTask) {
+                var total = 0;
+                angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                    total += realizedMonth.realized;
+                });
+                if (total == 0) {
+                    return false;
+                }
+            }
+            return true;
+        };
     }
 ]);

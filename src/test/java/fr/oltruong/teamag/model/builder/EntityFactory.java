@@ -170,6 +170,7 @@ public class EntityFactory {
 
 
         Task task = createTask();
+        task.setActivity(createActivity());
 
         WorkRealized workRealized = new WorkRealized();
         workRealized.setId(null);
