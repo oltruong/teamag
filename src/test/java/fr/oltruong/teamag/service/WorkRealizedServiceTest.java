@@ -1,14 +1,21 @@
 package fr.oltruong.teamag.service;
 
+import com.google.common.collect.Maps;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WorkRealized;
 import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -21,6 +28,10 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
     private WorkRealizedService workRealizedService;
 
+    @Mock
+    private WorkLoadService mockWorkLoadService;
+
+
     @Before
     public void prepare() {
         super.setup();
@@ -29,6 +40,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
         prepareService(workRealizedService);
 
         when(mockQuery.getResultList()).thenReturn(workRealizedList);
+        TestUtils.setPrivateAttribute(workRealizedService, mockWorkLoadService, "workLoadService");
     }
 
     @Test
@@ -54,6 +66,17 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     @Test
     public void testCreateOrUpdate() throws Exception {
 
+        Task task = EntityFactory.createTask();
+        Task parentTask = EntityFactory.createTask();
+        parentTask.setActivity(EntityFactory.createActivity());
+        task.setTask(parentTask);
+        when(mockEntityManager.find(eq(Task.class), anyLong())).thenReturn(task);
+
+        Map<Long, Member> memberMap = Maps.newHashMap();
+        memberMap.put(workRealizedList.get(0).getMemberId(), EntityFactory.createMember());
+
+        TestUtils.setPrivateAttribute(new MemberService(), memberMap, "memberMap");
+
         workRealizedList.get(0).setId(idTest);
 
         workRealizedService.createOrUpdate(workRealizedList);
@@ -67,6 +90,8 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
             verify(mockEntityManager).persist(eq(workRealized));
             verify(mockEntityManager, never()).merge(eq(workRealized));
         });
+
+        verify(mockWorkLoadService).updateWorkLoadWithRealized(any());
 
     }
 

@@ -2,6 +2,7 @@ package fr.oltruong.teamag.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Table;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.BusinessCase;
@@ -145,9 +146,43 @@ public class WorkLoadService extends AbstractService {
 
 
     public void updateWorkLoad(List<WorkLoad> workLoadList) {
-        if (workLoadList != null) {
-            workLoadList.forEach(workload -> merge(workload));
+        Preconditions.checkArgument(workLoadList != null);
+        workLoadList.forEach(workload -> merge(workload));
+
+    }
+
+
+    public void updateWorkLoadWithRealized(Table<Member, BusinessCase, Double> values) {
+        Preconditions.checkArgument(values != null);
+        List<WorkLoad> existingWorkLoadList = findOrCreateAllWorkLoad();
+
+        values.rowMap().forEach((member, value) ->
+                        value.forEach((bc, realized) -> {
+                            WorkLoad workLoad = findOrCreate(member, bc, existingWorkLoadList);
+                            workLoad.setRealized(realized);
+                            merge(workLoad);
+                        })
+
+        );
+        Preconditions.checkNotNull(values);
+
+
+    }
+
+    private WorkLoad findOrCreate(Member member, BusinessCase bc, List<WorkLoad> existingWorkLoadList) {
+
+        if (existingWorkLoadList != null) {
+            for (WorkLoad workLoad : existingWorkLoadList) {
+                if (workLoad.getBusinessCase().equals(bc) && workLoad.getMember().equals(member)) {
+                    return workLoad;
+                }
+            }
         }
 
+        WorkLoad workLoad = new WorkLoad();
+        workLoad.setBusinessCase(bc);
+        workLoad.setMember(member);
+
+        return workLoad;
     }
 }

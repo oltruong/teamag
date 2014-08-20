@@ -80,7 +80,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
                 angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
                     total += realizedMonth.realized;
                 });
-                if (total == 0) {
+                if (total === 0) {
                     return false;
                 }
             }

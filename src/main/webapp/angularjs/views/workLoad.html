@@ -68,7 +68,7 @@
                           ng-class="displayClassWorkLoad(workload)">{{workload.estimated| number:2}}</span><input
                         type="number" step="any"
                         ng-model="workload.estimated"
-                        ng-show="editing" size="3">
+                        ng-show="editing" size="3"> <span ng-show="workload.realized!==0">({{workload.realized| number:1}})</span>
                 </td>
             </tr>
             </tbody>
