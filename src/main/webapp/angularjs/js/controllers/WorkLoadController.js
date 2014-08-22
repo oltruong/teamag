@@ -65,6 +65,16 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
         };
 
 
+        $scope.displayRealizedClass = function (workload) {
+            if (workload.realized === 0) {
+                return 'hidden';
+            } else if (workload.realized > workload.estimated) {
+                return 'text-danger';
+            } else {
+                return 'text-info';
+            }
+        };
+
         $scope.displayClassSum = function (value) {
 
             if (value < -0.01) {

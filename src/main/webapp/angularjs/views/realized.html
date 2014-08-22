@@ -38,14 +38,18 @@
         </tr>
         <tr>
             <th colspan="3"></th>
-            <th ng-repeat="value in months_number">{{displayTotalMonth(value)}}</th>
+            <th ng-repeat="value in months_number"><span ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
+                number:2}}</span>
+            </th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="workRealized in (worksRealized |  filter:filterNonEmptyTask | filter:filterActivity | orderBy:orderActivity)">
             <td>{{workRealized.task.activity.name}}</td>
             <td>{{workRealized.task.name}}</td>
-            <td class="border-right">{{displayTotalRealized(workRealized)}}</td>
+            <td class="border-right"><span ng-show="displayTotalRealized(workRealized)!==0"> {{displayTotalRealized(workRealized) | number:2}}</span>
+
+            </td>
             <td ng-repeat="realizedMonth in workRealized.workRealizedList | orderBy: orderProp"
                 title="{{workRealized.task.activity.name}}-{{workRealized.task.name}}">
 

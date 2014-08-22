@@ -14,9 +14,9 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
         $scope.months = ["Janv", "Fev", "Mars", "Avril", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Dec"];
         $scope.months_number = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-        $scope.nonEmptyTask = false;
+        $scope.nonEmptyTask = true;
 
-        $scope.orderActivity = 'activity';
+        $scope.orderActivity = 'task.activity.name';
         $scope.orderProp = 'month';
 
         $scope.loadRealized = function () {
@@ -32,6 +32,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
             $http.put('../resources/workrealized/', $scope.worksRealized).success(function (data) {
                 $scope.confirmation = 'Mise à jour effectuée';
                 $scope.error = '';
+                $scope.loadRealized();
             }, function (error) {
 
             }).error(function (data, status, headers, config) {
