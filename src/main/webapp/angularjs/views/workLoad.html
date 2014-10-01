@@ -38,7 +38,7 @@
                 <th class="border-right"><span class="text-primary">{{sumMember()/21| number:2}}</span><br/><br/>{{sumBC()|
                     number:2}}
                 </th>
-                <th><br/><span ng-class="displayClassSum((sumMember()/21)-sumWorkLoad())">{{(sumMember()/21)-sumWorkLoad()| number:2}}</span><br/><span
+                <th><br/><span ng-class="displayMacroClassSum((sumMember()/21)-sumWorkLoad())">{{(sumMember()/21)-sumWorkLoad()| number:2}}</span><br/><span
                         ng-class="displayClassSum(sumBC()-sumWorkLoad())">{{sumBC()-sumWorkLoad()|
                     number:2}}</span>
                 </th>
@@ -55,12 +55,17 @@
 
             <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| orderBy:orderProp)">
 
-                <td title="{{workLoadContainer.businessCase.comment}}">
+                <td title="{{workLoadContainer.businessCase.comment}}"
+                    ng-class="displayClassText(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))"><span
+                        ng-class="displayClassGlyphicon(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))"></span>&nbsp;
                     {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}
                 </td>
-                <td class="border-right">{{workLoadContainer.businessCase.amount}}</td>
-                <td ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
-                    {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}
+                <td class="border-right">{{workLoadContainer.businessCase.amount}}<span
+                        ng-class="displayRealizedTotal(totalRealizedByBC(workLoadContainer))">
+                    ({{totalRealizedByBC(workLoadContainer)|number:1}})</span></td>
+                <td><span
+                        ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
+                    {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}</span>
                 </td>
                 <td ng-repeat="workload in (workLoadContainer.workLoadList  | filter:filterMember | orderBy:orderContainerMember)"
                     title="charge de {{workload.member.name}} pour BC {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}">

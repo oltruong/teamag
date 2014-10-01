@@ -38,7 +38,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             } else if (comparison > 0.01) {
                 return 'text-success';
             } else {
-                return 'text-muted';
+                return 'hidden';
             }
         };
 
@@ -68,12 +68,23 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
         $scope.displayRealizedClass = function (workload) {
             if (workload.realized === 0) {
                 return 'hidden';
-            } else if (workload.realized > workload.estimated) {
+            } else if (workload.realized > workload.estimated + 0.1) {
                 return 'text-danger';
             } else {
                 return 'text-info';
             }
         };
+
+        $scope.displayRealizedTotal = function (value) {
+            if (value > 0.1) {
+                return 'text-info';
+            } else if (value < -0.1) {
+                return 'text-danger';
+            } else {
+                return 'hidden';
+            }
+        };
+
 
         $scope.displayClassSum = function (value) {
 
@@ -82,7 +93,41 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             } else if (value > 0.01) {
                 return '';
             } else {
-                return 'text-muted';
+                return 'hidden';
+            }
+        };
+
+        $scope.displayMacroClassSum = function (value) {
+
+            if (value < -0.1) {
+                return 'text-danger';
+            } else if (value > 0.1) {
+                return '';
+            } else {
+                return 'hidden';
+            }
+        };
+
+
+        $scope.displayClassGlyphicon = function (value) {
+
+            if (value < -0.01) {
+                return 'glyphicon glyphicon-remove';
+            } else if (value > 0.01) {
+                return 'glyphicon glyphicon-flag';
+            } else {
+                return 'glyphicon glyphicon-ok';
+            }
+        };
+
+        $scope.displayClassText = function (value) {
+
+            if (value < -0.01) {
+                return 'text-danger';
+            } else if (value > 0.01) {
+                return 'text-warning';
+            } else {
+                return 'text-success';
             }
         };
 
@@ -129,6 +174,22 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
 
                     angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
                         total += workLoad.estimated;
+
+                    });
+                }
+
+            });
+            return total;
+        };
+
+        $scope.totalRealizedByBC = function ($workLoadContainer) {
+            var total = 0;
+            angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
+
+                if ($workLoadContainer === workLoadContainer) {
+
+                    angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
+                        total += workLoad.realized;
 
                     });
                 }

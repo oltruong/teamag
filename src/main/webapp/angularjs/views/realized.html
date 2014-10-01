@@ -6,7 +6,8 @@
     <input type="checkbox" ng-model="nonEmptyTask"/> T&acirc;ches non vides
 
     <br/>
-    <input ng-model="queryActivity" placeholder="Filtrer">
+    <input ng-model="queryActivity" placeholder="Filtrer Activité">
+    <input ng-model="queryMonth" placeholder="Filtrer Mois">
 
     <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;&Eacute;diter
@@ -34,12 +35,14 @@
             <th>Activit&eacute;</th>
             <th>T&acirc;che</th>
             <th></th>
-            <th ng-repeat="date in months">{{date}}</th>
+            <th ng-repeat="date in months | filter:filterMonth">{{date}}</th>
         </tr>
         <tr>
-            <th colspan="3"></th>
-            <th ng-repeat="value in months_number"><span ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
-                number:2}}</span>
+            <th colspan="2"></th>
+            <th>{{displayTotal() | number:2}}<br/><span
+                    class="text-primary">{{displayTotalWorked() | number:2}}</span></th>
+            <th ng-repeat="value in months_number | filter:filterMonthNumber"><span ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
+                number:2}}<br/><span class="text-primary">{{displayTotalWorkedMonth(value) |    number:2}}</span></span>
             </th>
         </tr>
         </thead>
@@ -48,9 +51,8 @@
             <td>{{workRealized.task.activity.name}}</td>
             <td>{{workRealized.task.name}}</td>
             <td class="border-right"><span ng-show="displayTotalRealized(workRealized)!==0"> {{displayTotalRealized(workRealized) | number:2}}</span>
-
             </td>
-            <td ng-repeat="realizedMonth in workRealized.workRealizedList | orderBy: orderProp"
+            <td ng-repeat="realizedMonth in workRealized.workRealizedList  | filter:filterMonthNumberRealized | orderBy: orderProp"
                 title="{{workRealized.task.activity.name}}-{{workRealized.task.name}}">
 
                 <span ng-show="!editing && displayRealized(realizedMonth.realized)">{{realizedMonth.realized}}</span>

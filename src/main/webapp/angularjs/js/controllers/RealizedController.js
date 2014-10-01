@@ -70,9 +70,64 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
             return total;
         };
 
+        $scope.displayTotalWorkedMonth = function (monthNumber) {
+
+            var total = 0;
+            angular.forEach($scope.worksRealized, function (workRealized) {
+                if (workRealized.task.activity.bc !== null) {
+                    angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                        if (realizedMonth.month === monthNumber) {
+                            total += realizedMonth.realized;
+                        }
+
+                    });
+                }
+            });
+            return total;
+        };
+
+        $scope.displayTotal = function () {
+            var total = 0;
+            angular.forEach($scope.worksRealized, function (workRealized) {
+
+                angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                    total += realizedMonth.realized;
+
+                });
+            });
+            return total;
+        };
+
+        $scope.displayTotalWorked = function () {
+            var total = 0;
+            angular.forEach($scope.worksRealized, function (workRealized) {
+
+                if (workRealized.task.activity.bc !== null) {
+                    angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
+                        total += realizedMonth.realized;
+
+                    });
+                }
+            });
+            return total;
+        };
+
         $scope.filterActivity = function (workRealized) {
             var re = new RegExp($scope.queryActivity, 'i');
             return re.test(workRealized.task.name) || re.test(workRealized.task.activity.name);
+        };
+
+        $scope.filterMonth = function (date) {
+            var re = new RegExp($scope.queryMonth, 'i');
+            return re.test(date);
+        };
+
+        $scope.filterMonthNumber = function (monthNumber) {
+            return $scope.filterMonth($scope.months[monthNumber - 1]);
+        };
+
+        $scope.filterMonthNumberRealized = function (workRealized) {
+            return $scope.filterMonthNumber(workRealized.month);
         };
 
         $scope.filterNonEmptyTask = function (workRealized) {
