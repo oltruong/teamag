@@ -4,18 +4,15 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
     function ($scope, $http) {
 
         $http.get('../resources/workload/').success(function (data) {
-
-
             $scope.workloadContainer = data;
         }, function (error) {
-
-
         });
-
 
         $scope.orderMember = 'name';
         $scope.orderContainerMember = 'member.name';
         $scope.orderProp = 'businessCase.identifier';
+
+        $scope.nonFullBCOnly = false;
 
         $scope.totalMember = function ($member) {
             var total = 0;
@@ -68,7 +65,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
         $scope.displayRealizedClass = function (workload) {
             if (workload.realized === 0) {
                 return 'hidden';
-            } else if (workload.realized > workload.estimated + 0.1) {
+            } else if (workload.realized > workload.estimated + 0.05) {
                 return 'text-danger';
             } else {
                 return 'text-info';
@@ -221,6 +218,14 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             var re = new RegExp($scope.queryMember, 'i');
             return re.test(member.name);
         };
+
+        $scope.filterNonFullBC = function (workLoadContainer) {
+            if ($scope.nonFullBCOnly) {
+                return Math.abs(workLoadContainer.businessCase.amount - $scope.totalbyBC(workLoadContainer)) > 0.01;
+            } else {
+                return true;
+            }
+        }
 
     }]);
 

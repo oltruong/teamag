@@ -18,6 +18,7 @@
             <span class="glyphicon glyphicon-ok"></span>&nbsp;Sauvegarder
         </a>
         <br/>
+        <input type="checkbox" ng-model="nonFullBCOnly"/> BusinessCase avec reliquat
 
         <div class="bg-success">{{confirmation}}</div>
         <div class="bg-danger">{{error}}</div>
@@ -53,7 +54,7 @@
             </thead>
             <tbody>
 
-            <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| orderBy:orderProp)">
+            <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| filter:filterNonFullBC | orderBy:orderProp)">
 
                 <td title="{{workLoadContainer.businessCase.comment}}"
                     ng-class="displayClassText(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))"><span
