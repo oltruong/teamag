@@ -27,7 +27,6 @@ teamagApp.controller('NavbarController', ['$scope', '$location', '$routeParams',
             userInfo.name = undefined;
             $http.defaults.headers.common.Authorization = undefined;
             $http.defaults.headers.common.userid = undefined;
-
             $location.path('home');
         })
 

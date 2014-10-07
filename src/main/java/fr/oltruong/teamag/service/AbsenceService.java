@@ -47,4 +47,8 @@ public class AbsenceService extends AbstractService {
 
     }
 
+    public Absence find(Long absenceId) {
+        return find(Absence.class, absenceId);
+    }
+
 }

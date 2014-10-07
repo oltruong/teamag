@@ -1,0 +1,81 @@
+<h1 class="text-center">{{filteredAbsences.length }} Absences</h1>
+<div class="row">
+    <div class="col-md-3">
+        <h2>Ajouter une absence</h2>
+        <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>
+
+        <h4>Inline</h4>
+
+        <div style="display:inline-block; min-height:290px;">
+            <datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+        </div>
+
+        <h4>Popup</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p class="input-group">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened"
+                           min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                        class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label>Format:</label> <select class="form-control" ng-model="format" ng-options="f for f in formats">
+                <option></option>
+            </select>
+            </div>
+        </div>
+
+        <hr/>
+        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="dt = '2009-08-24'">2009-08-24</button>
+        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" tooltip="After today restriction">
+            Min date
+        </button>
+        <button class="btn btn-success btn-sm" title="Ajouter">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
+        </button>
+    </div>
+
+    <div class="col-md-9">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>D&eacute;but</th>
+                <th>Fin</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="absence in (filteredAbsences=(absences))">
+
+                <td>{{absence.beginDate}}<span ng-show="displayAbsence(absence.beginType)">&nbsp;-&nbsp;{{decode(absence.beginType)}}</span>
+                </td>
+                <td>{{absence.endDate}}<span ng-show="displayAbsence(absence.endType)">&nbsp;-&nbsp;{{decode(absence.endType)}}</span>
+                </td>
+                <td>
+                    <button ng-click="delete(absence.id);" class="btn btn-danger btn-sm" title="Supprimer">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

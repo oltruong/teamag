@@ -22,14 +22,26 @@ public abstract class AbstractEndPoint {
 
     protected Response buildResponseCreated() {
         return Response.status(Response.Status.CREATED).build();
-    }    protected Response buildResponseNotAcceptable() {
+    }
+
+    protected Response buildResponseNotAcceptable() {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
-
-
     protected Response buildResponseNoContent() {
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    protected Response buildResponseNotFound() {
+        return buildResponse(Response.Status.NOT_FOUND);
+    }
+
+    protected Response buildResponseForbidden() {
+        return buildResponse(Response.Status.FORBIDDEN);
+    }
+
+    private Response buildResponse(Response.Status status) {
+        return Response.status(status).build();
     }
 
 }
