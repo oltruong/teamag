@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('AbsenceController', ['$scope', '$http', 'userInfo',
-    function ($scope, $http, userInfo) {
+teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userInfo',
+    function ($scope, $http, $filter, userInfo) {
 
         $scope.today = function () {
             $scope.dt = new Date();
@@ -37,46 +37,42 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', 'userInfo',
             } else if (type === 2) {
                 return 'après-midi';
             } else {
-                return '';
+                return type;
             }
 
 
         };
 
+        $scope.beginDate = new Date();
+        $scope.beginType = 3;
+        $scope.endType = 3;
+        $scope.endDate = new Date();
 
-        $scope.today = function () {
-            $scope.dt = new Date();
-        };
-        $scope.today();
 
-        $scope.clear = function () {
-            $scope.dt = null;
-        };
+        $scope.addAbsence = function () {
 
-        // Disable weekend selection
-        $scope.disabled = function (date, mode) {
-            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-        };
+            $scope.confirmation = '';
+            $scope.error = '';
 
-        $scope.toggleMin = function () {
-            $scope.minDate = $scope.minDate ? null : new Date();
-        };
-        $scope.toggleMin();
+            var absence = new Object();
 
-        $scope.open = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
+            absence.beginDateString = $filter('date')($scope.beginDate, 'yyyy-MM-dd');
+            absence.beginType = $scope.beginType;
+            absence.endDateString = $filter('date')($scope.endDate, 'yyyy-MM-dd');
+            absence.endType = $scope.endType;
 
-            $scope.opened = true;
-        };
+            $http.post('../resources/absences/' + userInfo.id, absence).success(function (data) {
 
-        $scope.dateOptions = {
-            formatYear: 'yy',
-            startingDay: 1
-        };
+                $scope.confirmation = "Absence ajoutée";
+                $scope.getAbsences();
 
-        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-        $scope.format = $scope.formats[0];
+            }, function (error) {
+                $scope.error = 'Erreur HTTP ' + error.status;
+            })
+
+        }
+
+
     }
 ])
 ;

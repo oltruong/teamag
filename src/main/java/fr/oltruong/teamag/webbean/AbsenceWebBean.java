@@ -1,6 +1,8 @@
 package fr.oltruong.teamag.webbean;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
 
@@ -17,6 +19,9 @@ public class AbsenceWebBean {
     private int beginType;
 
     private DateTime endDateTime;
+
+    private String beginDateString;
+    private String endDateString;
 
     private int endType;
 
@@ -95,4 +100,26 @@ public class AbsenceWebBean {
         }
     }
 
+    public String getBeginDateString() {
+        return beginDateString;
+    }
+
+    public void setBeginDateString(String beginDateString) {
+        this.beginDateString = beginDateString;
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        this.beginDateTime = formatter.parseDateTime(beginDateString);
+
+    }
+
+    public String getEndDateString() {
+        return endDateString;
+    }
+
+    public void setEndDateString(String endDateString) {
+
+        this.endDateString = endDateString;
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        this.endDateTime = formatter.parseDateTime(endDateString);
+    }
 }
