@@ -29,14 +29,14 @@ import static org.mockito.Mockito.when;
 public class MemberServiceTest extends AbstractServiceTest {
 
 
-    private MemberService memberEJB;
+    private MemberService memberService;
 
     private List<Member> testMemberList;
 
     @Before
     public void init() {
-        memberEJB = new MemberService();
-        prepareService(memberEJB);
+        memberService = new MemberService();
+        prepareService(memberService);
 
         buildMemberList();
         when(getMockQuery().getResultList()).thenReturn(testMemberList);
@@ -57,7 +57,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testBuild_empty() {
         when(getMockQuery().getResultList()).thenReturn(null);
-        memberEJB.build();
+        memberService.build();
 
         assertThat(MemberService.getMemberList()).isNotNull().isEmpty();
         assertThat(MemberService.getMemberMap()).isNotNull().isEmpty();
@@ -65,7 +65,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
     @Test
     public void testBuild() {
-        memberEJB.build();
+        memberService.build();
         assertThat(MemberService.getMemberList()).isEqualTo(testMemberList).hasSize(MemberService.getMemberMap().size());
         testMemberList.forEach(member -> assertThat(MemberService.getMemberMap().get(member.getId())).isEqualTo(member));
     }
@@ -74,7 +74,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testFindActiveMembers() {
 
-        List<Member> memberList = memberEJB.findActiveMembers();
+        List<Member> memberList = memberService.findActiveMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
         verify(mockEntityManager).createNamedQuery(eq("findActiveMembers"));
@@ -84,7 +84,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testFindMembers() {
 
-        List<Member> memberList = memberEJB.findMembers();
+        List<Member> memberList = memberService.findMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
         verify(mockEntityManager).createNamedQuery(eq("findMembers"));
@@ -96,7 +96,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         when(getMockQuery().getResultList()).thenReturn(memberEmptyList);
 
         try {
-            memberEJB.findMemberForAuthentication(null, null);
+            memberService.findMemberForAuthentication(null, null);
             fail("UserNotFoundException expected");
         } catch (UserNotFoundException e) {
 
@@ -113,7 +113,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
         when(mockEntityManager.find(eq(Member.class), any(Object.class))).thenReturn(newMember);
 
-        Member memberFound = memberEJB.findMember(id);
+        Member memberFound = memberService.findMember(id);
 
         assertThat(memberFound).isEqualTo(newMember);
         verify(mockEntityManager).find(eq(Member.class), eq(id));
@@ -131,7 +131,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         }
 
         int numberAdminMember = testMemberList.size() - numberAdminMembers;
-        List<Member> memberList = memberEJB.findActiveNonAdminMembers();
+        List<Member> memberList = memberService.findActiveNonAdminMembers();
 
         assertThat(memberList.size()).isEqualTo(numberAdminMember);
 
@@ -146,7 +146,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         String password = "PASSWORD";
 
 
-        assertThat(memberEJB.findMemberForAuthentication(name, password)).isNotNull().isEqualTo(testMemberList.get(0));
+        assertThat(memberService.findMemberForAuthentication(name, password)).isNotNull().isEqualTo(testMemberList.get(0));
         verify(mockEntityManager).createNamedQuery(eq("findByNamePassword"));
         verify(getMockQuery()).setParameter("fname", name);
 
@@ -182,7 +182,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         when(mockQueryTask.getResultList()).thenReturn(taskList);
 
         Member member = EntityFactory.createMember();
-        Member memberCreated = memberEJB.createMemberWithAbsenceTask(member);
+        Member memberCreated = memberService.createMemberWithAbsenceTask(member);
 
         assertThat(memberCreated).isEqualTo(member);
         verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
@@ -197,7 +197,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testUpdateMember() {
         Member member = EntityFactory.createMember();
-        memberEJB.updateMember(member);
+        memberService.updateMember(member);
 
         verify(mockEntityManager).merge(eq(member));
     }
