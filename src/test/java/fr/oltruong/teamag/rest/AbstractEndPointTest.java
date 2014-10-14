@@ -34,6 +34,14 @@ public abstract class AbstractEndPointTest {
         checkResponse(response, Response.Status.NOT_ACCEPTABLE);
     }
 
+    protected void checkResponseForbidden(Response response) {
+        checkResponse(response, Response.Status.FORBIDDEN);
+    }
+
+    protected void checkResponseNoContent(Response response) {
+        checkResponse(response, Response.Status.NO_CONTENT);
+    }
+
     protected void checkResponseNotFound(Response response) {
         checkResponse(response, Response.Status.NOT_FOUND);
     }

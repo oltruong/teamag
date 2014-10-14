@@ -1,0 +1,74 @@
+<h1 class="text-center">{{filteredAbsences.length }} Absences</h1>
+<div class="row">
+    <div class="col-md-3">
+        <h2>Nouvelle absence</h2>
+        <br/>
+
+        <div class="alert alert-danger" ng-show="error!==undefined && error!==''">{{error}}</div>
+        <form role="form">
+            <div class="form-group">
+                <label for="beginDate">Date début</label>
+                <input type="date" class="form-control" id="beginDate" ng-model="beginDate" required>
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="beginType" required>
+                    <option value="0">Journée</option>
+                    <option value="1">Matin seulement</option>
+                    <option value="2">Après-midi seulement</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="endDate">Date fin</label>
+                <input type="date" class="form-control" id="endDate" ng-model="endDate">
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="endType" required>
+                    <option value="0">Journée</option>
+                    <option value="1">Matin seulement</option>
+                    <option value="2">Après-midi seulement</option>
+                </select>
+            </div>
+
+            <button class="btn btn-success" title="Ajouter" ng-click="addAbsence()">
+                <span class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
+            </button>
+        </form>
+        <br/>
+
+        <div class="alert alert-success" ng-show="confirmation!==undefined && confirmation!==''">{{confirmation}}</div>
+
+    </div>
+
+    <div class="col-md-9">
+
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>D&eacute;but</th>
+                <th>Fin</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="absence in (filteredAbsences=(absences))">
+
+                <td>{{absence.beginDate}}<span ng-show="displayAbsence(absence.beginType)">&nbsp;-&nbsp;{{decode(absence.beginType)}}</span>
+                </td>
+                <td>{{absence.endDate}}<span ng-show="displayAbsence(absence.endType)">&nbsp;-&nbsp;{{decode(absence.endType)}}</span>
+                </td>
+                <td>
+                    <button ng-click="delete(absence.id);" class="btn btn-danger btn-sm" title="Supprimer">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,17 +1,13 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.service.AbsenceService;
-import fr.oltruong.teamag.service.EmailService;
-import fr.oltruong.teamag.service.MailBean;
-import fr.oltruong.teamag.service.WorkLoadService;
-import fr.oltruong.teamag.model.Absence;
-import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.interfaces.UserLogin;
+import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import fr.oltruong.teamag.utils.MessageManager;
-import fr.oltruong.teamag.validation.AbsenceWebBeanValidator;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 
 import javax.enterprise.inject.Instance;
@@ -39,17 +35,8 @@ public class AbsenceController extends Controller {
     @Inject
     private AbsenceService absenceService;
 
-    @Inject
-    private WorkLoadService workLoadService;
-
-
-    @Inject
-    private EmailService emailService;
-
-
     private static final String VIEWNAME = "absence";
 
-    private final String DATE_FORMAT = "EEEE dd MMMM";
 
     public String init() {
 
@@ -60,18 +47,12 @@ public class AbsenceController extends Controller {
 
     public void addAbsence() {
         try {
-            format(absence);
-            AbsenceWebBeanValidator.validate(absence, absencesList);
             Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(absence);
-            newAbsence.setMember(getMember());
-            absenceService.addAbsence(newAbsence);
-            workLoadService.registerAbsence(newAbsence);
+            absenceService.addAbsence(newAbsence, getMember().getId());
             refreshList();
 
             absence = new AbsenceWebBean();
             getMessageManager().displayMessage(MessageManager.INFORMATION, "absenceAdded");
-
-            emailService.sendEmailAdministrator(buildEmailAdd(newAbsence));
 
         } catch (InconsistentDateException e) {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "inconsistentDates");
@@ -80,68 +61,15 @@ public class AbsenceController extends Controller {
         }
     }
 
-    private MailBean buildEmailAdd(Absence absence) {
-
-        MailBean mailBean = new MailBean();
-        mailBean.setSubject(member.get().getName() + ": ajout d'absence " + buildEmailContent(absence));
-
-        mailBean.setContent(buildEmailContent(absence));
-        return mailBean;
-    }
-
-    private String buildEmailContent(Absence absence) {
-        return "du " + absence.getBeginDate().toString(DATE_FORMAT) + decrypt(absence.getBeginType()) + " au " + absence.getEndDate().toString(DATE_FORMAT) + decrypt(absence.getBeginType());
-    }
-
-    private String decrypt(Integer type) {
-        String result = null;
-        if (Absence.AFTERNOON_ONLY.equals(type)) {
-            result = " apres-midi";
-        } else if (Absence.MORNING_ONLY.equals(type)) {
-            result = " matin";
-        } else {
-            result = "";
-        }
-
-
-        return result;
-    }
-
-    /**
-     * Enable the possibility to fill only beginDate or endDate
-     *
-     * @param absence
-     */
-    private void format(AbsenceWebBean absence) {
-        if (absence.getEndDateTime() == null) {
-            absence.setEndDateTime(absence.getBeginDateTime());
-            absence.setEndType(absence.getBeginType());
-        }
-
-        if (absence.getBeginDateTime() == null) {
-            absence.setBeginDateTime(absence.getEndDateTime());
-            absence.setBeginType(absence.getEndType());
-        }
-    }
 
     public void deleteAbsence() {
-        workLoadService.removeAbsence(getSelectedAbsence().getId());
-        absenceService.deleteAbsence(getSelectedAbsence().getId());
 
-        emailService.sendEmailAdministrator(buildEmailDelete(getSelectedAbsence()));
-
+        Absence absence = absenceService.find(getSelectedAbsence().getId());
+        absenceService.deleteAbsence(absence);
         refreshList();
 
-
     }
 
-    private MailBean buildEmailDelete(AbsenceWebBean selectedAbsence) {
-        MailBean mailBean = new MailBean();
-        Absence newAbsence = AbsenceWebBeanTransformer.transformWebBean(selectedAbsence);
-        mailBean.setSubject(member.get().getName() + ": suppression d'absence " + buildEmailContent(newAbsence));
-        mailBean.setContent(buildEmailContent(newAbsence));
-        return mailBean;
-    }
 
     private void refreshList() {
         absencesList = AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMember(getMember()));

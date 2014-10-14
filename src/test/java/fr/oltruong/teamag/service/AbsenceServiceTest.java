@@ -1,12 +1,17 @@
 package fr.oltruong.teamag.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fr.oltruong.teamag.model.Absence;
-import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyLong;
@@ -19,6 +24,11 @@ import static org.mockito.Mockito.when;
  */
 public class AbsenceServiceTest extends AbstractServiceTest {
 
+    @Mock
+    private WorkLoadService mockWorkLoadService;
+
+    @Mock
+    EmailService mockEmailService;
 
     private AbsenceService absenceService;
 
@@ -30,7 +40,11 @@ public class AbsenceServiceTest extends AbstractServiceTest {
         absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         when(getMockQuery().getResultList()).thenReturn(absenceList);
 
+
         prepareService(absenceService);
+        TestUtils.setPrivateAttribute(absenceService, mockEmailService, "emailService");
+        TestUtils.setPrivateAttribute(absenceService, mockWorkLoadService, "workLoadService");
+
     }
 
 
@@ -66,9 +80,9 @@ public class AbsenceServiceTest extends AbstractServiceTest {
         Absence absence = EntityFactory.createAbsence();
         when(mockEntityManager.find(eq(Absence.class), anyLong())).thenReturn(absence);
 
-        Long absenceId = Long.valueOf(325l);
-
-        absenceService.deleteAbsence(absenceId);
+        Long absenceId = randomLong;
+        absence.setId(absenceId);
+        absenceService.deleteAbsence(absence);
 
         verify(mockEntityManager).find(eq(Absence.class), eq(absenceId));
         verify(mockEntityManager).remove(eq(absence));
@@ -82,26 +96,27 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
     @Test
     public void testAddAbsence() throws Exception {
+
+        MemberService memberService = new MemberService();
+
+        Map<Long, Member> memberMap = Maps.newHashMapWithExpectedSize(1);
+        memberMap.put(randomLong, EntityFactory.createMember());
+
+        TestUtils.setPrivateAttribute(memberService, memberMap, "memberMap");
+
         Absence absence = EntityFactory.createAbsence();
-        absenceService.addAbsence(absence);
-
+        when(getMockQuery().getResultList()).thenReturn(Lists.newArrayList());
+        absenceService.addAbsence(absence, randomLong);
         verify(mockEntityManager).persist(eq(absence));
-
-
     }
 
     @Test
     public void testFindAbsencesByMemberId() {
-
-
         List<Absence> absences = absenceService.findAbsencesByMemberId(idTest);
-
         assertThat(absences).isEqualTo(absenceList);
         verify(mockEntityManager).createNamedQuery(eq("findAbsencesByMember"));
         verify(mockQuery).setParameter(eq("fmemberId"), eq(idTest));
-
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsencesByMemberId_null() {

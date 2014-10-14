@@ -15,11 +15,12 @@ teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login'
                 userInfo.name = member.name;
                 userInfo.admin = member.memberType === 'ADMINISTRATOR';
                 userInfo.supervisor = userInfo.admin || member.memberType === 'SUPERVISOR';
-
+                userInfo.id = member.id;
                 $http.defaults.headers.common.Authorization = member.password;
                 $http.defaults.headers.common.userid = member.id;
                 $scope.error = '';
                 $location.path('home');
+
             }, function (error) {
                 if (error.status === "404") {
                     $scope.error = 'Utilisateur ou mot de passe incorrect';
