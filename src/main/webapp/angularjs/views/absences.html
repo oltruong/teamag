@@ -1,52 +1,46 @@
 <h1 class="text-center">{{filteredAbsences.length }} Absences</h1>
 <div class="row">
-    <div class="col-md-4">
-        <h3>Nouvelle absence</h3>
+    <div class="col-md-3">
+        <h2>Nouvelle absence</h2>
+        <br/>
 
+        <div class="alert alert-danger" ng-show="error!==undefined && error!==''">{{error}}</div>
         <form role="form">
             <div class="form-group">
                 <label for="beginDate">Date début</label>
-                <input type="date" class="form-control" id="beginDate" ng-model="beginDate">
-                <label class="radio-inline">
-                    <input type="radio" name="beginTypeRadio" id="beginTypeRadio1" value="0"
-                           ng-model="beginType"> Journée
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="beginTypeRadio" id="beginTypeRadio2" value="1"
-                           ng-model="beginType"> Matin seulement
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="beginTypeRadio" id="beginTypeRadio3" value="2"
-                           ng-model="beginType"> Après-midi seulement
-                </label>
+                <input type="date" class="form-control" id="beginDate" ng-model="beginDate" required>
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="beginType" required>
+                    <option value="0">Journée</option>
+                    <option value="1">Matin seulement</option>
+                    <option value="2">Après-midi seulement</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="endDate">Date fin</label>
                 <input type="date" class="form-control" id="endDate" ng-model="endDate">
-                <label class="radio-inline">
-                    <input type="radio" name="endTypeRadio" id="endTypeRadio1" value="0"
-                           ng-model="endType"> Journée
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="endTypeRadio" id="endTypeRadio2" value="1"
-                           ng-model="endType"> Matin seulement
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="endTypeRadio" id="endTypeRadio3" value="2"
-                           ng-model="endType"> Après-midi seulement
-                </label>
+            </div>
+            <div class="form-group">
+                <select class="form-control" ng-model="endType" required>
+                    <option value="0">Journée</option>
+                    <option value="1">Matin seulement</option>
+                    <option value="2">Après-midi seulement</option>
+                </select>
             </div>
 
             <button class="btn btn-success" title="Ajouter" ng-click="addAbsence()">
                 <span class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
             </button>
         </form>
+        <br/>
+
+        <div class="alert alert-success" ng-show="confirmation!==undefined && confirmation!==''">{{confirmation}}</div>
 
     </div>
 
-    <div class="col-md-8">
-        <div class="bg-success">{{confirmation}}</div>
-        <div class="bg-danger">{{error}}</div>
+    <div class="col-md-9">
+
         <br/><br/>
         <table class="table table-striped">
             <thead>

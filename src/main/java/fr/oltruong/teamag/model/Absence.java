@@ -50,6 +50,10 @@ public class Absence {
     @Column(nullable = false)
     private Integer endType = ALL_DAY;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

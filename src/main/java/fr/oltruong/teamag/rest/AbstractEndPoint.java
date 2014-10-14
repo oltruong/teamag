@@ -40,6 +40,10 @@ public abstract class AbstractEndPoint {
         return buildResponse(Response.Status.FORBIDDEN);
     }
 
+    protected Response buildResponseBadRequest() {
+        return buildResponse(Response.Status.BAD_REQUEST);
+    }
+
     private Response buildResponse(Response.Status status) {
         return Response.status(status).build();
     }

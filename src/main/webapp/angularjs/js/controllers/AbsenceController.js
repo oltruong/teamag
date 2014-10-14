@@ -14,7 +14,7 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
                 $scope.absences = data;
             }, function (error) {
                 $scope.error = 'Erreur HTTP ' + error.status;
-            })
+            });
         };
         $scope.getAbsences();
 
@@ -44,8 +44,8 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
         };
 
         $scope.beginDate = new Date();
-        $scope.beginType = 3;
-        $scope.endType = 3;
+        $scope.beginType = 0;
+        $scope.endType = 0;
         $scope.endDate = new Date();
 
 
@@ -54,23 +54,28 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
             $scope.confirmation = '';
             $scope.error = '';
 
-            var absence = new Object();
+            var absence = {
+                beginDateString: $filter('date')($scope.beginDate, 'yyyy-MM-dd'),
+                beginType: $scope.beginType,
+                endDateString: $filter('date')($scope.endDate, 'yyyy-MM-dd'),
+                endType: $scope.endType
+            };
 
-            absence.beginDateString = $filter('date')($scope.beginDate, 'yyyy-MM-dd');
-            absence.beginType = $scope.beginType;
-            absence.endDateString = $filter('date')($scope.endDate, 'yyyy-MM-dd');
-            absence.endType = $scope.endType;
-
-            $http.post('../resources/absences/' + userInfo.id, absence).success(function (data) {
-
+            $http.post('../resources/absences/' + userInfo.id, absence).success(function (data, status) {
                 $scope.confirmation = "Absence ajoutée";
                 $scope.getAbsences();
 
-            }, function (error) {
-                $scope.error = 'Erreur HTTP ' + error.status;
-            })
+            }).error(function (data, status) {
+                if (status === 400) {
+                    $scope.error = 'Ajout impossible, merci de vérifier la cohérence des dates';
+                } else if (status === 403) {
+                    $scope.error = "Ajout impossible, chevauchement avec d'autres absences";
+                } else {
+                    $scope.error = 'Erreur technique';
+                }
+            });
 
-        }
+        };
 
 
     }
