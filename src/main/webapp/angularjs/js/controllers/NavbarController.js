@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('NavbarController', ['$scope', '$location', '$routeParams', 'userInfo',
-    function NavbarController($scope, $location, $routeParams, userInfo) {
+teamagApp.controller('NavbarController', ['$scope', '$location', '$routeParams', 'userInfo', '$http',
+    function NavbarController($scope, $location, $routeParams, userInfo, $http) {
 
         $scope.loggedIn = userInfo.loggedIn;
 
