@@ -1,6 +1,6 @@
 'use strict';
 
-var teamagApp = angular.module('teamagApp', ['ngRoute', 'ngResource', 'ngCookies']);
+var teamagApp = angular.module('teamagApp', ['ngRoute', 'ngResource', 'ngCookies', 'ui.calendar']);
 
 teamagApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'HomeController'});
