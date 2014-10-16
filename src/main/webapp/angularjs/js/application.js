@@ -18,5 +18,6 @@ teamagApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/businesscases', {templateUrl: 'views/businesscases.html', controller: 'BusinessController'});
     $routeProvider.when('/newBusinessCase', {templateUrl: 'views/businesscasecreation.html', controller: 'BusinessController'});
     $routeProvider.when('/checkWork', {templateUrl: 'views/checkWork.html', controller: 'CheckWorkController'});
+    $routeProvider.when('/profile', {templateUrl: 'views/profile.html', controller: 'ProfileController'});
     $routeProvider.otherwise({redirectTo: '/home'});
 }]);
