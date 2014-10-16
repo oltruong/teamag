@@ -145,15 +145,4 @@ public class MemberService extends AbstractService {
         return adminMember;
     }
 
-    //TODO enable this feature
-/*    public void removeMember(Member selectedMember) {
-
-        Query query = createNamedQuery("deleteWorksByMember");
-        query.setParameter("fmemberId", selectedMember.getId());
-        int rowsNumberDeleted = query.executeUpdate();
-        getLogger().debug("Works deleted : " + rowsNumberDeleted);
-
-
-        getEntityManager().remove(selectedMember);
-    }*/
 }
