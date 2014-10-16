@@ -6,6 +6,7 @@ import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
+import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyLong;
@@ -47,9 +49,41 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(absenceEndPoint, mockLogger, "logger");
     }
 
+
+    @Test
+    public void testGetAllAbsences() throws Exception {
+
+
+        List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
+
+        List<AbsenceWebBean> absenceWebBeanTransformed = AbsenceWebBeanTransformer.transformList(absenceList);
+        when(mockAbsenceService.findAllAbsences()).thenReturn(absenceList);
+
+        Response response = absenceEndPoint.getAllAbsences();
+        checkResponseOK(response);
+
+        assertThat(response.getEntity()).isOfAnyClassIn(ArrayList.class);
+        List<AbsenceWebBean> absenceWebBeans = (List<AbsenceWebBean>) response.getEntity();
+
+        assertThat(absenceWebBeans).isNotNull().usingFieldByFieldElementComparator().containsExactlyElementsOf(absenceWebBeanTransformed);
+        verify(mockAbsenceService).findAllAbsences();
+
+    }
+
+    @Test
+    public void testGetDaysOff() {
+        Response response = absenceEndPoint.getDaysOff();
+        checkResponseOK(response);
+
+        assertThat(response.getEntity()).isOfAnyClassIn(ArrayList.class);
+
+        List<AbsenceWebBean> absenceWebBeans = (List<AbsenceWebBean>) response.getEntity();
+        assertThat(absenceWebBeans).usingFieldByFieldElementComparator().containsExactlyElementsOf(AbsenceWebBeanTransformer.transformListfromDays(CalendarUtils.getListDaysOff()));
+    }
+
     @Test
     public void testGetAbsences() throws Exception {
-        Long randomId = EntityFactory.createRandomLong();
+
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
 
@@ -78,16 +112,16 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testCreateAbsence_overlap() throws Exception {
-        testCreateAbsence_exception(new DateOverlapException(), Response.Status.FORBIDDEN);
+        testCreateAbsence_exception(new DateOverlapException(), (response) -> checkResponseForbidden(response));
     }
 
     @Test
     public void testCreateAbsence_badRequest() throws Exception {
-        testCreateAbsence_exception(new InconsistentDateException(), Response.Status.BAD_REQUEST);
+        testCreateAbsence_exception(new InconsistentDateException(), (response) -> checkResponseBadRequest(response));
     }
 
 
-    private void testCreateAbsence_exception(Exception exception, Response.StatusType expectedStatus) throws Exception {
+    private void testCreateAbsence_exception(Exception exception, Consumer<Response> consumer) throws Exception {
         AbsenceWebBean absenceWebBean = AbsenceWebBeanTransformer.transform(EntityFactory.createAbsence());
 
         doThrow(exception).when(mockAbsenceService).addAbsence(isA(Absence.class), anyLong());
@@ -95,7 +129,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
         verify(mockAbsenceService).addAbsence(isA(Absence.class), eq(randomId));
         verify(mockLogger).warn(isA(String.class), eq(exception));
-        checkResponse(response, expectedStatus);
+        consumer.accept(response);
     }
 
 

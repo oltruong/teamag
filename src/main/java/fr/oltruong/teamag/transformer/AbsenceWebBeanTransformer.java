@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public final class AbsenceWebBeanTransformer {
         absenceWebBean.setEndDateTime(absence.getEndDate());
         absenceWebBean.setBeginType(absence.getBeginType().intValue());
         absenceWebBean.setEndType(absence.getEndType().intValue());
+        absenceWebBean.setMemberName(absence.getMember().getName());
+        absenceWebBean.setColor(absence.getMember().getAbsenceHTMLColor());
         return absenceWebBean;
     }
 
@@ -41,6 +44,18 @@ public final class AbsenceWebBeanTransformer {
         Preconditions.checkArgument(absenceList != null);
         List<AbsenceWebBean> absenceWebBeanList = Lists.newArrayListWithExpectedSize(absenceList.size());
         absenceList.forEach(absence -> absenceWebBeanList.add(transform(absence)));
+        return absenceWebBeanList;
+    }
+
+    public static List<AbsenceWebBean> transformListfromDays(List<DateTime> listDaysOff) {
+        List<AbsenceWebBean> absenceWebBeanList = Lists.newArrayListWithExpectedSize(listDaysOff.size());
+
+        listDaysOff.forEach(date -> {
+            AbsenceWebBean absenceWebBean = new AbsenceWebBean();
+            absenceWebBean.setBeginDateTime(date);
+            absenceWebBean.setEndDateTime(date);
+            absenceWebBeanList.add(absenceWebBean);
+        });
         return absenceWebBeanList;
     }
 }

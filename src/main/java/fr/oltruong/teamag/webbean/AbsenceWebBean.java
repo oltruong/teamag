@@ -25,12 +25,20 @@ public class AbsenceWebBean {
 
     private int endType;
 
+    private String memberName;
+
+    private String color;
+
+    private Long beginDateLong;
+    private Long endDateLong;
+
     public DateTime getBeginDateTime() {
         return beginDateTime;
     }
 
     public void setBeginDateTime(DateTime beginDateTime) {
         this.beginDateTime = beginDateTime;
+        this.beginDateLong = beginDateTime.toDate().getTime();
     }
 
     public int getBeginType() {
@@ -47,6 +55,8 @@ public class AbsenceWebBean {
 
     public void setEndDateTime(DateTime endDateTime) {
         this.endDateTime = endDateTime;
+        this.endDateLong = endDateTime.toDate().getTime();
+
     }
 
     public int getEndType() {
@@ -121,5 +131,37 @@ public class AbsenceWebBean {
         this.endDateString = endDateString;
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         this.endDateTime = formatter.parseDateTime(endDateString);
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Long getBeginDateLong() {
+        return beginDateLong;
+    }
+
+    public void setBeginDateLong(Long beginDateLong) {
+        this.beginDateLong = beginDateLong;
+    }
+
+    public Long getEndDateLong() {
+        return endDateLong;
+    }
+
+    public void setEndDateLong(Long endDateLong) {
+        this.endDateLong = endDateLong;
     }
 }

@@ -6,6 +6,7 @@ import fr.oltruong.teamag.interfaces.SecurityChecked;
 import fr.oltruong.teamag.model.Absence;
 import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
+import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.AbsenceWebBean;
 import org.slf4j.Logger;
 
@@ -33,6 +34,17 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @Inject
     private AbsenceService absenceService;
 
+
+    @GET
+    public Response getAllAbsences() {
+        return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAllAbsences()));
+    }
+
+    @GET
+    @Path("/daysoff")
+    public Response getDaysOff() {
+        return buildResponseOK(AbsenceWebBeanTransformer.transformListfromDays(CalendarUtils.getListDaysOff()));
+    }
 
     @GET
     @Path("/{memberId}")

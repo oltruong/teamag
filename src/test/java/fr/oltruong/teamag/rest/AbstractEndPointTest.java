@@ -38,6 +38,10 @@ public abstract class AbstractEndPointTest {
         checkResponse(response, Response.Status.FORBIDDEN);
     }
 
+    protected void checkResponseBadRequest(Response response) {
+        checkResponse(response, Response.Status.BAD_REQUEST);
+    }
+
     protected void checkResponseNoContent(Response response) {
         checkResponse(response, Response.Status.NO_CONTENT);
     }
