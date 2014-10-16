@@ -244,6 +244,7 @@
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-arquillian-container-embedded</artifactId>
             <version>${version.wildfly}</version>
+            <scope>provided</scope>
         </dependency>
 
 
