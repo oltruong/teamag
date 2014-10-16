@@ -16,6 +16,7 @@ teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login'
                 userInfo.admin = member.memberType === 'ADMINISTRATOR';
                 userInfo.supervisor = userInfo.admin || member.memberType === 'SUPERVISOR';
                 userInfo.id = member.id;
+                userInfo.password = member.password;
                 $http.defaults.headers.common.Authorization = member.password;
                 $http.defaults.headers.common.userid = member.id;
                 $scope.error = '';
