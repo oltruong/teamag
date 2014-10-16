@@ -1,10 +1,11 @@
 'use strict';
 
-var teamagApp = angular.module('teamagApp', ['ngRoute', 'ngResource', 'ngCookies']);
+var teamagApp = angular.module('teamagApp', ['ngRoute', 'ngResource', 'ngCookies', 'ui.calendar']);
 
 teamagApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'views/home.html', controller: 'HomeController'});
     $routeProvider.when('/absences', {templateUrl: 'views/absences.html', controller: 'AbsenceController'});
+    $routeProvider.when('/absencescalendar', {templateUrl: 'views/absencescalendar.html', controller: 'CalendarController'});
     $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'LoginController'});
     $routeProvider.when('/members', {templateUrl: 'views/members.html', controller: 'MemberController'});
     $routeProvider.when('/works/:taskId', {templateUrl: 'views/works.html', controller: 'WorkTaskController'});

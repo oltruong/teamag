@@ -2,7 +2,6 @@
 
 teamagApp.controller('HomeController', ['$scope', 'userInfo',
     function HomeController($scope, userInfo) {
-
         $scope.loggedIn = userInfo.loggedIn;
 
         $scope.name = userInfo.name;
