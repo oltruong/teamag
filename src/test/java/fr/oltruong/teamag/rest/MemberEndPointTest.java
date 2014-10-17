@@ -3,6 +3,7 @@ package fr.oltruong.teamag.rest;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.utils.TeamagUtils;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,16 +105,52 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateMember() {
-        Long randomId = EntityFactory.createRandomLong();
+    public void testUpdateAnotherMember() {
+
 
         Member member = Mockito.spy(EntityFactory.createMember());
 
         assertThat(member.getId()).isNull();
 
-        Response response = memberEndPoint.updateMember(randomId, member);
+        Response response = memberEndPoint.updateAnotherMember(randomId, member);
 
         checkResponseOK(response);
+        assertThat(member.getId()).isEqualTo(randomId);
+
+        verify(mockMemberService).updateMember(eq(member));
+
+    }
+
+    @Test
+    public void testUpdateCurrentMember() {
+
+
+        Member member = Mockito.spy(EntityFactory.createMember());
+
+        assertThat(member.getId()).isNull();
+
+        Response response = memberEndPoint.updateCurrentMember(randomId, member);
+
+        checkResponseOK(response);
+        assertThat(member.getId()).isEqualTo(randomId);
+
+        verify(mockMemberService).updateMember(eq(member));
+
+    }
+
+    @Test
+    public void testUpdateCurrentMember_newPassword() {
+
+
+        Member member = Mockito.spy(EntityFactory.createMember());
+        member.setNewPassword("newPassword");
+
+        assertThat(member.getId()).isNull();
+
+        Response response = memberEndPoint.updateCurrentMember(randomId, member);
+
+        checkResponseOK(response);
+        assertThat(member.getPassword()).isEqualTo(TeamagUtils.hashPassword(member.getNewPassword()));
         assertThat(member.getId()).isEqualTo(randomId);
 
         verify(mockMemberService).updateMember(eq(member));

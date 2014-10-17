@@ -3,7 +3,16 @@ package fr.oltruong.teamag.model;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.TeamagConstants;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,6 +46,9 @@ public class Member implements Serializable {
     private String comment;
 
     private String absenceHTMLColor;
+
+    @Transient
+    private String newPassword;
 
     @Column(nullable = false)
     private Boolean active = Boolean.TRUE;
@@ -156,5 +168,13 @@ public class Member implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }
