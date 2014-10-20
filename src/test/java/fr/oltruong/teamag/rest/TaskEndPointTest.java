@@ -3,7 +3,7 @@ package fr.oltruong.teamag.rest;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
-import fr.oltruong.teamag.service.WorkService;
+import fr.oltruong.teamag.service.TaskService;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.TaskWebBean;
 import org.junit.Before;
@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Mock
-    private WorkService mockWorkService;
+    private TaskService mockTaskService;
 
     private TaskEndPoint taskEndPoint;
 
@@ -37,7 +38,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         super.setup();
 
         taskEndPoint = new TaskEndPoint();
-        TestUtils.setPrivateAttribute(taskEndPoint, mockWorkService, "workService");
+        TestUtils.setPrivateAttribute(taskEndPoint, mockTaskService, "taskService");
         task = EntityFactory.createTask();
 
 
@@ -46,14 +47,14 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testGetTasks() throws Exception {
-        testFindTasks(mockWorkService::findAllTasks, taskEndPoint::getTasks);
-        verify(mockWorkService, atLeastOnce()).findAllTasks();
+        testFindTasks(mockTaskService::findAllTasks, taskEndPoint::getTasks);
+        verify(mockTaskService, atLeastOnce()).findAllTasks();
     }
 
     @Test
     public void testGetTasksWithActivity() throws Exception {
-        testFindTasks(mockWorkService::findTaskWithActivity, taskEndPoint::getTasksWithActivity);
-        verify(mockWorkService, atLeastOnce()).findTaskWithActivity();
+        testFindTasks(mockTaskService::findTaskWithActivity, taskEndPoint::getTasksWithActivity);
+        verify(mockTaskService, atLeastOnce()).findTaskWithActivity();
 
     }
 
@@ -84,7 +85,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     public void testGetTask() throws Exception {
 
 
-        when(mockWorkService.findTask(any())).thenReturn(task);
+        when(mockTaskService.findTask(any())).thenReturn(task);
 
         Response response = taskEndPoint.getTask(randomId);
         checkResponseOK(response);
@@ -93,7 +94,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
         assertThat(taskReturned).isEqualToIgnoringNullFields(task);
-        verify(mockWorkService).findTask(eq(randomId));
+        verify(mockTaskService).findTask(eq(randomId));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         Response response = taskEndPoint.createTask(task);
 
         checkResponseCreated(response);
-        verify(mockWorkService).createTask(eq(task));
+        verify(mockTaskService).createTask(eq(task));
 
     }
 
@@ -112,12 +113,12 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     public void testCreateTask_existing() throws Exception {
 
         task.setId(randomId);
-        doThrow(new ExistingDataException()).when(mockWorkService).createTask(eq(task));
+        doThrow(new ExistingDataException()).when(mockTaskService).createTask(eq(task));
 
         Response response = taskEndPoint.createTask(task);
 
         checkResponseNotAcceptable(response);
-        verify(mockWorkService).createTask(eq(task));
+        verify(mockTaskService).createTask(eq(task));
 
     }
 
@@ -130,13 +131,21 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
         assertThat(task.getId()).isEqualTo(randomId);
-        verify(mockWorkService).updateTask(eq(task));
+        verify(mockTaskService).updateTask(eq(task));
     }
 
     @Test
     public void testDeleteTask() throws Exception {
         Response response = taskEndPoint.deleteTask(randomId);
-        checkResponseOK(response);
-        verify(mockWorkService).deleteTask(eq(randomId));
+        checkResponseNoContent(response);
+        verify(mockTaskService).deleteTask(eq(randomId));
+    }
+
+    @Test
+    public void testDeleteTask_NotFound() throws Exception {
+        doThrow(new IllegalArgumentException()).when(mockTaskService).deleteTask(anyLong());
+        Response response = taskEndPoint.deleteTask(randomId);
+        checkResponseNotFound(response);
+        verify(mockTaskService).deleteTask(eq(randomId));
     }
 }

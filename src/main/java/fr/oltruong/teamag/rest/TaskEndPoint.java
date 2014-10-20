@@ -4,11 +4,11 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.model.Task;
-import fr.oltruong.teamag.service.WorkService;
+import fr.oltruong.teamag.service.TaskService;
 import fr.oltruong.teamag.webbean.TaskWebBean;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,21 +26,18 @@ import java.util.List;
 @AdminChecked
 public class TaskEndPoint extends AbstractEndPoint {
 
-    @EJB
-    WorkService workService;
-
+    @Inject
+    TaskService taskService;
 
     @GET
     public Response getTasks() {
-
-        return buildResponseOK(buildTask(workService.findAllTasks()));
-
+        return buildResponseOK(buildTask(taskService.findAllTasks()));
     }
 
     @GET
     @Path("/withactivity")
     public Response getTasksWithActivity() {
-        return buildResponseOK(buildTask(workService.findTaskWithActivity()));
+        return buildResponseOK(buildTask(taskService.findTaskWithActivity()));
     }
 
     private List<TaskWebBean> buildTask(List<Task> taskList) {
@@ -76,15 +73,15 @@ public class TaskEndPoint extends AbstractEndPoint {
     @GET
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long taskId) {
-        return buildResponseOK(workService.findTask(taskId));
+        return buildResponseOK(taskService.findTask(taskId));
     }
 
     @POST
     public Response createTask(Task task) {
         try {
-            workService.createTask(task);
+            taskService.createTask(task);
         } catch (ExistingDataException e) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            return buildResponseNotAcceptable();
         }
         return buildResponseCreated();
     }
@@ -94,7 +91,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @Path("/{id}")
     public Response updateTask(@PathParam("id") Long taskId, Task task) {
         task.setId(taskId);
-        workService.updateTask(task);
+        taskService.updateTask(task);
         return buildResponseOK();
     }
 
@@ -102,8 +99,14 @@ public class TaskEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{id}")
     public Response deleteTask(@PathParam("id") Long taskId) {
-        workService.deleteTask(taskId);
-        return buildResponseOK();
+        Response response;
+        try {
+            taskService.deleteTask(taskId);
+            response = buildResponseNoContent();
+        } catch (IllegalArgumentException exception) {
+            response = buildResponseNotFound();
+        }
+        return response;
     }
 
 

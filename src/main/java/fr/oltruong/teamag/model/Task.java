@@ -140,10 +140,6 @@ public class Task {
         return this.id.equals(member0.getId());
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
     @Override
     public Task clone() {

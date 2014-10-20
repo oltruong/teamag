@@ -11,6 +11,7 @@ import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.service.EmailService;
 import fr.oltruong.teamag.service.MailBean;
+import fr.oltruong.teamag.service.TaskService;
 import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
@@ -46,6 +47,9 @@ public class WorkController extends Controller {
     private RealizedFormWebBean realizedBean;
     @Inject
     private WorkService workService;
+    @Inject
+    private TaskService taskService;
+
     @Inject
     private EmailService mailService;
 
@@ -113,7 +117,7 @@ public class WorkController extends Controller {
         } else {
 
             try {
-                workService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
+                taskService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
                 works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1));
                 initTaskWeek();
@@ -135,7 +139,7 @@ public class WorkController extends Controller {
     public String deleteTask() {
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        workService.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
+        taskService.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
 
         initInformation(realizedBean.getDayCursor());
         return VIEWNAME;
@@ -208,7 +212,7 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeProject(String query) {
-        List<Task> tasks = workService.findAllNonAdminTasks();
+        List<Task> tasks = taskService.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
@@ -226,7 +230,7 @@ public class WorkController extends Controller {
     public List<String> completeName(String query) {
 //        List<Task> tasks = workService.findTasksByProject(newTask.getProject());
 
-        List<Task> tasks = workService.findAllNonAdminTasks();
+        List<Task> tasks = taskService.findAllNonAdminTasks();
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
