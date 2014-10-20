@@ -32,8 +32,7 @@ public final class AbsenceValidator {
         DateTime endDateTime = absence.getEndDate().withHourOfDay(0).withTimeAtStartOfDay();
 
         dateInconsistent = beginDateTime.isAfter(endDateTime);
-        dateInconsistent |= beginDateTime.equals(endDateTime) && absence.getBeginType() > absence.getEndType();
-
+        dateInconsistent |= beginDateTime.equals(endDateTime) && absence.getBeginType() != absence.getEndType();
         dateInconsistent |= !beginDateTime.equals(endDateTime) && (Absence.MORNING_ONLY.equals(Integer.valueOf(absence.getBeginType())) || Absence.AFTERNOON_ONLY.equals(Integer.valueOf(absence.getEndType())));
 
         if (dateInconsistent) {
@@ -43,11 +42,8 @@ public final class AbsenceValidator {
 
     private static void validateAbsenceDoNotOverlap(Absence absence, List<Absence> absenceList) throws DateOverlapException {
         if (absenceList != null) {
-
             DateTime[] dateTimes = computeDateTime(absence);
-
             Interval interval = new Interval(dateTimes[0], dateTimes[1]);
-
 
             for (Absence absence1 : absenceList) {
                 DateTime[] dateTimes1 = computeDateTime(absence1);

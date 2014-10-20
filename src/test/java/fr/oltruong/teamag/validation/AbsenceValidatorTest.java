@@ -99,6 +99,19 @@ public class AbsenceValidatorTest {
         AbsenceValidator.validate(absence, null);
     }
 
+
+    @Test(expected = InconsistentDateException.class)
+    public void testValidate_DateNonChronologicalSameDay3() throws DateOverlapException, InconsistentDateException {
+        Absence absence = new Absence();
+
+        absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
+        absence.setEndDate(new DateTime(2013, 11, 22, 0, 40, 0));
+        absence.setBeginType(Absence.MORNING_ONLY);
+        absence.setEndType(Absence.AFTERNOON_ONLY);
+
+        AbsenceValidator.validate(absence, null);
+    }
+
     @Test
     public void testValidate() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
