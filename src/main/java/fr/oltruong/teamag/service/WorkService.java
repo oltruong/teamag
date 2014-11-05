@@ -227,33 +227,36 @@ public class WorkService extends AbstractService {
         List<AbsenceDay> absenceDayList = absenceDayService.findAbsenceDayList(member.getId(), month.getMonthOfYear());
 
 
-        if (CollectionUtils.isNotEmpty(taskList)) {
-
-            List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
-
-            workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
-            for (Task task : taskList) {
-                for (DateTime day : workingDays) {
-
-
-                    Double total = 0d;
-                    //Absence Task
-                    if (Long.valueOf(1L).equals(task.getId())) {
-                        AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
-                        if (absenceDay != null) {
-                            total = Double.valueOf(absenceDay.getValue().toString());
-                        }
-                    }
-                    Work work = createWork(member, month, task, day, total);
-
-
-                    workList.add(work);
-                }
-            }
-
-        } else {
-            getLogger().debug("No activity");
+        if (CollectionUtils.isEmpty(taskList)) {
+            Task absenceTask = findTask(1L);
+            absenceTask.addMember(member);
+            updateTask(absenceTask);
+            taskList.add(absenceTask);
         }
+
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+
+        workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
+        for (Task task : taskList) {
+            for (DateTime day : workingDays) {
+
+
+                Double total = 0d;
+                //Absence Task
+                if (Long.valueOf(1L).equals(task.getId())) {
+                    AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
+                    if (absenceDay != null) {
+                        total = Double.valueOf(absenceDay.getValue().toString());
+                    }
+                }
+                Work work = createWork(member, month, task, day, total);
+
+
+                workList.add(work);
+            }
+        }
+
+
         return workList;
 
     }
