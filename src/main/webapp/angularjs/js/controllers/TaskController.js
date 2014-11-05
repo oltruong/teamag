@@ -3,7 +3,7 @@
 teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeParams', 'Task', 'Activity',
     function ($scope, $http, $location, $routeParams, Task, Activity) {
 
-
+        $scope.tasks = [];
         $scope.confirmation = $routeParams.confirmation;
 
         $scope.tasks = Task.query(function () {
@@ -76,11 +76,8 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
                 alert('vous ne pouvez fusionner la même tâche en parente!');
                 $task.task = null;
             } else {
-
             }
-
         };
-
 
         $scope.refreshTask = function ($task) {
 
