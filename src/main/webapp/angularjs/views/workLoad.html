@@ -72,7 +72,7 @@
                 </td>
                 <td class="border-right"><span ng-show="!showRemaining">{{workLoadContainer.businessCase.amount}}<span
                         ng-class="displayRealizedTotal(totalRealizedByBC(workLoadContainer))">
-                    ({{totalRealizedByBC(workLoadContainer)|number:1}})</span></span>
+                    ({{totalRealizedByBC(workLoadContainer)|number:2}})</span></span>
                     <span ng-show="showRemaining"
                           ng-class="displayClassWorkLoad(workLoadContainer.businessCase.amount-totalRealizedByBC(workLoadContainer))">{{workLoadContainer.businessCase.amount-totalRealizedByBC(workLoadContainer) | number : 2}}</span>
                 </td>
@@ -88,7 +88,7 @@
                           ng-class="displayClassWorkLoad(workload.estimated)">{{workload.estimated| number:2}}</span><input
                            type="number" step="any"
                            ng-model="workload.estimated"
-                           ng-show="editing" size="3"> <span ng-class="displayRealizedClass(workload)">({{workload.realized| number:1}})</span></span>
+                           ng-show="editing" size="3"> <span ng-class="displayRealizedClass(workload)">({{workload.realized| number:2}})</span></span>
                     <span ng-show="showRemaining" ng-class="displayClassWorkLoad(workload.estimated-workload.realized)">{{workload.estimated-workload.realized| number:2}}</span>
 
                 </td>
