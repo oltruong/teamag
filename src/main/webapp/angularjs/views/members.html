@@ -1,7 +1,7 @@
 <h1 class="text-center">{{filteredMembers.length }} Membres</h1>
 <div class="row">
     <div class="col-md-2">
-        Filtrer&nbsp;: <input ng-model="query">
+        Filtrer&nbsp;: <input type="text" ng-model="query">
         <br/><br/> Trier&nbsp;:
         <select ng-model="orderProp">
             <option value="name">Nom asc</option>
@@ -11,6 +11,13 @@
             <option value="estimatedWorkDays">Consommation asc</option>
             <option value="-estimatedWorkDays">Consommation desc</option>
         </select>
+        <br/><br/>
+
+        <div class="lead">
+            {{totalDays()| number:1}}&nbsp;JHI<br/>
+            {{totalDays()/21| number:2}}&nbsp;MHI
+        </div>
+
 
     </div>
     <div class="col-md-10">
@@ -77,7 +84,7 @@
             <tfoot>
 
             <tr class="success">
-                <td class="text-right" colspan=5">Total&nbsp;:</td>
+                <td class="text-right" colspan="5">Total&nbsp;:</td>
                 <td>{{totalDays()| number:1}}</td>
                 <td>{{totalDays()/21| number:2}}</td>
                 <td colspan="3"></td>
