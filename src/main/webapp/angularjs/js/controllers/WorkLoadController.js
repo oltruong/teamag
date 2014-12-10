@@ -58,10 +58,10 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
         };
 
         $scope.displayClassWorkLoad = function ($estimated) {
-            if ($estimated === 0) {
-                return 'hidden';
-            } else if ($estimated < 0) {
+            if ($estimated < -0.01) {
                 return 'text-danger';
+            } else if ($estimated < 0.01) {
+                return 'hidden';
             } else {
                 return '';
             }
