@@ -32,7 +32,7 @@ public class ProfileControllerTest extends ControllerTest {
     private Member member;
 
     @Mock
-    private MemberService mockMemberEJB;
+    private MemberService mockMemberService;
 
     private ProfileController profileController;
 
@@ -44,7 +44,7 @@ public class ProfileControllerTest extends ControllerTest {
         when(mockMemberInstance.get()).thenReturn(member);
         profileController = new ProfileController();
         TestUtils.setPrivateAttribute(profileController, mockMemberInstance, "memberInstance");
-        TestUtils.setPrivateAttribute(profileController, mockMemberEJB, "memberEJB");
+        TestUtils.setPrivateAttribute(profileController, mockMemberService, "memberEJB");
         TestUtils.setPrivateAttribute(profileController, Controller.class, mockMessageManager, "messageManager");
     }
 
@@ -77,7 +77,7 @@ public class ProfileControllerTest extends ControllerTest {
         String view = profileController.updatePassword();
 
         assertThat(TestUtils.getPrivateAttribute(member, "password")).isEqualTo(newPasswordEncrypted);
-        verify(mockMemberEJB).updateMember(eq(member));
+        verify(mockMemberService).updateMember(eq(member));
         verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString());
         checkView(view);
 

@@ -1,9 +1,9 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.service.MemberService;
 import fr.oltruong.teamag.utils.TeamagConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.RowEditEvent;
@@ -18,9 +18,6 @@ import java.util.List;
 @ManagedBean
 @SessionScoped
 public class MemberController extends Controller {
-
-    @Inject
-    private org.slf4j.Logger logger;
 
     @Inject
     private MemberService memberEJB;
@@ -55,7 +52,6 @@ public class MemberController extends Controller {
         member = new Member();
         return VIEWNAME;
     }
-
 
 
     public List<String> completeCompany(String query) {

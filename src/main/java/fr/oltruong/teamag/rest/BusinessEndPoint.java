@@ -1,14 +1,20 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.service.ActivityService;
-import fr.oltruong.teamag.model.Activity;
-import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
+import fr.oltruong.teamag.model.Activity;
+import fr.oltruong.teamag.model.BusinessCase;
+import fr.oltruong.teamag.service.ActivityService;
+import fr.oltruong.teamag.service.BusinessCaseService;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.*;
+import javax.inject.Inject;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 /**
@@ -19,40 +25,43 @@ import javax.ws.rs.core.Response;
 @AdminChecked
 public class BusinessEndPoint extends AbstractEndPoint {
 
-    @EJB
-    ActivityService activityEJB;
+    @Inject
+    ActivityService activityService;
+
+    @Inject
+    BusinessCaseService businessCaseService;
 
 
     @GET
     @Path("/bc")
     public Response getBC() {
-        return buildResponseOK(activityEJB.findBC());
+        return buildResponseOK(businessCaseService.findAll());
     }
 
     @GET
     @Path("/bc/{id}")
     public Response getBC(@PathParam("id") Long businessCaseId) {
-        return buildResponseOK(activityEJB.findBC(businessCaseId));
+        return buildResponseOK(businessCaseService.find(businessCaseId));
     }
 
     @GET
     @Path("/activity")
     public Response getActivities() {
-        return buildResponseOK(activityEJB.findActivities());
+        return buildResponseOK(activityService.findActivities());
     }
 
 
     @GET
     @Path("/activity/{id}")
     public Response getActivity(@PathParam("id") Long activityId) {
-        return buildResponseOK(activityEJB.findActivity(activityId));
+        return buildResponseOK(activityService.findActivity(activityId));
     }
 
     @POST
     @Path("/activity")
     public Response createActivity(Activity activity) {
         try {
-            activityEJB.createActivity(activity);
+            activityService.createActivity(activity);
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
@@ -65,7 +74,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     public Response updateActivity(@PathParam("id") Long activityId, Activity activity) {
         activity.setId(activityId);
 
-        activityEJB.updateActivity(activity);
+        activityService.updateActivity(activity);
         return buildResponseOK();
     }
 
@@ -73,7 +82,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/activity/{id}")
     public Response deleteActivity(@PathParam("id") Long activityId) {
-        activityEJB.deleteActivity(activityId);
+        activityService.deleteActivity(activityId);
         return buildResponseOK();
     }
 
@@ -82,7 +91,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/bc")
     public Response createBC(BusinessCase businessCase) {
         try {
-            activityEJB.createBC(businessCase);
+            businessCaseService.create(businessCase);
         } catch (ExistingDataException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
@@ -93,7 +102,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/bc/{id}")
     public Response updateBC(@PathParam("id") Long businessCaseId, BusinessCase businessCase) {
         businessCase.setId(businessCaseId);
-        activityEJB.updateBC(businessCase);
+        businessCaseService.update(businessCase);
         return buildResponseOK();
     }
 
@@ -101,7 +110,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/bc/{id}")
     public Response deleteBC(@PathParam("id") Long businessCaseId) {
-        activityEJB.deleteBC(businessCaseId);
+        businessCaseService.delete(businessCaseId);
         return buildResponseOK();
     }
 }

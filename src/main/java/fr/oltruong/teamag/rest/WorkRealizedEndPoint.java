@@ -3,8 +3,8 @@ package fr.oltruong.teamag.rest;
 import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WorkRealized;
+import fr.oltruong.teamag.service.TaskService;
 import fr.oltruong.teamag.service.WorkRealizedService;
-import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.webbean.TaskWebBean;
 import fr.oltruong.teamag.webbean.WorkRealizedWrapper;
 
@@ -29,8 +29,9 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
     @Inject
     private WorkRealizedService workRealizedService;
 
+
     @Inject
-    private WorkService workService;
+    private TaskService taskService;
 
     @GET
     public Response getWorkRealized() {
@@ -56,7 +57,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
         List<WorkRealizedWrapper> workRealizedWrapperList = Lists.newArrayList();
 
 
-        List<Task> tasks = workService.findTaskWithActivity();
+        List<Task> tasks = taskService.findTaskWithActivity();
         if (tasks != null && !tasks.isEmpty()) {
             tasks.forEach(task -> workRealizedWrapperList.add(new WorkRealizedWrapper(transformTask(task))));
         }
@@ -67,7 +68,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
             for (WorkRealized workRealized : workRealizedList) {
                 WorkRealizedWrapper workRealizedWrapper = findWrapper(workRealizedWrapperList, workRealized.getTaskId());
                 if (workRealizedWrapper == null) {
-                    Task task = workService.findTask(workRealized.getTaskId());
+                    Task task = taskService.findTask(workRealized.getTaskId());
 
                     workRealizedWrapper = new WorkRealizedWrapper(transformTask(task));
                     workRealizedWrapperList.add(workRealizedWrapper);

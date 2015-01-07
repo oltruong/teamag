@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WorkRealized;
 import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.service.TaskService;
 import fr.oltruong.teamag.service.WorkRealizedService;
 import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.TestUtils;
@@ -31,6 +32,9 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
     @Mock
     private WorkService mockWorkService;
 
+    @Mock
+    private TaskService mockTaskService;
+
     private WorkRealizedEndPoint workRealizedEndPoint;
 
     @Before
@@ -41,6 +45,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockWorkRealizedService, "workRealizedService");
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockWorkService, "workService");
+        TestUtils.setPrivateAttribute(workRealizedEndPoint, mockTaskService, "taskService");
     }
 
 
@@ -52,7 +57,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         Task task = EntityFactory.createTask();
         task.setId(randomId);
-        when(mockWorkService.findTask(anyLong())).thenReturn(task);
+        when(mockTaskService.findTask(anyLong())).thenReturn(task);
 
         when(mockWorkRealizedService.getAllWorkRealized()).thenReturn(workRealizedList);
 
@@ -128,9 +133,9 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         Task task = EntityFactory.createTask();
         task.setId(randomId);
-        when(mockWorkService.findTask(anyLong())).thenReturn(task);
+        when(mockTaskService.findTask(anyLong())).thenReturn(task);
 
-        when(mockWorkService.findTaskWithActivity()).thenReturn(tasks);
+        when(mockTaskService.findTaskWithActivity()).thenReturn(tasks);
 
 
         Response response = workRealizedEndPoint.getWorkRealized(randomId);
