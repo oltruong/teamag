@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import fr.oltruong.teamag.exception.DateOverlapException;
 import fr.oltruong.teamag.exception.InconsistentDateException;
 import fr.oltruong.teamag.model.Absence;
+import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 import fr.oltruong.teamag.validation.AbsenceValidator;
 
 import javax.ejb.Stateless;
@@ -15,14 +17,16 @@ import java.util.List;
 @Stateless
 public class AbsenceService extends AbstractService {
 
-
     private static final String DATE_FORMAT = "EEEE dd MMMM";
 
     @Inject
-    private WorkLoadService workLoadService;
+    private AbsenceDayService absenceDayService;
 
     @Inject
     private EmailService emailService;
+
+    @Inject
+    private WorkService workService;
 
     public List<Absence> findAllAbsences() {
         return getNamedQueryList("findAllAbsences");
@@ -59,9 +63,27 @@ public class AbsenceService extends AbstractService {
         absence.setMember(MemberService.getMemberMap().get(memberId));
         persist(absence);
 
-        workLoadService.registerAbsence(absence);
+        registerAbsence(absence);
         emailService.sendEmailAdministrator(buildEmailAdd(absence, memberId));
 
+    }
+
+
+    public void registerAbsence(Absence newAbsence) {
+        List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(newAbsence);
+        absenceDayList.forEach(absenceDay -> {
+            persist(absenceDay);
+            workService.updateWorkAbsence(absenceDay);
+        });
+    }
+
+
+    public void reloadAllAbsenceDay() {
+        absenceDayService.deleteAll();
+        List<Absence> absenceList = findAllAbsences();
+        if (absenceList != null) {
+            absenceList.forEach(absence -> registerAbsence(absence));
+        }
     }
 
 
@@ -87,7 +109,7 @@ public class AbsenceService extends AbstractService {
     }
 
     public void deleteAbsence(Absence absence) {
-        workLoadService.removeAbsence(absence.getId());
+        absenceDayService.remove(absence.getId());
         remove(Absence.class, absence.getId());
         emailService.sendEmailAdministrator(buildEmailDelete(absence));
 

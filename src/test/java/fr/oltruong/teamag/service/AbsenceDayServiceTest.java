@@ -2,18 +2,25 @@ package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.utils.TestUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AbsenceDayServiceTest extends AbstractServiceTest {
 
+    @Mock
+    WorkService mockWorkService;
 
     private AbsenceDayService absenceDayService;
     private List<AbsenceDay> absenceDayList;
@@ -24,8 +31,63 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
         absenceDayService = new AbsenceDayService();
         absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
         when(mockQuery.getResultList()).thenReturn(absenceDayList);
+        TestUtils.setPrivateAttribute(absenceDayService, mockWorkService, "workService");
 
         prepareService(absenceDayService);
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
+        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
+
+        when(getMockQuery().getResultList()).thenReturn(absenceDayList);
+
+
+        List<AbsenceDay> absenceDayListReturned = absenceDayService.findAll();
+
+        Assertions.assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
+
+        checkCreateNameQuery("findAllAbsenceDays");
+
+        verify(getMockQuery()).getResultList();
+
+    }
+
+    @Test
+    public void testRemoveAbsence() {
+
+        Long idTest = Long.valueOf(3365l);
+
+
+        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
+        when(getMockQuery().getResultList()).thenReturn(absenceDayList);
+
+
+        absenceDayService.remove(idTest);
+
+        checkCreateNameQuery("findAbsenceDayByAbsenceId");
+
+        verify(getMockQuery()).setParameter(eq("fAbsenceId"), eq(idTest));
+        verify(getMockQuery()).getResultList();
+
+        absenceDayList.forEach(absenceDay -> verify(mockWorkService).removeWorkAbsence(eq(absenceDay)));
+        absenceDayList.forEach(absenceDay -> verify(mockEntityManager).remove(eq(absenceDay)));
+
+
+    }
+
+    @Test
+    public void testRemoveAbsence_listNull() {
+        when(getMockQuery().getResultList()).thenReturn(null);
+
+        absenceDayService.remove(Long.valueOf(123l));
+        verify(mockEntityManager, never()).remove(any());
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveAbsence_null() {
+        absenceDayService.remove(null);
     }
 
 

@@ -2,8 +2,8 @@ package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.service.AbsenceDayService;
 import fr.oltruong.teamag.service.MemberService;
-import fr.oltruong.teamag.service.WorkLoadService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.WeekLoadWebBean;
 import fr.oltruong.teamag.webbean.WorkLoadFormWebBean;
@@ -21,7 +21,7 @@ import java.util.List;
 public class WorkLoadController extends Controller {
 
     @Inject
-    private WorkLoadService workLoadEJB;
+    private AbsenceDayService absenceDayService;
 
     @Inject
     private MemberService memberEJB;
@@ -40,7 +40,7 @@ public class WorkLoadController extends Controller {
 
 
     private void fillInformation() {
-        List<AbsenceDay> absenceDayList = workLoadEJB.getAllAbsenceDay();
+        List<AbsenceDay> absenceDayList = absenceDayService.findAll();
 
         List<Member> memberNonAdminList = memberEJB.findActiveNonAdminMembers();
         formWebBean.setMemberList(memberNonAdminList);

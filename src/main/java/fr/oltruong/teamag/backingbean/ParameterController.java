@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.backingbean;
 
 import fr.oltruong.teamag.model.Parameter;
+import fr.oltruong.teamag.service.AbsenceService;
 import fr.oltruong.teamag.service.ParameterService;
-import fr.oltruong.teamag.service.WorkLoadService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -33,7 +33,7 @@ public class ParameterController extends Controller {
 
 
     @Inject
-    private WorkLoadService workLoadEJB;
+    private AbsenceService absenceService;
 
     private Parameter smtpHostParameter;
 
@@ -58,7 +58,7 @@ public class ParameterController extends Controller {
     }
 
     public String reloadAbsenceDays() {
-        workLoadEJB.reloadAllAbsenceDay();
+        absenceService.reloadAllAbsenceDay();
         return "parameters.xhtml";
     }
 
