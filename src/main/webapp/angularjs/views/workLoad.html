@@ -89,7 +89,7 @@
                            type="number" step="any"
                            ng-model="workload.estimated"
                            ng-show="editing" size="3"> <span ng-class="displayRealizedClass(workload)">({{workload.realized| number:2}})</span></span>
-                    <span ng-show="showRemaining" ng-class="displayClassWorkLoad(workload.estimated-workload.realized)">{{workload.estimated-workload.realized| number:2}}</span>
+                    <span ng-show="showRemaining" ng-class="displayClassWorkLoad(workload.estimated-workload.realized)">{{workload.estimated-workload.realized| number:2}}/{{(workload.estimated-workload.realized)*21| number:2}}j</span>
 
                 </td>
             </tr>
