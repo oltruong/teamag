@@ -54,14 +54,14 @@ public class WorkService extends AbstractService {
 
     }
 
-    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month) {
+    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month, List<Task> taskList) {
 
         List<Work> listWorks = findWorkList(member, month);
 
         if (CollectionUtils.isEmpty(listWorks)) {
 
             getLogger().debug("Creating new works for member " + member.getName());
-            listWorks = createWorks(member, month);
+            listWorks = createWorks(member, month, taskList);
         } else {
             //Check if all work are here
             Multimap<Task, Work> multimap = ArrayListMultimap.create();
@@ -183,67 +183,37 @@ public class WorkService extends AbstractService {
         return worksByTask;
     }
 
-    public List<Task> findMemberTasks(Member member) {
-        Query query = createNamedQuery("findAllTasks");
 
-        @SuppressWarnings("unchecked")
-        List<Task> allTaskList = query.getResultList();
-
-        List<Task> taskList = Lists.newArrayList();
-
-        for (Task task : allTaskList) {
-            getLogger().debug("tache " + task.getId());
-
-            if (task.getMembers() != null && !task.getMembers().isEmpty()) {
-
-                getLogger().debug("Task Name" + task.getMembers().get(0).getName());
-                getLogger().debug("Task Id" + task.getMembers().get(0).getId());
-                getLogger().debug("Member id" + member.getId());
-
-                if (task.getMembers().contains(member)) {
-                    getLogger().debug("Task has member " + member.getName());
-                    taskList.add(task);
-                }
-            }
-        }
-
-        return taskList;
-    }
-
-    private List<Work> createWorks(Member member, DateTime month) {
+    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList) {
 
         List<Work> workList = null;
 
-        List<Task> taskList = findMemberTasks(member);
 
         List<AbsenceDay> absenceDayList = absenceDayService.findAbsenceDayList(member.getId(), month.getMonthOfYear());
 
 
-        if (CollectionUtils.isNotEmpty(taskList)) {
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
 
-            List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
-
-            workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
-            for (Task task : taskList) {
-                for (DateTime day : workingDays) {
-                    Double total = 0d;
-                    //Absence Task
-                    if (Long.valueOf(1L).equals(task.getId())) {
-                        AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
-                        if (absenceDay != null) {
-                            total = Double.valueOf(absenceDay.getValue().toString());
-                        }
+        workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
+        for (Task task : taskList) {
+            for (DateTime day : workingDays) {
+                Double total = 0d;
+                //Absence Task
+                if (Long.valueOf(1L).equals(task.getId())) {
+                    AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
+                    if (absenceDay != null) {
+                        total = Double.valueOf(absenceDay.getValue().toString());
                     }
-                    Work work = createWork(member, month, task, day, total);
-
-
-                    workList.add(work);
                 }
-            }
 
-        } else {
-            getLogger().debug("No activity");
+                Work work = createWork(member, month, task, day, total);
+
+
+                workList.add(work);
+            }
         }
+
+
         return workList;
 
     }

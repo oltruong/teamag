@@ -123,6 +123,36 @@ public class TaskService extends AbstractService {
 
     }
 
+    public List<Task> findTasksForMember(Member member) {
+        List<Task> allTaskList = findAllTasks();
+
+        List<Task> taskList = Lists.newArrayList();
+
+        for (Task task : allTaskList) {
+
+            if (task.getMembers() != null && !task.getMembers().isEmpty()) {
+
+                if (task.getMembers().contains(member)) {
+                    taskList.add(task);
+                }
+            }
+        }
+
+        if (CollectionUtils.isEmpty(taskList)) {
+            addAbsenceTask(member, taskList);
+        }
+
+
+        return taskList;
+    }
+
+    private void addAbsenceTask(Member member, List<Task> taskList) {
+        Task absenceTask = findTask(1L);
+        absenceTask.addMember(member);
+        updateTask(absenceTask);
+        taskList.add(absenceTask);
+    }
+
     public void removeTask(Task task, Member member, DateTime month) {
         Query query = createNamedQuery("deleteWorksByMemberTaskMonth");
         query.setParameter("fmemberId", member.getId());
@@ -157,7 +187,6 @@ public class TaskService extends AbstractService {
         int total = ((Number) query.getSingleResult()).intValue();
         return total == 0;
     }
-
 
 
     private boolean isLoop(Task taskToUpdate) {

@@ -10,7 +10,7 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
         $scope.today();
 
         $scope.getAbsences = function () {
-            $http.get('../resources/absences/' + userInfo.id).success(function (data) {
+            $http.get('../resources/absences/').success(function (data) {
                 $scope.absences = data;
             }, function (error) {
                 $scope.error = 'Erreur HTTP ' + error.status;
@@ -20,7 +20,7 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
 
 
         $scope.delete = function (absenceId) {
-            $http.delete('../resources/absences/' + userInfo.id + "/" + absenceId).success(function () {
+            $http.delete('../resources/absences/' + absenceId).success(function () {
                 $scope.getAbsences();
             }, function (error) {
                 $scope.error = 'Erreur HTTP ' + error.status;
@@ -61,7 +61,7 @@ teamagApp.controller('AbsenceController', ['$scope', '$http', '$filter', 'userIn
                 endType: $scope.endType
             };
 
-            $http.post('../resources/absences/' + userInfo.id, absence).success(function (data, status) {
+            $http.post('../resources/absences/', absence).success(function (data, status) {
                 $scope.confirmation = "Absence ajoutée";
                 $scope.getAbsences();
 

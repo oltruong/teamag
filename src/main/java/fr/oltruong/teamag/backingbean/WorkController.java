@@ -68,7 +68,7 @@ public class WorkController extends Controller {
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth);
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskService.findTasksForMember(getMember()));
 
 
         DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
@@ -119,7 +119,7 @@ public class WorkController extends Controller {
             try {
                 taskService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1));
+                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()));
                 initTaskWeek();
 
                 FacesMessage msg = null;

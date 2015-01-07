@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -36,6 +37,7 @@ public class AbsenceEndPoint extends AbstractEndPoint {
 
 
     @GET
+    @Path("/all")
     public Response getAllAbsences() {
         return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAllAbsences()));
     }
@@ -47,14 +49,12 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     }
 
     @GET
-    @Path("/{memberId}")
-    public Response getAbsences(@PathParam("memberId") Long memberId) {
+    public Response getAbsences(@HeaderParam("userid") Long memberId) {
         return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMemberId(memberId)));
     }
 
     @POST
-    @Path("/{memberId}")
-    public Response createAbsence(@PathParam("memberId") Long memberId, AbsenceWebBean absenceWebBean) {
+    public Response createAbsence(@HeaderParam("userid") Long memberId, AbsenceWebBean absenceWebBean) {
         Response response = null;
         try {
             absenceService.addAbsence(AbsenceWebBeanTransformer.transformWebBean(absenceWebBean), memberId);
@@ -70,8 +70,8 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     }
 
     @DELETE
-    @Path("/{memberId}/{absenceId}")
-    public Response deleteAbsence(@PathParam("memberId") Long memberId, @PathParam("absenceId") Long absenceId) {
+    @Path("/{absenceId}")
+    public Response deleteAbsence(@HeaderParam("userid") Long memberId, @PathParam("absenceId") Long absenceId) {
         Absence absence = absenceService.find(absenceId);
         Response response = null;
         if (absence == null) {

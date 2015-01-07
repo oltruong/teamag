@@ -14,6 +14,8 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
 
         $scope.nonFullBCOnly = false;
 
+        $scope.showRemaining = false;
+
         $scope.totalMember = function ($member) {
             var total = 0;
             angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
@@ -28,6 +30,22 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             return total;
         };
 
+
+        $scope.totalRealizedMember = function ($member) {
+            var total = 0;
+            angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
+
+                angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
+                    if (workLoad.member.id === $member.id) {
+                        total += workLoad.realized;
+                    }
+
+                });
+            });
+            return total;
+        };
+
+
         $scope.displayClass = function ($member) {
             var comparison = ($member.estimatedWorkDays / 21) - $scope.totalMember($member);
             if (comparison < -0.01) {
@@ -39,11 +57,11 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
             }
         };
 
-        $scope.displayClassWorkLoad = function ($workload) {
-            if ($workload.estimated === 0) {
-                return 'hidden';
-            } else if ($workload.estimated < 0) {
+        $scope.displayClassWorkLoad = function ($estimated) {
+            if ($estimated < -0.01) {
                 return 'text-danger';
+            } else if ($estimated < 0.01) {
+                return 'hidden';
             } else {
                 return '';
             }

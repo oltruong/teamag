@@ -29,7 +29,7 @@ teamagApp.controller('CalendarController', ['$scope', '$http',
         });
 
         $scope.getAllAbsences = function () {
-            $http.get('../resources/absences/').success(function (data) {
+            $http.get('../resources/absences/all').success(function (data) {
                 angular.forEach(data, function (absence) {
                     if (absence.beginDateLong !== absence.endDateLong) {
                         var beginDateLongR = absence.beginDateLong;
