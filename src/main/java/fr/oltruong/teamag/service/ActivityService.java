@@ -1,11 +1,7 @@
 package fr.oltruong.teamag.service;
 
-import com.google.common.base.Strings;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
-import fr.oltruong.teamag.model.BusinessCase;
-import fr.oltruong.teamag.model.Member;
-import fr.oltruong.teamag.model.WorkLoad;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;
@@ -14,44 +10,6 @@ import java.util.List;
 
 @Stateless
 public class ActivityService extends AbstractService {
-
-    @SuppressWarnings("unchecked")
-    public List<BusinessCase> findBC() {
-        Query query = createNamedQuery("findAllBC");
-        return query.getResultList();
-    }
-
-    public BusinessCase createBC(BusinessCase bc) throws ExistingDataException {
-
-        if (!Strings.isNullOrEmpty(bc.getIdentifier())) {
-            Query query = createNamedQuery("findBCByNumber");
-            query.setParameter("fidentifier", bc.getIdentifier());
-            if (!query.getResultList().isEmpty()) {
-                throw new ExistingDataException();
-            }
-        }
-        persist(bc);
-
-
-        //Create WorkLoad
-        List<Member> memberList = MemberService.getMemberList();
-        if (memberList != null) {
-            for (Member member : memberList) {
-                WorkLoad workLoad = new WorkLoad(bc, member);
-                persist(workLoad);
-            }
-        }
-
-
-        return bc;
-    }
-
-
-    public void deleteBC(Long businessCaseId) {
-        BusinessCase businessCase = find(BusinessCase.class, businessCaseId);
-        remove(businessCase);
-    }
-
 
     public void deleteActivity(Long activityId) {
         Activity activity = find(Activity.class, activityId);
@@ -79,18 +37,11 @@ public class ActivityService extends AbstractService {
         return activity;
     }
 
-    public void updateBC(BusinessCase bcUpdated) {
-        merge(bcUpdated);
-    }
-
 
     public void updateActivity(Activity activityToUpdate) {
         merge(activityToUpdate);
     }
 
-    public BusinessCase findBC(Long businessCaseId) {
-        return find(BusinessCase.class, businessCaseId);
-    }
 
     public Activity findActivity(Long activityId) {
         return find(Activity.class, activityId);

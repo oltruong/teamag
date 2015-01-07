@@ -9,6 +9,7 @@ import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
+import fr.oltruong.teamag.service.AbsenceDayService;
 import fr.oltruong.teamag.service.EmailService;
 import fr.oltruong.teamag.service.MailBean;
 import fr.oltruong.teamag.service.TaskService;
@@ -50,6 +51,10 @@ public class WorkController extends Controller {
     @Inject
     private TaskService taskService;
 
+
+    @Inject
+    private AbsenceDayService absenceDayService;
+
     @Inject
     private EmailService mailService;
 
@@ -68,7 +73,7 @@ public class WorkController extends Controller {
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskService.findTasksForMember(getMember()));
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskService.findTasksForMember(getMember()), absenceDayService.findAbsenceDayList(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
 
 
         DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
@@ -119,7 +124,7 @@ public class WorkController extends Controller {
             try {
                 taskService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()));
+                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findAbsenceDayList(getMember().getId(), DateTime.now().getMonthOfYear()));
                 initTaskWeek();
 
                 FacesMessage msg = null;

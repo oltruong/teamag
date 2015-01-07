@@ -1,10 +1,11 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.service.ActivityService;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
-import fr.oltruong.teamag.exception.ExistingDataException;
+import fr.oltruong.teamag.service.ActivityService;
+import fr.oltruong.teamag.service.BusinessCaseService;
 import fr.oltruong.teamag.utils.MessageManager;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.RowEditEvent;
@@ -23,7 +24,10 @@ public class BCController extends Controller {
 
 
     @Inject
-    private ActivityService activityEJB;
+    private ActivityService activityService;
+
+    @Inject
+    private BusinessCaseService businessCaseService;
 
     @Inject
     private BusinessCase bc;
@@ -43,8 +47,8 @@ public class BCController extends Controller {
     private Double total;
 
     public String init() {
-        setBcList(this.activityEJB.findBC());
-        setActivityList(this.activityEJB.findActivities());
+        setBcList(this.businessCaseService.findAll());
+        setActivityList(this.activityService.findActivities());
         bc = new BusinessCase();
 
         computeTotal();
@@ -60,7 +64,7 @@ public class BCController extends Controller {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
         } else {
             try {
-                this.activityEJB.createBC(this.bc);
+                this.businessCaseService.create(this.bc);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (ExistingDataException e) {
@@ -97,7 +101,7 @@ public class BCController extends Controller {
         } else {
 
             try {
-                this.activityEJB.createActivity(this.activity);
+                this.activityService.createActivity(this.activity);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
             } catch (ExistingDataException e) {
@@ -115,7 +119,7 @@ public class BCController extends Controller {
     public void onEditBC(RowEditEvent event) {
         BusinessCase bcUpdated = (BusinessCase) event.getObject();
 
-        activityEJB.updateBC(bcUpdated);
+        businessCaseService.update(bcUpdated);
         getMessageManager().displayMessage(MessageManager.INFORMATION, "businessCaseUpdated", bcUpdated.getName());
         computeTotal();
 

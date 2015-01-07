@@ -1,9 +1,8 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.service.EmailService;
+import fr.oltruong.teamag.model.Parameter;
 import fr.oltruong.teamag.service.ParameterService;
 import fr.oltruong.teamag.service.WorkLoadService;
-import fr.oltruong.teamag.model.Parameter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -35,10 +34,6 @@ public class ParameterController extends Controller {
 
     @Inject
     private WorkLoadService workLoadEJB;
-
-
-    @Inject
-    private EmailService emailService;
 
     private Parameter smtpHostParameter;
 

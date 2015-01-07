@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 /**
- * @author Olivier Truong
+ * @author oltruong
  */
 public class TaskService extends AbstractService {
 
@@ -129,15 +129,10 @@ public class TaskService extends AbstractService {
         List<Task> taskList = Lists.newArrayList();
 
         for (Task task : allTaskList) {
-
-            if (task.getMembers() != null && !task.getMembers().isEmpty()) {
-
-                if (task.getMembers().contains(member)) {
-                    taskList.add(task);
-                }
+            if (task.getMembers() != null && !task.getMembers().isEmpty() && task.getMembers().contains(member)) {
+                taskList.add(task);
             }
         }
-
         if (CollectionUtils.isEmpty(taskList)) {
             addAbsenceTask(member, taskList);
         }

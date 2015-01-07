@@ -13,7 +13,7 @@ public abstract class AbstractService {
     private EntityManager entityManager;
 
     @Inject
-    private Logger logger;
+    protected Logger logger;
 
     public Logger getLogger() {
         return logger;

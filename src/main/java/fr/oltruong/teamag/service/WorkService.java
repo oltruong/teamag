@@ -14,7 +14,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,11 +22,6 @@ import java.util.Map;
 
 @Stateless
 public class WorkService extends AbstractService {
-
-
-    @Inject
-    private AbsenceDayService absenceDayService;
-
 
     public Map<Task, List<Work>> findWorksNotNull(Member member, DateTime month) {
 
@@ -54,14 +48,14 @@ public class WorkService extends AbstractService {
 
     }
 
-    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month, List<Task> taskList) {
+    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
 
         List<Work> listWorks = findWorkList(member, month);
 
         if (CollectionUtils.isEmpty(listWorks)) {
 
-            getLogger().debug("Creating new works for member " + member.getName());
-            listWorks = createWorks(member, month, taskList);
+            logger.debug("Creating new works for member " + member.getName());
+            listWorks = createWorks(member, month, taskList, absenceDayList);
         } else {
             //Check if all work are here
             Multimap<Task, Work> multimap = ArrayListMultimap.create();
@@ -88,17 +82,13 @@ public class WorkService extends AbstractService {
                         }
                     }
                     if (!found) {
-                        getLogger().warn("CREATING WORK FOR TASK [" + task.getId() + "] for Day [" + day + "]");
+                        logger.warn("CREATING WORK FOR TASK [" + task.getId() + "] for Day [" + day + "]");
                         Work workCreated = createWork(member, month, task, day);
                         multimap.get(task).add(workCreated);
                         listWorks.add(workCreated);
                     }
                 }
-
-
             }
-
-
         }
 
 
@@ -109,18 +99,18 @@ public class WorkService extends AbstractService {
             String workKey = work.getMember().getId().toString() + work.getTask().getId().toString() + work.getDay().toString();
             if (workReferenceList.contains(workKey)) {
                 count++;
-                getLogger().error("ERROR DUPLICATE IN WORK TASK[" + work.getTask().getId().toString() + "] DAY[" + work.getDay() + "] MEMBER ID[" + work.getMember().getId().toString() + "]");
-                getLogger().error("Removing WORK" + work.getId());
+                logger.error("ERROR DUPLICATE IN WORK TASK[" + work.getTask().getId().toString() + "] DAY[" + work.getDay() + "] MEMBER ID[" + work.getMember().getId().toString() + "]");
+                logger.error("Removing WORK" + work.getId());
                 remove(work);
             } else {
                 workReferenceList.add(workKey);
             }
         }
         if (count != 0) {
-            getLogger().error(count + " duplicates");
+            logger.error(count + " duplicates");
 
         } else {
-            getLogger().debug("no duplicate");
+            logger.debug("no duplicate");
         }
 
 
@@ -162,7 +152,7 @@ public class WorkService extends AbstractService {
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
         Number sumOfPrice = (Number) query.getSingleResult();
-        getLogger().debug("total " + sumOfPrice);
+        logger.debug("total " + sumOfPrice);
         return sumOfPrice.intValue();
     }
 
@@ -184,17 +174,11 @@ public class WorkService extends AbstractService {
     }
 
 
-    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList) {
-
-        List<Work> workList = null;
-
-
-        List<AbsenceDay> absenceDayList = absenceDayService.findAbsenceDayList(member.getId(), month.getMonthOfYear());
-
+    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
 
         List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
 
-        workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
+        List<Work> workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
         for (Task task : taskList) {
             for (DateTime day : workingDays) {
                 Double total = 0d;

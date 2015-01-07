@@ -1,10 +1,11 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.service.ActivityService;
+import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.builder.EntityFactory;
-import fr.oltruong.teamag.exception.ExistingDataException;
+import fr.oltruong.teamag.service.ActivityService;
+import fr.oltruong.teamag.service.BusinessCaseService;
 import fr.oltruong.teamag.utils.MessageManager;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
@@ -29,7 +30,10 @@ import static org.mockito.Mockito.when;
 public class BCControllerTest extends ControllerTest {
 
     @Mock
-    private ActivityService mockActivityEJB;
+    private ActivityService mockActivityService;
+
+    @Mock
+    private BusinessCaseService mockBusinessCaseService;
 
     @Mock
     private RowEditEvent mockRowEditEvent;
@@ -44,7 +48,8 @@ public class BCControllerTest extends ControllerTest {
         bcController = new BCController();
         bcController.setBc(new BusinessCase());
         bcController.setActivity(new Activity());
-        TestUtils.setPrivateAttribute(bcController, mockActivityEJB, "activityEJB");
+        TestUtils.setPrivateAttribute(bcController, mockActivityService, "activityService");
+        TestUtils.setPrivateAttribute(bcController, mockBusinessCaseService, "businessCaseService");
         TestUtils.setPrivateAttribute(bcController, Controller.class, mockMessageManager, "messageManager");
         TestUtils.setPrivateAttribute(bcController, Controller.class, mockLogger, "logger");
 
@@ -54,8 +59,8 @@ public class BCControllerTest extends ControllerTest {
     public void testInit() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         List<BusinessCase> bcList = EntityFactory.createList(EntityFactory::createBusinessCase);
-        when(mockActivityEJB.findActivities()).thenReturn(activityList);
-        when(mockActivityEJB.findBC()).thenReturn(bcList);
+        when(mockActivityService.findActivities()).thenReturn(activityList);
+        when(mockBusinessCaseService.findAll()).thenReturn(bcList);
 
         String view = bcController.init();
 
@@ -77,8 +82,8 @@ public class BCControllerTest extends ControllerTest {
     }
 
     private void checkInitView(String view) {
-        verify(mockActivityEJB).findActivities();
-        verify(mockActivityEJB).findBC();
+        verify(mockActivityService).findActivities();
+        verify(mockBusinessCaseService).findAll();
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(bcController, "VIEWNAME"));
     }
 
@@ -90,7 +95,7 @@ public class BCControllerTest extends ControllerTest {
 
         String view = bcController.doCreateBC();
 
-        verify(mockActivityEJB).createBC(eq(businessCase));
+        verify(mockBusinessCaseService).create(eq(businessCase));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.INFORMATION), anyString(), anyString(), anyString(), anyString());
 
         assertThat(bcController.getBc()).isNotEqualTo(businessCase);
@@ -102,7 +107,7 @@ public class BCControllerTest extends ControllerTest {
     public void testDoCreateBC_empty() throws Exception {
         String view = bcController.doCreateBC();
 
-        verify(mockActivityEJB, never()).createBC(isA(BusinessCase.class));
+        verify(mockBusinessCaseService, never()).create(isA(BusinessCase.class));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);
@@ -110,12 +115,12 @@ public class BCControllerTest extends ControllerTest {
 
     @Test
     public void testDoCreateBC_existing() throws Exception {
-        when(mockActivityEJB.createBC(isA(BusinessCase.class))).thenThrow(new ExistingDataException());
+        when(mockBusinessCaseService.create(isA(BusinessCase.class))).thenThrow(new ExistingDataException());
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         bcController.setBc(businessCase);
         String view = bcController.doCreateBC();
 
-        verify(mockActivityEJB).createBC(eq(businessCase));
+        verify(mockBusinessCaseService).create(eq(businessCase));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString(), anyString());
         checkInitView(view);
 
@@ -132,7 +137,7 @@ public class BCControllerTest extends ControllerTest {
 
         String view = bcController.doCreateActivity();
 
-        verify(mockActivityEJB).createActivity(eq(activity));
+        verify(mockActivityService).createActivity(eq(activity));
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.INFORMATION), anyString(), anyString());
         assertThat(bcController.getActivity()).isNotEqualTo(activity);
         checkInitView(view);
@@ -142,8 +147,8 @@ public class BCControllerTest extends ControllerTest {
     public void testDoCreateActivity_empty() throws Exception {
         String view = bcController.doCreateActivity();
 
-        verify(mockActivityEJB, never()).createActivity(isA(Activity.class));
-        verify(mockActivityEJB).findActivities();
+        verify(mockActivityService, never()).createActivity(isA(Activity.class));
+        verify(mockActivityService).findActivities();
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);
@@ -151,13 +156,13 @@ public class BCControllerTest extends ControllerTest {
 
     @Test
     public void testDoCreateActivity_existing() throws Exception {
-        when(mockActivityEJB.createActivity(isA(Activity.class))).thenThrow(new ExistingDataException());
+        when(mockActivityService.createActivity(isA(Activity.class))).thenThrow(new ExistingDataException());
         Activity activity = EntityFactory.createActivity();
         activity.getBc().setId(Long.valueOf(3l));
         bcController.setActivity(activity);
         String view = bcController.doCreateActivity();
 
-        verify(mockActivityEJB).createActivity(eq(activity));
+        verify(mockActivityService).createActivity(eq(activity));
 
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
@@ -179,13 +184,13 @@ public class BCControllerTest extends ControllerTest {
 
         bcController.onEditBC(mockRowEditEvent);
 
-        verify(mockActivityEJB).updateBC(eq(businessCase));
+        verify(mockBusinessCaseService).update(eq(businessCase));
         verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString(), anyString());
     }
 
     @Test
     public void testOnCancel() {
         bcController.onCancelBC(mockRowEditEvent);
-        verifyZeroInteractions(mockActivityEJB);
+        verifyZeroInteractions(mockActivityService);
     }
 }
