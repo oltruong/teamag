@@ -17,6 +17,9 @@ public final class CalendarUtils {
     private CalendarUtils() {
     }
 
+    private static List<DateTime> listDaysOff;
+
+
     public static boolean isDayOff(DateTime day) {
         boolean verdict = false;
 
@@ -24,59 +27,36 @@ public final class CalendarUtils {
         if (dayOfWeek == DateTimeConstants.SUNDAY || dayOfWeek == DateTimeConstants.SATURDAY) {
             return true;
         } else {
-            int dayOfMonth = day.getDayOfMonth();
-            // Days off
-            switch (day.getMonthOfYear()) {
-                case DateTimeConstants.JANUARY:
-                    verdict = dayOfMonth == 1;
-                    break;
-                case DateTimeConstants.APRIL:
-                    verdict = dayOfMonth == 21;
-                    break;
-                case DateTimeConstants.MAY:
-                    verdict = (dayOfMonth == 1 || dayOfMonth == 8 || dayOfMonth == 29);
-                    break;
-                case DateTimeConstants.JUNE:
-                    verdict = dayOfMonth == 9;
-                    break;
-                case DateTimeConstants.JULY:
-                    verdict = dayOfMonth == 14;
-                    break;
-                case DateTimeConstants.AUGUST:
-                    verdict = (dayOfMonth == 15);
-                    break;
-                case DateTimeConstants.NOVEMBER:
-                    verdict = (dayOfMonth == 1 || dayOfMonth == 11);
-                    break;
-                case DateTimeConstants.DECEMBER:
-                    verdict = (dayOfMonth == 25);
-                    break;
-                default:
-                    break;
-            }
+            verdict = getListDaysOff().contains(day);
         }
         return verdict;
 
     }
 
     public static List<DateTime> getListDaysOff() {
-        int numberDaysOff = 11;
-        List<DateTime> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
 
-        daysOff.add(buildDayOff(1, DateTimeConstants.JANUARY));
-        daysOff.add(buildDayOff(21, DateTimeConstants.APRIL));
-        daysOff.add(buildDayOff(1, DateTimeConstants.MAY));
-        daysOff.add(buildDayOff(8, DateTimeConstants.MAY));
-        daysOff.add(buildDayOff(29, DateTimeConstants.MAY));
-        daysOff.add(buildDayOff(9, DateTimeConstants.JUNE));
-        daysOff.add(buildDayOff(14, DateTimeConstants.JULY));
-        daysOff.add(buildDayOff(15, DateTimeConstants.AUGUST));
-        daysOff.add(buildDayOff(1, DateTimeConstants.NOVEMBER));
-        daysOff.add(buildDayOff(11, DateTimeConstants.NOVEMBER));
-        daysOff.add(buildDayOff(25, DateTimeConstants.DECEMBER));
+        if (listDaysOff == null) {
+            int numberDaysOff = 11;
+            List<DateTime> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
+
+            daysOff.add(buildDayOff(1, DateTimeConstants.JANUARY));
+            daysOff.add(buildDayOff(6, DateTimeConstants.APRIL));
+            daysOff.add(buildDayOff(1, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(8, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(14, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(25, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(14, DateTimeConstants.JULY));
+            daysOff.add(buildDayOff(15, DateTimeConstants.AUGUST));
+            daysOff.add(buildDayOff(1, DateTimeConstants.NOVEMBER));
+            daysOff.add(buildDayOff(11, DateTimeConstants.NOVEMBER));
+            daysOff.add(buildDayOff(25, DateTimeConstants.DECEMBER));
 
 
-        return daysOff;
+            listDaysOff = daysOff;
+        }
+        return listDaysOff;
+
+
     }
 
     private static DateTime buildDayOff(int day, int month) {
@@ -149,7 +129,7 @@ public final class CalendarUtils {
     }
 
 
-    public static int getCurrentWeekNumber(){
+    public static int getCurrentWeekNumber() {
         return LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR);
     }
 
