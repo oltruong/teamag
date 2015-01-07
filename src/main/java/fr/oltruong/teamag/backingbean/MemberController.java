@@ -43,7 +43,7 @@ public class MemberController extends Controller {
     }
 
     public String doCreateMember() {
-        member = memberEJB.createMemberWithAbsenceTask(member);
+        member = memberEJB.create(member);
         memberList = memberEJB.findMembers();
 
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));

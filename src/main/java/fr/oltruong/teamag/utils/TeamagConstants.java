@@ -10,4 +10,6 @@ public interface TeamagConstants {
     String USER = "USER_LOGIN";
 
     String MONTH_YEAR_FORMAT = "MMMMM yyyy";
+
+    String DEFAULT_PASSWORD="";
 }

@@ -6,8 +6,10 @@ import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -31,6 +33,9 @@ public class MemberServiceTest extends AbstractServiceTest {
 
     private MemberService memberService;
 
+    @Mock
+    private WorkLoadService mockWorkLoadService;
+
     private List<Member> testMemberList;
 
     @Before
@@ -40,6 +45,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
         buildMemberList();
         when(getMockQuery().getResultList()).thenReturn(testMemberList);
+        TestUtils.setPrivateAttribute(memberService, mockWorkLoadService, "workLoadService");
 
     }
 
@@ -57,7 +63,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testBuild_empty() {
         when(getMockQuery().getResultList()).thenReturn(null);
-        memberService.build();
+        memberService.buildList();
 
         assertThat(MemberService.getMemberList()).isNotNull().isEmpty();
         assertThat(MemberService.getMemberMap()).isNotNull().isEmpty();
@@ -65,7 +71,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
     @Test
     public void testBuild() {
-        memberService.build();
+        memberService.buildList();
         assertThat(MemberService.getMemberList()).isEqualTo(testMemberList).hasSize(MemberService.getMemberMap().size());
         testMemberList.forEach(member -> assertThat(MemberService.getMemberMap().get(member.getId())).isEqualTo(member));
     }
@@ -159,7 +165,6 @@ public class MemberServiceTest extends AbstractServiceTest {
         Task task = new Task();
         taskList.add(task);
 
-
         testCreateMember(taskList);
         verify(mockEntityManager).persist(refEq(task));
 
@@ -171,7 +176,6 @@ public class MemberServiceTest extends AbstractServiceTest {
         List<Task> taskList = buildEmptyTaskList();
         testCreateMember(taskList);
         verify(mockEntityManager, times(2)).persist(isA(Task.class));
-
     }
 
     private void testCreateMember(List<Task> taskList) {
@@ -182,7 +186,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         when(mockQueryTask.getResultList()).thenReturn(taskList);
 
         Member member = EntityFactory.createMember();
-        Member memberCreated = memberService.createMemberWithAbsenceTask(member);
+        Member memberCreated = memberService.create(member);
 
         assertThat(memberCreated).isEqualTo(member);
         verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
@@ -191,6 +195,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
         verify(mockEntityManager).persist(eq(member));
+        verify(mockWorkLoadService).createFromMember(eq(member));
     }
 
 

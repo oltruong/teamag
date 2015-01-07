@@ -60,11 +60,20 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindAllAbsences() {
-
         List<Absence> allAbsenceList = absenceService.findAllAbsences();
         assertThat(allAbsenceList).isEqualTo(absenceList);
         checkCreateNameQuery("findAllAbsences");
+    }
 
+    @Test
+    public void testFind() {
+        Absence absence = EntityFactory.createAbsence();
+
+        when(mockEntityManager.find(any(), any())).thenReturn(absence);
+        Absence absenceReturned = absenceService.find(randomLong);
+
+        assertThat(absenceReturned).isEqualTo(absence);
+        verify(mockEntityManager).find(eq(Absence.class), eq(randomLong));
     }
 
 
@@ -96,7 +105,6 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
         verify(mockEntityManager).find(eq(Absence.class), eq(absenceId));
         verify(mockEntityManager).remove(eq(absence));
-
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -105,7 +113,39 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testAddAbsence() throws Exception {
+    public void testAddAbsence_noFormat() throws Exception {
+        Absence absence = EntityFactory.createAbsence();
+        testAddAbsence(absence);
+    }
+
+    @Test
+    public void testAddAbsence_formatBegin() throws Exception {
+
+        Absence absence = EntityFactory.createAbsence();
+        absence.setBeginDate(null);
+        absence.setBeginType(null);
+        testAddAbsence(absence);
+        checkDate(absence);
+    }
+
+    private void checkDate(Absence absence) {
+        assertThat(absence.getBeginDate()).isNotNull().isEqualTo(absence.getEndDate());
+        assertThat(absence.getBeginType()).isNotNull().isEqualTo(absence.getEndType());
+    }
+
+    @Test
+    public void testAddAbsence_formatEnd() throws Exception {
+
+        Absence absence = EntityFactory.createAbsence();
+        absence.setBeginType(Absence.ALL_DAY);
+        absence.setEndDate(null);
+        absence.setEndType(null);
+        testAddAbsence(absence);
+        checkDate(absence);
+    }
+
+
+    private void testAddAbsence(Absence absence) throws Exception {
 
         MemberService memberService = new MemberService();
 
@@ -114,11 +154,11 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
         TestUtils.setPrivateAttribute(memberService, memberMap, "memberMap");
 
-        Absence absence = EntityFactory.createAbsence();
         when(getMockQuery().getResultList()).thenReturn(Lists.newArrayList());
         absenceService.addAbsence(absence, randomLong);
         verify(mockEntityManager).persist(eq(absence));
     }
+
 
     @Test
     public void testFindAbsencesByMemberId() {

@@ -24,6 +24,7 @@ public class AbsenceDayService extends AbstractService {
 
     }
 
+
     @SuppressWarnings("unchecked")
     public void remove(Long absenceId) {
 
@@ -63,6 +64,5 @@ public class AbsenceDayService extends AbstractService {
                 workService.removeWorkAbsence(absenceDay);
             });
         }
-
     }
 }

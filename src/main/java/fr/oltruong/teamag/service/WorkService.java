@@ -267,10 +267,8 @@ public class WorkService extends AbstractService {
         if (!weekCommentList.isEmpty()) {
             result = weekCommentList.get(0);
         }
-
         return result;
     }
-
 
     public WeekComment createWeekComment(WeekComment weekComment) {
         persist(weekComment);
@@ -317,11 +315,7 @@ public class WorkService extends AbstractService {
                 tasksNotEmpty.add(work.getTask());
             }
         }
-
-
         workList.removeIf(work -> !tasksNotEmpty.contains(work.getTask()));
-
-
         return workList;
     }
 

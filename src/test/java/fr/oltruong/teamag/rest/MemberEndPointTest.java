@@ -101,7 +101,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         Response response = memberEndPoint.createMember(member);
 
         checkResponseCreated(response);
-        verify(mockMemberService).createMemberWithAbsenceTask(eq(member));
+        verify(mockMemberService).create(eq(member));
     }
 
     @Test

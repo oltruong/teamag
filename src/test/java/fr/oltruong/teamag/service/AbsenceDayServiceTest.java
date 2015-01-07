@@ -38,11 +38,6 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindAll() throws Exception {
-        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-
-        when(getMockQuery().getResultList()).thenReturn(absenceDayList);
-
-
         List<AbsenceDay> absenceDayListReturned = absenceDayService.findAll();
 
         Assertions.assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
@@ -116,4 +111,24 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
         verify(mockQuery).setParameter(eq("fMemberId"), eq(randomLong));
         verify(mockQuery).setParameter(eq("fMonth"), eq(randomInteger));
     }
+
+    @Test
+    public void testDeleteAll_null() {
+        when(mockQuery.getResultList()).thenReturn(null);
+
+        absenceDayService.deleteAll();
+
+        verify(mockEntityManager, never()).remove(any());
+        verify(mockWorkService, never()).removeWorkAbsence(any());
+    }
+
+    @Test
+    public void testDeleteAll() {
+        absenceDayService.deleteAll();
+        absenceDayList.forEach(absenceDay -> {
+            verify(mockEntityManager).remove(eq(absenceDay));
+            verify(mockWorkService).removeWorkAbsence(eq(absenceDay));
+        });
+    }
+
 }

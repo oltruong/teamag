@@ -3,9 +3,8 @@ package fr.oltruong.teamag.service;
 import com.google.common.base.Strings;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.BusinessCase;
-import fr.oltruong.teamag.model.Member;
-import fr.oltruong.teamag.model.WorkLoad;
 
+import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -14,34 +13,28 @@ import java.util.List;
  */
 public class BusinessCaseService extends AbstractService {
 
+    @Inject
+    private WorkLoadService workLoadService;
+
     @SuppressWarnings("unchecked")
     public List<BusinessCase> findAll() {
         Query query = createNamedQuery("findAllBC");
         return query.getResultList();
     }
 
-    public BusinessCase create(BusinessCase bc) throws ExistingDataException {
+    public BusinessCase create(BusinessCase businessCase) throws ExistingDataException {
 
-        if (!Strings.isNullOrEmpty(bc.getIdentifier())) {
+        if (!Strings.isNullOrEmpty(businessCase.getIdentifier())) {
             Query query = createNamedQuery("findBCByNumber");
-            query.setParameter("fidentifier", bc.getIdentifier());
+            query.setParameter("fidentifier", businessCase.getIdentifier());
             if (!query.getResultList().isEmpty()) {
                 throw new ExistingDataException();
             }
         }
-        persist(bc);
+        persist(businessCase);
+        workLoadService.createFromBusinessCase(businessCase);
 
-
-        //Create WorkLoad
-        List<Member> memberList = MemberService.getMemberList();
-        if (memberList != null) {
-            for (Member member : memberList) {
-                WorkLoad workLoad = new WorkLoad(bc, member);
-                persist(workLoad);
-            }
-        }
-
-        return bc;
+        return businessCase;
     }
 
 

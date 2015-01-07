@@ -29,7 +29,7 @@ public class WorkServiceIT extends AbstractServiceIT {
         member.setEmail("dyummy@email.com");
 
 
-        member = memberEJB.createMemberWithAbsenceTask(member);
+        member = memberEJB.create(member);
         assertThat(member.getId()).isNotNull();
 
         Task task = new Task();

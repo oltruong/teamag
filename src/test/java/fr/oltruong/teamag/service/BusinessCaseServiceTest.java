@@ -1,21 +1,19 @@
 package fr.oltruong.teamag.service;
 
 import fr.oltruong.teamag.exception.ExistingDataException;
-import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.Member;
-import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -29,12 +27,15 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
 
     private BusinessCaseService businessCaseService;
 
+    @Mock
+    private WorkLoadService mockWorkLoadService;
+
 
     @Before
     public void prepare() {
         businessCaseService = new BusinessCaseService();
         prepareService(businessCaseService);
-
+        TestUtils.setPrivateAttribute(businessCaseService, mockWorkLoadService, "workLoadService");
 
     }
 
@@ -68,8 +69,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
         verify(getMockQuery()).setParameter(eq("fidentifier"), isA(String.class));
 
         verify(mockEntityManager).persist(eq(businessCase));
-
-        verify(mockEntityManager).persist(any(WorkLoad.class));
+        verify(mockWorkLoadService).createFromBusinessCase(eq(businessCase));
 
 
     }
@@ -96,8 +96,6 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
         verify(getMockQuery(), never()).setParameter(eq("fidentifier"), isA(String.class));
         verify(mockEntityManager).persist(eq(businessCase));
     }
-
-
 
 
     @Test

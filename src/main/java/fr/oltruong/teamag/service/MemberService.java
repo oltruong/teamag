@@ -6,12 +6,14 @@ import fr.oltruong.teamag.exception.UserNotFoundException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.utils.TeamagConstants;
 import fr.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +22,12 @@ import java.util.Map;
 @Startup
 public class MemberService extends AbstractService {
 
-
     private static List<Member> memberList;
     private static Map<Long, Member> memberMap;
+
+
+    @Inject
+    private WorkLoadService workLoadService;
 
     public static Map<Long, Member> getMemberMap() {
         return memberMap;
@@ -34,9 +39,8 @@ public class MemberService extends AbstractService {
 
 
     @PostConstruct
-    public void build() {
+    public void buildList() {
         memberList = findMembers();
-
         if (memberList != null) {
             memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
             memberList.forEach(member -> memberMap.put(member.getId(), member));
@@ -44,7 +48,6 @@ public class MemberService extends AbstractService {
             memberList = Lists.newArrayListWithExpectedSize(0);
             memberMap = Maps.newHashMapWithExpectedSize(0);
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -85,14 +88,28 @@ public class MemberService extends AbstractService {
     }
 
     @SuppressWarnings("unchecked")
-    public Member createMemberWithAbsenceTask(Member member) {
+    public Member create(Member member) {
 
-        // Adding default task
+        member.setPassword(getDefaultPasswordHashed());
+        member.setEstimatedWorkDays(0d);
+        persist(member);
+
+        Task absenceTask = getOrCreateAbsenceTask();
+        absenceTask.addMember(member);
+        persist(absenceTask);
+
+        workLoadService.createFromMember(member);
+
+        buildList();
+        return member;
+    }
+
+    private Task getOrCreateAbsenceTask() {
         Query query = createNamedQuery("findTaskByName");
         query.setParameter("fname", "Absence");
         query.setParameter("fproject", "");
 
-        Task task = null;
+        Task task;
         List<Task> tasklist = query.getResultList();
 
         if (!CollectionUtils.isEmpty(tasklist)) {
@@ -104,20 +121,12 @@ public class MemberService extends AbstractService {
             persist(newTask);
             task = newTask;
         }
-
-        member.setPassword(TeamagUtils.hashPassword(""));
-        member.setEstimatedWorkDays(0d);
-        persist(member);
-
-        task.addMember(member);
-        persist(task);
-        build();
-        return member;
+        return task;
     }
 
     public void updateMember(Member member) {
         merge(member);
-        build();
+        buildList();
     }
 
 
@@ -137,12 +146,16 @@ public class MemberService extends AbstractService {
 
         Member adminMember = new Member();
         adminMember.setName(defaultValue);
-        adminMember.setPassword(TeamagUtils.hashPassword(defaultValue));
+        adminMember.setPassword(getDefaultPasswordHashed());
         adminMember.setCompany("ToBeDefined");
         adminMember.setEmail("tobedefined@email.com");
         adminMember.setMemberType(MemberType.ADMINISTRATOR);
         adminMember.setEstimatedWorkDays(Double.valueOf(0d));
         return adminMember;
+    }
+
+    private String getDefaultPasswordHashed() {
+        return TeamagUtils.hashPassword(TeamagConstants.DEFAULT_PASSWORD);
     }
 
 }

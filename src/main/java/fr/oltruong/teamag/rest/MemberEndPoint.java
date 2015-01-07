@@ -77,7 +77,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     @POST
     @AdminChecked
     public Response createMember(Member member) {
-        memberService.createMemberWithAbsenceTask(member);
+        memberService.create(member);
         return buildResponseCreated();
     }
 
