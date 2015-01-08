@@ -27,12 +27,14 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     private Task task;
 
+
     @Before
     public void init() {
         super.setup();
         taskService = new TaskService();
         prepareService(taskService);
         task = EntityFactory.createTask();
+
     }
 
     @Test
@@ -51,10 +53,8 @@ public class TaskServiceTest extends AbstractServiceTest {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         when(getMockQuery().getResultList()).thenReturn(taskList);
 
-        List<Task> taskListFound = supplier.get();
-
+        supplier.get();
         verify(mockEntityManager).createNamedQuery(eq(namedQuery));
-
     }
 
     @Test

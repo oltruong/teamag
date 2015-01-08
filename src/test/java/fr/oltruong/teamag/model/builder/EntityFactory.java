@@ -43,6 +43,11 @@ public class EntityFactory {
         return Long.valueOf(new Random().nextLong());
     }
 
+    public static Double createRandomDouble() {
+        return Double.valueOf(new Random().nextDouble());
+    }
+
+
     public static Integer createRandomInteger() {
         return Integer.valueOf(new Random().nextInt());
     }

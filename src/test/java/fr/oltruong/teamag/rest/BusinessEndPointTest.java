@@ -10,7 +10,6 @@ import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -36,7 +35,6 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     public void prepare() {
         super.setup();
         businessEndPoint = new BusinessEndPoint();
-
         TestUtils.setPrivateAttribute(businessEndPoint, mockBusinessCaseService, "businessCaseService");
         TestUtils.setPrivateAttribute(businessEndPoint, mockActivityService, "activityService");
 
@@ -45,9 +43,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetBC() throws Exception {
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
-
         when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
-
         Response response = businessEndPoint.getBC();
 
         checkResponseOK(response);
@@ -60,11 +56,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testGetBC_byId() throws Exception {
-
-
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-
-
         when(mockBusinessCaseService.find(eq(randomId))).thenReturn(businessCase);
 
         Response response = businessEndPoint.getBC(randomId);
@@ -80,9 +72,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetActivities() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
-
         when(mockActivityService.findActivities()).thenReturn(activityList);
-
         Response response = businessEndPoint.getActivities();
 
         checkResponseOK(response);
@@ -98,8 +88,6 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     public void testGetActivity() throws Exception {
 
         Activity activity = EntityFactory.createActivity();
-
-
         when(mockActivityService.findActivity(eq(randomId))).thenReturn(activity);
 
         Response response = businessEndPoint.getActivity(randomId);
@@ -138,7 +126,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testUpdateActivity() throws Exception {
 
-        Activity activity = Mockito.spy(EntityFactory.createActivity());
+        Activity activity = EntityFactory.createActivity();
         assertThat(activity.getId()).isNull();
 
         Response response = businessEndPoint.updateActivity(randomId, activity);
@@ -183,7 +171,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testUpdateBC() throws Exception {
-        BusinessCase businessCase = Mockito.spy(EntityFactory.createBusinessCase());
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
         assertThat(businessCase.getId()).isNull();
 
         Response response = businessEndPoint.updateBC(randomId, businessCase);

@@ -8,7 +8,6 @@ import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -27,12 +26,14 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
     MemberEndPoint memberEndPoint;
 
+    Member member;
+
 
     @Before
     public void prepare() {
         super.setup();
         memberEndPoint = new MemberEndPoint();
-
+        member = EntityFactory.createMember();
         TestUtils.setPrivateAttribute(memberEndPoint, mockMemberService, "memberService");
 
     }
@@ -73,9 +74,6 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
 
     private void testGetMemberById(Supplier<Response> supplier) {
-
-        Member member = EntityFactory.createMember();
-
         when(mockMemberService.findMember(any())).thenReturn(member);
 
         Response response = supplier.get();
@@ -97,7 +95,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testCreateMember() {
-        Member member = EntityFactory.createMember();
+
         Response response = memberEndPoint.createMember(member);
 
         checkResponseCreated(response);
@@ -107,8 +105,6 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     @Test
     public void testUpdateAnotherMember() {
 
-
-        Member member = Mockito.spy(EntityFactory.createMember());
 
         assertThat(member.getId()).isNull();
 
@@ -123,10 +119,6 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testUpdateCurrentMember() {
-
-
-        Member member = Mockito.spy(EntityFactory.createMember());
-
         assertThat(member.getId()).isNull();
 
         Response response = memberEndPoint.updateCurrentMember(randomId, member);
@@ -141,8 +133,6 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     @Test
     public void testUpdateCurrentMember_newPassword() {
 
-
-        Member member = Mockito.spy(EntityFactory.createMember());
         member.setNewPassword("newPassword");
 
         assertThat(member.getId()).isNull();
