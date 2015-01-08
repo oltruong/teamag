@@ -24,7 +24,7 @@ public class WorkLoadService extends AbstractService {
             workLoadList = createWorkLoads();
         } else {
             @SuppressWarnings("unchecked")
-            List<BusinessCase> businessCaseList = getNamedQueryList("findAllBC");
+            List<BusinessCase> businessCaseList = getBusinessCaseList();
 
             List<Member> memberList = MemberService.getMemberList();
             if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
@@ -50,6 +50,10 @@ public class WorkLoadService extends AbstractService {
         return workLoadList;
     }
 
+    private List<BusinessCase> getBusinessCaseList() {
+        return getNamedQueryList("findAllBC");
+    }
+
     private boolean noWorkLoadList(List<WorkLoad> workLoadList) {
         return workLoadList == null || workLoadList.isEmpty();
     }
@@ -58,7 +62,7 @@ public class WorkLoadService extends AbstractService {
         List<WorkLoad> workLoadList;
         getLogger().info("Creation of workLoad");
         @SuppressWarnings("unchecked")
-        List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
+        List<BusinessCase> businessCaseList = getBusinessCaseList();
         List<Member> memberList = MemberService.getMemberList();
 
         workLoadList = buildAndSaveWorkLoadList(businessCaseList, memberList);
@@ -119,7 +123,7 @@ public class WorkLoadService extends AbstractService {
     }
 
     public void createFromMember(Member member) {
-        List<BusinessCase> businessCaseList = createNamedQuery("findAllBC").getResultList();
+        List<BusinessCase> businessCaseList = getBusinessCaseList();
         if (businessCaseList != null) {
             businessCaseList.forEach(bc -> createWorkLoad(bc, member));
         }
