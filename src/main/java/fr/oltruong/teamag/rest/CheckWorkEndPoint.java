@@ -9,6 +9,7 @@ import fr.oltruong.teamag.interfaces.SupervisorChecked;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
+import fr.oltruong.teamag.service.WeekCommentService;
 import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.WorkWebBean;
@@ -34,13 +35,16 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
     @Inject
     private WorkService workService;
 
+    @Inject
+    private WeekCommentService weekCommentService;
+
 
     @GET
     @Path("/weekComment/{memberId}/{weekNumber}")
     public Response getWeekComment(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber) {
 
         weekNumber = parseWeekNumber(weekNumber);
-        WeekComment weekComment = workService.findWeekComment(memberId, weekNumber, 2014);
+        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, 2014);
         if (weekComment == null) {
             weekComment = new WeekComment();
             weekComment.setWeekYear(weekNumber);

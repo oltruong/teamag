@@ -2,13 +2,14 @@ package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.service.MemberService;
-import fr.oltruong.teamag.service.WorkService;
+import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
-import fr.oltruong.teamag.interfaces.UserLogin;
+import fr.oltruong.teamag.service.MemberService;
+import fr.oltruong.teamag.service.WeekCommentService;
+import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
 import fr.oltruong.teamag.webbean.RealizedFormWebBean;
 import fr.oltruong.teamag.webbean.TaskWeekBean;
@@ -39,7 +40,10 @@ public class CheckWorkController extends Controller {
     private RealizedFormWebBean realizedBean;
 
     @Inject
-    private WorkService workEJB;
+    private WorkService workService;
+
+    @Inject
+    private WeekCommentService weekCommentService;
 
     @Inject
     private MemberService memberEJB;
@@ -72,7 +76,7 @@ public class CheckWorkController extends Controller {
 
         DateTime firstDayOfMonth = realizedBean.getDayCursor().withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workEJB.findWorksNotNull(memberToCheck, firstDayOfMonth);
+        works = workService.findWorksNotNull(memberToCheck, firstDayOfMonth);
 
         initTaskWeek();
         return VIEWNAME;
@@ -92,7 +96,7 @@ public class CheckWorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workEJB.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = weekCommentService.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (works != null) {
             Integer weekNumber = realizedBean.getWeekNumber();

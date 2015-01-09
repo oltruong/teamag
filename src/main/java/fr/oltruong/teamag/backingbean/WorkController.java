@@ -13,6 +13,7 @@ import fr.oltruong.teamag.service.AbsenceDayService;
 import fr.oltruong.teamag.service.EmailService;
 import fr.oltruong.teamag.service.MailBean;
 import fr.oltruong.teamag.service.TaskService;
+import fr.oltruong.teamag.service.WeekCommentService;
 import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.webbean.ColumnDayBean;
@@ -48,6 +49,9 @@ public class WorkController extends Controller {
     private RealizedFormWebBean realizedBean;
     @Inject
     private WorkService workService;
+
+    @Inject
+    private WeekCommentService weekCommentService;
     @Inject
     private TaskService taskService;
 
@@ -193,13 +197,13 @@ public class WorkController extends Controller {
     private void updateComment() {
         if (Strings.isNullOrEmpty(weekComment.getComment())) {
             if (weekComment.getId() != null) {
-                workService.removeWeekComment(weekComment);
+                weekCommentService.removeWeekComment(weekComment);
             }
         } else {
             if (weekComment.getId() != null) {
-                workService.updateWeekComment(weekComment);
+                weekCommentService.update(weekComment);
             } else {
-                workService.createWeekComment(weekComment);
+                weekCommentService.create(weekComment);
             }
 
             MailBean email = buildEmailComment(weekComment);
@@ -271,7 +275,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = workService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());

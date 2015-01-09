@@ -3,6 +3,7 @@ package fr.oltruong.teamag.rest;
 import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.service.WeekCommentService;
 import fr.oltruong.teamag.service.WorkService;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.utils.TestUtils;
@@ -26,6 +27,9 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
     @Mock
     private WorkService mockWorkService;
 
+    @Mock
+    private WeekCommentService mockWeekCommentService;
+
     private CheckWorkEndPoint checkWorkEndPoint;
 
     private int currentWeekNumber;
@@ -37,6 +41,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
         checkWorkEndPoint = new CheckWorkEndPoint();
 
         TestUtils.setPrivateAttribute(checkWorkEndPoint, mockWorkService, "workService");
+        TestUtils.setPrivateAttribute(checkWorkEndPoint, mockWeekCommentService, "weekCommentService");
         currentWeekNumber = CalendarUtils.getCurrentWeekNumber();
     }
 
@@ -59,7 +64,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
         int year = 2014;
 
         WeekComment weekComment = EntityFactory.createWeekComment();
-        when(mockWorkService.findWeekComment(eq(randomId), eq(weekNumber), eq(year))).thenReturn(weekComment);
+        when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(year))).thenReturn(weekComment);
 
         Response response = checkWorkEndPoint.getWeekComment(randomId, weekArgument);
 
@@ -68,7 +73,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
         WeekComment weekCommentReturned = (WeekComment) response.getEntity();
 
         assertThat(weekCommentReturned).isEqualTo(weekComment);
-        verify(mockWorkService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
+        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
     }
 
 
@@ -89,7 +94,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
         assertThat(weekCommentReturned.getWeekYear()).isEqualTo(weekNumber);
         assertThat(weekCommentReturned.getComment()).isNullOrEmpty();
 
-        verify(mockWorkService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
+        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
     }
 
 

@@ -48,6 +48,9 @@ public abstract class AbstractServiceTest {
         verify(mockEntityManager).createNamedQuery(eq(query));
     }
 
+    protected void checkParameter(String parameter, Object value) {
+        verify(mockQuery).setParameter(eq(parameter), eq(value));
+    }
 
     protected Logger getMockLogger() {
         return mockLogger;

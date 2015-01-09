@@ -7,7 +7,6 @@ import com.google.common.collect.Multimap;
 import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
-import fr.oltruong.teamag.model.WeekComment;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -252,36 +251,6 @@ public class WorkService extends AbstractService {
 
         return query.getResultList();
 
-    }
-
-    public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
-
-        WeekComment result = null;
-        Query query = createNamedQuery("findWeekComment");
-        query.setParameter("fmemberId", memberId);
-        query.setParameter("fweekYear", weekYear);
-        query.setParameter("fyear", year);
-
-        @SuppressWarnings("unchecked")
-        List<WeekComment> weekCommentList = query.getResultList();
-        if (!weekCommentList.isEmpty()) {
-            result = weekCommentList.get(0);
-        }
-        return result;
-    }
-
-    public WeekComment createWeekComment(WeekComment weekComment) {
-        persist(weekComment);
-        return weekComment;
-    }
-
-    public void updateWeekComment(WeekComment weekComment) {
-        merge(weekComment);
-    }
-
-    public void removeWeekComment(WeekComment weekComment) {
-        WeekComment weekCommentDb = find(WeekComment.class, weekComment.getId());
-        remove(weekCommentDb);
     }
 
 
