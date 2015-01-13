@@ -17,10 +17,9 @@ import javax.persistence.Transient;
 import java.util.List;
 
 @Table(name = "TM_TASK")
-@NamedQueries({@NamedQuery(name = "findAllTasks", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
+@NamedQueries({@NamedQuery(name = "Task.FIND_ALL", query = "SELECT t from Task t order by t.name, t.project"), @NamedQuery(name = "findTaskByProject", query = "SELECT t from Task t where t.project=:fproject"),
         @NamedQuery(name = "findAllTasksWithActivity", query = "SELECT t from Task t where t.activity is not null order by t.name, t.project"),
-        @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)")})
-
+        @NamedQuery(name = "findTaskByName", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)"), @NamedQuery(name = "Task.FIND_NONTYPE", query = "SELECT t from Task t JOIN t.members m WHERE m NOT IN (select m from Member where m.memberType=:memberType)"), @NamedQuery(name = "Task.FIND_MEMBER", query = "SELECT t from Task t JOIN t.members m WHERE m.id=:memberId")})
 @Entity
 public class Task {
     @Id
@@ -138,6 +137,11 @@ public class Task {
         }
         Task member0 = (Task) otherTask;
         return this.id.equals(member0.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 

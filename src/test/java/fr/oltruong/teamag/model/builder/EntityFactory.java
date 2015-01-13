@@ -55,7 +55,7 @@ public class EntityFactory {
     public static Member createMember() {
         Member member = new Member();
 
-        member.setName("Carot" + DateTime.now().getMillis());
+        member.setName("Carot" + DateTime.now().getMillis() + String.valueOf(new Random().nextDouble()));
         member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");

@@ -34,12 +34,11 @@ public class TaskServiceTest extends AbstractServiceTest {
         taskService = new TaskService();
         prepareService(taskService);
         task = EntityFactory.createTask();
-
     }
 
     @Test
     public void testFindAllTasks() {
-        testFindTasks("findAllTasks", taskService::findAllTasks);
+        testFindTasks("Task.FIND_ALL", taskService::findAllTasks);
 
     }
 
@@ -52,27 +51,26 @@ public class TaskServiceTest extends AbstractServiceTest {
     private void testFindTasks(String namedQuery, Supplier<List<Task>> supplier) {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         when(getMockQuery().getResultList()).thenReturn(taskList);
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
-        supplier.get();
-        verify(mockEntityManager).createNamedQuery(eq(namedQuery));
+        List<Task> taskListReturned = supplier.get();
+
+        assertThat(taskList).isEqualTo(taskListReturned);
+        verify(mockEntityManager).createNamedQuery(eq(namedQuery), eq(Task.class));
     }
 
     @Test
     public void testFindAllNonAdminTasks() {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
-        for (int i = 0; i < 2; i++) {
-            taskList.get(i).getMembers().get(0).setMemberType(MemberType.ADMINISTRATOR);
-        }
-
-        when(getMockQuery().getResultList()).thenReturn(taskList);
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
         List<Task> taskListFound = taskService.findAllNonAdminTasks();
 
 
-        assertThat(taskListFound).hasSize(taskList.size() - 2);
+        assertThat(taskListFound).isEqualTo(taskList);
 
-        taskListFound.forEach(task -> assertThat(task.isAdmin()).isFalse());
-        verify(mockEntityManager).createNamedQuery(eq("findAllTasks"));
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_NONTYPE"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("memberType"), eq(MemberType.ADMINISTRATOR));
     }
 
     @Test
@@ -145,9 +143,9 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.setId(randomLong);
         taskService.createTask(task);
         verify(mockEntityManager).persist(eq(task));
-        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
-        verify(mockQuery).setParameter(eq("fname"), eq(task.getName()));
-        verify(mockQuery).setParameter(eq("fproject"), eq(task.getProject()));
+        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
+        verify(mockTypedQuery).setParameter(eq("fproject"), eq(task.getProject()));
 
     }
 
@@ -155,13 +153,9 @@ public class TaskServiceTest extends AbstractServiceTest {
     public void testCreateTask_existing() throws ExistingDataException {
         task.setId(randomLong);
 
-        when(mockQuery.getResultList()).thenReturn(Lists.newArrayList(task));
+        when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList(task));
         taskService.createTask(task);
 
-        verify(mockEntityManager, never()).persist(eq(task));
-        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
-        verify(mockQuery).setParameter(eq("fname"), eq(task.getName()));
-        verify(mockQuery).setParameter(eq("fproject"), eq(task.getProject()));
 
     }
 

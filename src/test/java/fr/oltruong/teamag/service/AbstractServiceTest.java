@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
@@ -28,6 +31,9 @@ public abstract class AbstractServiceTest {
     @Mock
     protected Query mockQuery;
 
+    @Mock
+    protected TypedQuery mockTypedQuery;
+
     protected Long randomLong;
 
     @Before
@@ -35,6 +41,8 @@ public abstract class AbstractServiceTest {
         randomLong = EntityFactory.createRandomLong();
         MockitoAnnotations.initMocks(this);
         when(mockEntityManager.createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
+        when(mockEntityManager.createNamedQuery(isA(String.class), any())).thenReturn(mockTypedQuery);
+        when(mockTypedQuery.setParameter(anyString(), any())).thenReturn(mockTypedQuery);
 
     }
 

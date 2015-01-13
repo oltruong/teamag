@@ -5,12 +5,13 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public abstract class AbstractService {
 
     @Inject
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     @Inject
     protected Logger logger;
@@ -22,6 +23,11 @@ public abstract class AbstractService {
     protected Query createNamedQuery(String name) {
         return entityManager.createNamedQuery(name);
     }
+
+    protected <T> TypedQuery<T> createNamedQuery(String name, Class<T> className) {
+        return entityManager.createNamedQuery(name, className);
+    }
+
 
     protected List getNamedQueryList(String name) {
         return entityManager.createNamedQuery(name).getResultList();

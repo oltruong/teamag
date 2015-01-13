@@ -4,16 +4,18 @@ import com.google.common.collect.Lists;
 import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
+import fr.oltruong.teamag.model.enumeration.MemberType;
 import fr.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * @author oltruong
+ * @author Olivier Truong
  */
 public class TaskService extends AbstractService {
 
@@ -21,28 +23,18 @@ public class TaskService extends AbstractService {
     @Inject
     private WorkService workService;
 
-    @SuppressWarnings("unchecked")
+
     public List<Task> findAllTasks() {
-        return createNamedQuery("findAllTasks").getResultList();
+        return createNamedQuery("Task.FIND_ALL", Task.class).getResultList();
     }
 
     public List<Task> findAllNonAdminTasks() {
-        List<Task> taskList = findAllTasks();
-
-        List<Task> nonAdminTaskList = Lists.newArrayListWithCapacity(taskList.size());
-
-        taskList.forEach(task -> {
-            if (task.isNonAdmin()) {
-                nonAdminTaskList.add(task);
-            }
-        });
-
-        return nonAdminTaskList;
+        return createNamedQuery("Task.FIND_NONTYPE", Task.class).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
     }
 
 
     public List<Task> findTaskWithActivity() {
-        return getNamedQueryList("findAllTasksWithActivity");
+        return createNamedQuery("findAllTasksWithActivity", Task.class).getResultList();
     }
 
     public Task findTask(Long taskId) {
@@ -65,14 +57,7 @@ public class TaskService extends AbstractService {
     }
 
     public void createTask(Task task) throws ExistingDataException {
-        Query query = createNamedQuery("findTaskByName");
-        query.setParameter("fname", task.getName());
-        query.setParameter("fproject", task.getProject());
-
-
-        @SuppressWarnings("unchecked")
-        List<Task> allTaskList = query.getResultList();
-
+        List<Task> allTaskList = createNamedQuery("findTaskByName", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
         if (CollectionUtils.isNotEmpty(allTaskList)) {
             throw new ExistingDataException();
         } else {
@@ -80,6 +65,7 @@ public class TaskService extends AbstractService {
         }
     }
 
+    @Transactional
     public void createTask(DateTime month, Member member, Task task) throws ExistingDataException {
         Query query = createNamedQuery("findTaskByName");
         query.setParameter("fname", task.getName());
@@ -124,15 +110,7 @@ public class TaskService extends AbstractService {
     }
 
     public List<Task> findTasksForMember(Member member) {
-        List<Task> allTaskList = findAllTasks();
-
-        List<Task> taskList = Lists.newArrayList();
-
-        for (Task task : allTaskList) {
-            if (task.getMembers() != null && !task.getMembers().isEmpty() && task.getMembers().contains(member)) {
-                taskList.add(task);
-            }
-        }
+        List<Task> taskList = entityManager.createNamedQuery("Task.FIND_MEMBER", Task.class).setParameter("memberId", member.getId()).getResultList();
         if (CollectionUtils.isEmpty(taskList)) {
             addAbsenceTask(member, taskList);
         }

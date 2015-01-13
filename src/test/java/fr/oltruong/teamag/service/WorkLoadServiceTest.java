@@ -3,26 +3,22 @@ package fr.oltruong.teamag.service;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
-import fr.oltruong.teamag.model.Absence;
-import fr.oltruong.teamag.model.AbsenceDay;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.WorkLoad;
 import fr.oltruong.teamag.model.builder.EntityFactory;
-import fr.oltruong.teamag.transformer.AbsenceDayTransformer;
 import fr.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.mockito.ArgumentCaptor;
 
 import javax.persistence.Query;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -37,16 +33,12 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
     private WorkLoadService workLoadService;
 
-    @Mock
-    private WorkService mockWorkService;
-
 
     @Before
     public void prepare() {
         super.setup();
         workLoadService = new WorkLoadService();
         prepareService(workLoadService);
-        TestUtils.setPrivateAttribute(workLoadService, mockWorkService, "workService");
     }
 
     @Test
@@ -194,5 +186,38 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
             assertThat(workLoad.getRealized()).isEqualTo(newRealized);
             verify(mockEntityManager).merge(eq(workLoad));
         });
+    }
+
+    @Test
+    public void testCreateFromBusinessCase() {
+        List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
+        TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
+
+        BusinessCase businessCase = EntityFactory.createBusinessCase();
+
+        workLoadService.createFromBusinessCase(businessCase);
+
+        ArgumentCaptor<WorkLoad> workLoadArgumentCaptor = ArgumentCaptor.forClass(WorkLoad.class);
+        verify(mockEntityManager, times(memberList.size())).persist(workLoadArgumentCaptor.capture());
+
+        List<WorkLoad> workLoadList = workLoadArgumentCaptor.getAllValues();
+        for (int i = 0; i < memberList.size(); i++) {
+            final WorkLoad workLoad = workLoadList.get(i);
+            assertThat(workLoad.getBusinessCase()).isEqualTo(businessCase);
+            assertThat(workLoad.getMember()).isEqualTo(memberList.get(i));
+        }
+
+    }
+
+    @Test
+    public void testCreateFromBusinessCase_noMember() {
+        TestUtils.setPrivateAttribute(new MemberService(), null, "memberList");
+        workLoadService.createFromBusinessCase(EntityFactory.createBusinessCase());
+        verify(mockEntityManager, never()).persist(any());
+    }
+
+    @Test
+    public void testCreateFromMember(){
+
     }
 }

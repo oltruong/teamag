@@ -64,7 +64,7 @@ public class WorkController extends Controller {
 
     private WeekComment weekComment;
 
-
+    private List<Task> taskList;
     private static final String VIEWNAME = "realized";
 
     public String init() {
@@ -77,7 +77,8 @@ public class WorkController extends Controller {
 
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskService.findTasksForMember(getMember()), absenceDayService.findAbsenceDayList(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
+        taskList = taskService.findTasksForMember(getMember());
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskList, absenceDayService.findAbsenceDayList(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
 
 
         DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
@@ -237,16 +238,15 @@ public class WorkController extends Controller {
     }
 
     public List<String> completeName(String query) {
-//        List<Task> tasks = workService.findTasksByProject(newTask.getProject());
-
         List<Task> tasks = taskService.findAllNonAdminTasks();
+
+        tasks.removeIf(t -> taskList.contains(t));
 
         List<String> results = Lists.newArrayListWithExpectedSize(tasks.size());
         if (!StringUtils.isBlank(query) && query.length() > 1) {
             for (Task task : tasks) {
-
                 // Do not propose task that the member already has
-                if (!task.getMembers().contains(getMember()) && StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {
+                if (StringUtils.containsIgnoreCase(task.getName(), query) && !results.contains(task.getName())) {
                     results.add(task.getName());
                 }
 
