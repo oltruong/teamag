@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
@@ -9,6 +8,7 @@ import fr.oltruong.teamag.service.BusinessCaseService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -62,7 +62,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     public Response createActivity(Activity activity) {
         try {
             activityService.createActivity(activity);
-        } catch (ExistingDataException e) {
+        } catch (EntityExistsException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
         return buildResponseCreated();
@@ -92,7 +92,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     public Response createBC(BusinessCase businessCase) {
         try {
             businessCaseService.create(businessCase);
-        } catch (ExistingDataException e) {
+        } catch (EntityExistsException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
         return buildResponseCreated();

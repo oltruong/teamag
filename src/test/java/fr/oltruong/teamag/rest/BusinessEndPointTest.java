@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.builder.EntityFactory;
@@ -11,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -114,7 +114,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreateActivity_existing() throws Exception {
         Activity activity = EntityFactory.createActivity();
-        when(mockActivityService.createActivity(eq(activity))).thenThrow(new ExistingDataException());
+        when(mockActivityService.createActivity(eq(activity))).thenThrow(new EntityExistsException());
 
         Response response = businessEndPoint.createActivity(activity);
 
@@ -161,7 +161,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreateBC_existing() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        when(mockBusinessCaseService.create(eq(businessCase))).thenThrow(new ExistingDataException());
+        when(mockBusinessCaseService.create(eq(businessCase))).thenThrow(new EntityExistsException());
         Response response = businessEndPoint.createBC(businessCase);
 
         checkResponseNotAcceptable(response);

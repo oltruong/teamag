@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.service;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.builder.EntityFactory;
@@ -9,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +74,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
 
     }
 
-    @Test(expected = ExistingDataException.class)
+    @Test(expected = EntityExistsException.class)
     public void testCreate_existingData() throws Exception {
 
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);

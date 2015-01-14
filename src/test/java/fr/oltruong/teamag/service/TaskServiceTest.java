@@ -1,13 +1,14 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.enumeration.MemberType;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -98,7 +99,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         return task;
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void testDeleteTask_null() {
         taskService.deleteTask(randomLong);
         verify(mockEntityManager).find(eq(Task.class), eq(randomLong));
@@ -139,7 +140,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateTask() throws ExistingDataException {
+    public void testCreateTask() {
         task.setId(randomLong);
         taskService.createTask(task);
         verify(mockEntityManager).persist(eq(task));
@@ -149,8 +150,8 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     }
 
-    @Test(expected = ExistingDataException.class)
-    public void testCreateTask_existing() throws ExistingDataException {
+    @Test(expected = EntityExistsException.class)
+    public void testCreateTask_existing() {
         task.setId(randomLong);
 
         when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList(task));

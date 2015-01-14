@@ -1,10 +1,10 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.base.Strings;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.BusinessCase;
 
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -22,13 +22,13 @@ public class BusinessCaseService extends AbstractService {
         return query.getResultList();
     }
 
-    public BusinessCase create(BusinessCase businessCase) throws ExistingDataException {
+    public BusinessCase create(BusinessCase businessCase) {
 
         if (!Strings.isNullOrEmpty(businessCase.getIdentifier())) {
             Query query = createNamedQuery("findBCByNumber");
             query.setParameter("fidentifier", businessCase.getIdentifier());
             if (!query.getResultList().isEmpty()) {
-                throw new ExistingDataException();
+                throw new EntityExistsException();
             }
         }
         persist(businessCase);

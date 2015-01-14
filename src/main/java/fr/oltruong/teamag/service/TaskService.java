@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.enumeration.MemberType;
@@ -10,7 +9,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class TaskService extends AbstractService {
     public void deleteTask(Long taskId) {
         Task task = findTask(taskId);
         if (task == null) {
-            throw new IllegalArgumentException("Task with id " + taskId + " not found");
+            throw new EntityNotFoundException("Task with id " + taskId + " not found");
         }
         remove(task);
     }
@@ -56,23 +58,23 @@ public class TaskService extends AbstractService {
         merge(taskToUpdate);
     }
 
-    public void createTask(Task task) throws ExistingDataException {
+    public void createTask(Task task) {
         List<Task> allTaskList = createNamedQuery("findTaskByName", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
         if (CollectionUtils.isNotEmpty(allTaskList)) {
-            throw new ExistingDataException();
+            throw new EntityExistsException();
         } else {
             persist(task);
         }
     }
 
     @Transactional
-    public void createTask(DateTime month, Member member, Task task) throws ExistingDataException {
-        Query query = createNamedQuery("findTaskByName");
+    public void createTask(DateTime month, Member member, Task task) {
+        TypedQuery<Task> query = createNamedQuery("findTaskByName", Task.class);
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
 
         Task taskDB = null;
-        @SuppressWarnings("unchecked")
+
         List<Task> allTaskList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(allTaskList)) {
@@ -80,7 +82,7 @@ public class TaskService extends AbstractService {
             Task myTask = allTaskList.get(0);
             if (myTask.getMembers().contains(member)) {
                 getLogger().debug("Already affected to member");
-                throw new ExistingDataException();
+                throw new EntityExistsException();
             } else {
                 getLogger().debug("Affecting to member " + member.getId());
                 myTask.addMember(member);

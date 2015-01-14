@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.service.ActivityService;
@@ -13,6 +12,7 @@ import org.primefaces.event.RowEditEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 /**
@@ -67,7 +67,7 @@ public class BCController extends Controller {
                 this.businessCaseService.create(this.bc);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
-            } catch (ExistingDataException e) {
+            } catch (EntityExistsException e) {
                 getLogger().warn("BusinessCase already exists");
                 getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "existingBC", this.bc.getIdentifier());
             }
@@ -104,7 +104,7 @@ public class BCController extends Controller {
                 this.activityService.createActivity(this.activity);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
-            } catch (ExistingDataException e) {
+            } catch (EntityExistsException e) {
                 this.getLogger().warn("Existing activity");
                 getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "existingActivity");
             }

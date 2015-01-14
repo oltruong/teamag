@@ -1,10 +1,10 @@
 package fr.oltruong.teamag.service;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityExistsException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class ActivityService extends AbstractService {
         return query.getResultList();
     }
 
-    public Activity createActivity(Activity activity) throws ExistingDataException {
+    public Activity createActivity(Activity activity) {
         Query query = createNamedQuery("findActivity");
         query.setParameter("fname", activity.getName());
         query.setParameter("fbc", activity.getBc());
@@ -30,7 +30,7 @@ public class ActivityService extends AbstractService {
         List<Activity> activityList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(activityList)) {
-            throw new ExistingDataException();
+            throw new EntityExistsException();
         } else {
             persist(activity);
         }

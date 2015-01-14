@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.backingbean;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.BusinessCase;
 import fr.oltruong.teamag.model.builder.EntityFactory;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.primefaces.event.RowEditEvent;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -115,7 +115,7 @@ public class BCControllerTest extends ControllerTest {
 
     @Test
     public void testDoCreateBC_existing() throws Exception {
-        when(mockBusinessCaseService.create(isA(BusinessCase.class))).thenThrow(new ExistingDataException());
+        when(mockBusinessCaseService.create(isA(BusinessCase.class))).thenThrow(new EntityExistsException());
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         bcController.setBc(businessCase);
         String view = bcController.doCreateBC();
@@ -156,7 +156,7 @@ public class BCControllerTest extends ControllerTest {
 
     @Test
     public void testDoCreateActivity_existing() throws Exception {
-        when(mockActivityService.createActivity(isA(Activity.class))).thenThrow(new ExistingDataException());
+        when(mockActivityService.createActivity(isA(Activity.class))).thenThrow(new EntityExistsException());
         Activity activity = EntityFactory.createActivity();
         activity.getBc().setId(Long.valueOf(3l));
         bcController.setActivity(activity);

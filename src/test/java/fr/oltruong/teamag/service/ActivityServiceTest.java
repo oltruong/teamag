@@ -1,11 +1,11 @@
 package fr.oltruong.teamag.service;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Activity;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,7 +95,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
     }
 
 
-    @Test(expected = ExistingDataException.class)
+    @Test(expected = EntityExistsException.class)
     public void testCreateActivity_existingData() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(getMockQuery().getResultList()).thenReturn(activityList);

@@ -3,7 +3,6 @@ package fr.oltruong.teamag.backingbean;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.UserLogin;
 import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
@@ -29,6 +28,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +136,7 @@ public class WorkController extends Controller {
                 msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("createdTask"), "");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
 
-            } catch (ExistingDataException e) {
+            } catch (EntityExistsException e) {
                 FacesMessage msg = null;
                 msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("existingTask"), getMessage("noChange"));
                 FacesContext.getCurrentInstance().addMessage(null, msg);

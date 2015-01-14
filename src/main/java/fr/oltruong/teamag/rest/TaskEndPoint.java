@@ -1,7 +1,6 @@
 package fr.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.service.TaskService;
@@ -9,6 +8,8 @@ import fr.oltruong.teamag.webbean.TaskWebBean;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -80,7 +81,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     public Response createTask(Task task) {
         try {
             taskService.createTask(task);
-        } catch (ExistingDataException e) {
+        } catch (EntityExistsException e) {
             return buildResponseNotAcceptable();
         }
         return buildResponseCreated();
@@ -103,7 +104,7 @@ public class TaskEndPoint extends AbstractEndPoint {
         try {
             taskService.deleteTask(taskId);
             response = buildResponseNoContent();
-        } catch (IllegalArgumentException exception) {
+        } catch (EntityNotFoundException exception) {
             response = buildResponseNotFound();
         }
         return response;

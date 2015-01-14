@@ -1,6 +1,5 @@
 package fr.oltruong.teamag.rest;
 
-import fr.oltruong.teamag.exception.ExistingDataException;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.service.TaskService;
@@ -9,8 +8,9 @@ import fr.oltruong.teamag.webbean.TaskWebBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.function.Supplier;
@@ -113,7 +113,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     public void testCreateTask_existing() throws Exception {
 
         task.setId(randomId);
-        doThrow(new ExistingDataException()).when(mockTaskService).createTask(eq(task));
+        doThrow(new EntityExistsException()).when(mockTaskService).createTask(eq(task));
 
         Response response = taskEndPoint.createTask(task);
 
@@ -124,7 +124,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testUpdateTask() throws Exception {
-        Task task = Mockito.spy(EntityFactory.createTask());
+        Task task = EntityFactory.createTask();
         assertThat(task.getId()).isNull();
 
         Response response = taskEndPoint.updateTask(randomId, task);
@@ -143,7 +143,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testDeleteTask_NotFound() throws Exception {
-        doThrow(new IllegalArgumentException()).when(mockTaskService).deleteTask(anyLong());
+        doThrow(new EntityNotFoundException()).when(mockTaskService).deleteTask(anyLong());
         Response response = taskEndPoint.deleteTask(randomId);
         checkResponseNotFound(response);
         verify(mockTaskService).deleteTask(eq(randomId));
