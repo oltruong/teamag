@@ -14,7 +14,6 @@ public class WorkLoadIT extends AbstractEntityIT {
     @Test
     public void testCreation() {
         WorkLoad workLoad = EntityFactory.createWorkLoad();
-
         assertThat(workLoad.getId()).isNull();
 
         persist(workLoad.getBusinessCase());

@@ -20,7 +20,6 @@ import fr.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -61,6 +60,8 @@ public class EntityFactory {
         member.setEmail("dummy@email.com");
         member.setEstimatedWorkDays(0d);
         member.setMemberType(MemberType.BASIC);
+        member.setAbsenceHTMLColor("FFFFFF");
+        member.setActive(Boolean.TRUE);
         return member;
     }
 
@@ -125,6 +126,8 @@ public class EntityFactory {
         DateTime now = DateTime.now();
         WeekComment weekComment = new WeekComment(createMember(), now.getWeekOfWeekyear(), now.getYear());
         weekComment.setComment("Comment" + now.toString());
+        weekComment.setYear(now.getYear());
+        weekComment.setWeekYear(now.getWeekOfWeekyear());
         return weekComment;
     }
 
@@ -140,6 +143,8 @@ public class EntityFactory {
         WorkLoad workLoad = new WorkLoad(createBusinessCase(), createMember());
         workLoad.setEstimated(Double.valueOf(Double.valueOf(12d)));
         workLoad.setRealized(Double.valueOf(10d));
+        workLoad.setBusinessCase(createBusinessCase());
+        workLoad.setMember(createMember());
         return workLoad;
     }
 
@@ -147,11 +152,13 @@ public class EntityFactory {
     public static Task createTask() {
         Task task = new Task();
 
-        task.setName("createTask" + Instant.now().getEpochSecond());
+        task.setName("createTask" + createRandomDouble().toString());
         task.setProject("my project");
 
         task.addMember(createMember());
-
+        task.setComment("Comment" + createRandomDouble().toString());
+        task.setAmount(createRandomDouble());
+        task.setDelegated(Boolean.FALSE);
         return task;
 
     }

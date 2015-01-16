@@ -20,6 +20,10 @@ public class WeekCommentIT extends AbstractEntityIT {
         entityManager.persist(weekComment);
         transaction.commit();
         assertThat(weekComment.getId()).isNotNull();
+
+        WeekComment weekCommentFound = entityManager.find(WeekComment.class, weekComment.getId());
+
+        assertThat(weekCommentFound).isEqualToComparingFieldByField(weekComment);
     }
 
     @Test(expected = PersistenceException.class)
@@ -28,7 +32,5 @@ public class WeekCommentIT extends AbstractEntityIT {
         weekComment.setMember(null);
         assertThat(weekComment.getId()).isNull();
         entityManager.persist(weekComment);
-        transaction.commit();
-
     }
 }

@@ -72,9 +72,6 @@ public class WorkLoad {
         this.realized = realized;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setMember(Member member) {
         this.member = member;

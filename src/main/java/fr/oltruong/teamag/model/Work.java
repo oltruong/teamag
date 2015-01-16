@@ -119,13 +119,6 @@ public class Work {
         return totalEdit;
     }
 
-    public String getTotalEditStr() {
-        Double value = getTotalEdit();
-        if (value.floatValue() == 0f) {
-            return "";
-        }
-        return value.toString();
-    }
 
     public void setTotalEditStr(String totalEditStr) {
         if (!StringUtils.isBlank(totalEditStr)) {

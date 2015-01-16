@@ -105,7 +105,7 @@ public class MemberService extends AbstractService {
     }
 
     private Task getOrCreateAbsenceTask() {
-        Query query = createNamedQuery("findTaskByName");
+        Query query = createNamedQuery("Task.FIND_BY_NAME");
         query.setParameter("fname", "Absence");
         query.setParameter("fproject", "");
 

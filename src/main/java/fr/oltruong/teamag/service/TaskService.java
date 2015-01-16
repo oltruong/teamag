@@ -25,7 +25,6 @@ public class TaskService extends AbstractService {
     @Inject
     private WorkService workService;
 
-
     public List<Task> findAllTasks() {
         return createNamedQuery("Task.FIND_ALL", Task.class).getResultList();
     }
@@ -34,9 +33,8 @@ public class TaskService extends AbstractService {
         return createNamedQuery("Task.FIND_NONTYPE", Task.class).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
     }
 
-
     public List<Task> findTaskWithActivity() {
-        return createNamedQuery("findAllTasksWithActivity", Task.class).getResultList();
+        return createNamedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
     }
 
     public Task findTask(Long taskId) {
@@ -59,7 +57,7 @@ public class TaskService extends AbstractService {
     }
 
     public void createTask(Task task) {
-        List<Task> allTaskList = createNamedQuery("findTaskByName", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
+        List<Task> allTaskList = createNamedQuery("Task.FIND_BY_NAME", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
         if (CollectionUtils.isNotEmpty(allTaskList)) {
             throw new EntityExistsException();
         } else {
@@ -69,7 +67,7 @@ public class TaskService extends AbstractService {
 
     @Transactional
     public void createTask(DateTime month, Member member, Task task) {
-        TypedQuery<Task> query = createNamedQuery("findTaskByName", Task.class);
+        TypedQuery<Task> query = createNamedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
 
@@ -78,20 +76,15 @@ public class TaskService extends AbstractService {
         List<Task> allTaskList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(allTaskList)) {
-            getLogger().debug("Existing task");
             Task myTask = allTaskList.get(0);
             if (myTask.getMembers().contains(member)) {
-                getLogger().debug("Already affected to member");
                 throw new EntityExistsException();
             } else {
-                getLogger().debug("Affecting to member " + member.getId());
                 myTask.addMember(member);
                 merge(myTask);
                 taskDB = myTask;
             }
         } else {
-            getLogger().debug("new task creation");
-
             // Reset task ID
             task.setId(null);
             task.addMember(member);
@@ -102,7 +95,6 @@ public class TaskService extends AbstractService {
 
         flush();
 
-        getLogger().debug("Creation of WORK objects");
         List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
 
         for (DateTime day : workingDayList) {
@@ -116,8 +108,6 @@ public class TaskService extends AbstractService {
         if (CollectionUtils.isEmpty(taskList)) {
             addAbsenceTask(member, taskList);
         }
-
-
         return taskList;
     }
 
@@ -129,30 +119,27 @@ public class TaskService extends AbstractService {
     }
 
     public void removeTask(Task task, Member member, DateTime month) {
+        deleteWorks(task, member, month);
+
+        Task taskDb = find(Task.class, task.getId());
+        Member memberDb = find(Member.class, member.getId());
+        taskDb.getMembers().remove(memberDb);
+
+        if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
+            logger.info("Task has no more Members on it. It will be deleted");
+            remove(taskDb);
+        } else {
+            persist(taskDb);
+        }
+    }
+
+    private void deleteWorks(Task task, Member member, DateTime month) {
         Query query = createNamedQuery("deleteWorksByMemberTaskMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("ftaskId", task.getId());
         query.setParameter("fmonth", month);
 
-        int rowsNumberDeleted = query.executeUpdate();
-
-        getLogger().debug("Works deleted : " + rowsNumberDeleted);
-
-        // Delete of task for user
-
-        Task taskDb = find(Task.class, task.getId());
-
-        Member memberDb = find(Member.class, member.getId());
-
-        taskDb.getMembers().remove(memberDb);
-
-        if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
-            getLogger().info("Task has no more Members on it. It will be deleted");
-            remove(taskDb);
-        } else {
-            getLogger().debug("Task updated");
-            persist(taskDb);
-        }
+        query.executeUpdate();
     }
 
     private boolean taskHasNoWorks(Task taskDb) {

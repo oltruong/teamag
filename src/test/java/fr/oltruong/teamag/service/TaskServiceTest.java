@@ -1,11 +1,17 @@
 package fr.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
+import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.builder.EntityFactory;
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.utils.CalendarUtils;
+import fr.oltruong.teamag.utils.TestUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -28,6 +34,8 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     private Task task;
 
+    @Mock
+    private WorkService mockWorkService;
 
     @Before
     public void init() {
@@ -35,6 +43,8 @@ public class TaskServiceTest extends AbstractServiceTest {
         taskService = new TaskService();
         prepareService(taskService);
         task = EntityFactory.createTask();
+        TestUtils.setPrivateAttribute(taskService, mockWorkService, "workService");
+
     }
 
     @Test
@@ -43,9 +53,10 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     }
 
+
     @Test
     public void testFindAllTasksWithActivity() {
-        testFindTasks("findAllTasksWithActivity", taskService::findTaskWithActivity);
+        testFindTasks("Task.FIND_ALL_WITH_ACTIVITY", taskService::findTaskWithActivity);
 
     }
 
@@ -59,6 +70,38 @@ public class TaskServiceTest extends AbstractServiceTest {
         assertThat(taskList).isEqualTo(taskListReturned);
         verify(mockEntityManager).createNamedQuery(eq(namedQuery), eq(Task.class));
     }
+
+    @Test
+    public void testFindTasksForMember() {
+        List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
+        Member member = EntityFactory.createMember();
+        member.setId(randomLong);
+
+        List<Task> taskListReturned = taskService.findTasksForMember(member);
+
+        assertThat(taskListReturned).isEqualTo(taskList);
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_MEMBER"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("memberId"), eq(randomLong));
+    }
+
+    @Test
+    public void testFindTasksForMember_empty() {
+        Task absenceTask = EntityFactory.createTask();
+        absenceTask.setId(randomLong);
+        when(mockEntityManager.find(eq(Task.class), eq(1L))).thenReturn(absenceTask);
+        Member member = EntityFactory.createMember();
+        member.setId(randomLong);
+
+        List<Task> taskListReturned = taskService.findTasksForMember(member);
+
+        assertThat(taskListReturned).containsExactly(absenceTask);
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_MEMBER"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("memberId"), eq(randomLong));
+        verify(mockEntityManager).find(eq(Task.class), eq(1L));
+
+    }
+
 
     @Test
     public void testFindAllNonAdminTasks() {
@@ -144,7 +187,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.setId(randomLong);
         taskService.createTask(task);
         verify(mockEntityManager).persist(eq(task));
-        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"), eq(Task.class));
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
         verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
         verify(mockTypedQuery).setParameter(eq("fproject"), eq(task.getProject()));
 
@@ -156,7 +199,167 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList(task));
         taskService.createTask(task);
+    }
 
+
+    @Test
+    public void testRemoveTask_anotherMember() {
+        task.setId(randomLong);
+        Member member = EntityFactory.createMember();
+        Long randomId = EntityFactory.createRandomLong();
+
+        member.setId(randomId);
+        task.getMembers().get(0).setId(EntityFactory.createRandomLong());
+        task.getMembers().add(member);
+
+        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        when(mockEntityManager.find(eq(Task.class), any())).thenReturn(task);
+        when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
+
+
+        testRemoveTask(member, randomId, month);
+
+        verify(mockEntityManager).persist(eq(task));
+        assertThat(task.getMembers()).hasSize(1).doesNotContain(member);
+
+
+    }
+
+    @Test
+    public void testRemoveTask_noMember() {
+        testRemoveTask_noMember(1);
+        verify(mockEntityManager).persist(eq(task));
+        assertThat(task.getMembers()).isEmpty();
+
+    }
+
+    @Test
+    public void testRemoveTask_noMember_Empty() {
+        testRemoveTask_noMember(0);
+        verify(mockEntityManager).remove(eq(task));
+
+    }
+
+
+    public void testRemoveTask_noMember(int value) {
+        task.setId(randomLong);
+        Member member = EntityFactory.createMember();
+        Long randomId = EntityFactory.createRandomLong();
+
+        member.setId(randomId);
+        task.getMembers().clear();
+        task.getMembers().add(member);
+
+        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        when(mockEntityManager.find(eq(Task.class), any())).thenReturn(task);
+        when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
+        when(mockQuery.getSingleResult()).thenReturn(Integer.valueOf(value));
+
+
+        testRemoveTask(member, randomId, month);
+        verify(mockEntityManager).createNamedQuery(eq("countWorksTask"));
+        verify(mockQuery).setParameter(eq("fTaskId"), eq(randomLong));
+        verify(mockQuery).executeUpdate();
+
+    }
+
+
+    private void testRemoveTask(Member member, Long randomId, DateTime month) {
+        taskService.removeTask(task, member, month);
+        verify(mockEntityManager).createNamedQuery(eq("deleteWorksByMemberTaskMonth"));
+        verify(mockQuery).setParameter(eq("fmemberId"), eq(randomId));
+        verify(mockQuery).setParameter(eq("ftaskId"), eq(randomLong));
+        verify(mockQuery).setParameter(eq("fmonth"), eq(month));
+        verify(mockQuery).executeUpdate();
+    }
+
+
+    @Test
+    public void testCreateTask_member() {
+        task.setId(randomLong);
+        task.getMembers().clear();
+        Member member = EntityFactory.createMember();
+
+        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        taskService.createTask(month, member, task);
+
+        assertThat(task.getId()).isNull();
+        assertThat(task.getMembers()).containsExactly(member);
+
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
+        verify(mockTypedQuery).setParameter(eq("fproject"), eq(task.getProject()));
+
+        verify(mockEntityManager).flush();
+
+        ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
+        verify(mockEntityManager).persist(taskCaptor.capture());
+        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
+        workingDayList.forEach(day -> verify(mockWorkService).createWork(eq(member), eq(month), taskCaptor.capture(), eq(day)));
+        taskCaptor.getAllValues().forEach(myTask -> assertThat(myTask).isEqualToComparingFieldByField(task));
+    }
+
+    @Test
+    public void testCreateTask_member_existing() {
+        task.setId(randomLong);
+        Member member = EntityFactory.createMember();
+        Long randomId = EntityFactory.createRandomLong();
+
+        member.setId(randomId);
+        task.getMembers().clear();
+        task.getMembers().add(member);
+
+        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        List<Task> taskList = EntityFactory.createList(EntityFactory::createTask, 1);
+        final Task existingTask = taskList.get(0);
+        existingTask.setId(EntityFactory.createRandomLong());
+
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
+
+        taskService.createTask(month, member, task);
+
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
+        verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
+        verify(mockTypedQuery).setParameter(eq("fproject"), eq(task.getProject()));
+
+        verify(mockEntityManager).flush();
+        verify(mockEntityManager).merge(eq(existingTask));
+
+
+        assertThat(existingTask.getMembers()).contains(member);
+        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
+
+
+        ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
+
+        workingDayList.forEach(day -> verify(mockWorkService).createWork(eq(member), eq(month), taskCaptor.capture(), eq(day)));
+        taskCaptor.getAllValues().forEach(myTask -> assertThat(myTask).isEqualToComparingFieldByField(existingTask));
+    }
+
+    @Test(expected = EntityExistsException.class)
+    public void testCreateTask_member_existing_exception() {
+        task.setId(randomLong);
+        Member member = EntityFactory.createMember();
+        Long randomId = EntityFactory.createRandomLong();
+
+        member.setId(randomId);
+        task.getMembers().clear();
+        task.getMembers().add(member);
+
+        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        List<Task> taskList = EntityFactory.createList(EntityFactory::createTask, 1);
+        final Task existingTask = taskList.get(0);
+        existingTask.setId(EntityFactory.createRandomLong());
+        existingTask.addMember(member);
+
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
+
+        taskService.createTask(month, member, task);
 
     }
 

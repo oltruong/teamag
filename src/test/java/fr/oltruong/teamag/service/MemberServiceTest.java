@@ -182,14 +182,14 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
         Query mockQueryTask = mock(Query.class);
-        when(mockEntityManager.createNamedQuery(eq("findTaskByName"))).thenReturn(mockQueryTask);
+        when(mockEntityManager.createNamedQuery(eq("Task.FIND_BY_NAME"))).thenReturn(mockQueryTask);
         when(mockQueryTask.getResultList()).thenReturn(taskList);
 
         Member member = EntityFactory.createMember();
         Member memberCreated = memberService.create(member);
 
         assertThat(memberCreated).isEqualTo(member);
-        verify(mockEntityManager).createNamedQuery(eq("findTaskByName"));
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"));
         verify(mockQueryTask).setParameter(eq("fname"), isA(String.class));
         verify(mockQueryTask).setParameter(eq("fproject"), isA(String.class));
 

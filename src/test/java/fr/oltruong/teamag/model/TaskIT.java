@@ -61,7 +61,7 @@ public class TaskIT extends AbstractEntityIT {
 
         transaction.commit();
 
-        TypedQuery<Task> query = entityManager.createNamedQuery("findTaskByName", Task.class);
+        TypedQuery<Task> query = entityManager.createNamedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", name);
         query.setParameter("fproject", "");
 
@@ -70,7 +70,7 @@ public class TaskIT extends AbstractEntityIT {
 
         assertThat(listTasks).isNotNull().isNotEmpty().hasSize(1).contains(task2);
 
-        TypedQuery<Task> query2 = entityManager.createNamedQuery("findTaskByName", Task.class);
+        TypedQuery<Task> query2 = entityManager.createNamedQuery("Task.FIND_BY_NAME", Task.class);
         query2.setParameter("fname", task1.getName());
         query2.setParameter("fproject", task1.getProject());
 
@@ -108,7 +108,6 @@ public class TaskIT extends AbstractEntityIT {
     @Test
     public void testNamedQuery_findNonAdmin() {
 
-//        Task.FIND_NONADMIN_TASK
         Task task1 = EntityFactory.createTask();
         Task task2 = EntityFactory.createTask();
         Task task3 = EntityFactory.createTask();
