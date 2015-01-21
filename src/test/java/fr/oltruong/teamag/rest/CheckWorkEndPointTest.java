@@ -109,7 +109,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
         List<Work> newWorkList = Lists.newArrayList(workList);
         newWorkList.addAll(workList);
 
-        when(mockWorkService.findWorksList(eq(randomId), anyInt())).thenReturn(newWorkList);
+        when(mockWorkService.findWorksNotNullByWeek(eq(randomId), anyInt())).thenReturn(newWorkList);
 
         Response response = checkWorkEndPoint.getWeekInformation(randomId, weekNumber, true);
 

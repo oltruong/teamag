@@ -67,7 +67,7 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
 
         weekNumber = parseWeekNumber(weekNumber);
 
-        List<Work> workList = workService.findWorksList(memberId, weekNumber);
+        List<Work> workList = workService.findWorksNotNullByWeek(memberId, weekNumber);
         if (macroTask) {
             workList = transformMacro(workList);
         }

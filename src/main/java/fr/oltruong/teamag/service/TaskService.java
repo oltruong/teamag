@@ -134,7 +134,7 @@ public class TaskService extends AbstractService {
     }
 
     private void deleteWorks(Task task, Member member, DateTime month) {
-        Query query = createNamedQuery("deleteWorksByMemberTaskMonth");
+        Query query = createNamedQuery("Work.DELETE_BY_MEMBERTaskMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("ftaskId", task.getId());
         query.setParameter("fmonth", month);
@@ -144,7 +144,7 @@ public class TaskService extends AbstractService {
 
     private boolean taskHasNoWorks(Task taskDb) {
 
-        Query query = createNamedQuery("countWorksTask");
+        Query query = createNamedQuery("Work.COUNT_BY_TASK");
         query.setParameter("fTaskId", taskDb.getId());
         int total = ((Number) query.getSingleResult()).intValue();
         return total == 0;

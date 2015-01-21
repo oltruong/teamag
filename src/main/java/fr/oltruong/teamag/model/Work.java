@@ -20,16 +20,16 @@ import javax.persistence.Transient;
 
 @Table(name = "TM_WORK")
 @Entity
-@NamedQueries({@NamedQuery(name = "findWorksByMemberMonth", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
-        @NamedQuery(name = "findWorksByMemberMonthNotNull", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.total<>0 and w.month=:fmonth order by w.task.name, w.day"),
-        @NamedQuery(name = "findWorkDaysByMemberMonth", query = "SELECT w.day, sum(w.total) FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth group by w.day order by w.day"),
-        @NamedQuery(name = "deleteWorksByMemberTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
-        @NamedQuery(name = "deleteWorksByMember", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
-        @NamedQuery(name = "findWorksMonth", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
-        @NamedQuery(name = "findWorksByTask", query = "SELECT w FROM Work w WHERE (w.total<>0 and w.task.id=:fTaskId) ORDER by w.member.name,w.day"),
-        @NamedQuery(name = "countWorksTask", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
-        @NamedQuery(name = "findAbsenceWorkByMemberDay", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.id=1)"),
-        @NamedQuery(name = "countWorksMemberMonth", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
+@NamedQueries({@NamedQuery(name = "Work.FIND_BY_MEMBER_MONTH", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
+        @NamedQuery(name = "Work.FIND_BY_MEMBER_MONTH_NOT_NULL", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth and w.task IN (SELECT w.task from Work w where w.member.id=:fmemberId and w.month=:fmonth and w.total<>0)  order by w.task.name, w.day"),
+        @NamedQuery(name = "Work.FIND_WORKDAYS_BY_MEMBER_MONTH", query = "SELECT w.day, sum(w.total) FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth group by w.day order by w.day"),
+        @NamedQuery(name = "Work.DELETE_BY_MEMBERTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
+        @NamedQuery(name = "Work.DELETE_BY_MEMBER", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
+        @NamedQuery(name = "Work.FIND_BY_MONTH", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
+        @NamedQuery(name = "Work.FIND_BY_TASK_MEMBER", query = "SELECT w FROM Work w WHERE (w.total<>0 and w.task.id=:fTaskId) ORDER by w.member.name,w.day"),
+        @NamedQuery(name = "Work.COUNT_BY_TASK", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
+        @NamedQuery(name = "Work.FIND_ABSENCE_BY_MEMBER", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.id=1)"),
+        @NamedQuery(name = "Work.SUM_BY_MONTH_MEMBER", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
 
     @Id
@@ -119,6 +119,13 @@ public class Work {
         return totalEdit;
     }
 
+    public String getTotalEditStr() {
+        Double value = getTotalEdit();
+        if (value.floatValue() == 0f) {
+            return "";
+        }
+        return value.toString();
+    }
 
     public void setTotalEditStr(String totalEditStr) {
         if (!StringUtils.isBlank(totalEditStr)) {

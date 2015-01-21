@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,38 +23,31 @@ import java.util.Map;
 @Stateless
 public class WorkService extends AbstractService {
 
-    public Map<Task, List<Work>> findWorksNotNull(Member member, DateTime month) {
 
-        Map<Task, List<Work>> worksByTask = transformWorkList(findWorkList(member, month));
-        List<Task> emptyWorkTasks = Lists.newArrayListWithCapacity(worksByTask.size());
+    public Map<Task, List<Work>> findWorksNotNullByMonth(Member member, DateTime month) {
+        return transformWorkList(findWorkByMemberMonth(member.getId(), month, "Work.FIND_BY_MEMBER_MONTH_NOT_NULL"));
+    }
 
-        for (Task task : worksByTask.keySet()) {
-            List<Work> workList = worksByTask.get(task);
+    public List<Work> findWorksNotNullByWeek(Long memberId, int weekNumber) {
+        List<Work> workList = findWorkListByMemberMonth(memberId, DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
 
-            boolean empty = true;
-            for (Work work : workList) {
-                empty &= !Double.valueOf(0d).equals(work.getTotal());
-            }
-            if (empty) {
-                emptyWorkTasks.add(task);
+        workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != weekNumber);
+
+        List<Task> tasksNotEmpty = Lists.newArrayList();
+        for (Work work : workList) {
+            if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
+                tasksNotEmpty.add(work.getTask());
             }
         }
-
-        for (Task task : emptyWorkTasks) {
-            worksByTask.remove(task);
-        }
-
-        return worksByTask;
-
+        workList.removeIf(work -> !tasksNotEmpty.contains(work.getTask()));
+        return workList;
     }
 
     public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
 
-        List<Work> listWorks = findWorkList(member, month);
+        List<Work> listWorks = findWorkListByMemberMonth(member.getId(), month);
 
         if (CollectionUtils.isEmpty(listWorks)) {
-
-            logger.debug("Creating new works for member " + member.getName());
             listWorks = createWorks(member, month, taskList, absenceDayList);
         } else {
             //Check if all work are here
@@ -117,41 +111,35 @@ public class WorkService extends AbstractService {
 
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Work> findWorkList(Member member, DateTime month) {
 
-        Query query = createNamedQuery("findWorksByMemberMonth");
-        query.setParameter("fmemberId", member.getId());
+    private List<Work> findWorkListByMemberMonth(Long memberId, DateTime month) {
+        return findWorkByMemberMonth(memberId, month, "Work.FIND_BY_MEMBER_MONTH");
+    }
+
+    private List<Work> findWorkByMemberMonth(Long memberId, DateTime month, String queryString) {
+        TypedQuery<Work> query = createNamedQuery(queryString, Work.class);
+        query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", month);
 
-        return (List<Work>) query.getResultList();
-
-
+        return query.getResultList();
     }
 
     public Map<DateTime, Double> findWorkDays(Member member, DateTime month) {
-        Query query = createNamedQuery("findWorkDaysByMemberMonth");
+        TypedQuery<Object[]> query = createNamedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH", Object[].class);
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
-
-        @SuppressWarnings("unchecked")
         List<Object[]> objects = query.getResultList();
 
-
         Map<DateTime, Double> map = Maps.newHashMapWithExpectedSize(objects.size());
-
         objects.forEach(object -> map.put((DateTime) object[0], (Double) object[1]));
-
         return map;
-
     }
 
     public int getSumWorks(Member member, DateTime month) {
-        Query query = createNamedQuery("countWorksMemberMonth");
+        Query query = createNamedQuery("Work.SUM_BY_MONTH_MEMBER");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
         Number sumOfPrice = (Number) query.getSingleResult();
-        logger.debug("total " + sumOfPrice);
         return sumOfPrice.intValue();
     }
 
@@ -236,63 +224,26 @@ public class WorkService extends AbstractService {
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     public List<Work> getWorksMonth(DateTime month) {
-        Query query = createNamedQuery("findWorksMonth");
+        TypedQuery<Work> query = createNamedQuery("Work.FIND_BY_MONTH", Work.class);
         query.setParameter("fmonth", month);
 
         return query.getResultList();
     }
 
-    @SuppressWarnings("unchecked")
     public List<Work> findWorkByTask(Long taskId) {
-        Query query = createNamedQuery("findWorksByTask");
+        TypedQuery<Work> query = createNamedQuery("Work.FIND_BY_TASK_MEMBER", Work.class);
         query.setParameter("fTaskId", taskId);
 
         return query.getResultList();
 
     }
 
-
-    public Multimap<Task, Work> findWorksNotNull(Long memberId, int weekNumber) {
-        Query query = createNamedQuery("findWorksByMemberMonth");
-        query.setParameter("fmemberId", memberId);
-        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber));
-
-        List<Work> workList = query.getResultList();
-
-        Multimap<Task, Work> multimap = ArrayListMultimap.create();
-        for (Work work : workList) {
-            multimap.put(work.getTask(), work);
-        }
-        return multimap;
-    }
-
-    public List<Work> findWorksList(Long memberId, int weekNumber) {
-        Query query = createNamedQuery("findWorksByMemberMonth");
-        query.setParameter("fmemberId", memberId);
-        query.setParameter("fmonth", DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
-
-
-        List<Work> workList = query.getResultList();
-
-        workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != weekNumber);
-
-        List<Task> tasksNotEmpty = Lists.newArrayList();
-        for (Work work : workList) {
-            if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
-                tasksNotEmpty.add(work.getTask());
-            }
-        }
-        workList.removeIf(work -> !tasksNotEmpty.contains(work.getTask()));
-        return workList;
-    }
-
-
-    private Work findAbsenceWork(AbsenceDay absenceDay) {
+  private Work findAbsenceWork(AbsenceDay absenceDay) {
         Work absenceWork = null;
 
-        Query query = createNamedQuery("findAbsenceWorkByMemberDay");
+        TypedQuery<Work> query = createNamedQuery("Work.FIND_ABSENCE_BY_MEMBER", Work.class);
         query.setParameter("fmemberId", absenceDay.getMember().getId());
         query.setParameter("fday", absenceDay.getDay());
 
@@ -306,26 +257,26 @@ public class WorkService extends AbstractService {
     }
 
     public void updateWorkAbsence(AbsenceDay absenceDay) {
-        if (absenceDay.getDay().getMonthOfYear() >= DateTime.now().getMonthOfYear()) {
-
-            Work absenceWork = findAbsenceWork(absenceDay);
-            if (absenceWork != null) {
-                absenceWork.setTotal(Double.parseDouble(absenceDay.getValue().toString()));
-                merge(absenceWork);
-            }
-
-        }
+        updateWorkAbsence(absenceDay, Double.parseDouble(absenceDay.getValue().toString()));
     }
 
     public void removeWorkAbsence(AbsenceDay absenceDay) {
-        if (absenceDay.getDay().getMonthOfYear() >= DateTime.now().getMonthOfYear()) {
+        updateWorkAbsence(absenceDay, 0d);
+    }
+
+    private void updateWorkAbsence(AbsenceDay absenceDay, double total) {
+        if (isPresentOrFutureMonth(absenceDay)) {
             Work absenceWork = findAbsenceWork(absenceDay);
             if (absenceWork != null) {
 
-                absenceWork.setTotal(0d);
+                absenceWork.setTotal(total);
                 merge(absenceWork);
             }
         }
+    }
+
+    private boolean isPresentOrFutureMonth(AbsenceDay absenceDay) {
+        return absenceDay.getDay().withDayOfMonth(2).withTimeAtStartOfDay().isAfter(DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay());
     }
 
 

@@ -40,7 +40,7 @@ public class WorkIT extends AbstractEntityIT {
 
         transaction.commit();
 
-        Query query = entityManager.createNamedQuery("findWorksByMemberMonth");
+        Query query = entityManager.createNamedQuery("Work.FIND_BY_MEMBER_MONTH");
         query.setParameter("fmemberId", work.getMember().getId());
         query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
 
@@ -54,7 +54,7 @@ public class WorkIT extends AbstractEntityIT {
 
 
     @Test
-    public void testNamedQuery_findWorkDaysByMemberMonthNotNull() {
+    public void testNamedQuery_findWorkdaysByMemberMonth() {
 
         Work work = EntityFactory.createWork();
 
@@ -66,7 +66,7 @@ public class WorkIT extends AbstractEntityIT {
 
         transaction.commit();
 
-        Query query = entityManager.createNamedQuery("findWorkDaysByMemberMonth");
+        Query query = entityManager.createNamedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH");
         query.setParameter("fmemberId", work.getMember().getId());
         query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
 

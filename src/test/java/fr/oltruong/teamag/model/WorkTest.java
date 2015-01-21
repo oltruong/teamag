@@ -49,6 +49,14 @@ public class WorkTest {
     }
 
     @Test
+    public void testGetTotalStr() {
+        work.setTotalEdit(0d);
+        assertThat(work.getTotalEditStr()).isEqualTo("");
+        work.setTotalEdit(0.5d);
+        assertThat(work.getTotalEditStr()).isEqualTo("0.5");
+    }
+
+    @Test
     public void testHasChanged() {
         work.setTotal(1d);
         assertThat(work.hasChanged()).isFalse();

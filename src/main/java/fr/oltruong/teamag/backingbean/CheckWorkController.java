@@ -76,7 +76,7 @@ public class CheckWorkController extends Controller {
 
         DateTime firstDayOfMonth = realizedBean.getDayCursor().withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
-        works = workService.findWorksNotNull(memberToCheck, firstDayOfMonth);
+        works = workService.findWorksNotNullByMonth(memberToCheck, firstDayOfMonth);
 
         initTaskWeek();
         return VIEWNAME;
