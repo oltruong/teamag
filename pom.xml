@@ -16,7 +16,7 @@
         <version.primefaces>4.0</version.primefaces>
         <version.primefaces-theme>1.0.10</version.primefaces-theme>
         <version.junit>4.11</version.junit>
-        <version.assertj>1.6.0</version.assertj>
+        <version.assertj>1.7.1</version.assertj>
         <version.mockito>1.9.5</version.mockito>
         <version.joda-time>2.3</version.joda-time>
 
