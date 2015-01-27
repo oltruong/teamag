@@ -34,11 +34,11 @@ public class WorkService extends AbstractService {
         workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != weekNumber);
 
         List<Task> tasksNotEmpty = Lists.newArrayList();
-        for (Work work : workList) {
+        workList.forEach(work -> {
             if (work.getTotal().doubleValue() != 0 && !tasksNotEmpty.contains(work.getTask())) {
                 tasksNotEmpty.add(work.getTask());
             }
-        }
+        });
         workList.removeIf(work -> !tasksNotEmpty.contains(work.getTask()));
         return workList;
     }
@@ -89,7 +89,7 @@ public class WorkService extends AbstractService {
 
         int count = 0;
         for (Work work : listWorks) {
-            String workKey = work.getMember().getId().toString() + work.getTask().getId().toString() + work.getDay().toString();
+            String workKey = buildWorkKey(work);
             if (workReferenceList.contains(workKey)) {
                 count++;
                 logger.error("ERROR DUPLICATE IN WORK TASK[" + work.getTask().getId().toString() + "] DAY[" + work.getDay() + "] MEMBER ID[" + work.getMember().getId().toString() + "]");
@@ -111,6 +111,45 @@ public class WorkService extends AbstractService {
 
     }
 
+    private String buildWorkKey(Work work) {
+        return work.getMember().getId().toString() + work.getTask().getId().toString() + work.getDay().toString();
+    }
+
+    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
+
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+
+        List<Work> workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
+        for (Task task : taskList) {
+            for (DateTime day : workingDays) {
+                Double total = 0d;
+                //Absence Task
+                if (Long.valueOf(1L).equals(task.getId())) {
+                    AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
+                    if (absenceDay != null) {
+                        total = Double.valueOf(absenceDay.getValue().toString());
+                    }
+                }
+                Work work = createWork(member, month, task, day, total);
+                workList.add(work);
+            }
+        }
+
+        return workList;
+    }
+
+
+    private AbsenceDay findAbsenceDay(List<AbsenceDay> absenceDayList, DateTime day) {
+        if (absenceDayList != null) {
+            for (AbsenceDay absenceDay : absenceDayList) {
+                if (absenceDay.getDay().isEqual(day)) {
+                    return absenceDay;
+                }
+            }
+        }
+
+        return null;
+    }
 
     private List<Work> findWorkListByMemberMonth(Long memberId, DateTime month) {
         return findWorkByMemberMonth(memberId, month, "Work.FIND_BY_MEMBER_MONTH");
@@ -149,7 +188,7 @@ public class WorkService extends AbstractService {
         if (listWorks != null) {
             for (Work work : listWorks) {
                 if (!worksByTask.containsKey(work.getTask())) {
-                    worksByTask.put(work.getTask(), new ArrayList<Work>());
+                    worksByTask.put(work.getTask(), new ArrayList<>());
                 }
                 worksByTask.get(work.getTask()).add(work);
                 work.getTask().addTotal(work.getTotal());
@@ -158,47 +197,6 @@ public class WorkService extends AbstractService {
         }
 
         return worksByTask;
-    }
-
-
-    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
-
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
-
-        List<Work> workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
-        for (Task task : taskList) {
-            for (DateTime day : workingDays) {
-                Double total = 0d;
-                //Absence Task
-                if (Long.valueOf(1L).equals(task.getId())) {
-                    AbsenceDay absenceDay = findAbsenceDay(absenceDayList, day);
-                    if (absenceDay != null) {
-                        total = Double.valueOf(absenceDay.getValue().toString());
-                    }
-                }
-
-                Work work = createWork(member, month, task, day, total);
-
-
-                workList.add(work);
-            }
-        }
-
-
-        return workList;
-
-    }
-
-    private AbsenceDay findAbsenceDay(List<AbsenceDay> absenceDayList, DateTime day) {
-        if (absenceDayList != null) {
-            for (AbsenceDay absenceDay : absenceDayList) {
-                if (absenceDay.getDay().isEqual(day)) {
-                    return absenceDay;
-                }
-            }
-        }
-
-        return null;
     }
 
     public Work createWork(Member member, DateTime month, Task task, DateTime day) {
@@ -240,7 +238,7 @@ public class WorkService extends AbstractService {
 
     }
 
-  private Work findAbsenceWork(AbsenceDay absenceDay) {
+    private Work findAbsenceWork(AbsenceDay absenceDay) {
         Work absenceWork = null;
 
         TypedQuery<Work> query = createNamedQuery("Work.FIND_ABSENCE_BY_MEMBER", Work.class);

@@ -6,9 +6,11 @@ import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.model.Task;
 import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.model.builder.EntityFactory;
+import fr.oltruong.teamag.utils.CalendarUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 import java.util.Map;
@@ -69,10 +71,74 @@ public class WorkServiceTest extends AbstractServiceTest {
     public void testFindWorksNotNullByWeek() {
         int currentWeek = DateTime.now().getWeekOfWeekyear();
 
+
+        workList.forEach(w -> w.getTask().setId(EntityFactory.createRandomLong()));
+
+        workList.get(0).setTotal(1d);
+        workList.get(1).setTotal(1d);
+        workList.get(1).setTask(workList.get(0).getTask());
+        workList.get(2).setTotal(1d);
+
         List<Work> workListFound = workService.findWorksNotNullByWeek(randomLong, currentWeek);
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_BY_MEMBER_MONTH"), eq(Work.class));
         verify(mockTypedQuery).setParameter(eq("fmemberId"), eq(randomLong));
-        verify(mockTypedQuery).setParameter(eq("fmonth"), eq(DateTime.now().withWeekOfWeekyear(currentWeek).withDayOfMonth(1)));
+
+        ArgumentCaptor<DateTime> dateTimeArgumentCaptor = ArgumentCaptor.forClass(DateTime.class);
+
+        verify(mockTypedQuery).setParameter(eq("fmonth"), dateTimeArgumentCaptor.capture());
+
+        assertThat(dateTimeArgumentCaptor.getValue().withDayOfMonth(1).withTimeAtStartOfDay()).isEqualTo(DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay());
+
+        assertThat(workListFound).containsExactly(workList.get(0), workList.get(1), workList.get(2));
+    }
+
+
+    @Test
+    public void testFindOrCreateWorksEmpty_empty() {
+        List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
+        taskList.forEach(t -> t.setId(EntityFactory.createRandomLong()));
+        Task absenceTask = EntityFactory.createTask();
+        absenceTask.setId(1L);
+        taskList.add(absenceTask);
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+
+        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
+        DateTime firstWorkingDay = workingDays.get(0);
+
+        absenceDayList.get(0).setDay(firstWorkingDay);
+
+        workList.clear();
+        Map<Task, List<Work>> taskListMap = workService.findOrCreateWorks(member, month, taskList, absenceDayList);
+
+        assertThat(taskListMap).hasSameSizeAs(taskList);
+
+        taskListMap.forEach((task, workList) -> {
+            if (Long.valueOf(1L).equals(task.getId())) {
+                workList.forEach(work -> {
+                    if (work.getDay().equals(firstWorkingDay)) {
+                        assertThat(Double.valueOf(work.getTotal())).isEqualTo(Double.valueOf(absenceDayList.get(0).getValue()));
+                    } else {
+                        checkWork(workingDays, task, work);
+                    }
+
+                });
+            } else {
+                assertThat(taskList.contains(task));
+                workList.forEach(work -> {
+                    checkWork(workingDays, task, work);
+                });
+
+            }
+
+        });
+
+    }
+
+    private void checkWork(List<DateTime> workingDays, Task task, Work work) {
+        assertThat(work.getTotal()).isEqualTo(0d);
+        assertThat(work.getMember()).isEqualTo(member);
+        assertThat(workingDays.contains(work.getDay()));
+        assertThat(work.getTask()).isEqualToComparingFieldByField(task);
     }
 
 
