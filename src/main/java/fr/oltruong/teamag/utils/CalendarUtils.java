@@ -101,12 +101,8 @@ public final class CalendarUtils {
     }
 
     public static boolean isInLastWorkingWeekOfMonth(DateTime day) {
-
-
         DateTime lastWorkingDayOfMonth = findLastWorkingDayMonth(day.getMonthOfYear());
         return lastWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
-
-
     }
 
     private static DateTime findLastWorkingDayMonth(int monthOfYear) {
@@ -124,7 +120,6 @@ public final class CalendarUtils {
         while (isDayOff(dayOfMonth.toDateTime())) {
             dayOfMonth.addDays(-1);
         }
-
         return dayOfMonth.toDateTime();
     }
 

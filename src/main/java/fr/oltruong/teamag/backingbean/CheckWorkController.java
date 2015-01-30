@@ -62,7 +62,6 @@ public class CheckWorkController extends Controller {
     private static final String VIEWNAME = "checkrealized";
 
     public String init() {
-        //    memberToCheck = memberInstance.get();
         memberList = memberEJB.findActiveNonAdminMembers();
         memberList.add(memberInstance.get());
 

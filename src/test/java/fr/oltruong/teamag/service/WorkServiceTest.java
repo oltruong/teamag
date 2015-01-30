@@ -94,7 +94,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindOrCreateWorksEmpty_empty() {
+    public void testFindOrCreateWorks_empty() {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         taskList.forEach(t -> t.setId(EntityFactory.createRandomLong()));
         Task absenceTask = EntityFactory.createTask();
@@ -120,18 +120,100 @@ public class WorkServiceTest extends AbstractServiceTest {
                     } else {
                         checkWork(workingDays, task, work);
                     }
-
+                    verify(mockEntityManager).persist(eq(work));
                 });
             } else {
                 assertThat(taskList.contains(task));
                 workList.forEach(work -> {
                     checkWork(workingDays, task, work);
+                    verify(mockEntityManager).persist(eq(work));
                 });
 
             }
 
         });
 
+
+    }
+
+
+    @Test
+    public void testFindOrCreateWorks() {
+        List<Task> taskList = Lists.newArrayList();
+
+        Task absenceTask = EntityFactory.createTask();
+        absenceTask.setId(1L);
+        taskList.add(absenceTask);
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+
+        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
+        DateTime firstWorkingDay = workingDays.get(0);
+
+        absenceDayList.get(0).setDay(firstWorkingDay);
+
+        workList.clear();
+        Work firstWork = createWork(taskList, firstWorkingDay);
+        workList.add(firstWork);
+
+
+        Map<Task, List<Work>> taskListMap = workService.findOrCreateWorks(member, month, taskList, absenceDayList);
+
+        verifyFindOrCreateWorks(taskList, absenceTask, workingDays, firstWorkingDay, taskListMap);
+
+
+    }
+
+    private void verifyFindOrCreateWorks(List<Task> taskList, Task absenceTask, List<DateTime> workingDays, DateTime firstWorkingDay, Map<Task, List<Work>> taskListMap) {
+        assertThat(taskListMap).hasSameSizeAs(taskList);
+        List<Work> workListReturned = taskListMap.get(absenceTask);
+        assertThat(workListReturned).hasSameSizeAs(workingDays);
+        workListReturned.forEach(work -> {
+            assertThat(workingDays).contains(work.getDay());
+            assertThat(work.getTask()).isEqualToComparingFieldByField(absenceTask);
+            if (work.getDay().equals(firstWorkingDay)) {
+                verify(mockEntityManager, never()).persist(eq(work));
+            } else {
+                verify(mockEntityManager).persist(eq(work));
+            }
+        });
+    }
+
+    @Test
+    public void testFindOrCreateWorks_duplicate() {
+        List<Task> taskList = Lists.newArrayList();
+
+        Task absenceTask = EntityFactory.createTask();
+        absenceTask.setId(1L);
+        taskList.add(absenceTask);
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+
+        List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
+        DateTime firstWorkingDay = workingDays.get(0);
+
+        absenceDayList.get(0).setDay(firstWorkingDay);
+
+        workList.clear();
+        Work firstWork = createWork(taskList, firstWorkingDay);
+        workList.add(firstWork);
+
+        Work firstWorkCloned = createWork(taskList, firstWorkingDay);
+        workList.add(firstWorkCloned);
+
+
+        Map<Task, List<Work>> taskListMap = workService.findOrCreateWorks(member, month, taskList, absenceDayList);
+        verifyFindOrCreateWorks(taskList, absenceTask, workingDays, firstWorkingDay, taskListMap);
+
+        verify(mockEntityManager).remove(eq(firstWorkCloned));
+    }
+
+    private Work createWork(List<Task> taskList, DateTime firstWorkingDay) {
+        Work work = new Work();
+        work.setTask(taskList.get(0));
+        work.setMember(member);
+        work.setDay(firstWorkingDay);
+        work.setMonth(month);
+        work.setTotal(0.2d);
+        return work;
     }
 
     private void checkWork(List<DateTime> workingDays, Task task, Work work) {
@@ -271,17 +353,24 @@ public class WorkServiceTest extends AbstractServiceTest {
     public void testRemoveWorkAbsence_past() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
         absenceDay.setDay(DateTime.now().minusMonths(1));
-
         workService.removeWorkAbsence(absenceDay);
         verify(mockEntityManager, never()).createNamedQuery(any(), any());
         verify(mockEntityManager, never()).merge(any());
     }
 
     @Test
+    public void testRemoveWorkAbsence_empty() {
+        AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
+        workList.clear();
+        workService.removeWorkAbsence(absenceDay);
+        verify(mockEntityManager).createNamedQuery(eq("Work.FIND_ABSENCE_BY_MEMBER"), eq(Work.class));
+        verify(mockEntityManager, never()).merge(any());
+    }
+
+    @Test
     public void testRemoveWorkAbsence_null() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
-
-        workList.clear();
+        when(mockTypedQuery.getResultList()).thenReturn(null);
         workService.removeWorkAbsence(absenceDay);
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_ABSENCE_BY_MEMBER"), eq(Work.class));
         verify(mockEntityManager, never()).merge(any());

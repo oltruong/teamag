@@ -51,24 +51,16 @@ public class WorkService extends AbstractService {
             listWorks = createWorks(member, month, taskList, absenceDayList);
         } else {
             //Check if all work are here
-            Multimap<Task, Work> multimap = ArrayListMultimap.create();
-            listWorks.forEach(work -> {
-                if (multimap.containsKey(work.getTask())) {
-                    multimap.get(work.getTask()).add(work);
-                } else {
-                    multimap.put(work.getTask(), work);
-                }
-            });
-
+            Multimap<Task, Work> taskWorkMap = buildTaskWorkMap(listWorks);
             List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
 
             //Check all days are present
             for (DateTime day : workingDays) {
 
-                for (Task task : multimap.keySet()) {
+                for (Task task : taskWorkMap.keySet()) {
 
                     boolean found = false;
-                    Collection<Work> workList = multimap.get(task);
+                    Collection<Work> workList = taskWorkMap.get(task);
                     for (Work work : workList) {
                         if (work.getDay().equals(day)) {
                             found = true;
@@ -77,38 +69,50 @@ public class WorkService extends AbstractService {
                     if (!found) {
                         logger.warn("CREATING WORK FOR TASK [" + task.getId() + "] for Day [" + day + "]");
                         Work workCreated = createWork(member, month, task, day);
-                        multimap.get(task).add(workCreated);
+                        taskWorkMap.get(task).add(workCreated);
                         listWorks.add(workCreated);
                     }
                 }
             }
         }
+        List<Work> workListNoDuplicates = removeDuplicates(listWorks);
+        return transformWorkList(workListNoDuplicates);
 
+    }
 
+    private List<Work> removeDuplicates(List<Work> listWorks) {
         List<String> workReferenceList = Lists.newArrayListWithCapacity(listWorks.size());
-
-        int count = 0;
+        List<Work> noDuplicateList = Lists.newArrayListWithCapacity(listWorks.size());
         for (Work work : listWorks) {
             String workKey = buildWorkKey(work);
             if (workReferenceList.contains(workKey)) {
-                count++;
+
                 logger.error("ERROR DUPLICATE IN WORK TASK[" + work.getTask().getId().toString() + "] DAY[" + work.getDay() + "] MEMBER ID[" + work.getMember().getId().toString() + "]");
                 logger.error("Removing WORK" + work.getId());
+
                 remove(work);
             } else {
                 workReferenceList.add(workKey);
+                noDuplicateList.add(work);
             }
         }
-        if (count != 0) {
-            logger.error(count + " duplicates");
 
-        } else {
-            logger.debug("no duplicate");
+        if (noDuplicateList.size() != listWorks.size()) {
+            logger.error(listWorks.size() - noDuplicateList.size() + " duplicates");
         }
+        return noDuplicateList;
+    }
 
-
-        return transformWorkList(listWorks);
-
+    private Multimap<Task, Work> buildTaskWorkMap(List<Work> listWorks) {
+        Multimap<Task, Work> taskWorkMap = ArrayListMultimap.create();
+        listWorks.forEach(work -> {
+            if (taskWorkMap.containsKey(work.getTask())) {
+                taskWorkMap.get(work.getTask()).add(work);
+            } else {
+                taskWorkMap.put(work.getTask(), work);
+            }
+        });
+        return taskWorkMap;
     }
 
     private String buildWorkKey(Work work) {

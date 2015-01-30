@@ -1,8 +1,8 @@
 package fr.oltruong.teamag.rest.filter;
 
-import fr.oltruong.teamag.service.MemberService;
-import fr.oltruong.teamag.model.Member;
 import fr.oltruong.teamag.interfaces.SecurityChecked;
+import fr.oltruong.teamag.model.Member;
+import fr.oltruong.teamag.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +20,11 @@ import java.io.IOException;
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
 
-    private final String AUTHORIZATION_PROPERTY = "Authorization";
+    private static final String AUTHORIZATION_PROPERTY = "Authorization";
 
-    private final String USER_PROPERTY = "userid";
+    private static final String USER_PROPERTY = "userid";
 
-    private Logger logger = LoggerFactory.getLogger(SecurityFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityFilter.class);
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
@@ -33,16 +33,16 @@ public class SecurityFilter implements ContainerRequestFilter {
         String idMember = containerRequestContext.getHeaders().getFirst(USER_PROPERTY);
 
 
-        if (!isAllowed(authorization,idMember)) {
-            logger.warn("Unauthorized Access to member of id[" + idMember+"]"+ containerRequestContext.getRequest().getMethod());
+        if (!isAllowed(authorization, idMember)) {
+            LOGGER.warn("Unauthorized Access to member of id[" + idMember + "]" + containerRequestContext.getRequest().getMethod());
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 
 
     }
 
-    protected boolean isAllowed(String authorization, String idMember){
-        return isLoggedIn(authorization,idMember);
+    protected boolean isAllowed(String authorization, String idMember) {
+        return isLoggedIn(authorization, idMember);
     }
 
     protected boolean isLoggedIn(String authorization, String idMember) {

@@ -176,14 +176,6 @@ public class WorkController extends Controller {
         updateComment();
 
 
-//        if (changedWorks.isEmpty()) {
-//            //    msg = new FacesMessage(FacesMessage.SEVERITY_WARN, getMessage("noChangesDetected"), "");
-//
-//        } else {
-//            //      msg = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), "");
-//            sendNotification();
-//            initTaskWeek();
-//        }
         if (!changedWorks.isEmpty()) {
             sendNotification();
             initTaskWeek();

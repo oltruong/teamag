@@ -152,7 +152,7 @@ public class TaskService extends AbstractService {
 
 
     private boolean isLoop(Task taskToUpdate) {
-        boolean result = (taskToUpdate != null && taskToUpdate.getTask() != null && taskToUpdate.getId().equals(taskToUpdate.getTask().getId()));
+        boolean result = taskToUpdate != null && taskToUpdate.getTask() != null && taskToUpdate.getId().equals(taskToUpdate.getTask().getId());
         if (!result && taskToUpdate.getTask() != null) {
             List<Long> idList = Lists.newArrayList();
             idList.add(taskToUpdate.getId());
