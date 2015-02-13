@@ -11,6 +11,7 @@ import fr.oltruong.teamag.webbean.WorkLoadMemberContainer;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -25,7 +26,7 @@ import java.util.List;
 @AdminChecked
 public class WorkLoadEndPoint extends AbstractEndPoint {
 
-    @EJB
+    @Inject
     WorkLoadService workLoadService;
 
 
