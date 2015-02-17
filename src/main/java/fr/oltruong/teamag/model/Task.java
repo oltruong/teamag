@@ -135,8 +135,8 @@ public class Task {
         if (!(otherTask instanceof Task)) {
             return false;
         }
-        Task member0 = (Task) otherTask;
-        return this.id.equals(member0.getId());
+        Task task0 = (Task) otherTask;
+        return this.id.equals(task0.getId());
     }
 
     @Override

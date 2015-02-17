@@ -32,14 +32,12 @@ public class Absence {
 
     @Column(nullable = false)
     @Convert(converter = DateConverter.class)
-    //  @Temporal(TemporalType.DATE)
     private DateTime beginDate;
 
     @Column(nullable = false)
     private Integer beginType = ALL_DAY;
 
     @Column(nullable = false)
-    //  @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime endDate;
 
