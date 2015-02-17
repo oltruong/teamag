@@ -6,7 +6,13 @@
             des activit&eacute;s</a>
         <br/><br/><br/>
         Filtrer&nbsp;: <input ng-model="query">
-        <br/><br/> Trier&nbsp;:
+        <br/><br/>
+
+        <div class="lead">
+            TOTAL&nbsp;:&nbsp;{{total()| number:2}}
+        </div>
+        <br/><br/>
+        Trier&nbsp;:
         <select ng-model="orderProp">
             <option value="identifier">Identifiant</option>
             <option value="name">Nom</option>
@@ -17,6 +23,8 @@
         <br/><br/>
         <a href="#/newBusinessCase" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
             un BC</a>
+
+
     </div>
     <div class="col-md-10">
         <div class="bg-success">{{confirmation}}</div>

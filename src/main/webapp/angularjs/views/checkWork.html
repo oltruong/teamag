@@ -13,7 +13,7 @@
     <div class="col-md-10">
 
         <h1 class="text-center">Suivi de r&eacute;alis&eacute; {{selectedMember.name}} - Semaine {{weekNumber}}</h1>
-
+        <br/>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -33,7 +33,9 @@
         </table>
         <br/>
 
-        <div>{{weekcomment.comment}}</div>
+        <div class="form-group" ng-hide="!weekcomment.comment">
+            <textarea class="form-control" rows="5" disabled>{{weekcomment.comment}}</textarea>
+        </div>
 
     </div>
 </div>
