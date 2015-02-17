@@ -6,8 +6,8 @@ import fr.oltruong.teamag.model.Work;
 import fr.oltruong.teamag.interfaces.AdminChecked;
 import fr.oltruong.teamag.webbean.WorkWebBean;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,14 +22,14 @@ import java.util.List;
 @AdminChecked
 public class WorkEndPoint extends AbstractEndPoint {
 
-    @EJB
-    WorkService workEJB;
+    @Inject
+    WorkService workService;
 
     @GET
     @Path("/{taskId}")
     public Response getWorks(@PathParam("taskId") Long taskId) {
 
-        List<Work> workList = workEJB.findWorkByTask(taskId);
+        List<Work> workList = workService.findWorkByTask(taskId);
 
         List<WorkWebBean> workWebBeanList = transform(workList);
         return buildResponseOK(workWebBeanList);

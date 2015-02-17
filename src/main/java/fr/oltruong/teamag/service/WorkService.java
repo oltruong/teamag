@@ -54,6 +54,27 @@ public class WorkService extends AbstractService {
             Multimap<Task, Work> taskWorkMap = buildTaskWorkMap(listWorks);
             List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
 
+            //FIXME when Task has a real equals, clean this
+            List<Task> missingTaskList = Lists.newArrayListWithCapacity(taskList.size());
+            for (Task task : taskList) {
+                boolean contains = false;
+                for (Task taskKey : taskWorkMap.keySet()) {
+                    if (taskKey.equals(task)) {
+                        contains = true;
+                    }
+                }
+                if (!contains) {
+                    logger.error("Task [" + task.getProject() + "-" + task.getName() + "] has no work. It will be created");
+                    missingTaskList.add(task);
+                }
+            }
+
+            if (!missingTaskList.isEmpty()) {
+                List<Work> listMissingWorks = createWorks(member, month, missingTaskList, absenceDayList);
+                listWorks.addAll(listMissingWorks);
+                taskWorkMap = buildTaskWorkMap(listWorks);
+            }
+
             //Check all days are present
             for (DateTime day : workingDays) {
 

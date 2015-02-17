@@ -22,4 +22,4 @@
 
 ### Default configuration
 * Datasource : java:/jdbc/teamag
-* Default user login/password : admin/admin
+* Default user login : admin. Default password is blank
