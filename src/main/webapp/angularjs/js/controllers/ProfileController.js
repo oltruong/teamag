@@ -12,7 +12,6 @@ teamagApp.controller('ProfileController', ['$scope', '$http',
 
         $scope.updateMember = function () {
             $http.put('../resources/member/profile', $scope.member).success(function () {
-                console.log('success');
             }).error(function () {
                 console.log('error');
             });
