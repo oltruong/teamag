@@ -14,13 +14,15 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
 @Singleton
 @Startup
 public class MemberService extends AbstractService {
+
+    private static final String DEFAULT_ADMIN = "admin";
 
     private static List<Member> memberList;
     private static Map<Long, Member> memberMap;
@@ -41,29 +43,42 @@ public class MemberService extends AbstractService {
     @PostConstruct
     public void buildList() {
         memberList = findMembers();
-        if (memberList != null) {
-            memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
-            memberList.forEach(member -> memberMap.put(member.getId(), member));
-        } else {
-            memberList = Lists.newArrayListWithExpectedSize(0);
-            memberMap = Maps.newHashMapWithExpectedSize(0);
+
+        if (memberList == null || memberList.isEmpty()) {
+            initMemberList();
         }
+
+        memberMap = Maps.newHashMapWithExpectedSize(memberList.size());
+        memberList.forEach(member -> memberMap.put(member.getId(), member));
     }
 
-    @SuppressWarnings("unchecked")
+    protected void initMemberList() {
+        logger.info("Creating admin member.");
+
+        Member adminMember = generateAdminMember();
+        persist(adminMember);
+
+        Task absenceTask = getOrCreateAbsenceTask();
+        absenceTask.addMember(adminMember);
+        persist(absenceTask);
+
+        memberList = Lists.newArrayListWithExpectedSize(1);
+        memberList.add(adminMember);
+    }
+
+
     public List<Member> findMembers() {
-        return getNamedQueryList("findMembers");
+        return createNamedQuery("findMembers", Member.class).getResultList();
     }
 
     public List<Member> findActiveMembers() {
-        return getNamedQueryList("findActiveMembers");
+        return createNamedQuery("findActiveMembers", Member.class).getResultList();
     }
 
     public List<Member> findActiveNonAdminMembers() {
-        List<Member> memberList = findActiveMembers();
-        memberList.removeIf(member -> member.isAdministrator());
-
-        return memberList;
+        List<Member> activeMemberList = findActiveMembers();
+        activeMemberList.removeIf(member -> member.isAdministrator());
+        return activeMemberList;
     }
 
 
@@ -73,21 +88,14 @@ public class MemberService extends AbstractService {
 
     public Member findMemberForAuthentication(String name, String password)
             throws UserNotFoundException {
-        checkMembersNotEmpty();
-
-        Query query = createNamedQuery("findByNamePassword");
-        query.setParameter("fname", name);
-        query.setParameter("fpassword", password);
-        @SuppressWarnings("unchecked")
-        List<Member> memberList = query.getResultList();
-        if (!CollectionUtils.isEmpty(memberList)) {
-            return memberList.get(0);
-        } else {
-            throw new UserNotFoundException();
+        for (Member member : memberList) {
+            if (member.getName().equals(name) && member.getPassword().equals(password)) {
+                return member;
+            }
         }
+        throw new UserNotFoundException();
     }
 
-    @SuppressWarnings("unchecked")
     public Member create(Member member) {
 
         member.setPassword(getDefaultPasswordHashed());
@@ -105,17 +113,17 @@ public class MemberService extends AbstractService {
     }
 
     private Task getOrCreateAbsenceTask() {
-        Query query = createNamedQuery("Task.FIND_BY_NAME");
+        TypedQuery<Task> query = createNamedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", "Absence");
         query.setParameter("fproject", "");
 
         Task task;
-        List<Task> tasklist = query.getResultList();
+        List<Task> taskList = query.getResultList();
 
-        if (!CollectionUtils.isEmpty(tasklist)) {
-            task = tasklist.get(0);
+        if (!CollectionUtils.isEmpty(taskList)) {
+            task = taskList.get(0);
         } else {
-            getLogger().info("Task is not found. Will be created");
+            logger.info("Absence task is not found. Will be created");
             Task newTask = new Task();
             newTask.setName("Absence");
             persist(newTask);
@@ -129,28 +137,14 @@ public class MemberService extends AbstractService {
         buildList();
     }
 
-
-    private void checkMembersNotEmpty() {
-
-        if (findMembers().isEmpty()) {
-            getLogger().warn("No member so far. Default admin will be created");
-
-            Member adminMember = generateAdminMember();
-            persist(adminMember);
-
-        }
-    }
-
     private Member generateAdminMember() {
-        String defaultValue = "admin";
-
         Member adminMember = new Member();
-        adminMember.setName(defaultValue);
+        adminMember.setName(DEFAULT_ADMIN);
         adminMember.setPassword(getDefaultPasswordHashed());
         adminMember.setCompany("ToBeDefined");
         adminMember.setEmail("tobedefined@email.com");
         adminMember.setMemberType(MemberType.ADMINISTRATOR);
-        adminMember.setEstimatedWorkDays(Double.valueOf(0d));
+        adminMember.setEstimatedWorkDays(0d);
         return adminMember;
     }
 

@@ -11,16 +11,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,7 +44,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         prepareService(memberService);
 
         buildMemberList();
-        when(getMockQuery().getResultList()).thenReturn(testMemberList);
+        when(mockTypedQuery.getResultList()).thenReturn(testMemberList);
         TestUtils.setPrivateAttribute(memberService, mockWorkLoadService, "workLoadService");
 
     }
@@ -62,11 +62,14 @@ public class MemberServiceTest extends AbstractServiceTest {
 
     @Test
     public void testBuild_empty() {
-        when(getMockQuery().getResultList()).thenReturn(null);
+        when(mockTypedQuery.getResultList()).thenReturn(null);
         memberService.buildList();
 
-        assertThat(MemberService.getMemberList()).isNotNull().isEmpty();
-        assertThat(MemberService.getMemberMap()).isNotNull().isEmpty();
+        List<Member> memberList = MemberService.getMemberList();
+        assertThat(memberList).isNotNull().hasSize(1);
+        Member member = memberList.get(0);
+        assertThat(member.isAdministrator()).isTrue();
+        assertThat(MemberService.getMemberMap()).isNotNull().hasSize(1);
     }
 
     @Test
@@ -83,7 +86,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         List<Member> memberList = memberService.findActiveMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
-        verify(mockEntityManager).createNamedQuery(eq("findActiveMembers"));
+        verify(mockEntityManager).createNamedQuery(eq("findActiveMembers"), eq(Member.class));
     }
 
 
@@ -93,24 +96,8 @@ public class MemberServiceTest extends AbstractServiceTest {
         List<Member> memberList = memberService.findMembers();
 
         assertThat(memberList).isEqualTo(testMemberList);
-        verify(mockEntityManager).createNamedQuery(eq("findMembers"));
+        verify(mockEntityManager).createNamedQuery(eq("findMembers"), eq(Member.class));
     }
-
-    @Test
-    public void testFindByNameNull() {
-        List<Member> memberEmptyList = Lists.newArrayListWithExpectedSize(0);
-        when(getMockQuery().getResultList()).thenReturn(memberEmptyList);
-
-        try {
-            memberService.findMemberForAuthentication(null, null);
-            fail("UserNotFoundException expected");
-        } catch (UserNotFoundException e) {
-
-        }
-        verify(mockEntityManager).createNamedQuery(eq("findByNamePassword"));
-
-    }
-
 
     @Test
     public void testFindMember() {
@@ -151,11 +138,32 @@ public class MemberServiceTest extends AbstractServiceTest {
         String name = "FOOONAME";
         String password = "PASSWORD";
 
+        Member member = new Member();
+        member.setName(name);
+        member.setPassword(password);
+        testMemberList.clear();
+        testMemberList.add(member);
+
+        TestUtils.setPrivateAttribute(memberService, testMemberList, "memberList");
 
         assertThat(memberService.findMemberForAuthentication(name, password)).isNotNull().isEqualTo(testMemberList.get(0));
-        verify(mockEntityManager).createNamedQuery(eq("findByNamePassword"));
-        verify(getMockQuery()).setParameter("fname", name);
+        verify(mockEntityManager, never()).createNamedQuery(eq("findByNamePassword"), eq(Member.class));
 
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void testFindMemberForAuthentication_null() throws UserNotFoundException {
+
+        String name = "FOOONAME";
+        String password = "PASSWORD";
+        Member member = new Member();
+        member.setName(name);
+        member.setPassword(password + "2");
+        testMemberList.clear();
+        testMemberList.add(member);
+
+        TestUtils.setPrivateAttribute(memberService, testMemberList, "memberList");
+        memberService.findMemberForAuthentication(name, password);
     }
 
     @Test
@@ -181,15 +189,15 @@ public class MemberServiceTest extends AbstractServiceTest {
     private void testCreateMember(List<Task> taskList) {
 
 
-        Query mockQueryTask = mock(Query.class);
-        when(mockEntityManager.createNamedQuery(eq("Task.FIND_BY_NAME"))).thenReturn(mockQueryTask);
+        TypedQuery<Task> mockQueryTask = mock(TypedQuery.class);
+        when(mockEntityManager.createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class))).thenReturn(mockQueryTask);
         when(mockQueryTask.getResultList()).thenReturn(taskList);
 
         Member member = EntityFactory.createMember();
         Member memberCreated = memberService.create(member);
 
         assertThat(memberCreated).isEqualTo(member);
-        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"));
+        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
         verify(mockQueryTask).setParameter(eq("fname"), isA(String.class));
         verify(mockQueryTask).setParameter(eq("fproject"), isA(String.class));
 

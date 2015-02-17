@@ -44,7 +44,7 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
     public Response getWeekComment(@PathParam("memberId") Long memberId, @PathParam("weekNumber") int weekNumber) {
 
         weekNumber = parseWeekNumber(weekNumber);
-        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, 2014);
+        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear());
         if (weekComment == null) {
             weekComment = new WeekComment();
             weekComment.setWeekYear(weekNumber);

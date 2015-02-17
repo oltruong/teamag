@@ -1,6 +1,7 @@
 package fr.oltruong.teamag.model;
 
 import fr.oltruong.teamag.model.enumeration.MemberType;
+import fr.oltruong.teamag.utils.TeamagConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -164,5 +165,10 @@ public class Member implements Serializable {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    //FIXME REMOVE with JSF
+    public Double getEstimatedWorkMonths() {
+        return estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO;
     }
 }

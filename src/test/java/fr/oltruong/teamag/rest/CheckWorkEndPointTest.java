@@ -9,6 +9,7 @@ import fr.oltruong.teamag.utils.CalendarUtils;
 import fr.oltruong.teamag.utils.TestUtils;
 import fr.oltruong.teamag.webbean.WorkWebBean;
 import org.assertj.core.util.Lists;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -61,7 +62,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
 
     private void testGetWeekComment(int weekNumber, int weekArgument) {
 
-        int year = 2014;
+        int year = DateTime.now().getYear();
 
         WeekComment weekComment = EntityFactory.createWeekComment();
         when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(year))).thenReturn(weekComment);
@@ -80,7 +81,7 @@ public class CheckWorkEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetWeekComment_null() {
         int weekNumber = 33;
-        int year = 2014;
+        int year = DateTime.now().getYear();
 
 
         Response response = checkWorkEndPoint.getWeekComment(randomId, weekNumber);
