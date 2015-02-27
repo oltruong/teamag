@@ -27,7 +27,11 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
         };
 
         $scope.findWorks = function () {
-            CheckWork.query({memberId: $scope.selectedMember.id, weekNumber: $scope.weekNumber, macroTask: $scope.macroTask}, function (data) {
+            CheckWork.query({
+                memberId: $scope.selectedMember.id,
+                weekNumber: $scope.weekNumber,
+                macroTask: $scope.macroTask
+            }, function (data) {
 
                 $scope.works = data;
                 $scope.days = new Array();
@@ -43,7 +47,6 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                         $scope.tasks.push($scope.works[i].task);
                     }
                 }
-
 
                 $http.get('../resources/checkWork/weekComment/' + $scope.selectedMember.id + '/' + $scope.weekNumber).success(function (data) {
 
@@ -66,7 +69,5 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
             $scope.weekNumber++;
             $scope.findWorks();
         };
-
-
     }]);
 
