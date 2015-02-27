@@ -16,6 +16,14 @@ body {
     margin-right: 10px !important;
 }
 
+.navbar-brand {
+    color: #ffffff !important;
+}
+
+.user {
+    color: #ffffff !important;
+}
+
 .border-right {
     border-right-style: solid;
     border-right-width: 2px;
