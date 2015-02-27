@@ -89,7 +89,7 @@ public class MemberService extends AbstractService {
     public Member findMemberForAuthentication(String name, String password)
             throws UserNotFoundException {
         for (Member member : memberList) {
-            if (member.getName().equals(name) && member.getPassword().equals(password)) {
+            if (member.getName().equalsIgnoreCase(name) && member.getPassword().equals(password)) {
                 return member;
             }
         }
