@@ -24,6 +24,14 @@ body {
     color: #ffffff !important;
 }
 
+.leftcolumn {
+    margin-top: 100px;
+}
+
+.weekselector-button {
+    margin-top: 10px;
+}
+
 .border-right {
     border-right-style: solid;
     border-right-width: 2px;

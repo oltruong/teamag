@@ -1,13 +1,9 @@
 <div class="row">
-    <div class="col-md-2">
-        <br/><br/>
-        <br/><br/><br/>
-        <select ng-model="selectedMember" ng-options="member.name for member in members"
-                ng-change="findWorks()"></select>
-        <br/><br/>
-        <button class="btn btn-sm btn-info" ng-click="decreaseWeek()">S. {{weekNumber-1}}</button>
-        <button class="btn btn-sm btn-info" ng-click="increaseWeek()">S. {{weekNumber+1}}</button>
-        <br/><br/>
+    <div class="col-md-2 leftcolumn">
+        <userselector></userselector>
+        <br/>
+        <weekselector></weekselector>
+        <br/>
         Macro t&acirc;che&nbsp;<input type="checkbox" ng-model="macroTask" ng-change="findWorks()"/>
     </div>
     <div class="col-md-10">
@@ -33,9 +29,7 @@
         </table>
         <br/>
 
-        <div class="form-group" ng-hide="!weekcomment.comment">
-            <textarea class="form-control" rows="10" disabled>{{weekcomment.comment}}</textarea>
-        </div>
+        <weekcomment></weekcomment>
 
     </div>
 </div>
