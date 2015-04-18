@@ -5,17 +5,17 @@
     <persistence-unit name="ejbPU" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>java:/jdbc/teamag</jta-data-source>
-        <class>fr.oltruong.teamag.model.Absence</class>
-        <class>fr.oltruong.teamag.model.AbsenceDay</class>
-        <class>fr.oltruong.teamag.model.Activity</class>
-        <class>fr.oltruong.teamag.model.BusinessCase</class>
-        <class>fr.oltruong.teamag.model.Member</class>
-        <class>fr.oltruong.teamag.model.Task</class>
-        <class>fr.oltruong.teamag.model.WeekComment</class>
-        <class>fr.oltruong.teamag.model.Work</class>
-        <class>fr.oltruong.teamag.model.WorkLoad</class>
-        <class>fr.oltruong.teamag.model.WorkRealized</class>
-        <class>fr.oltruong.teamag.model.converter.DateConverter</class>
+        <class>com.oltruong.teamag.model.Absence</class>
+        <class>com.oltruong.teamag.model.AbsenceDay</class>
+        <class>com.oltruong.teamag.model.Activity</class>
+        <class>com.oltruong.teamag.model.BusinessCase</class>
+        <class>com.oltruong.teamag.model.Member</class>
+        <class>com.oltruong.teamag.model.Task</class>
+        <class>com.oltruong.teamag.model.WeekComment</class>
+        <class>com.oltruong.teamag.model.Work</class>
+        <class>com.oltruong.teamag.model.WorkLoad</class>
+        <class>com.oltruong.teamag.model.WorkRealized</class>
+        <class>com.oltruong.teamag.model.converter.DateConverter</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
