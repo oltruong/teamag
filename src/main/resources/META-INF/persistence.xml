@@ -3,7 +3,7 @@
              version="1.0">
 
     <persistence-unit name="ejbPU" transaction-type="JTA">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/jdbc/teamag</jta-data-source>
         <class>com.oltruong.teamag.model.Absence</class>
         <class>com.oltruong.teamag.model.AbsenceDay</class>
