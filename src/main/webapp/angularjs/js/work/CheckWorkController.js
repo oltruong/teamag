@@ -48,7 +48,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                     }
                 }
 
-                $http.get('../resources/checkWork/weekComment/' + $scope.selectedMember.id + '/' + $scope.weekNumber).success(function (data) {
+                $http.get('../resources/checkWork/weekComment?memberId=' + $scope.selectedMember.id + '&weekNumber=' + $scope.weekNumber).success(function (data) {
 
                     $scope.weekcomment = data;
                     $scope.weekNumber = $scope.weekcomment.weekYear;
