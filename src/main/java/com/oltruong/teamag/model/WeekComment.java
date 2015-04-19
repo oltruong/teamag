@@ -24,6 +24,9 @@ public class WeekComment {
     @Column
     private int weekYear;
 
+    @Column(name = "TM_MONTH")
+    private int month;
+
     @Column(name = "TM_YEAR")
     private int year;
 
@@ -31,8 +34,9 @@ public class WeekComment {
     public WeekComment() {
     }
 
-    public WeekComment(Member theMember, int theWeekYear, int theYear) {
+    public WeekComment(Member theMember, int theWeekYear, int theMonth, int theYear) {
         member = theMember;
+        month = theMonth;
         weekYear = theWeekYear;
         year = theYear;
     }
@@ -55,6 +59,14 @@ public class WeekComment {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     public int getWeekYear() {

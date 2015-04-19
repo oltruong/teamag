@@ -4,20 +4,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oltruong.teamag.interfaces.UserLogin;
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.service.*;
 import com.oltruong.teamag.utils.CalendarUtils;
+import com.oltruong.teamag.webbean.ColumnDayBean;
 import com.oltruong.teamag.webbean.RealizedFormWebBean;
 import com.oltruong.teamag.webbean.TaskWeekBean;
-import com.oltruong.teamag.model.Member;
-import com.oltruong.teamag.model.WeekComment;
-import com.oltruong.teamag.service.AbsenceDayService;
-import com.oltruong.teamag.service.EmailService;
-import com.oltruong.teamag.service.MailBean;
-import com.oltruong.teamag.service.TaskService;
-import com.oltruong.teamag.service.WeekCommentService;
-import com.oltruong.teamag.service.WorkService;
-import com.oltruong.teamag.webbean.ColumnDayBean;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -270,7 +265,7 @@ public class WorkController extends Controller {
         weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
-            weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getYear());
+            weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());
         }
 
         if (works != null) {

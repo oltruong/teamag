@@ -3,19 +3,9 @@ package com.oltruong.teamag.model.builder;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
-import com.oltruong.teamag.model.WorkLoad;
+import com.oltruong.teamag.model.*;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.model.enumeration.ParameterName;
-import com.oltruong.teamag.model.Absence;
-import com.oltruong.teamag.model.AbsenceDay;
-import com.oltruong.teamag.model.Activity;
-import com.oltruong.teamag.model.BusinessCase;
-import com.oltruong.teamag.model.Member;
-import com.oltruong.teamag.model.Parameter;
-import com.oltruong.teamag.model.Task;
-import com.oltruong.teamag.model.WeekComment;
-import com.oltruong.teamag.model.Work;
-import com.oltruong.teamag.model.WorkRealized;
 import com.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
@@ -124,7 +114,7 @@ public class EntityFactory {
 
     public static WeekComment createWeekComment() {
         DateTime now = DateTime.now();
-        WeekComment weekComment = new WeekComment(createMember(), now.getWeekOfWeekyear(), now.getYear());
+        WeekComment weekComment = new WeekComment(createMember(), now.getWeekOfWeekyear(), now.getMonthOfYear(), now.getYear());
         weekComment.setComment("Comment" + now.toString());
         weekComment.setYear(now.getYear());
         weekComment.setWeekYear(now.getWeekOfWeekyear());
