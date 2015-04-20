@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.function.Supplier;
 
 /**
  * @author Olivier Truong
@@ -12,7 +13,17 @@ import javax.ws.rs.core.Response;
 @Consumes({MediaType.APPLICATION_JSON})
 public abstract class AbstractEndPoint {
 
-    protected Response buildResponseOK(Object object) {
+
+    protected Response get(Supplier supplier) {
+        Object result = supplier.get();
+        if (result == null) {
+            return notFound();
+        } else {
+            return ok(result);
+        }
+    }
+
+    protected Response ok(Object object) {
         return Response.ok(object).build();
     }
 

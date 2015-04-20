@@ -2,9 +2,9 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.interfaces.SecurityChecked;
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
-import com.oltruong.teamag.model.Member;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ejb.Stateless;
@@ -63,14 +63,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     }
 
     private Response getMemberById(Long memberId) {
-        Response response;
-        Member member = memberService.findMember(memberId);
-        if (member != null) {
-            response = ok(member);
-        } else {
-            response = notFound();
-        }
-        return response;
+        return get(() -> memberService.findMember(memberId));
     }
 
 

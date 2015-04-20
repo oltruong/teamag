@@ -32,7 +32,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     @GET
     public Response getWorkLoad() {
 
-        return Response.ok(buildWorkLoadContainer()).build();
+        return ok(buildWorkLoadContainer());
     }
 
     private WorkLoadMemberContainer buildWorkLoadContainer() {

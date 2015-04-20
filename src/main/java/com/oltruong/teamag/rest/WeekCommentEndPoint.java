@@ -1,7 +1,6 @@
 package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.SecurityChecked;
-import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.service.WeekCommentService;
 import org.joda.time.DateTime;
 
@@ -26,12 +25,7 @@ public class WeekCommentEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getWeekComment(@QueryParam("memberId") Long memberId, @QueryParam("weekNumber") int weekNumber) {
-
-        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear());
-        if (weekComment == null) {
-            return notFound();
-        }
-        return ok(weekComment);
+        return get(() -> weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear()));
     }
 
 

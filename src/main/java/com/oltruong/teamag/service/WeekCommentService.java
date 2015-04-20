@@ -41,4 +41,5 @@ public class WeekCommentService extends AbstractService {
         WeekComment weekCommentDb = find(WeekComment.class, weekComment.getId());
         remove(weekCommentDb);
     }
+
 }
