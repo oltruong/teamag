@@ -39,18 +39,18 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @GET
     @Path("/all")
     public Response getAllAbsences() {
-        return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAllAbsences()));
+        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAllAbsences()));
     }
 
     @GET
     @Path("/daysoff")
     public Response getDaysOff() {
-        return buildResponseOK(AbsenceWebBeanTransformer.transformListfromDays(CalendarUtils.getListDaysOff()));
+        return ok(AbsenceWebBeanTransformer.transformListfromDays(CalendarUtils.getListDaysOff()));
     }
 
     @GET
     public Response getAbsences(@HeaderParam("userid") Long memberId) {
-        return buildResponseOK(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMemberId(memberId)));
+        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMemberId(memberId)));
     }
 
     @POST
@@ -58,13 +58,13 @@ public class AbsenceEndPoint extends AbstractEndPoint {
         Response response = null;
         try {
             absenceService.addAbsence(AbsenceWebBeanTransformer.transformWebBean(absenceWebBean), memberId);
-            response = buildResponseCreated();
+            response = created();
         } catch (DateOverlapException e) {
             logger.warn("Creating absence with DateOverLap", e);
-            response = buildResponseForbidden();
+            response = forbidden();
         } catch (InconsistentDateException e) {
             logger.warn("Creating absence with InconsistentDate", e);
-            response = buildResponseBadRequest();
+            response = badRequest();
         }
         return response;
     }
@@ -75,12 +75,12 @@ public class AbsenceEndPoint extends AbstractEndPoint {
         Absence absence = absenceService.find(absenceId);
         Response response = null;
         if (absence == null) {
-            response = buildResponseNotFound();
+            response = notFound();
         } else if (!absence.getMember().getId().equals(memberId)) {
-            response = buildResponseForbidden();
+            response = forbidden();
         } else {
             absenceService.deleteAbsence(absence);
-            response = buildResponseNoContent();
+            response = noContent();
         }
         return response;
     }

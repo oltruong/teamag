@@ -7,6 +7,7 @@ import com.oltruong.teamag.exception.UserNotFoundException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,7 +20,7 @@ import javax.ws.rs.core.Response;
 @Stateless
 public class LoginEndPoint extends AbstractEndPoint {
 
-    @EJB
+    @Inject
     MemberService memberService;
 
     @GET
@@ -35,7 +36,7 @@ public class LoginEndPoint extends AbstractEndPoint {
             Member member;
             try {
                 member = memberService.findMemberForAuthentication(username, TeamagUtils.hashPassword(password));
-                response = buildResponseOK(member);
+                response = ok(member);
             } catch (UserNotFoundException e) {
                 response = Response.status(Response.Status.NOT_FOUND).build();
             }

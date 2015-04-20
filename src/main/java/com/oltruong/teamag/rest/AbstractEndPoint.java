@@ -16,31 +16,31 @@ public abstract class AbstractEndPoint {
         return Response.ok(object).build();
     }
 
-    protected Response buildResponseOK() {
+    protected Response ok() {
         return Response.ok().build();
     }
 
-    protected Response buildResponseCreated() {
+    protected Response created() {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    protected Response buildResponseNotAcceptable() {
+    protected Response notAcceptable() {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
-    protected Response buildResponseNoContent() {
+    protected Response noContent() {
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
-    protected Response buildResponseNotFound() {
+    protected Response notFound() {
         return buildResponse(Response.Status.NOT_FOUND);
     }
 
-    protected Response buildResponseForbidden() {
+    protected Response forbidden() {
         return buildResponse(Response.Status.FORBIDDEN);
     }
 
-    protected Response buildResponseBadRequest() {
+    protected Response badRequest() {
         return buildResponse(Response.Status.BAD_REQUEST);
     }
 

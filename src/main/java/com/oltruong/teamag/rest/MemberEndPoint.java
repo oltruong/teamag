@@ -31,7 +31,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     @GET
     @AdminChecked
     public Response getMembers() {
-        return buildResponseOK(memberService.findMembers());
+        return ok(memberService.findMembers());
     }
 
 
@@ -66,9 +66,9 @@ public class MemberEndPoint extends AbstractEndPoint {
         Response response;
         Member member = memberService.findMember(memberId);
         if (member != null) {
-            response = buildResponseOK(member);
+            response = ok(member);
         } else {
-            response = buildResponseNotFound();
+            response = notFound();
         }
         return response;
     }
@@ -78,7 +78,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     @AdminChecked
     public Response createMember(Member member) {
         memberService.create(member);
-        return buildResponseCreated();
+        return created();
     }
 
     @PUT
@@ -91,7 +91,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     private Response updateMember(Long memberId, Member member) {
         member.setId(memberId);
         memberService.updateMember(member);
-        return buildResponseOK();
+        return ok();
     }
 
 

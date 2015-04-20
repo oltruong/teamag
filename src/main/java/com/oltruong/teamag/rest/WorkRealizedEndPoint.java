@@ -45,9 +45,9 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
     private Response getResponse(List workRealizedList) {
         Response response = null;
         if (workRealizedList == null || workRealizedList.isEmpty()) {
-            response = buildResponseNoContent();
+            response = noContent();
         } else {
-            response = buildResponseOK(workRealizedList);
+            response = ok(workRealizedList);
         }
         return response;
     }
@@ -158,9 +158,9 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
                 workRealizedWrapper.getWorkRealizedList().removeIf(workRealized -> (workRealized.getId() == null && workRealized.getRealized() == 0));
                 workRealizedService.createOrUpdate(workRealizedWrapper.getWorkRealizedList());
             });
-            response = buildResponseOK();
+            response = ok();
         } else {
-            response = buildResponseNotAcceptable();
+            response = notAcceptable();
         }
 
         return response;

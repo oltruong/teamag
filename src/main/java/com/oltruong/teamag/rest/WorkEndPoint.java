@@ -32,7 +32,7 @@ public class WorkEndPoint extends AbstractEndPoint {
         List<Work> workList = workService.findWorkByTask(taskId);
 
         List<WorkWebBean> workWebBeanList = transform(workList);
-        return buildResponseOK(workWebBeanList);
+        return ok(workWebBeanList);
     }
 
     private List<WorkWebBean> transform(List<Work> workList) {

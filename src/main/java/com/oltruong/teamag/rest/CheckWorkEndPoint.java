@@ -7,9 +7,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
 import com.oltruong.teamag.interfaces.SupervisorChecked;
 import com.oltruong.teamag.model.Task;
-import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.Work;
-import com.oltruong.teamag.service.WeekCommentService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.WorkWebBean;
@@ -20,7 +18,6 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
@@ -36,22 +33,6 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
     @Inject
     private WorkService workService;
 
-    @Inject
-    private WeekCommentService weekCommentService;
-
-
-    @GET
-    @Path("/weekComment")
-    public Response getWeekComment(@QueryParam("memberId") Long memberId, @QueryParam("weekNumber") int weekNumber) {
-
-        weekNumber = parseWeekNumber(weekNumber);
-        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear());
-        if (weekComment == null) {
-            weekComment = new WeekComment();
-            weekComment.setWeekYear(weekNumber);
-        }
-        return buildResponseOK(weekComment);
-    }
 
     private int parseWeekNumber(int weekNumber) {
 
@@ -75,7 +56,7 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
 
         List<WorkWebBean> workWebBeanList = transform(workList);
 
-        return buildResponseOK(workWebBeanList);
+        return ok(workWebBeanList);
     }
 
     private List<Work> transformMacro(List<Work> workList) {

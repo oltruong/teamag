@@ -32,13 +32,13 @@ public class TaskEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getTasks() {
-        return buildResponseOK(buildTask(taskService.findAllTasks()));
+        return ok(buildTask(taskService.findAllTasks()));
     }
 
     @GET
     @Path("/withactivity")
     public Response getTasksWithActivity() {
-        return buildResponseOK(buildTask(taskService.findTaskWithActivity()));
+        return ok(buildTask(taskService.findTaskWithActivity()));
     }
 
     private List<TaskWebBean> buildTask(List<Task> taskList) {
@@ -74,7 +74,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @GET
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long taskId) {
-        return buildResponseOK(taskService.findTask(taskId));
+        return ok(taskService.findTask(taskId));
     }
 
     @POST
@@ -82,9 +82,9 @@ public class TaskEndPoint extends AbstractEndPoint {
         try {
             taskService.createTask(task);
         } catch (EntityExistsException e) {
-            return buildResponseNotAcceptable();
+            return notAcceptable();
         }
-        return buildResponseCreated();
+        return created();
     }
 
 
@@ -93,7 +93,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     public Response updateTask(@PathParam("id") Long taskId, Task task) {
         task.setId(taskId);
         taskService.updateTask(task);
-        return buildResponseOK();
+        return ok();
     }
 
 
@@ -103,9 +103,9 @@ public class TaskEndPoint extends AbstractEndPoint {
         Response response;
         try {
             taskService.deleteTask(taskId);
-            response = buildResponseNoContent();
+            response = noContent();
         } catch (EntityNotFoundException exception) {
-            response = buildResponseNotFound();
+            response = notFound();
         }
         return response;
     }

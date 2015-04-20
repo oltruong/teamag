@@ -35,26 +35,26 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @GET
     @Path("/bc")
     public Response getBC() {
-        return buildResponseOK(businessCaseService.findAll());
+        return ok(businessCaseService.findAll());
     }
 
     @GET
     @Path("/bc/{id}")
     public Response getBC(@PathParam("id") Long businessCaseId) {
-        return buildResponseOK(businessCaseService.find(businessCaseId));
+        return ok(businessCaseService.find(businessCaseId));
     }
 
     @GET
     @Path("/activity")
     public Response getActivities() {
-        return buildResponseOK(activityService.findActivities());
+        return ok(activityService.findActivities());
     }
 
 
     @GET
     @Path("/activity/{id}")
     public Response getActivity(@PathParam("id") Long activityId) {
-        return buildResponseOK(activityService.findActivity(activityId));
+        return ok(activityService.findActivity(activityId));
     }
 
     @POST
@@ -65,7 +65,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
         } catch (EntityExistsException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return buildResponseCreated();
+        return created();
     }
 
 
@@ -75,7 +75,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
         activity.setId(activityId);
 
         activityService.updateActivity(activity);
-        return buildResponseOK();
+        return ok();
     }
 
 
@@ -83,7 +83,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/activity/{id}")
     public Response deleteActivity(@PathParam("id") Long activityId) {
         activityService.deleteActivity(activityId);
-        return buildResponseOK();
+        return ok();
     }
 
 
@@ -95,7 +95,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
         } catch (EntityExistsException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return buildResponseCreated();
+        return created();
     }
 
     @PUT
@@ -103,7 +103,7 @@ public class BusinessEndPoint extends AbstractEndPoint {
     public Response updateBC(@PathParam("id") Long businessCaseId, BusinessCase businessCase) {
         businessCase.setId(businessCaseId);
         businessCaseService.update(businessCase);
-        return buildResponseOK();
+        return ok();
     }
 
 
@@ -111,6 +111,6 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @Path("/bc/{id}")
     public Response deleteBC(@PathParam("id") Long businessCaseId) {
         businessCaseService.delete(businessCaseId);
-        return buildResponseOK();
+        return ok();
     }
 }

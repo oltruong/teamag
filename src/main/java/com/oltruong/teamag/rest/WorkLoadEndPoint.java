@@ -76,7 +76,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
             workLoadContainerList.forEach(workLoadContainer -> workLoadService.updateWorkLoad(workLoadContainer.getWorkLoadList()));
         }
 
-        return buildResponseOK();
+        return ok();
     }
 
 
