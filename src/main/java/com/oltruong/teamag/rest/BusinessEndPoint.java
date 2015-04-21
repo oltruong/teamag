@@ -2,8 +2,8 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.Activity;
-import com.oltruong.teamag.service.ActivityService;
 import com.oltruong.teamag.model.BusinessCase;
+import com.oltruong.teamag.service.ActivityService;
 import com.oltruong.teamag.service.BusinessCaseService;
 
 import javax.ejb.Stateless;
@@ -47,14 +47,14 @@ public class BusinessEndPoint extends AbstractEndPoint {
     @GET
     @Path("/activity")
     public Response getActivities() {
-        return ok(activityService.findActivities());
+        return get(() -> activityService.findActivities());
     }
 
 
     @GET
     @Path("/activity/{id}")
     public Response getActivity(@PathParam("id") Long activityId) {
-        return ok(activityService.findActivity(activityId));
+        return get(() -> activityService.findActivity(activityId));
     }
 
     @POST

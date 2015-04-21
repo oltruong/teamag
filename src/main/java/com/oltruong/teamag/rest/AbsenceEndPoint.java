@@ -3,11 +3,11 @@ package com.oltruong.teamag.rest;
 import com.oltruong.teamag.exception.DateOverlapException;
 import com.oltruong.teamag.exception.InconsistentDateException;
 import com.oltruong.teamag.interfaces.SecurityChecked;
+import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.service.AbsenceService;
 import com.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
-import com.oltruong.teamag.model.Absence;
 import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
@@ -72,17 +72,7 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{absenceId}")
     public Response deleteAbsence(@HeaderParam("userid") Long memberId, @PathParam("absenceId") Long absenceId) {
-        Absence absence = absenceService.find(absenceId);
-        Response response = null;
-        if (absence == null) {
-            response = notFound();
-        } else if (!absence.getMember().getId().equals(memberId)) {
-            response = forbidden();
-        } else {
-            absenceService.deleteAbsence(absence);
-            response = noContent();
-        }
-        return response;
+        return delete(() -> absenceService.find(absenceId), (absence) -> ((Absence) absence).getMember().getId().equals(memberId), (absence) -> absenceService.deleteAbsence((Absence) absence));
     }
 
 

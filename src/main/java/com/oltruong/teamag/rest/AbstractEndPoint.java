@@ -4,6 +4,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -14,13 +16,34 @@ import java.util.function.Supplier;
 public abstract class AbstractEndPoint {
 
 
-    protected Response get(Supplier supplier) {
-        Object result = supplier.get();
+    protected Response get(Supplier finder) {
+        Object result = finder.get();
         if (result == null) {
             return notFound();
         } else {
             return ok(result);
         }
+    }
+
+    protected Response delete(Supplier finder, Consumer deleter) {
+
+        return delete(finder, x -> true, deleter);
+    }
+
+    protected Response delete(Supplier finder, Predicate authorizer, Consumer deleter) {
+        Object result = finder.get();
+        Response response;
+        if (result == null) {
+            response = notFound();
+        } else {
+            if (authorizer.test(result)) {
+                deleter.accept(result);
+                response = noContent();
+            } else {
+                response = forbidden();
+            }
+        }
+        return response;
     }
 
     protected Response ok(Object object) {
