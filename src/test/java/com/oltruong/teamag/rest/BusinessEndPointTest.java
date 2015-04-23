@@ -4,8 +4,8 @@ import com.oltruong.teamag.model.Activity;
 import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.ActivityService;
-import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.service.BusinessCaseService;
+import com.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -88,7 +88,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     public void testGetActivity() throws Exception {
 
         Activity activity = EntityFactory.createActivity();
-        when(mockActivityService.findActivity(eq(randomId))).thenReturn(activity);
+        when(mockActivityService.find(eq(randomId))).thenReturn(activity);
 
         Response response = businessEndPoint.getActivity(randomId);
         checkResponseOK(response);
@@ -96,17 +96,17 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         Activity activityReturned = (Activity) response.getEntity();
 
         assertThat(activityReturned).isEqualTo(activity);
-        verify(mockActivityService).findActivity(eq(randomId));
+        verify(mockActivityService).find(eq(randomId));
     }
 
     @Test
     public void testCreateActivity() throws Exception {
         Activity activity = EntityFactory.createActivity();
-        when(mockActivityService.createActivity(eq(activity))).thenReturn(activity);
+        when(mockActivityService.persist(eq(activity))).thenReturn(activity);
         Response response = businessEndPoint.createActivity(activity);
 
         checkResponseCreated(response);
-        verify(mockActivityService).createActivity(eq(activity));
+        verify(mockActivityService).persist(eq(activity));
 
     }
 
@@ -114,12 +114,12 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreateActivity_existing() throws Exception {
         Activity activity = EntityFactory.createActivity();
-        when(mockActivityService.createActivity(eq(activity))).thenThrow(new EntityExistsException());
+        when(mockActivityService.persist(eq(activity))).thenThrow(new EntityExistsException());
 
         Response response = businessEndPoint.createActivity(activity);
 
         checkResponseNotAcceptable(response);
-        verify(mockActivityService).createActivity(eq(activity));
+        verify(mockActivityService).persist(eq(activity));
 
     }
 
@@ -133,7 +133,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
         assertThat(activity.getId()).isEqualTo(randomId);
-        verify(mockActivityService).updateActivity(eq(activity));
+        verify(mockActivityService).merge(eq(activity));
     }
 
     @Test
@@ -143,17 +143,17 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
 
-        verify(mockActivityService).deleteActivity(eq(randomId));
+        verify(mockActivityService).remove(eq(randomId));
     }
 
     @Test
     public void testCreateBC() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        when(mockBusinessCaseService.create(eq(businessCase))).thenReturn(businessCase);
+        when(mockBusinessCaseService.persist(eq(businessCase))).thenReturn(businessCase);
         Response response = businessEndPoint.createBC(businessCase);
 
         checkResponseCreated(response);
-        verify(mockBusinessCaseService).create(eq(businessCase));
+        verify(mockBusinessCaseService).persist(eq(businessCase));
 
     }
 
@@ -161,11 +161,11 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreateBC_existing() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        when(mockBusinessCaseService.create(eq(businessCase))).thenThrow(new EntityExistsException());
+        when(mockBusinessCaseService.persist(eq(businessCase))).thenThrow(new EntityExistsException());
         Response response = businessEndPoint.createBC(businessCase);
 
         checkResponseNotAcceptable(response);
-        verify(mockBusinessCaseService).create(eq(businessCase));
+        verify(mockBusinessCaseService).persist(eq(businessCase));
 
     }
 
@@ -178,7 +178,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
         assertThat(businessCase.getId()).isEqualTo(randomId);
-        verify(mockBusinessCaseService).update(eq(businessCase));
+        verify(mockBusinessCaseService).merge(eq(businessCase));
     }
 
     @Test
@@ -187,6 +187,6 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
 
-        verify(mockBusinessCaseService).delete(eq(randomId));
+        verify(mockBusinessCaseService).remove(eq(randomId));
     }
 }

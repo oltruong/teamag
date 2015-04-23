@@ -4,7 +4,7 @@
     <groupId>com.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.6.4-SNAPSHOT</version>
+    <version>0.6.5-SNAPSHOT</version>
     <name>TEAMAG</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/teamag</url>

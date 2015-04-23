@@ -44,7 +44,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         workList = EntityFactory.createList(EntityFactory::createWork, 10);
         workList.forEach(w -> w.setTotal(0d));
         month = DateTime.now().withDayOfMonth(1);
-        when(mockQuery.getResultList()).thenReturn(workList);
+        when(mockTypedQuery.getResultList()).thenReturn(workList);
         when(mockTypedQuery.getResultList()).thenReturn(workList);
     }
 
@@ -247,7 +247,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         final Double totalEdit = Double.valueOf(2.2d);
         workList.forEach(work -> work.setTotalEdit(totalEdit));
 
-        workService.updateWorks(workList);
+        workService.mergeList(workList);
 
         workList.forEach(work -> {
             assertThat(work.getTotal()).isEqualTo(totalEdit);
@@ -310,7 +310,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
         Integer randomInt = EntityFactory.createRandomInteger();
 
-        when(mockQuery.getSingleResult()).thenReturn(randomInt);
+        when(mockNamedQuery.getSingleResult()).thenReturn(randomInt);
 
         DateTime month = DateTime.now();
         Member member = EntityFactory.createMember();
@@ -319,9 +319,9 @@ public class WorkServiceTest extends AbstractServiceTest {
         int sum = workService.getSumWorks(member, month);
 
         assertThat(sum).isEqualTo(randomInt.intValue());
-        checkCreateNameQuery("Work.SUM_BY_MONTH_MEMBER");
-        verify(mockQuery).setParameter(eq("fmemberId"), eq(randomLong));
-        verify(mockQuery).setParameter(eq("fmonth"), eq(month));
+        verify(mockEntityManager).createNamedQuery(eq("Work.SUM_BY_MONTH_MEMBER"));
+        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomLong));
+        verify(mockNamedQuery).setParameter(eq("fmonth"), eq(month));
     }
 
     @Test

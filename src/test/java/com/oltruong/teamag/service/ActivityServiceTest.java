@@ -34,13 +34,13 @@ public class ActivityServiceTest extends AbstractServiceTest {
     public void testFindActivities() throws Exception {
 
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
-        when(getMockQuery().getResultList()).thenReturn(activityList);
+        when(mockTypedQuery.getResultList()).thenReturn(activityList);
 
         List<Activity> activityFoundList = activityService.findActivities();
 
         assertThat(activityFoundList).isEqualTo(activityList);
-        verify(mockEntityManager).createNamedQuery(eq("findAllActivities"));
-        verify(getMockQuery()).getResultList();
+        checkCreateTypedQuery("findAllActivities");
+        verify(mockTypedQuery).getResultList();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         when(mockEntityManager.find(eq(Activity.class), anyLong())).thenReturn(activity);
 
-        Activity activityFound = activityService.findActivity(randomLong);
+        Activity activityFound = activityService.find(randomLong);
 
         assertThat(activityFound).isEqualToComparingFieldByField(activity);
 
@@ -67,7 +67,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         when(mockEntityManager.find(eq(Activity.class), anyLong())).thenReturn(activity);
 
-        activityService.deleteActivity(randomLong);
+        activityService.remove(randomLong);
 
         verify(mockEntityManager).find(eq(Activity.class), eq(randomLong));
         verify(mockEntityManager).remove(eq(activity));
@@ -77,20 +77,20 @@ public class ActivityServiceTest extends AbstractServiceTest {
     public void testUpdateActivity() {
         Activity activity = EntityFactory.createActivity();
 
-        activityService.updateActivity(activity);
+        activityService.merge(activity);
         verify(mockEntityManager).merge(eq(activity));
     }
 
     @Test
     public void testCreateActivity() throws Exception {
         Activity activity = EntityFactory.createActivity();
-        Activity activityCreated = activityService.createActivity(activity);
+        Activity activityCreated = activityService.persist(activity);
 
         assertThat(activityCreated).isEqualTo(activity);
 
-        verify(mockEntityManager).createNamedQuery(eq("findActivity"));
-        verify(getMockQuery()).setParameter(eq("fname"), eq(activity.getName()));
-        verify(getMockQuery()).setParameter(eq("fbc"), eq(activity.getBc()));
+        checkCreateTypedQuery("findActivity");
+        verify(mockTypedQuery).setParameter(eq("fname"), eq(activity.getName()));
+        verify(mockTypedQuery).setParameter(eq("fbc"), eq(activity.getBc()));
         verify(mockEntityManager).persist(eq(activity));
     }
 
@@ -98,9 +98,9 @@ public class ActivityServiceTest extends AbstractServiceTest {
     @Test(expected = EntityExistsException.class)
     public void testCreateActivity_existingData() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
-        when(getMockQuery().getResultList()).thenReturn(activityList);
+        when(mockTypedQuery.getResultList()).thenReturn(activityList);
 
-        activityService.createActivity(activityList.get(0));
+        activityService.persist(activityList.get(0));
     }
 
 

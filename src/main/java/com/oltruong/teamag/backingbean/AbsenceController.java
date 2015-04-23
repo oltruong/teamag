@@ -1,11 +1,11 @@
 package com.oltruong.teamag.backingbean;
 
-import com.oltruong.teamag.service.AbsenceService;
 import com.oltruong.teamag.exception.DateOverlapException;
 import com.oltruong.teamag.exception.InconsistentDateException;
 import com.oltruong.teamag.interfaces.UserLogin;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.service.AbsenceService;
 import com.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import com.oltruong.teamag.utils.MessageManager;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
@@ -72,7 +72,7 @@ public class AbsenceController extends Controller {
 
 
     private void refreshList() {
-        absencesList = AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMember(getMember()));
+        absencesList = AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMember(getMember().getId()));
     }
 
     public AbsenceWebBean getAbsence() {

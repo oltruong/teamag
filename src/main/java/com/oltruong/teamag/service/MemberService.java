@@ -2,25 +2,23 @@ package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oltruong.teamag.model.enumeration.MemberType;
-import com.oltruong.teamag.utils.TeamagUtils;
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.TeamagConstants;
-import org.apache.commons.collections.CollectionUtils;
+import com.oltruong.teamag.utils.TeamagUtils;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
 @Singleton
 @Startup
-public class MemberService extends AbstractService {
+public class MemberService extends AbstractService<Member> {
 
     private static final String DEFAULT_ADMIN = "admin";
 
@@ -30,6 +28,10 @@ public class MemberService extends AbstractService {
 
     @Inject
     private WorkLoadService workLoadService;
+
+    @Inject
+    private TaskService taskService;
+
 
     public static Map<Long, Member> getMemberMap() {
         return memberMap;
@@ -56,11 +58,11 @@ public class MemberService extends AbstractService {
         logger.info("Creating admin member.");
 
         Member adminMember = generateAdminMember();
-        persist(adminMember);
+        super.persist(adminMember);
 
-        Task absenceTask = getOrCreateAbsenceTask();
+        Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(adminMember);
-        persist(absenceTask);
+        taskService.persist(absenceTask);
 
         memberList = Lists.newArrayListWithExpectedSize(1);
         memberList.add(adminMember);
@@ -68,11 +70,11 @@ public class MemberService extends AbstractService {
 
 
     public List<Member> findMembers() {
-        return createNamedQuery("findMembers", Member.class).getResultList();
+        return getTypedQueryList("findMembers");
     }
 
     public List<Member> findActiveMembers() {
-        return createNamedQuery("findActiveMembers", Member.class).getResultList();
+        return getTypedQueryList("findActiveMembers");
     }
 
     public List<Member> findActiveNonAdminMembers() {
@@ -81,10 +83,6 @@ public class MemberService extends AbstractService {
         return activeMemberList;
     }
 
-
-    public Member findMember(Long id) {
-        return find(Member.class, id);
-    }
 
     public Member findMemberForAuthentication(String name, String password)
             throws UserNotFoundException {
@@ -96,44 +94,31 @@ public class MemberService extends AbstractService {
         throw new UserNotFoundException();
     }
 
-    public Member create(Member member) {
+    @Override
+    Class<Member> entityProvider() {
+        return Member.class;
+    }
+
+    @Override
+    public Member persist(Member member) {
 
         member.setPassword(getDefaultPasswordHashed());
         member.setEstimatedWorkDays(0d);
-        persist(member);
+        super.persist(member);
 
-        Task absenceTask = getOrCreateAbsenceTask();
+        Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(member);
-        persist(absenceTask);
-
+        taskService.persist(absenceTask);
         workLoadService.createFromMember(member);
 
         buildList();
         return member;
     }
 
-    private Task getOrCreateAbsenceTask() {
-        TypedQuery<Task> query = createNamedQuery("Task.FIND_BY_NAME", Task.class);
-        query.setParameter("fname", "Absence");
-        query.setParameter("fproject", "");
 
-        Task task;
-        List<Task> taskList = query.getResultList();
-
-        if (!CollectionUtils.isEmpty(taskList)) {
-            task = taskList.get(0);
-        } else {
-            logger.info("Absence task is not found. Will be created");
-            Task newTask = new Task();
-            newTask.setName("Absence");
-            persist(newTask);
-            task = newTask;
-        }
-        return task;
-    }
-
-    public void updateMember(Member member) {
-        merge(member);
+    @Override
+    public void merge(Member member) {
+        super.merge(member);
         buildList();
     }
 

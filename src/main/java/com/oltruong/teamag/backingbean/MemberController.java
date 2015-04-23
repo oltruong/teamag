@@ -37,13 +37,13 @@ public class MemberController extends Controller {
 
     public String update() {
         for (Member member : memberList) {
-            memberEJB.updateMember(member);
+            memberEJB.merge(member);
         }
         return VIEWNAME;
     }
 
     public String doCreateMember() {
-        member = memberEJB.create(member);
+        member = memberEJB.persist(member);
         memberList = memberEJB.findMembers();
 
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));
@@ -75,7 +75,7 @@ public class MemberController extends Controller {
     public void onEdit(RowEditEvent event) {
         Member memberUpdated = (Member) event.getObject();
 
-        memberEJB.updateMember(memberUpdated);
+        memberEJB.merge(memberUpdated);
         FacesMessage msg = new FacesMessage("Member Edited", memberUpdated.getName());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);

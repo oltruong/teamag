@@ -74,14 +74,14 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
 
     private void testGetMemberById(Supplier<Response> supplier) {
-        when(mockMemberService.findMember(any())).thenReturn(member);
+        when(mockMemberService.find(any())).thenReturn(member);
 
         Response response = supplier.get();
         checkResponseOK(response);
         Member memberReturned = (Member) response.getEntity();
         assertThat(memberReturned).isEqualTo(member);
 
-        verify(mockMemberService).findMember(eq(randomId));
+        verify(mockMemberService).find(eq(randomId));
 
     }
 
@@ -89,7 +89,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     private void testGetMemberById_notFound(Supplier<Response> supplier) {
         Response response = supplier.get();
         checkResponseNotFound(response);
-        verify(mockMemberService).findMember(eq(randomId));
+        verify(mockMemberService).find(eq(randomId));
     }
 
 
@@ -99,7 +99,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         Response response = memberEndPoint.createMember(member);
 
         checkResponseCreated(response);
-        verify(mockMemberService).create(eq(member));
+        verify(mockMemberService).persist(eq(member));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
         assertThat(member.getId()).isEqualTo(randomId);
 
-        verify(mockMemberService).updateMember(eq(member));
+        verify(mockMemberService).merge(eq(member));
 
     }
 
@@ -126,7 +126,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
         assertThat(member.getId()).isEqualTo(randomId);
 
-        verify(mockMemberService).updateMember(eq(member));
+        verify(mockMemberService).merge(eq(member));
 
     }
 
@@ -143,7 +143,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         assertThat(member.getPassword()).isEqualTo(TeamagUtils.hashPassword(member.getNewPassword()));
         assertThat(member.getId()).isEqualTo(randomId);
 
-        verify(mockMemberService).updateMember(eq(member));
+        verify(mockMemberService).merge(eq(member));
 
     }
 

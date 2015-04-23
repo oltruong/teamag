@@ -64,7 +64,7 @@ public class BCController extends Controller {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "provideBCNumber");
         } else {
             try {
-                this.businessCaseService.create(this.bc);
+                this.businessCaseService.persist(this.bc);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "businessCaseCreated", this.bc.getIdentifier(), this.bc.getName());
                 this.bc = new BusinessCase();
             } catch (EntityExistsException e) {
@@ -101,7 +101,7 @@ public class BCController extends Controller {
         } else {
 
             try {
-                this.activityService.createActivity(this.activity);
+                this.activityService.persist(this.activity);
                 getMessageManager().displayMessageWithDescription(MessageManager.INFORMATION, "updated", "activityCreated");
                 this.activity = new Activity();
             } catch (EntityExistsException e) {
@@ -119,7 +119,7 @@ public class BCController extends Controller {
     public void onEditBC(RowEditEvent event) {
         BusinessCase bcUpdated = (BusinessCase) event.getObject();
 
-        businessCaseService.update(bcUpdated);
+        businessCaseService.merge(bcUpdated);
         getMessageManager().displayMessage(MessageManager.INFORMATION, "businessCaseUpdated", bcUpdated.getName());
         computeTotal();
 

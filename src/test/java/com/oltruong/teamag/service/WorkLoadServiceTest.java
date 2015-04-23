@@ -4,13 +4,14 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.oltruong.teamag.model.BusinessCase;
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.WorkLoad;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
-import com.oltruong.teamag.model.Member;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 
 import javax.persistence.Query;
 import java.util.List;
@@ -33,12 +34,15 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
     private WorkLoadService workLoadService;
 
+    @Mock
+    private BusinessCaseService mockBusinessCaseService;
 
     @Before
     public void prepare() {
         super.setup();
         workLoadService = new WorkLoadService();
         prepareService(workLoadService);
+        TestUtils.setPrivateAttribute(workLoadService, mockBusinessCaseService, "businessCaseService");
     }
 
     @Test
@@ -46,7 +50,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         List<WorkLoad> workLoadList = EntityFactory.createList(EntityFactory::createWorkLoad);
 
 
-        when(getMockQuery().getResultList()).thenReturn(workLoadList);
+        when(mockTypedQuery.getResultList()).thenReturn(workLoadList);
 
         List<BusinessCase> businessCaseList = Lists.newArrayListWithCapacity(workLoadList.size());
         List<Member> memberList = Lists.newArrayListWithCapacity(workLoadList.size());
@@ -65,43 +69,37 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
             }
         });
 
-        Query mockQueryBC = mock(Query.class);
-        when(mockEntityManager.createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
-        when(mockQueryBC.getResultList()).thenReturn(businessCaseList);
+        when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
         TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
 
         List<WorkLoad> workLoadReturnedList = workLoadService.findOrCreateAllWorkLoad();
 
         assertThat(workLoadReturnedList).containsAll(workLoadList).hasSize(memberList.size() * businessCaseList.size());
-        verify(mockEntityManager).createNamedQuery(eq("findAllWorkLoad"));
+        checkCreateTypedQuery("findAllWorkLoad");
+        verify(mockBusinessCaseService).findAll();
 
     }
 
     @Test
     public void testFindOrCreateAllWorkLoad_create_null() {
-        when(getMockQuery().getResultList()).thenReturn(null);
-
+        when(mockTypedQuery.getResultList()).thenReturn(null);
         testFindOrCreateAllWorkLoad_create();
-
     }
 
     @Test
     public void testFindOrCreateAllWorkLoad_create_empty() {
-        when(getMockQuery().getResultList()).thenReturn(Lists.newArrayList());
+        when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList());
 
         testFindOrCreateAllWorkLoad_create();
 
     }
 
     private void testFindOrCreateAllWorkLoad_create() {
-        Query mockQueryBC = mock(Query.class);
-        when(mockEntityManager.createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
-
 
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
         List<BusinessCase> bcList = EntityFactory.createList(EntityFactory::createBusinessCase);
 
-        when(mockQueryBC.getResultList()).thenReturn(bcList);
+        when(mockBusinessCaseService.findAll()).thenReturn(bcList);
 
         TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
 
@@ -112,8 +110,8 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         assertThat(workLoadReturnedList).doesNotHaveDuplicates().hasSize(memberList.size() * bcList.size());
         verify(mockEntityManager, times(memberList.size() * bcList.size())).persist(isA(WorkLoad.class));
 
-        verify(mockEntityManager).createNamedQuery(eq("findAllWorkLoad"));
-        verify(mockEntityManager).createNamedQuery(eq("findAllBC"));
+        checkCreateTypedQuery("findAllWorkLoad");
+        verify(mockBusinessCaseService).findAll();
     }
 
 
@@ -121,7 +119,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     public void testUpdateWorkLoad() {
         List<WorkLoad> workLoadList = EntityFactory.createList(EntityFactory::createWorkLoad);
 
-        workLoadService.updateWorkLoad(workLoadList);
+        workLoadService.mergeList(workLoadList);
 
 
         //Dunno why IntellIj won't accept a single line here...
@@ -132,7 +130,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testUpdateWorkLoad_null() {
-        workLoadService.updateWorkLoad(null);
+        workLoadService.mergeList(null);
     }
 
 
@@ -153,7 +151,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         List<WorkLoad> workLoadList = EntityFactory.createList(EntityFactory::createWorkLoad);
 
 
-        when(getMockQuery().getResultList()).thenReturn(workLoadList);
+        when(mockTypedQuery.getResultList()).thenReturn(workLoadList);
 
         List<BusinessCase> businessCaseList = Lists.newArrayListWithCapacity(workLoadList.size());
         List<Member> memberList = Lists.newArrayListWithCapacity(workLoadList.size());
@@ -172,7 +170,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
             }
         });
 
-        when(mockQuery.getResultList()).thenReturn(workLoadList);
+        when(mockTypedQuery.getResultList()).thenReturn(workLoadList);
 
         Table<Member, BusinessCase, Double> values = HashBasedTable.create();
 
@@ -217,7 +215,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateFromMember(){
+    public void testCreateFromMember() {
 
     }
 }

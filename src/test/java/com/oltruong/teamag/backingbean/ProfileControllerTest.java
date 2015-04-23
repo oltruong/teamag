@@ -77,7 +77,7 @@ public class ProfileControllerTest extends ControllerTest {
         String view = profileController.updatePassword();
 
         assertThat(TestUtils.getPrivateAttribute(member, "password")).isEqualTo(newPasswordEncrypted);
-        verify(mockMemberService).updateMember(eq(member));
+        verify(mockMemberService).merge(eq(member));
         verify(mockMessageManager).displayMessage(eq(MessageManager.INFORMATION), anyString());
         checkView(view);
 

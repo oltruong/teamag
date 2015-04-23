@@ -30,7 +30,7 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
     public void prepare() {
         absenceDayService = new AbsenceDayService();
         absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-        when(mockQuery.getResultList()).thenReturn(absenceDayList);
+        when(mockTypedQuery.getResultList()).thenReturn(absenceDayList);
         TestUtils.setPrivateAttribute(absenceDayService, mockWorkService, "workService");
 
         prepareService(absenceDayService);
@@ -42,9 +42,9 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
 
         Assertions.assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
 
-        checkCreateNameQuery("findAllAbsenceDays");
+        checkCreateTypedQuery("findAllAbsenceDays");
 
-        verify(getMockQuery()).getResultList();
+        verify(mockTypedQuery).getResultList();
 
     }
 
@@ -53,17 +53,14 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
 
         Long idTest = Long.valueOf(3365l);
 
-
         List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-        when(getMockQuery().getResultList()).thenReturn(absenceDayList);
-
-
+        when(mockTypedQuery.getResultList()).thenReturn(absenceDayList);
         absenceDayService.remove(idTest);
 
-        checkCreateNameQuery("findAbsenceDayByAbsenceId");
+        checkCreateTypedQuery("findAbsenceDayByAbsenceId");
 
-        verify(getMockQuery()).setParameter(eq("fAbsenceId"), eq(idTest));
-        verify(getMockQuery()).getResultList();
+        verify(mockTypedQuery).setParameter(eq("fAbsenceId"), eq(idTest));
+        verify(mockTypedQuery).getResultList();
 
         absenceDayList.forEach(absenceDay -> verify(mockWorkService).removeWorkAbsence(eq(absenceDay)));
         absenceDayList.forEach(absenceDay -> verify(mockEntityManager).remove(eq(absenceDay)));
@@ -73,7 +70,7 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
 
     @Test
     public void testRemoveAbsence_listNull() {
-        when(getMockQuery().getResultList()).thenReturn(null);
+        when(mockTypedQuery.getResultList()).thenReturn(null);
 
         absenceDayService.remove(Long.valueOf(123l));
         verify(mockEntityManager, never()).remove(any());
@@ -82,18 +79,18 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testRemoveAbsence_null() {
-        absenceDayService.remove(null);
+        absenceDayService.remove((Long) null);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsenceDayList_noMemberId() throws Exception {
-        absenceDayService.findAbsenceDayList(null, Integer.valueOf(0));
+        absenceDayService.findByMemberAndMonth(null, Integer.valueOf(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFindAbsenceDayList_noMonthId() throws Exception {
-        absenceDayService.findAbsenceDayList(EntityFactory.createRandomLong(), null);
+        absenceDayService.findByMemberAndMonth(EntityFactory.createRandomLong(), null);
     }
 
 
@@ -103,28 +100,28 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
         Long randomLong = EntityFactory.createRandomLong();
         Integer randomInteger = EntityFactory.createRandomInteger();
 
-        List<AbsenceDay> absenceDaysReturned = absenceDayService.findAbsenceDayList(randomLong, randomInteger);
+        List<AbsenceDay> absenceDaysReturned = absenceDayService.findByMemberAndMonth(randomLong, randomInteger);
 
         assertThat(absenceDaysReturned).isEqualTo(absenceDayList);
 
-        verify(mockEntityManager).createNamedQuery(eq("findAbsenceDayByMemberAndMonth"));
-        verify(mockQuery).setParameter(eq("fMemberId"), eq(randomLong));
-        verify(mockQuery).setParameter(eq("fMonth"), eq(randomInteger));
+        checkCreateTypedQuery("findAbsenceDayByMemberAndMonth");
+        verify(mockTypedQuery).setParameter(eq("fMemberId"), eq(randomLong));
+        verify(mockTypedQuery).setParameter(eq("fMonth"), eq(randomInteger));
     }
 
     @Test
-    public void testDeleteAll_null() {
-        when(mockQuery.getResultList()).thenReturn(null);
+    public void testRemoveAll_null() {
+        when(mockTypedQuery.getResultList()).thenReturn(null);
 
-        absenceDayService.deleteAll();
+        absenceDayService.removeAll();
 
         verify(mockEntityManager, never()).remove(any());
         verify(mockWorkService, never()).removeWorkAbsence(any());
     }
 
     @Test
-    public void testDeleteAll() {
-        absenceDayService.deleteAll();
+    public void testRemoveAll() {
+        absenceDayService.removeAll();
         absenceDayList.forEach(absenceDay -> {
             verify(mockEntityManager).remove(eq(absenceDay));
             verify(mockWorkService).removeWorkAbsence(eq(absenceDay));

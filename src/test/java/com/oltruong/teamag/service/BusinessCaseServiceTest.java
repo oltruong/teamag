@@ -1,9 +1,9 @@
 package com.oltruong.teamag.service;
 
 import com.oltruong.teamag.model.BusinessCase;
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
-import com.oltruong.teamag.model.Member;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -42,19 +42,19 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     @Test
     public void testFindAll() throws Exception {
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
-        when(getMockQuery().getResultList()).thenReturn(businessCaseList);
+        when(mockTypedQuery.getResultList()).thenReturn(businessCaseList);
 
         List<BusinessCase> businessCaseFoundList = businessCaseService.findAll();
 
         assertThat(businessCaseFoundList).isEqualTo(businessCaseList);
-        verify(mockEntityManager).createNamedQuery(eq("findAllBC"));
-        verify(getMockQuery()).getResultList();
+        checkCreateTypedQuery("findAllBC");
+        verify(mockTypedQuery).getResultList();
     }
 
     @Test
     public void testCreate() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        BusinessCase businessCaseCreated = businessCaseService.create(businessCase);
+        BusinessCase businessCaseCreated = businessCaseService.persist(businessCase);
 
 
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
@@ -65,8 +65,8 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
 
         assertThat(businessCaseCreated).isEqualTo(businessCase);
 
-        verify(mockEntityManager).createNamedQuery(eq("findBCByNumber"));
-        verify(getMockQuery()).setParameter(eq("fidentifier"), isA(String.class));
+        checkCreateTypedQuery("findBCByNumber");
+        verify(mockTypedQuery).setParameter(eq("fidentifier"), isA(String.class));
 
         verify(mockEntityManager).persist(eq(businessCase));
         verify(mockWorkLoadService).createFromBusinessCase(eq(businessCase));
@@ -78,9 +78,9 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     public void testCreate_existingData() throws Exception {
 
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
-        when(getMockQuery().getResultList()).thenReturn(businessCaseList);
+        when(mockTypedQuery.getResultList()).thenReturn(businessCaseList);
 
-        businessCaseService.create(businessCaseList.get(0));
+        businessCaseService.persist(businessCaseList.get(0));
     }
 
 
@@ -88,12 +88,12 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     public void testCreateBusinessCase_noIdentifier() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setIdentifier(null);
-        BusinessCase businessCaseCreated = businessCaseService.create(businessCase);
+        BusinessCase businessCaseCreated = businessCaseService.persist(businessCase);
 
         assertThat(businessCaseCreated).isEqualTo(businessCase);
 
         verify(mockEntityManager, never()).createNamedQuery(eq("findBCByNumber"));
-        verify(getMockQuery(), never()).setParameter(eq("fidentifier"), isA(String.class));
+        verify(mockTypedQuery, never()).setParameter(eq("fidentifier"), isA(String.class));
         verify(mockEntityManager).persist(eq(businessCase));
     }
 
@@ -101,19 +101,19 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     @Test
     public void testUpdate() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
-        businessCaseService.update(businessCase);
+        businessCaseService.merge(businessCase);
 
         verify(mockEntityManager).merge(eq(businessCase));
     }
 
 
     @Test
-    public void testDelete() {
+    public void testRemove() {
 
 
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         when(mockEntityManager.find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
-        businessCaseService.delete(randomLong);
+        businessCaseService.remove(randomLong);
 
         verify(mockEntityManager).find(eq(BusinessCase.class), eq(randomLong));
         verify(mockEntityManager).remove(eq(businessCase));

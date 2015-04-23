@@ -1,27 +1,22 @@
 package com.oltruong.teamag.service;
 
-import com.google.common.collect.Lists;
 import com.oltruong.teamag.exception.UserNotFoundException;
+import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.TestUtils;
-import com.oltruong.teamag.model.Member;
-import com.oltruong.teamag.model.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +31,12 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Mock
     private WorkLoadService mockWorkLoadService;
 
+    @Mock
+    private TaskService mockTaskService;
+
     private List<Member> testMemberList;
+
+    private Task absenceTask;
 
     @Before
     public void init() {
@@ -46,6 +46,10 @@ public class MemberServiceTest extends AbstractServiceTest {
         buildMemberList();
         when(mockTypedQuery.getResultList()).thenReturn(testMemberList);
         TestUtils.setPrivateAttribute(memberService, mockWorkLoadService, "workLoadService");
+        TestUtils.setPrivateAttribute(memberService, mockTaskService, "taskService");
+
+        absenceTask = new Task();
+        when(mockTaskService.getOrCreateAbsenceTask()).thenReturn(absenceTask);
 
     }
 
@@ -106,7 +110,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
         when(mockEntityManager.find(eq(Member.class), any(Object.class))).thenReturn(newMember);
 
-        Member memberFound = memberService.findMember(id);
+        Member memberFound = memberService.find(id);
 
         assertThat(memberFound).isEqualTo(newMember);
         verify(mockEntityManager).find(eq(Member.class), eq(id));
@@ -167,59 +171,28 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateMemberWithAbsenceTask() {
-
-        List<Task> taskList = buildEmptyTaskList();
-        Task task = new Task();
-        taskList.add(task);
-
-        testCreateMember(taskList);
-        verify(mockEntityManager).persist(refEq(task));
-
-    }
-
-    @Test
-    public void testCreateMemberWithoutAbsenceTask() {
-
-        List<Task> taskList = buildEmptyTaskList();
-        testCreateMember(taskList);
-        verify(mockEntityManager, times(2)).persist(isA(Task.class));
-    }
-
-    private void testCreateMember(List<Task> taskList) {
-
-
-        TypedQuery<Task> mockQueryTask = mock(TypedQuery.class);
-        when(mockEntityManager.createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class))).thenReturn(mockQueryTask);
-        when(mockQueryTask.getResultList()).thenReturn(taskList);
+    public void testCreateMember() {
 
         Member member = EntityFactory.createMember();
-        Member memberCreated = memberService.create(member);
+        Member memberCreated = memberService.persist(member);
 
         assertThat(memberCreated).isEqualTo(member);
-        verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
-        verify(mockQueryTask).setParameter(eq("fname"), isA(String.class));
-        verify(mockQueryTask).setParameter(eq("fproject"), isA(String.class));
 
 
         verify(mockEntityManager).persist(eq(member));
         verify(mockWorkLoadService).createFromMember(eq(member));
+        verify(mockTaskService).getOrCreateAbsenceTask();
+        verify(mockTaskService).persist(refEq(absenceTask));
     }
 
 
     @Test
     public void testUpdateMember() {
         Member member = EntityFactory.createMember();
-        memberService.updateMember(member);
+        memberService.merge(member);
 
         verify(mockEntityManager).merge(eq(member));
     }
 
-
-    private List<Task> buildEmptyTaskList() {
-
-        return Lists.newArrayListWithCapacity(1);
-
-    }
 
 }

@@ -17,6 +17,7 @@ public class EmailService extends AbstractService {
 
     private static final String SENDER = "TEAMAG";
 
+
     @Inject
     private ParameterService parameterService;
 
@@ -26,7 +27,7 @@ public class EmailService extends AbstractService {
         if (parameterService.getSmtpHost() != null) {
             sendEmail(email);
         } else {
-            getLogger().warn("no email will be sent as SMTP HOST is not defined");
+            logger.warn("no email will be sent as SMTP HOST is not defined");
         }
     }
 
@@ -44,7 +45,7 @@ public class EmailService extends AbstractService {
 
             Transport.send(message);
         } catch (MessagingException messagingException) {
-            getLogger().error("Error in sending message [" + messagingException.getMessage() + "]");
+            logger.error("Error in sending message [" + messagingException.getMessage() + "]");
         }
 
     }
@@ -64,4 +65,8 @@ public class EmailService extends AbstractService {
     }
 
 
+    @Override
+    Class entityProvider() {
+        return null;
+    }
 }

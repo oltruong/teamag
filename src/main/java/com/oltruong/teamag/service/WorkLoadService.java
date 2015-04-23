@@ -3,28 +3,32 @@ package com.oltruong.teamag.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
-import com.oltruong.teamag.model.WorkLoad;
 import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.WorkLoad;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
  * @author Olivier Truong
  */
 @Stateless
-public class WorkLoadService extends AbstractService {
+public class WorkLoadService extends AbstractService<WorkLoad> {
+
+
+    @Inject
+    private BusinessCaseService businessCaseService;
 
     public List<WorkLoad> findOrCreateAllWorkLoad() {
-        @SuppressWarnings("unchecked")
-        List<WorkLoad> workLoadList = getNamedQueryList("findAllWorkLoad");
+        List<WorkLoad> workLoadList = getTypedQueryList("findAllWorkLoad");
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads();
         } else {
-            @SuppressWarnings("unchecked")
-            List<BusinessCase> businessCaseList = getBusinessCaseList();
+
+            List<BusinessCase> businessCaseList = businessCaseService.findAll();
 
             List<Member> memberList = MemberService.getMemberList();
             if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
@@ -38,7 +42,7 @@ public class WorkLoadService extends AbstractService {
                             }
                         }
                         if (!found) {
-                            getLogger().warn("Creating missing workLoad businessCase" + businessCase.getId() + " member:" + member.getId());
+                            logger.warn("Creating missing workLoad businessCase" + businessCase.getId() + " member:" + member.getId());
                             WorkLoad workLoad = new WorkLoad(businessCase, member);
                             persist(workLoad);
                             workLoadList.add(workLoad);
@@ -50,9 +54,6 @@ public class WorkLoadService extends AbstractService {
         return workLoadList;
     }
 
-    private List<BusinessCase> getBusinessCaseList() {
-        return getNamedQueryList("findAllBC");
-    }
 
     private boolean noWorkLoadList(List<WorkLoad> workLoadList) {
         return workLoadList == null || workLoadList.isEmpty();
@@ -60,9 +61,9 @@ public class WorkLoadService extends AbstractService {
 
     private List<WorkLoad> createWorkLoads() {
         List<WorkLoad> workLoadList;
-        getLogger().info("Creation of workLoad");
-        @SuppressWarnings("unchecked")
-        List<BusinessCase> businessCaseList = getBusinessCaseList();
+        logger.info("Creation of workLoad");
+
+        List<BusinessCase> businessCaseList = businessCaseService.findAll();
         List<Member> memberList = MemberService.getMemberList();
 
         workLoadList = buildAndSaveWorkLoadList(businessCaseList, memberList);
@@ -80,7 +81,7 @@ public class WorkLoadService extends AbstractService {
         return workLoadList;
     }
 
-    public void updateWorkLoad(List<WorkLoad> workLoadList) {
+    public void mergeList(List<WorkLoad> workLoadList) {
         Preconditions.checkArgument(workLoadList != null);
         workLoadList.forEach(workload -> merge(workload));
     }
@@ -123,7 +124,8 @@ public class WorkLoadService extends AbstractService {
     }
 
     public void createFromMember(Member member) {
-        List<BusinessCase> businessCaseList = getBusinessCaseList();
+        List<BusinessCase> businessCaseList = businessCaseService.findAll();
+
         if (businessCaseList != null) {
             businessCaseList.forEach(bc -> createWorkLoad(bc, member));
         }
@@ -134,4 +136,8 @@ public class WorkLoadService extends AbstractService {
         persist(workLoad);
     }
 
+    @Override
+    Class<WorkLoad> entityProvider() {
+        return WorkLoad.class;
+    }
 }

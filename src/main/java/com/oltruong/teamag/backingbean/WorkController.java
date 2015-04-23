@@ -73,7 +73,7 @@ public class WorkController extends Controller {
         DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         taskList = taskService.findTasksForMember(getMember());
-        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskList, absenceDayService.findAbsenceDayList(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskList, absenceDayService.findByMemberAndMonth(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
 
 
         DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
@@ -124,7 +124,7 @@ public class WorkController extends Controller {
             try {
                 taskService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findAbsenceDayList(getMember().getId(), DateTime.now().getMonthOfYear()));
+                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findByMemberAndMonth(getMember().getId(), DateTime.now().getMonthOfYear()));
                 initTaskWeek();
 
                 FacesMessage msg = null;
@@ -144,7 +144,7 @@ public class WorkController extends Controller {
     public String deleteTask() {
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        taskService.removeTask(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
+        taskService.remove(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
 
         initInformation(realizedBean.getDayCursor());
         return VIEWNAME;
@@ -166,7 +166,7 @@ public class WorkController extends Controller {
     public String update() {
 
         List<Work> changedWorks = findChangedWorks(realizedBean.getTaskWeeks());
-        workService.updateWorks(changedWorks);
+        workService.mergeList(changedWorks);
 
         updateComment();
 
@@ -185,13 +185,13 @@ public class WorkController extends Controller {
     private void updateComment() {
         if (Strings.isNullOrEmpty(weekComment.getComment())) {
             if (weekComment.getId() != null) {
-                weekCommentService.removeWeekComment(weekComment);
+                weekCommentService.remove(weekComment);
             }
         } else {
             if (weekComment.getId() != null) {
-                weekCommentService.update(weekComment);
+                weekCommentService.merge(weekComment);
             } else {
-                weekCommentService.create(weekComment);
+                weekCommentService.persist(weekComment);
             }
 
             MailBean email = buildEmailComment(weekComment);

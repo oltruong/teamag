@@ -40,7 +40,7 @@ public class ProfileController extends Controller {
     public String update() {
         Member member = profileWebBean.getMember();
         member.setAbsenceHTMLColor(profileWebBean.getHtmlColor());
-        memberEJB.updateMember(member);
+        memberEJB.merge(member);
 
         getMessageManager().displayMessage(MessageManager.INFORMATION, "updated");
         return VIEWNAME;
@@ -50,7 +50,7 @@ public class ProfileController extends Controller {
         Member member = profileWebBean.getMember();
         member.setPassword(TeamagUtils.hashPassword(profileWebBean.getPassword()));
 
-        memberEJB.updateMember(member);
+        memberEJB.merge(member);
 
         getMessageManager().displayMessage(MessageManager.INFORMATION, "updated");
         return VIEWNAME;

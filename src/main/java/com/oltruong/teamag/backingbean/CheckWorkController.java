@@ -2,17 +2,17 @@ package com.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oltruong.teamag.service.MemberService;
-import com.oltruong.teamag.webbean.TaskWeekBean;
 import com.oltruong.teamag.interfaces.UserLogin;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WeekCommentService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.webbean.ColumnDayBean;
 import com.oltruong.teamag.webbean.RealizedFormWebBean;
+import com.oltruong.teamag.webbean.TaskWeekBean;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
@@ -46,7 +46,7 @@ public class CheckWorkController extends Controller {
     private WeekCommentService weekCommentService;
 
     @Inject
-    private MemberService memberEJB;
+    private MemberService memberService;
 
     private WeekComment weekComment;
 
@@ -62,7 +62,7 @@ public class CheckWorkController extends Controller {
     private static final String VIEWNAME = "checkrealized";
 
     public String init() {
-        memberList = memberEJB.findActiveNonAdminMembers();
+        memberList = memberService.findActiveNonAdminMembers();
         memberList.add(memberInstance.get());
 
         memberToCheck = memberList.get(memberList.size() - 1);
@@ -71,7 +71,7 @@ public class CheckWorkController extends Controller {
     }
 
     public String refresh() {
-        memberToCheck = memberEJB.findMember(memberToCheck.getId());
+        memberToCheck = memberService.find(memberToCheck.getId());
 
         DateTime firstDayOfMonth = realizedBean.getDayCursor().withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);

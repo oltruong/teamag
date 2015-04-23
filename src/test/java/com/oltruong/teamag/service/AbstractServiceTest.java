@@ -28,44 +28,43 @@ public abstract class AbstractServiceTest {
     @Mock
     private Logger mockLogger;
 
-    @Mock
-    protected Query mockQuery;
 
+    @Mock
+    protected Query mockNamedQuery;
     @Mock
     protected TypedQuery mockTypedQuery;
 
     protected Long randomLong;
 
+    AbstractService service;
+
     @Before
     public void setup() {
         randomLong = EntityFactory.createRandomLong();
         MockitoAnnotations.initMocks(this);
-        when(mockEntityManager.createNamedQuery(isA(String.class))).thenReturn(getMockQuery());
+        when(mockEntityManager.createNamedQuery(isA(String.class))).thenReturn(mockNamedQuery);
         when(mockEntityManager.createNamedQuery(isA(String.class), any())).thenReturn(mockTypedQuery);
         when(mockTypedQuery.setParameter(anyString(), any())).thenReturn(mockTypedQuery);
 
     }
 
     protected void prepareService(AbstractService service) {
+        this.service = service;
         TestUtils.setPrivateAttribute(service, AbstractService.class, mockEntityManager, "entityManager");
         TestUtils.setPrivateAttribute(service, AbstractService.class, getMockLogger(), "logger");
-
     }
 
-    protected void checkCreateNameQuery(String query) {
-        verify(mockEntityManager).createNamedQuery(eq(query));
+    protected void checkCreateTypedQuery(String query) {
+        verify(mockEntityManager).createNamedQuery(eq(query), any());
     }
 
     protected void checkParameter(String parameter, Object value) {
-        verify(mockQuery).setParameter(eq(parameter), eq(value));
+        verify(mockTypedQuery).setParameter(eq(parameter), eq(value));
     }
 
     protected Logger getMockLogger() {
         return mockLogger;
     }
 
-    protected Query getMockQuery() {
-        return mockQuery;
-    }
 
 }

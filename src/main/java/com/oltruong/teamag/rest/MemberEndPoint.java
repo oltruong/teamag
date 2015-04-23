@@ -63,14 +63,14 @@ public class MemberEndPoint extends AbstractEndPoint {
     }
 
     private Response getMemberById(Long memberId) {
-        return get(() -> memberService.findMember(memberId));
+        return get(() -> memberService.find(memberId));
     }
 
 
     @POST
     @AdminChecked
     public Response createMember(Member member) {
-        memberService.create(member);
+        memberService.persist(member);
         return created();
     }
 
@@ -83,7 +83,7 @@ public class MemberEndPoint extends AbstractEndPoint {
 
     private Response updateMember(Long memberId, Member member) {
         member.setId(memberId);
-        memberService.updateMember(member);
+        memberService.merge(member);
         return ok();
     }
 

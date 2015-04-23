@@ -8,7 +8,10 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public abstract class AbstractService {
+public abstract class AbstractService<Entity> {
+
+
+    abstract Class<Entity> entityProvider();
 
     @Inject
     protected EntityManager entityManager;
@@ -16,43 +19,59 @@ public abstract class AbstractService {
     @Inject
     protected Logger logger;
 
-    public Logger getLogger() {
-        return logger;
+
+    public Entity find(Long id) {
+        return entityManager.find(entityProvider(), id);
     }
 
-    protected Query createNamedQuery(String name) {
-        return entityManager.createNamedQuery(name);
-    }
-
-    protected <T> TypedQuery<T> createNamedQuery(String name, Class<T> className) {
-        return entityManager.createNamedQuery(name, className);
-    }
-
-
-    protected List getNamedQueryList(String name) {
-        return entityManager.createNamedQuery(name).getResultList();
+    public Entity persist(Entity entity) {
+        entityManager.persist(entity);
+        return entity;
     }
 
 
-    protected void persist(Object object) {
-        entityManager.persist(object);
-    }
-
-    protected void merge(Object object) {
+    public void merge(Entity object) {
         entityManager.merge(object);
     }
 
-
-    protected void remove(Class className, Long id) {
-        remove(find(className, id));
+    public void remove(Long id) {
+        remove(find(id));
     }
 
-    protected void remove(Object object) {
-        entityManager.remove(object);
+    public void remove(Entity entity) {
+        entityManager.remove(entity);
     }
 
-    protected <T extends Object> T find(Class<T> className, Long id) {
+    protected Entity find(Class<Entity> className, Long id) {
         return entityManager.find(className, id);
+    }
+
+    protected <T> T findOtherEntity(Class<T> className, Long id) {
+        return entityManager.find(className, id);
+    }
+
+    protected void remove(Class<Entity> className, Long id) {
+
+        Entity entity = find(className, id);
+        remove(entity);
+    }
+
+
+    protected <Entity> TypedQuery<Entity> createTypedQuery(String name) {
+        return entityManager.createNamedQuery(name, (Class<Entity>) entityProvider());
+    }
+
+    protected <Entity> TypedQuery<Entity> createTypedQuery(String name, Class<Entity> className) {
+        return entityManager.createNamedQuery(name, className);
+    }
+
+    protected List<Entity> getTypedQueryList(String name) {
+        return createTypedQuery(name, entityProvider()).getResultList();
+    }
+
+
+    protected Query createNamedQuery(String query) {
+        return entityManager.createNamedQuery(query);
     }
 
     protected void flush() {

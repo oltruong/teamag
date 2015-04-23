@@ -3,24 +3,22 @@ package com.oltruong.teamag.service;
 import com.oltruong.teamag.model.WeekComment;
 
 import javax.ejb.Stateless;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
  * @author Olivier Truong
  */
 @Stateless
-public class WeekCommentService extends AbstractService {
+public class WeekCommentService extends AbstractService<WeekComment> {
 
     public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
 
         WeekComment result = null;
-        Query query = createNamedQuery("findWeekComment");
+        TypedQuery<WeekComment> query = createTypedQuery("findWeekComment");
         query.setParameter("fmemberId", memberId);
         query.setParameter("fweekYear", weekYear);
         query.setParameter("fyear", year);
-
-        @SuppressWarnings("unchecked")
         List<WeekComment> weekCommentList = query.getResultList();
         if (!weekCommentList.isEmpty()) {
             result = weekCommentList.get(0);
@@ -28,18 +26,9 @@ public class WeekCommentService extends AbstractService {
         return result;
     }
 
-    public WeekComment create(WeekComment weekComment) {
-        persist(weekComment);
-        return weekComment;
-    }
 
-    public void update(WeekComment weekComment) {
-        merge(weekComment);
+    @Override
+    Class<WeekComment> entityProvider() {
+        return WeekComment.class;
     }
-
-    public void removeWeekComment(WeekComment weekComment) {
-        WeekComment weekCommentDb = find(WeekComment.class, weekComment.getId());
-        remove(weekCommentDb);
-    }
-
 }

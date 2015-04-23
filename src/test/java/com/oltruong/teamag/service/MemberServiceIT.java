@@ -30,7 +30,7 @@ public class MemberServiceIT extends AbstractServiceIT {
 
 
         // Persists the member to the database
-        member = memberEJB.create(member);
+        member = memberEJB.persist(member);
         assertThat(member.getId()).isNotNull();
         // Retrieves all the members from the database
         List<Member> members = memberEJB.findMembers();

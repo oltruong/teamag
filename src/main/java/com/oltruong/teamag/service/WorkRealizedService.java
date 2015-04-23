@@ -20,19 +20,19 @@ import java.util.Map;
  * @author Olivier Truong
  */
 @Stateless
-public class WorkRealizedService extends AbstractService {
+public class WorkRealizedService extends AbstractService<WorkRealized> {
 
     @Inject
     private WorkLoadService workLoadService;
 
-    @SuppressWarnings("unchecked")
+
     public List<WorkRealized> getAllWorkRealized() {
-        return getNamedQueryList("findAllWorkRealized");
+        return getTypedQueryList("findAllWorkRealized");
     }
 
-    @SuppressWarnings("unchecked")
+
     public List<WorkRealized> getWorkRealizedbyMember(Long memberId) {
-        Query query = createNamedQuery("findAllWorkRealizedByMember");
+        Query query = createTypedQuery("findAllWorkRealizedByMember");
         query.setParameter("fMemberId", memberId);
         return query.getResultList();
     }
@@ -89,7 +89,7 @@ public class WorkRealizedService extends AbstractService {
 
         List<WorkRealized> workRealizedList = getWorkRealizedbyMember(aLong);
         for (WorkRealized workRealized : workRealizedList) {
-            Task task = find(Task.class, workRealized.getTaskId());
+            Task task = findOtherEntity(Task.class, workRealized.getTaskId());
             BusinessCase businessCase = findBusinessCase(task);
             if (businessCase != null) {
 
@@ -113,5 +113,10 @@ public class WorkRealizedService extends AbstractService {
             return findBusinessCase(task.getTask());
         }
         return null;
+    }
+
+    @Override
+    Class<WorkRealized> entityProvider() {
+        return WorkRealized.class;
     }
 }

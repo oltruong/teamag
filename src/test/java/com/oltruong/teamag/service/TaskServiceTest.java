@@ -1,12 +1,12 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
-import com.oltruong.teamag.model.Member;
 import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -64,7 +64,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     private void testFindTasks(String namedQuery, Supplier<List<Task>> supplier) {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
-        when(getMockQuery().getResultList()).thenReturn(taskList);
+        when(mockTypedQuery.getResultList()).thenReturn(taskList);
         when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
         List<Task> taskListReturned = supplier.get();
@@ -257,24 +257,24 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         when(mockEntityManager.find(eq(Task.class), any())).thenReturn(task);
         when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
-        when(mockQuery.getSingleResult()).thenReturn(Integer.valueOf(value));
+        when(mockNamedQuery.getSingleResult()).thenReturn(Integer.valueOf(value));
 
 
         testRemoveTask(member, randomId, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.COUNT_BY_TASK"));
-        verify(mockQuery).setParameter(eq("fTaskId"), eq(randomLong));
-        verify(mockQuery).executeUpdate();
+        verify(mockNamedQuery).setParameter(eq("fTaskId"), eq(randomLong));
+        verify(mockNamedQuery).executeUpdate();
 
     }
 
 
     private void testRemoveTask(Member member, Long randomId, DateTime month) {
-        taskService.removeTask(task, member, month);
+        taskService.remove(task, member, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.DELETE_BY_MEMBERTaskMonth"));
-        verify(mockQuery).setParameter(eq("fmemberId"), eq(randomId));
-        verify(mockQuery).setParameter(eq("ftaskId"), eq(randomLong));
-        verify(mockQuery).setParameter(eq("fmonth"), eq(month));
-        verify(mockQuery).executeUpdate();
+        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomId));
+        verify(mockNamedQuery).setParameter(eq("ftaskId"), eq(randomLong));
+        verify(mockNamedQuery).setParameter(eq("fmonth"), eq(month));
+        verify(mockNamedQuery).executeUpdate();
     }
 
 

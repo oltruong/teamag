@@ -1,11 +1,11 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Maps;
+import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WorkRealized;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
-import com.oltruong.teamag.model.Member;
-import com.oltruong.teamag.model.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -39,7 +39,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
         workRealizedService = new WorkRealizedService();
         prepareService(workRealizedService);
 
-        when(mockQuery.getResultList()).thenReturn(workRealizedList);
+        when(mockTypedQuery.getResultList()).thenReturn(workRealizedList);
         TestUtils.setPrivateAttribute(workRealizedService, mockWorkLoadService, "workLoadService");
     }
 
@@ -49,7 +49,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
 
-        verify(mockEntityManager).createNamedQuery(eq("findAllWorkRealized"));
+        checkCreateTypedQuery("findAllWorkRealized");
     }
 
     @Test
@@ -58,8 +58,8 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
 
-        verify(mockEntityManager).createNamedQuery(eq("findAllWorkRealizedByMember"));
-        verify(mockQuery).setParameter(eq("fMemberId"), eq(idTest));
+        checkCreateTypedQuery("findAllWorkRealizedByMember");
+        verify(mockTypedQuery).setParameter(eq("fMemberId"), eq(idTest));
 
     }
 

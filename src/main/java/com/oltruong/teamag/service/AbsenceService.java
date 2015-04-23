@@ -1,21 +1,20 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.base.Preconditions;
-import com.oltruong.teamag.transformer.AbsenceDayTransformer;
-import com.oltruong.teamag.validation.AbsenceValidator;
 import com.oltruong.teamag.exception.DateOverlapException;
 import com.oltruong.teamag.exception.InconsistentDateException;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.model.AbsenceDay;
-import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.transformer.AbsenceDayTransformer;
+import com.oltruong.teamag.validation.AbsenceValidator;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class AbsenceService extends AbstractService {
+public class AbsenceService extends AbstractService<Absence> {
 
     private static final String DATE_FORMAT = "EEEE dd MMMM";
 
@@ -28,36 +27,20 @@ public class AbsenceService extends AbstractService {
     @Inject
     private WorkService workService;
 
+
     public List<Absence> findAllAbsences() {
-        return getNamedQueryList("findAllAbsences");
+        return getTypedQueryList("findAllAbsences");
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Absence> findAbsencesByMember(Member member) {
-
-        Preconditions.checkArgument(member != null);
-        Query query = createNamedQuery("findAbsencesByMember");
-        query.setParameter("fmemberId", member.getId());
-
-        return (List<Absence>) query.getResultList();
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public List<Absence> findAbsencesByMemberId(Long memberId) {
-
+    public List<Absence> findAbsencesByMember(Long memberId) {
         Preconditions.checkArgument(memberId != null);
-        Query query = createNamedQuery("findAbsencesByMember");
+        TypedQuery<Absence> query = createTypedQuery("findAbsencesByMember");
         query.setParameter("fmemberId", memberId);
-
-        return (List<Absence>) query.getResultList();
+        return query.getResultList();
     }
-
 
     public void addAbsence(Absence absence, Long memberId) throws DateOverlapException, InconsistentDateException {
-
-
-        List<Absence> absencesList = findAbsencesByMemberId(memberId);
+        List<Absence> absencesList = findAbsencesByMember(memberId);
         format(absence);
         AbsenceValidator.validate(absence, absencesList);
         absence.setMember(MemberService.getMemberMap().get(memberId));
@@ -72,14 +55,14 @@ public class AbsenceService extends AbstractService {
     public void registerAbsence(Absence newAbsence) {
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(newAbsence);
         absenceDayList.forEach(absenceDay -> {
-            persist(absenceDay);
+            absenceDayService.persist(absenceDay);
             workService.updateWorkAbsence(absenceDay);
         });
     }
 
 
     public void reloadAllAbsenceDay() {
-        absenceDayService.deleteAll();
+        absenceDayService.removeAll();
         List<Absence> absenceList = findAllAbsences();
         if (absenceList != null) {
             absenceList.forEach(absence -> registerAbsence(absence));
@@ -112,8 +95,11 @@ public class AbsenceService extends AbstractService {
         absenceDayService.remove(absence.getId());
         remove(Absence.class, absence.getId());
         emailService.sendEmailAdministrator(buildEmailDelete(absence));
+    }
 
-
+    @Override
+    Class<Absence> entityProvider() {
+        return Absence.class;
     }
 
     public Absence find(Long absenceId) {

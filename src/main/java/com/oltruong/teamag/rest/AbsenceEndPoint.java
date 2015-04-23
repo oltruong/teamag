@@ -50,7 +50,7 @@ public class AbsenceEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getAbsences(@HeaderParam("userid") Long memberId) {
-        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMemberId(memberId)));
+        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAbsencesByMember(memberId)));
     }
 
     @POST

@@ -73,7 +73,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     public Response updateWorkLoad(List<WorkLoadContainer> workLoadContainerList) {
 
         if (workLoadContainerList != null) {
-            workLoadContainerList.forEach(workLoadContainer -> workLoadService.updateWorkLoad(workLoadContainer.getWorkLoadList()));
+            workLoadContainerList.forEach(workLoadContainer -> workLoadService.mergeList(workLoadContainer.getWorkLoadList()));
         }
 
         return ok();

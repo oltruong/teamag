@@ -5,45 +5,36 @@ import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Stateless
-public class ActivityService extends AbstractService {
+public class ActivityService extends AbstractService<Activity> {
 
-    public void deleteActivity(Long activityId) {
-        Activity activity = find(Activity.class, activityId);
-        remove(activity);
-    }
 
-    @SuppressWarnings("unchecked")
     public List<Activity> findActivities() {
-        Query query = createNamedQuery("findAllActivities");
-        return query.getResultList();
+        return getTypedQueryList("findAllActivities");
     }
 
-    public Activity createActivity(Activity activity) {
-        Query query = createNamedQuery("findActivity");
+    @Override
+    Class<Activity> entityProvider() {
+        return Activity.class;
+    }
+
+    @Override
+    public Activity persist(Activity activity) {
+        TypedQuery<Activity> query = createTypedQuery("findActivity");
         query.setParameter("fname", activity.getName());
         query.setParameter("fbc", activity.getBc());
-        @SuppressWarnings("unchecked")
         List<Activity> activityList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(activityList)) {
             throw new EntityExistsException();
         } else {
-            persist(activity);
+            super.persist(activity);
         }
         return activity;
     }
 
 
-    public void updateActivity(Activity activityToUpdate) {
-        merge(activityToUpdate);
-    }
-
-
-    public Activity findActivity(Long activityId) {
-        return find(Activity.class, activityId);
-    }
 }

@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
-import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +20,10 @@ import java.util.Map;
  * @author Olivier Truong
  */
 @Singleton
-public class ParameterService extends AbstractService {
+public class ParameterService extends AbstractService<Parameter> {
 
     private Map<ParameterName, Parameter> parameterMap;
+
 
     @PostConstruct
     private void initValue() {
@@ -45,9 +45,7 @@ public class ParameterService extends AbstractService {
     }
 
     private void loadParameters() {
-        Query query = createNamedQuery("findParameters");
-        @SuppressWarnings("unchecked")
-        List<Parameter> parameterList = query.getResultList();
+        List<Parameter> parameterList = getTypedQueryList("findParameters");
         if (CollectionUtils.isNotEmpty(parameterList)) {
             parameterMap = Maps.newHashMapWithExpectedSize(parameterList.size());
             for (Parameter parameter : parameterList) {
@@ -61,9 +59,9 @@ public class ParameterService extends AbstractService {
 
     private void initAndPersistParameterMap() {
 
-        getLogger().info("Creating parameters Map");
+        logger.info("Creating parameters Map");
 
-        parameterMap = new HashMap<ParameterName, Parameter>(2);
+        parameterMap = new HashMap<>(2);
         Parameter smtpHostParameter = new Parameter(ParameterName.SMTP_HOST);
         Parameter administratorEmailParameter = new Parameter(ParameterName.ADMINISTRATOR_EMAIL);
 
@@ -105,4 +103,8 @@ public class ParameterService extends AbstractService {
 
     }
 
+    @Override
+    Class<Parameter> entityProvider() {
+        return Parameter.class;
+    }
 }

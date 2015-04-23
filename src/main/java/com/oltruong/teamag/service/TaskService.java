@@ -1,10 +1,10 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
-import com.oltruong.teamag.model.enumeration.MemberType;
-import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.model.enumeration.MemberType;
+import com.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
@@ -19,22 +19,23 @@ import java.util.List;
 /**
  * @author Olivier Truong
  */
-public class TaskService extends AbstractService {
+public class TaskService extends AbstractService<Task> {
 
 
     @Inject
     private WorkService workService;
 
+
     public List<Task> findAllTasks() {
-        return createNamedQuery("Task.FIND_ALL", Task.class).getResultList();
+        return createTypedQuery("Task.FIND_ALL", Task.class).getResultList();
     }
 
     public List<Task> findAllNonAdminTasks() {
-        return createNamedQuery("Task.FIND_NONTYPE", Task.class).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
+        return createTypedQuery("Task.FIND_NONTYPE", Task.class).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
     }
 
     public List<Task> findTaskWithActivity() {
-        return createNamedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
+        return createTypedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
     }
 
     public Task findTask(Long taskId) {
@@ -57,7 +58,7 @@ public class TaskService extends AbstractService {
     }
 
     public void createTask(Task task) {
-        List<Task> allTaskList = createNamedQuery("Task.FIND_BY_NAME", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
+        List<Task> allTaskList = createTypedQuery("Task.FIND_BY_NAME", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
         if (CollectionUtils.isNotEmpty(allTaskList)) {
             throw new EntityExistsException();
         } else {
@@ -67,7 +68,7 @@ public class TaskService extends AbstractService {
 
     @Transactional
     public void createTask(DateTime month, Member member, Task task) {
-        TypedQuery<Task> query = createNamedQuery("Task.FIND_BY_NAME", Task.class);
+        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
 
@@ -118,11 +119,11 @@ public class TaskService extends AbstractService {
         taskList.add(absenceTask);
     }
 
-    public void removeTask(Task task, Member member, DateTime month) {
+    public void remove(Task task, Member member, DateTime month) {
         deleteWorks(task, member, month);
 
-        Task taskDb = find(Task.class, task.getId());
-        Member memberDb = find(Member.class, member.getId());
+        Task taskDb = find(task.getId());
+        Member memberDb = findOtherEntity(Member.class, member.getId());
         taskDb.getMembers().remove(memberDb);
 
         if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
@@ -171,5 +172,29 @@ public class TaskService extends AbstractService {
         return result;
     }
 
+    public Task getOrCreateAbsenceTask() {
+        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
+        query.setParameter("fname", "Absence");
+        query.setParameter("fproject", "");
 
+        Task task;
+        List<Task> taskList = query.getResultList();
+
+        if (!CollectionUtils.isEmpty(taskList)) {
+            task = taskList.get(0);
+        } else {
+            logger.info("Absence task is not found. Will be created");
+            Task newTask = new Task();
+            newTask.setName("Absence");
+            persist(newTask);
+            task = newTask;
+        }
+        return task;
+    }
+
+
+    @Override
+    Class<Task> entityProvider() {
+        return Task.class;
+    }
 }

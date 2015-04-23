@@ -58,11 +58,11 @@ public class AbsenceControllerTest extends ControllerTest {
     public void testInit() throws Exception {
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
-        when(mockAbsenceService.findAbsencesByMember(eq(mockMember))).thenReturn(absenceList);
+        when(mockAbsenceService.findAbsencesByMember(eq(mockMember.getId()))).thenReturn(absenceList);
         String view = absenceController.init();
 
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(absenceController, "VIEWNAME"));
-        verify(mockAbsenceService).findAbsencesByMember(eq(mockMember));
+        verify(mockAbsenceService).findAbsencesByMember(eq(mockMember.getId()));
 
         assertThat(absenceController.getAbsencesList()).hasSameSizeAs(absenceList);
 

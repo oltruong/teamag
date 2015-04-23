@@ -5,10 +5,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.oltruong.teamag.model.AbsenceDay;
-import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Stateless
-public class WorkService extends AbstractService {
+public class WorkService extends AbstractService<Work> {
 
 
     public Map<Task, List<Work>> findWorksNotNullByMonth(Member member, DateTime month) {
@@ -181,7 +181,7 @@ public class WorkService extends AbstractService {
     }
 
     private List<Work> findWorkByMemberMonth(Long memberId, DateTime month, String queryString) {
-        TypedQuery<Work> query = createNamedQuery(queryString, Work.class);
+        TypedQuery<Work> query = createTypedQuery(queryString, Work.class);
         query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", month);
 
@@ -189,7 +189,7 @@ public class WorkService extends AbstractService {
     }
 
     public Map<DateTime, Double> findWorkDays(Member member, DateTime month) {
-        TypedQuery<Object[]> query = createNamedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH", Object[].class);
+        TypedQuery<Object[]> query = createTypedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH", Object[].class);
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
         List<Object[]> objects = query.getResultList();
@@ -240,7 +240,7 @@ public class WorkService extends AbstractService {
         return work;
     }
 
-    public void updateWorks(List<Work> workList) {
+    public void mergeList(List<Work> workList) {
         for (Work work : workList) {
             work.setTotal(work.getTotalEdit());
             merge(work);
@@ -249,14 +249,14 @@ public class WorkService extends AbstractService {
 
 
     public List<Work> getWorksMonth(DateTime month) {
-        TypedQuery<Work> query = createNamedQuery("Work.FIND_BY_MONTH", Work.class);
+        TypedQuery<Work> query = createTypedQuery("Work.FIND_BY_MONTH", Work.class);
         query.setParameter("fmonth", month);
 
         return query.getResultList();
     }
 
     public List<Work> findWorkByTask(Long taskId) {
-        TypedQuery<Work> query = createNamedQuery("Work.FIND_BY_TASK_MEMBER", Work.class);
+        TypedQuery<Work> query = createTypedQuery("Work.FIND_BY_TASK_MEMBER", Work.class);
         query.setParameter("fTaskId", taskId);
 
         return query.getResultList();
@@ -266,7 +266,7 @@ public class WorkService extends AbstractService {
     private Work findAbsenceWork(AbsenceDay absenceDay) {
         Work absenceWork = null;
 
-        TypedQuery<Work> query = createNamedQuery("Work.FIND_ABSENCE_BY_MEMBER", Work.class);
+        TypedQuery<Work> query = createTypedQuery("Work.FIND_ABSENCE_BY_MEMBER", Work.class);
         query.setParameter("fmemberId", absenceDay.getMember().getId());
         query.setParameter("fday", absenceDay.getDay());
 
@@ -303,4 +303,8 @@ public class WorkService extends AbstractService {
     }
 
 
+    @Override
+    Class<Work> entityProvider() {
+        return Work.class;
+    }
 }

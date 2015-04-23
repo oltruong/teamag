@@ -1,11 +1,11 @@
 package com.oltruong.teamag.backingbean;
 
-import com.oltruong.teamag.service.MemberService;
-import com.oltruong.teamag.utils.TeamagUtils;
-import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.interfaces.UserLogin;
+import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagConstants;
+import com.oltruong.teamag.utils.TeamagUtils;
 import org.slf4j.Logger;
 
 import javax.enterprise.inject.Produces;
@@ -23,10 +23,13 @@ public class LoginBean
 
     @Inject
     private Logger logger;
+
     @Inject
-    private MemberService memberEJB;
+    private MemberService memberService;
+
     @Inject
     private HttpServletRequest servletRequest;
+
     private Member member;
     private String username;
     private String password = "";
@@ -105,7 +108,7 @@ public class LoginBean
 
             passwordHashed = TeamagUtils.hashPassword(password);
 
-            myMember = memberEJB.findMemberForAuthentication(username, passwordHashed);
+            myMember = memberService.findMemberForAuthentication(username, passwordHashed);
             logger.info(myMember.getName() + " found");
             userMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("welcome", username), "");
             setMember(myMember);
