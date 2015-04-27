@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.WorkLoad;
+import com.oltruong.teamag.service.BusinessCaseService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WorkLoadService;
 import com.oltruong.teamag.webbean.WorkLoadContainer;
@@ -28,6 +29,8 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     @Inject
     WorkLoadService workLoadService;
 
+    @Inject
+    private BusinessCaseService businessCaseService;
 
     @GET
     public Response getWorkLoad() {
@@ -40,7 +43,7 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
         workLoadContainer.setMemberList(MemberService.getMemberList());
 
 
-        List<WorkLoad> workLoadList = workLoadService.findOrCreateAllWorkLoad();
+        List<WorkLoad> workLoadList = workLoadService.findOrCreateAllWorkLoad(businessCaseService.findAll());
         BusinessCase businessCase = null;
         WorkLoadContainer currentContainer = null;
 

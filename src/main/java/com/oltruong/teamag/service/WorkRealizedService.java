@@ -25,6 +25,8 @@ public class WorkRealizedService extends AbstractService<WorkRealized> {
     @Inject
     private WorkLoadService workLoadService;
 
+    @Inject
+    private BusinessCaseService businessCaseService;
 
     public List<WorkRealized> getAllWorkRealized() {
         return getTypedQueryList("findAllWorkRealized");
@@ -80,7 +82,7 @@ public class WorkRealizedService extends AbstractService<WorkRealized> {
             }
         }
 
-        workLoadService.updateWorkLoadWithRealized(values);
+        workLoadService.updateWorkLoadWithRealized(values, businessCaseService.findAll());
 
     }
 

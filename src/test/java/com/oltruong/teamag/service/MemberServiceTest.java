@@ -1,6 +1,7 @@
 package com.oltruong.teamag.service;
 
 import com.oltruong.teamag.exception.UserNotFoundException;
+import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.builder.EntityFactory;
@@ -32,6 +33,9 @@ public class MemberServiceTest extends AbstractServiceTest {
     private WorkLoadService mockWorkLoadService;
 
     @Mock
+    private BusinessCaseService mockBusinessCaseService;
+
+    @Mock
     private TaskService mockTaskService;
 
     private List<Member> testMemberList;
@@ -47,9 +51,11 @@ public class MemberServiceTest extends AbstractServiceTest {
         when(mockTypedQuery.getResultList()).thenReturn(testMemberList);
         TestUtils.setPrivateAttribute(memberService, mockWorkLoadService, "workLoadService");
         TestUtils.setPrivateAttribute(memberService, mockTaskService, "taskService");
+        TestUtils.setPrivateAttribute(memberService, mockBusinessCaseService, "businessCaseService");
 
         absenceTask = new Task();
         when(mockTaskService.getOrCreateAbsenceTask()).thenReturn(absenceTask);
+
 
     }
 
@@ -173,6 +179,10 @@ public class MemberServiceTest extends AbstractServiceTest {
     @Test
     public void testCreateMember() {
 
+        List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
+
+        when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
+
         Member member = EntityFactory.createMember();
         Member memberCreated = memberService.persist(member);
 
@@ -180,9 +190,10 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
         verify(mockEntityManager).persist(eq(member));
-        verify(mockWorkLoadService).createFromMember(eq(member));
+        verify(mockWorkLoadService).createFromMember(eq(member), eq(businessCaseList));
         verify(mockTaskService).getOrCreateAbsenceTask();
         verify(mockTaskService).persist(refEq(absenceTask));
+        verify(mockBusinessCaseService).findAll();
     }
 
 

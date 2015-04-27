@@ -8,7 +8,6 @@ import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.WorkLoad;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -18,17 +17,13 @@ import java.util.List;
 public class WorkLoadService extends AbstractService<WorkLoad> {
 
 
-    @Inject
-    private BusinessCaseService businessCaseService;
-
-    public List<WorkLoad> findOrCreateAllWorkLoad() {
+    public List<WorkLoad> findOrCreateAllWorkLoad(List<BusinessCase> businessCaseList) {
         List<WorkLoad> workLoadList = getTypedQueryList("findAllWorkLoad");
 
         if (noWorkLoadList(workLoadList)) {
-            workLoadList = createWorkLoads();
+            workLoadList = createWorkLoads(businessCaseList);
         } else {
 
-            List<BusinessCase> businessCaseList = businessCaseService.findAll();
 
             List<Member> memberList = MemberService.getMemberList();
             if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
@@ -59,11 +54,11 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
         return workLoadList == null || workLoadList.isEmpty();
     }
 
-    private List<WorkLoad> createWorkLoads() {
+    private List<WorkLoad> createWorkLoads(List<BusinessCase> businessCaseList) {
         List<WorkLoad> workLoadList;
         logger.info("Creation of workLoad");
 
-        List<BusinessCase> businessCaseList = businessCaseService.findAll();
+
         List<Member> memberList = MemberService.getMemberList();
 
         workLoadList = buildAndSaveWorkLoadList(businessCaseList, memberList);
@@ -87,9 +82,9 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
     }
 
 
-    public void updateWorkLoadWithRealized(Table<Member, BusinessCase, Double> values) {
+    public void updateWorkLoadWithRealized(Table<Member, BusinessCase, Double> values, List<BusinessCase> businessCaseList) {
         Preconditions.checkArgument(values != null);
-        List<WorkLoad> existingWorkLoadList = findOrCreateAllWorkLoad();
+        List<WorkLoad> existingWorkLoadList = findOrCreateAllWorkLoad(businessCaseList);
 
         values.rowMap().forEach((member, value) ->
                         value.forEach((bc, realized) -> {
@@ -123,8 +118,7 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
         }
     }
 
-    public void createFromMember(Member member) {
-        List<BusinessCase> businessCaseList = businessCaseService.findAll();
+    public void createFromMember(Member member, List<BusinessCase> businessCaseList) {
 
         if (businessCaseList != null) {
             businessCaseList.forEach(bc -> createWorkLoad(bc, member));

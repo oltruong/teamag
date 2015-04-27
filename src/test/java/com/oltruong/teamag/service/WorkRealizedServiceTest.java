@@ -1,6 +1,7 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Maps;
+import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WorkRealized;
@@ -26,21 +27,31 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
     private List<WorkRealized> workRealizedList;
 
+    private List<BusinessCase> businessCaseList;
+
     private WorkRealizedService workRealizedService;
 
     @Mock
     private WorkLoadService mockWorkLoadService;
+
+    @Mock
+    private BusinessCaseService mockBusinessCaseService;
 
 
     @Before
     public void prepare() {
         super.setup();
         workRealizedList = EntityFactory.createList(EntityFactory::createWorkRealized);
+        businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
+
         workRealizedService = new WorkRealizedService();
         prepareService(workRealizedService);
 
         when(mockTypedQuery.getResultList()).thenReturn(workRealizedList);
+        when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
+
         TestUtils.setPrivateAttribute(workRealizedService, mockWorkLoadService, "workLoadService");
+        TestUtils.setPrivateAttribute(workRealizedService, mockBusinessCaseService, "businessCaseService");
     }
 
     @Test
@@ -91,7 +102,8 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
             verify(mockEntityManager, never()).merge(eq(workRealized));
         });
 
-        verify(mockWorkLoadService).updateWorkLoadWithRealized(any());
+        verify(mockBusinessCaseService).findAll();
+        verify(mockWorkLoadService).updateWorkLoadWithRealized(any(), eq(businessCaseList));
 
     }
 

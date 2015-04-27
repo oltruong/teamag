@@ -30,6 +30,9 @@ public class MemberService extends AbstractService<Member> {
     private WorkLoadService workLoadService;
 
     @Inject
+    private BusinessCaseService businessCaseService;
+
+    @Inject
     private TaskService taskService;
 
 
@@ -109,7 +112,7 @@ public class MemberService extends AbstractService<Member> {
         Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(member);
         taskService.persist(absenceTask);
-        workLoadService.createFromMember(member);
+        workLoadService.createFromMember(member, businessCaseService.findAll());
 
         buildList();
         return member;
