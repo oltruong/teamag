@@ -1,14 +1,14 @@
 package com.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
+import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WorkRealized;
 import com.oltruong.teamag.model.builder.EntityFactory;
+import com.oltruong.teamag.service.TaskService;
 import com.oltruong.teamag.service.WorkRealizedService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.webbean.WorkRealizedWrapper;
-import com.oltruong.teamag.model.Task;
-import com.oltruong.teamag.service.TaskService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,7 +44,6 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
         workRealizedEndPoint = new WorkRealizedEndPoint();
 
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockWorkRealizedService, "workRealizedService");
-        TestUtils.setPrivateAttribute(workRealizedEndPoint, mockWorkService, "workService");
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockTaskService, "taskService");
     }
 

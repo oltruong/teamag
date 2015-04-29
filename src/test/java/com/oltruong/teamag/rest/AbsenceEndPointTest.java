@@ -46,7 +46,6 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         absenceEndPoint = new AbsenceEndPoint();
 
         TestUtils.setPrivateAttribute(absenceEndPoint, mockAbsenceService, "absenceService");
-        TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockLogger, "logger");
         TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
 
     }
