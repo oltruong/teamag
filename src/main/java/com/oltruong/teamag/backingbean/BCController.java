@@ -96,7 +96,7 @@ public class BCController extends Controller {
         this.tabIndex = 1;
         this.getLogger().info("Creation of an activity");
 
-        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBc() == null || this.activity.getBc().getId() == null) {
+        if (StringUtils.isBlank(this.activity.getName()) || this.activity.getBusinessCase() == null || this.activity.getBusinessCase().getId() == null) {
             getMessageManager().displayMessageWithDescription(MessageManager.ERROR, "impossibleAdd", "provideNameAndBC");
         } else {
 

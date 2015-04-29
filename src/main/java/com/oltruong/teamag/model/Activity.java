@@ -12,8 +12,9 @@ import javax.persistence.Table;
 
 @Table(name = "TM_ACTIVITY")
 @Entity
-@NamedQueries({@NamedQuery(name = "findAllActivities", query = "SELECT a from Activity a order by a.name"),
-        @NamedQuery(name = "findActivity", query = "SELECT a from Activity a where a.name=:fname and a.bc=:fbc")})
+@NamedQueries({@NamedQuery(name = "Activity.FIND_ALL", query = "SELECT a from Activity a order by a.name"),
+        @NamedQuery(name = "Activity.FIND_BY_NAME_BC", query = "SELECT a from Activity a where a.name=:fname and a.businessCase=:fbc"),
+        @NamedQuery(name = "Activity.REMOVE_BC", query = "UPDATE Activity SET businessCase=NULL where businessCase.id=:fBusinessCaseId")})
 public class Activity {
 
     @Id
@@ -25,7 +26,7 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "BC_FK")
-    private BusinessCase bc;
+    private BusinessCase businessCase;
 
 
     @Column(nullable = false)
@@ -52,12 +53,12 @@ public class Activity {
         this.name = name;
     }
 
-    public BusinessCase getBc() {
-        return bc;
+    public BusinessCase getBusinessCase() {
+        return businessCase;
     }
 
-    public void setBc(BusinessCase bc) {
-        this.bc = bc;
+    public void setBusinessCase(BusinessCase businessCase) {
+        this.businessCase = businessCase;
     }
 
     public Boolean getDelegated() {

@@ -74,7 +74,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @GET
     @Path("/{id}")
     public Response getTask(@PathParam("id") Long taskId) {
-        return ok(taskService.findTask(taskId));
+        return ok(taskService.find(taskId));
     }
 
     @POST
@@ -92,7 +92,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @Path("/{id}")
     public Response updateTask(@PathParam("id") Long taskId, Task task) {
         task.setId(taskId);
-        taskService.updateTask(task);
+        taskService.merge(task);
         return ok();
     }
 

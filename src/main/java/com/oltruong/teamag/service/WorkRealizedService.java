@@ -110,7 +110,7 @@ public class WorkRealizedService extends AbstractService<WorkRealized> {
     private BusinessCase findBusinessCase(Task task) {
 
         if (task.getActivity() != null) {
-            return task.getActivity().getBc();
+            return task.getActivity().getBusinessCase();
         } else if (task.getTask() != null) {
             return findBusinessCase(task.getTask());
         }

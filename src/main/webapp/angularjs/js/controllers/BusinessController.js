@@ -14,9 +14,9 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
         $scope.orderProp = 'identifier';
         $scope.total = function () {
             var total = 0;
-            angular.forEach($scope.filteredBC, function (bc) {
-                total += bc.amount;
-            })
+            angular.forEach($scope.filteredBC, function (businessCase) {
+                total += businessCase.amount;
+            });
             return total;
         };
 

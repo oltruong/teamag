@@ -46,7 +46,9 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         absenceEndPoint = new AbsenceEndPoint();
 
         TestUtils.setPrivateAttribute(absenceEndPoint, mockAbsenceService, "absenceService");
-        TestUtils.setPrivateAttribute(absenceEndPoint, mockLogger, "logger");
+        TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockLogger, "logger");
+        TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
+
     }
 
 
@@ -142,14 +144,14 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         when(mockAbsenceService.find(eq(randomId))).thenReturn(absence);
 
         Response response = absenceEndPoint.deleteAbsence(memberId, randomId);
-        verify(mockAbsenceService).deleteAbsence(eq(absence));
+        verify(mockAbsenceService).remove(eq(absence));
         checkResponseNoContent(response);
     }
 
     @Test
     public void testDeleteAbsence_null() throws Exception {
         Response response = absenceEndPoint.deleteAbsence(randomId, randomId);
-        verify(mockAbsenceService, never()).deleteAbsence(isA(Absence.class));
+        verify(mockAbsenceService, never()).remove(isA(Absence.class));
         checkResponseNotFound(response);
     }
 
@@ -162,7 +164,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         when(mockAbsenceService.find(eq(randomId))).thenReturn(absence);
 
         Response response = absenceEndPoint.deleteAbsence(randomId, randomId);
-        verify(mockAbsenceService, never()).deleteAbsence(isA(Absence.class));
+        verify(mockAbsenceService, never()).remove(isA(Absence.class));
         checkResponseForbidden(response);
     }
 

@@ -71,7 +71,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         List<WorkLoad> workLoadReturnedList = workLoadService.findOrCreateAllWorkLoad(businessCaseList);
 
         assertThat(workLoadReturnedList).containsAll(workLoadList).hasSize(memberList.size() * businessCaseList.size());
-        checkCreateTypedQuery("findAllWorkLoad");
+        checkCreateTypedQuery("WorkLoad.FIND_ALL");
 
 
     }
@@ -105,7 +105,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         assertThat(workLoadReturnedList).doesNotHaveDuplicates().hasSize(memberList.size() * bcList.size());
         verify(mockEntityManager, times(memberList.size() * bcList.size())).persist(isA(WorkLoad.class));
 
-        checkCreateTypedQuery("findAllWorkLoad");
+        checkCreateTypedQuery("WorkLoad.FIND_ALL");
     }
 
 
@@ -216,5 +216,14 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     @Test
     public void testCreateFromMember() {
 
+    }
+
+    @Test
+    public void testRemoveBusinessCase() {
+        workLoadService.removeBusinessCase(randomLong);
+
+        verify(mockEntityManager).createNamedQuery(eq("WorkLoad.DELETE_FROM_BUSINESSCASE"));
+        verify(mockNamedQuery).setParameter(eq("fBusinessCaseId"), eq(randomLong));
+        verify(mockNamedQuery).executeUpdate();
     }
 }

@@ -85,7 +85,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     public void testGetTask() throws Exception {
 
 
-        when(mockTaskService.findTask(any())).thenReturn(task);
+        when(mockTaskService.find(any())).thenReturn(task);
 
         Response response = taskEndPoint.getTask(randomId);
         checkResponseOK(response);
@@ -94,7 +94,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
         assertThat(taskReturned).isEqualToIgnoringNullFields(task);
-        verify(mockTaskService).findTask(eq(randomId));
+        verify(mockTaskService).find(eq(randomId));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         checkResponseOK(response);
 
         assertThat(task.getId()).isEqualTo(randomId);
-        verify(mockTaskService).updateTask(eq(task));
+        verify(mockTaskService).merge(eq(task));
     }
 
     @Test

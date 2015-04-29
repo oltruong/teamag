@@ -3,8 +3,7 @@
              version="1.0">
 
     <persistence-unit name="testPersistence" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.oltruong.teamag.model.Absence</class>
         <class>com.oltruong.teamag.model.AbsenceDay</class>
         <class>com.oltruong.teamag.model.Activity</class>
@@ -29,7 +28,7 @@
 
 
     <persistence-unit name="ejbPU" transaction-type="JTA">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jdbc/__default</jta-data-source>
         <class>com.oltruong.teamag.model.Absence</class>
         <class>com.oltruong.teamag.model.Activity</class>

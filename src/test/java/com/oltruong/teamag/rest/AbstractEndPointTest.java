@@ -1,7 +1,9 @@
 package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.model.builder.EntityFactory;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
 
 import javax.ws.rs.core.Response;
 
@@ -15,10 +17,14 @@ public abstract class AbstractEndPointTest {
 
     protected Long randomId;
 
+    @Mock
+    protected Logger mockLogger;
+
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
         randomId = EntityFactory.createRandomLong();
+
     }
 
 

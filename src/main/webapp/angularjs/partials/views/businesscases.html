@@ -42,21 +42,26 @@
             </thead>
             <tbody>
 
-            <tr ng-repeat="bc in (filteredBC= (businesscases | filter:query | orderBy:orderProp))">
+            <tr ng-repeat="businessCase in (filteredBC= (businesscases | filter:query | orderBy:orderProp))">
 
-                <td><span ng-show="!editing">{{bc.identifier}}</span><input ng-model="bc.identifier" ng-show="editing"/>
+                <td><span ng-show="!editing">{{businessCase.identifier}}</span><input ng-model="businessCase.identifier"
+                                                                                      ng-show="editing"/>
                 </td>
-                <td><span ng-show="!editing">{{bc.name}}</span> <input ng-model="bc.name" ng-show="editing"/></td>
-                <td><span ng-show="!editing">{{bc.amount}}</span><input type="number" step="any" ng-model="bc.amount"
-                                                                        ng-show="editing"/></td>
-                <td><span ng-show="!editing">{{bc.comment}}</span><input ng-model="bc.comment" ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{businessCase.name}}</span> <input ng-model="businessCase.name"
+                                                                                 ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{businessCase.amount}}</span><input type="number" step="any"
+                                                                                  ng-model="businessCase.amount"
+                                                                                  ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{businessCase.comment}}</span><input ng-model="businessCase.comment"
+                                                                                   ng-show="editing"/></td>
                 <td class="hidden-print">
-                    <a ng-show="editing" ng-click="updateBc(bc);editing=false;" class="btn btn-success btn-sm"
+                    <a ng-show="editing" ng-click="updateBc(businessCase);editing=false;" class="btn btn-success btn-sm"
                        title="Valider">
                         <span class="glyphicon glyphicon-ok"></span>
                     </a>
 
-                    <a ng-show="editing" ng-click="refreshBc(bc);editing=false;" class="btn btn-warning btn-sm"
+                    <a ng-show="editing" ng-click="refreshBc(businessCase);editing=false;"
+                       class="btn btn-warning btn-sm"
                        title="Annuler la modification">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>
@@ -64,7 +69,8 @@
                     <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn-sm" title="Modifier">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a ng-show="!editing" ng-click="deleteBc(bc.id);" class="btn btn-danger btn-sm" title="Supprimer">
+                    <a ng-show="!editing" ng-click="deleteBc(businessCase.id);" class="btn btn-danger btn-sm"
+                       title="Supprimer">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
                 </td>

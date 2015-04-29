@@ -12,10 +12,10 @@
             <option value="-name">Nom desc</option>
             <option value="amount">Montant asc</option>
             <option value="-amount">Montant desc</option>
-            <option value="bc.identifier">BC asc</option>
-            <option value="-bc.identifier">BC desc</option>
-            <option value="bc.name">BC nom asc</option>
-            <option value="-bc.name">BC nom desc</option>
+            <option value="businessCase.identifier">BC asc</option>
+            <option value="-businessCase.identifier">BC desc</option>
+            <option value="businessCase.name">BC nom asc</option>
+            <option value="-businessCase.name">BC nom desc</option>
         </select>
         <br/><br/>
         <a href="#/newActivity" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
@@ -42,18 +42,18 @@
 
                 <td><span ng-show="!editing">{{activity.name}}</span> <input ng-model="activity.name"
                                                                              ng-show="editing"/></td>
-                <td><span ng-show="!editing">{{activity.bc.summary}}</span>
+                <td><span ng-show="!editing">{{activity.businessCase.summary}}</span>
 
-                    <select ng-show="editing" ng-model="activity.bc"
+                    <select ng-show="editing" ng-model="activity.businessCase"
                             ng-options="businessCase.summary for businessCase in businesscases">
                         <option value="">&nbsp;</option>
                     </select>
 
 
-                    <select ng-show="false" ng-model="activity.bc">
+                    <select ng-show="false" ng-model="activity.businessCase">
 
                         <option ng-model="businessCase" ng-repeat="businessCase in businesscases"
-                                ng-selected="activity.bc.id==businessCase.id">
+                                ng-selected="activity.businessCase.id==businessCase.id">
                             {{businessCase.summary}}
                         </option>
                     </select>

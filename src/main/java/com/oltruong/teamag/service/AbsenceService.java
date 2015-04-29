@@ -91,19 +91,16 @@ public class AbsenceService extends AbstractService<Absence> {
         return mailBean;
     }
 
-    public void deleteAbsence(Absence absence) {
+    @Override
+    public void remove(Absence absence) {
         absenceDayService.remove(absence.getId());
-        remove(Absence.class, absence.getId());
+        super.remove(absence);
         emailService.sendEmailAdministrator(buildEmailDelete(absence));
     }
 
     @Override
     Class<Absence> entityProvider() {
         return Absence.class;
-    }
-
-    public Absence find(Long absenceId) {
-        return find(Absence.class, absenceId);
     }
 
 

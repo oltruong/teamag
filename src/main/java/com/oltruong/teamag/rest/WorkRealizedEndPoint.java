@@ -68,7 +68,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
             for (WorkRealized workRealized : workRealizedList) {
                 WorkRealizedWrapper workRealizedWrapper = findWrapper(workRealizedWrapperList, workRealized.getTaskId());
                 if (workRealizedWrapper == null) {
-                    Task task = taskService.findTask(workRealized.getTaskId());
+                    Task task = taskService.find(workRealized.getTaskId());
 
                     workRealizedWrapper = new WorkRealizedWrapper(transformTask(task));
                     workRealizedWrapperList.add(workRealizedWrapper);

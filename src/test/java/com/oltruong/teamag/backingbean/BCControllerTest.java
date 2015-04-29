@@ -130,7 +130,7 @@ public class BCControllerTest extends ControllerTest {
     @Test
     public void testDoCreateActivity() throws Exception {
         Activity activity = EntityFactory.createActivity();
-        activity.getBc().setId(Long.valueOf(3l));
+        activity.getBusinessCase().setId(Long.valueOf(3l));
 
         bcController.setActivity(activity);
         assertThat(bcController.getActivity()).isEqualTo(activity);
@@ -158,7 +158,7 @@ public class BCControllerTest extends ControllerTest {
     public void testDoCreateActivity_existing() throws Exception {
         when(mockActivityService.persist(isA(Activity.class))).thenThrow(new EntityExistsException());
         Activity activity = EntityFactory.createActivity();
-        activity.getBc().setId(Long.valueOf(3l));
+        activity.getBusinessCase().setId(Long.valueOf(3l));
         bcController.setActivity(activity);
         String view = bcController.doCreateActivity();
 

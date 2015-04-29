@@ -8,6 +8,7 @@ import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.WorkLoad;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
 
 
     public List<WorkLoad> findOrCreateAllWorkLoad(List<BusinessCase> businessCaseList) {
-        List<WorkLoad> workLoadList = getTypedQueryList("findAllWorkLoad");
+        List<WorkLoad> workLoadList = getTypedQueryList("WorkLoad.FIND_ALL");
 
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads(businessCaseList);
@@ -133,5 +134,11 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
     @Override
     Class<WorkLoad> entityProvider() {
         return WorkLoad.class;
+    }
+
+    public void removeBusinessCase(Long businessCaseId) {
+        Query removeQuery = createNamedQuery("WorkLoad.DELETE_FROM_BUSINESSCASE");
+        removeQuery.setParameter("fBusinessCaseId", businessCaseId);
+        removeQuery.executeUpdate();
     }
 }

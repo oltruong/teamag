@@ -57,7 +57,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         Task task = EntityFactory.createTask();
         task.setId(randomId);
-        when(mockTaskService.findTask(anyLong())).thenReturn(task);
+        when(mockTaskService.find(anyLong())).thenReturn(task);
 
         when(mockWorkRealizedService.getAllWorkRealized()).thenReturn(workRealizedList);
 
@@ -133,7 +133,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         Task task = EntityFactory.createTask();
         task.setId(randomId);
-        when(mockTaskService.findTask(anyLong())).thenReturn(task);
+        when(mockTaskService.find(anyLong())).thenReturn(task);
 
         when(mockTaskService.findTaskWithActivity()).thenReturn(tasks);
 

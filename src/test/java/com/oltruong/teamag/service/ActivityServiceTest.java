@@ -39,7 +39,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
         List<Activity> activityFoundList = activityService.findActivities();
 
         assertThat(activityFoundList).isEqualTo(activityList);
-        checkCreateTypedQuery("findAllActivities");
+        checkCreateTypedQuery("Activity.FIND_ALL");
         verify(mockTypedQuery).getResultList();
     }
 
@@ -88,9 +88,9 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
         assertThat(activityCreated).isEqualTo(activity);
 
-        checkCreateTypedQuery("findActivity");
+        checkCreateTypedQuery("Activity.FIND_BY_NAME_BC");
         verify(mockTypedQuery).setParameter(eq("fname"), eq(activity.getName()));
-        verify(mockTypedQuery).setParameter(eq("fbc"), eq(activity.getBc()));
+        verify(mockTypedQuery).setParameter(eq("fbc"), eq(activity.getBusinessCase()));
         verify(mockEntityManager).persist(eq(activity));
     }
 
@@ -101,6 +101,15 @@ public class ActivityServiceTest extends AbstractServiceTest {
         when(mockTypedQuery.getResultList()).thenReturn(activityList);
 
         activityService.persist(activityList.get(0));
+    }
+
+    @Test
+    public void testRemoveBusinessCase() {
+        activityService.removeBusinessCase(randomLong);
+
+        verify(mockEntityManager).createNamedQuery(eq("Activity.REMOVE_BC"));
+        verify(mockNamedQuery).setParameter(eq("fBusinessCaseId"), eq(randomLong));
+        verify(mockNamedQuery).executeUpdate();
     }
 
 

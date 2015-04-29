@@ -93,7 +93,7 @@ public class EntityFactory {
         Activity activity = new Activity();
         activity.setId(null);
         activity.setName("MyActivity" + DateTime.now().getMillis());
-        activity.setBc(createBusinessCase());
+        activity.setBusinessCase(createBusinessCase());
         activity.setComment("MyComment" + LocalDate.now().toString());
         activity.setDelegated(Boolean.FALSE);
         activity.setAmount(Double.valueOf(LocalDate.now().getDayOfMonth()));

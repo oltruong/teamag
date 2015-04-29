@@ -30,12 +30,16 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     @Mock
     private WorkLoadService mockWorkLoadService;
 
+    @Mock
+    private ActivityService mockActivityService;
+
 
     @Before
     public void prepare() {
         businessCaseService = new BusinessCaseService();
         prepareService(businessCaseService);
         TestUtils.setPrivateAttribute(businessCaseService, mockWorkLoadService, "workLoadService");
+        TestUtils.setPrivateAttribute(businessCaseService, mockActivityService, "activityService");
 
     }
 
@@ -115,6 +119,8 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
         when(mockEntityManager.find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
         businessCaseService.remove(randomLong);
 
+        verify(mockWorkLoadService).removeBusinessCase(eq(randomLong));
+        verify(mockActivityService).removeBusinessCase(eq(randomLong));
         verify(mockEntityManager).find(eq(BusinessCase.class), eq(randomLong));
         verify(mockEntityManager).remove(eq(businessCase));
     }

@@ -38,23 +38,21 @@ public class TaskService extends AbstractService<Task> {
         return createTypedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
     }
 
-    public Task findTask(Long taskId) {
-        return find(Task.class, taskId);
-    }
 
     public void deleteTask(Long taskId) {
-        Task task = findTask(taskId);
+        Task task = find(taskId);
         if (task == null) {
             throw new EntityNotFoundException("Task with id " + taskId + " not found");
         }
         remove(task);
     }
 
-    public void updateTask(Task taskToUpdate) {
+    @Override
+    public void merge(Task taskToUpdate) {
         if (isLoop(taskToUpdate)) {
             throw new IllegalArgumentException();
         }
-        merge(taskToUpdate);
+        super.merge(taskToUpdate);
     }
 
     public void createTask(Task task) {
@@ -113,12 +111,13 @@ public class TaskService extends AbstractService<Task> {
     }
 
     private void addAbsenceTask(Member member, List<Task> taskList) {
-        Task absenceTask = findTask(1L);
+        Task absenceTask = find(1L);
         absenceTask.addMember(member);
-        updateTask(absenceTask);
+        merge(absenceTask);
         taskList.add(absenceTask);
     }
 
+    @Transactional
     public void remove(Task task, Member member, DateTime month) {
         deleteWorks(task, member, month);
 

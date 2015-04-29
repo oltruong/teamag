@@ -8,7 +8,6 @@ import com.oltruong.teamag.service.AbsenceService;
 import com.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
-import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,9 +27,6 @@ import javax.ws.rs.core.Response;
 @SecurityChecked
 public class AbsenceEndPoint extends AbstractEndPoint {
 
-
-    @Inject
-    private Logger logger;
 
     @Inject
     private AbsenceService absenceService;
@@ -55,15 +51,15 @@ public class AbsenceEndPoint extends AbstractEndPoint {
 
     @POST
     public Response createAbsence(@HeaderParam("userid") Long memberId, AbsenceWebBean absenceWebBean) {
-        Response response = null;
+        Response response;
         try {
             absenceService.addAbsence(AbsenceWebBeanTransformer.transformWebBean(absenceWebBean), memberId);
             response = created();
         } catch (DateOverlapException e) {
-            logger.warn("Creating absence with DateOverLap", e);
+            LOGGER.warn("Creating absence with DateOverLap", e);
             response = forbidden();
         } catch (InconsistentDateException e) {
-            logger.warn("Creating absence with InconsistentDate", e);
+            LOGGER.warn("Creating absence with InconsistentDate", e);
             response = badRequest();
         }
         return response;
@@ -72,7 +68,7 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{absenceId}")
     public Response deleteAbsence(@HeaderParam("userid") Long memberId, @PathParam("absenceId") Long absenceId) {
-        return delete(() -> absenceService.find(absenceId), (absence) -> ((Absence) absence).getMember().getId().equals(memberId), (absence) -> absenceService.deleteAbsence((Absence) absence));
+        return delete(() -> absenceService.find(absenceId), (absence) -> ((Absence) absence).getMember().getId().equals(memberId), (absence) -> absenceService.remove((Absence) absence));
     }
 
 

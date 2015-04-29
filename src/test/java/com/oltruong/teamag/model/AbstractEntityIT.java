@@ -22,6 +22,7 @@ public abstract class AbstractEntityIT {
         entityManagerFactory = Persistence.createEntityManagerFactory("testPersistence");
         entityManager = entityManagerFactory.createEntityManager();
         transaction = entityManager.getTransaction();
+
         transaction.begin();
     }
 

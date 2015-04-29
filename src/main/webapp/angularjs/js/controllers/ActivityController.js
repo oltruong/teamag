@@ -14,10 +14,10 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
                 var bcLength = $scope.businesscases.length;
                 for (var i = 0; i < activitiesLength; i++) {
 
-                    if ($scope.activities[i].bc !== null) {
+                    if ($scope.activities[i].businessCase !== null) {
                         for (var j = 0; j < bcLength; j++) {
-                            if ($scope.activities[i].bc.id === $scope.businesscases[j].id) {
-                                $scope.activities[i].bc = $scope.businesscases[j];
+                            if ($scope.activities[i].businessCase.id === $scope.businesscases[j].id) {
+                                $scope.activities[i].businessCase = $scope.businesscases[j];
                             }
                         }
                     }
@@ -65,7 +65,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
                 $activity.comment = oldActivity.comment;
                 $activity.name = oldActivity.name;
                 $activity.amount = oldActivity.amount;
-                $activity.bc = oldActivity.bc;
+                $activity.businessCase = oldActivity.businessCase;
                 $activity.delegated = oldActivity.delegated;
             }, function (error) {
                 $scope.error = 'Erreur HTTP' + error.status;
@@ -78,7 +78,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
                 $location.path('activities').search({confirmation: 'Activité ' + $scope.newActivity.name + ' ajoutée'});
             }, function (error) {
                 if (error.status === "406") {
-                    $scope.warning = "L'activité " + $scope.newActivity.name + " sur BC " + $scope.newActivity.bc.identifier + "-" + $scope.newActivity.bc.name + " existe déjà";
+                    $scope.warning = "L'activité " + $scope.newActivity.name + " sur BC " + $scope.newActivity.businessCase.identifier + "-" + $scope.newActivity.businessCase.name + " existe déjà";
                 } else {
                     $scope.error = 'Erreur HTTP' + error.status;
                 }

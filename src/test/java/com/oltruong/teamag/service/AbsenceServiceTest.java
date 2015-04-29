@@ -86,9 +86,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
         Long absenceId = randomLong;
         absence.setId(absenceId);
-        absenceService.deleteAbsence(absence);
-
-        verify(mockEntityManager).find(eq(Absence.class), eq(absenceId));
+        absenceService.remove(absence);
         verify(mockEntityManager).remove(eq(absence));
     }
 

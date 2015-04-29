@@ -1,5 +1,9 @@
 package com.oltruong.teamag.rest;
 
+import org.slf4j.Logger;
+
+import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +19,8 @@ import java.util.function.Supplier;
 @Consumes({MediaType.APPLICATION_JSON})
 public abstract class AbstractEndPoint {
 
+    @Inject
+    protected static Logger LOGGER;
 
     protected Response get(Supplier finder) {
         Object result = finder.get();
@@ -23,6 +29,17 @@ public abstract class AbstractEndPoint {
         } else {
             return ok(result);
         }
+    }
+
+
+    public Response create(Supplier supplier) {
+        try {
+            supplier.get();
+        } catch (EntityExistsException e) {
+            LOGGER.warn("Tyring to create an already existing entity", e);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        return created();
     }
 
     protected Response delete(Supplier finder, Consumer deleter) {
@@ -45,6 +62,7 @@ public abstract class AbstractEndPoint {
         }
         return response;
     }
+
 
     protected Response ok(Object object) {
         return Response.ok(object).build();

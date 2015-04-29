@@ -74,7 +74,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
 
             var total = 0;
             angular.forEach($scope.worksRealized, function (workRealized) {
-                if (workRealized.task.activity.bc !== null) {
+                if (workRealized.task.activity.businessCase !== null) {
                     angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
                         if (realizedMonth.month === monthNumber) {
                             total += realizedMonth.realized;
@@ -102,7 +102,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
             var total = 0;
             angular.forEach($scope.worksRealized, function (workRealized) {
 
-                if (workRealized.task.activity.bc !== null) {
+                if (workRealized.task.activity.businessCase !== null) {
                     angular.forEach(workRealized.workRealizedList, function (realizedMonth) {
                         total += realizedMonth.realized;
 

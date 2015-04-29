@@ -65,7 +65,7 @@
         <version.wildfly>8.2.0.Final</version.wildfly>
         <version.hibernate>4.3.5.Final</version.hibernate>
 
-        <sonar-maven-plugin.version>2.4</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <jersey-common.version>2.4.1</jersey-common.version>
     </properties>
 

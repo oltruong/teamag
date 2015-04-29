@@ -123,7 +123,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     public void testFindTask() {
         Task task = setupTask();
 
-        Task taskFound = taskService.findTask(randomLong);
+        Task taskFound = taskService.find(randomLong);
 
         assertThat(taskFound).isEqualTo(task);
         verify(mockEntityManager).find(eq(Task.class), eq(randomLong));
@@ -156,7 +156,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     public void testUpdateTask() {
 
         task.setId(randomLong);
-        taskService.updateTask(task);
+        taskService.merge(task);
         verify(mockEntityManager).merge(eq(task));
     }
 
@@ -165,7 +165,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         task.setId(randomLong);
         task.setTask(task);
-        taskService.updateTask(task);
+        taskService.merge(task);
         verify(mockEntityManager, never()).merge(eq(task));
     }
 
@@ -180,7 +180,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.setTask(anotherTask);
 
         anotherTask.setTask(task);
-        taskService.updateTask(task);
+        taskService.merge(task);
         verify(mockEntityManager, never()).merge(eq(task));
     }
 

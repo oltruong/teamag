@@ -27,7 +27,7 @@ public final class CalendarUtils {
         if (dayOfWeek == DateTimeConstants.SUNDAY || dayOfWeek == DateTimeConstants.SATURDAY) {
             return true;
         } else {
-            verdict = getListDaysOff().contains(day);
+            verdict = getListDaysOff().contains(day.withTimeAtStartOfDay());
         }
         return verdict;
 

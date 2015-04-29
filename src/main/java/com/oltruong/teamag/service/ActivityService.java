@@ -5,6 +5,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -12,20 +13,21 @@ import java.util.List;
 public class ActivityService extends AbstractService<Activity> {
 
 
-    public List<Activity> findActivities() {
-        return getTypedQueryList("findAllActivities");
-    }
-
     @Override
     Class<Activity> entityProvider() {
         return Activity.class;
     }
 
+
+    public List<Activity> findActivities() {
+        return getTypedQueryList("Activity.FIND_ALL");
+    }
+
     @Override
     public Activity persist(Activity activity) {
-        TypedQuery<Activity> query = createTypedQuery("findActivity");
+        TypedQuery<Activity> query = createTypedQuery("Activity.FIND_BY_NAME_BC");
         query.setParameter("fname", activity.getName());
-        query.setParameter("fbc", activity.getBc());
+        query.setParameter("fbc", activity.getBusinessCase());
         List<Activity> activityList = query.getResultList();
 
         if (CollectionUtils.isNotEmpty(activityList)) {
@@ -37,4 +39,9 @@ public class ActivityService extends AbstractService<Activity> {
     }
 
 
+    public void removeBusinessCase(Long businessCaseId) {
+        Query removeQuery = createNamedQuery("Activity.REMOVE_BC");
+        removeQuery.setParameter("fBusinessCaseId", businessCaseId);
+        removeQuery.executeUpdate();
+    }
 }
