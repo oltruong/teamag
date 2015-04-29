@@ -41,7 +41,8 @@
             <th colspan="2"></th>
             <th>{{displayTotal() | number:2}}<br/><span
                     class="text-primary">{{displayTotalWorked() | number:2}}</span></th>
-            <th ng-repeat="value in months_number | filter:filterMonthNumber"><span ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
+            <th ng-repeat="value in months_number | filter:filterMonthNumber"><span
+                    ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
                 number:2}}<br/><span class="text-primary">{{displayTotalWorkedMonth(value) |    number:2}}</span></span>
             </th>
         </tr>
@@ -57,7 +58,7 @@
 
                 <span ng-show="!editing && displayRealized(realizedMonth.realized)">{{realizedMonth.realized}}</span>
                 <input type="number"
-                       step="any" size="3" maxlength="3"
+                       step="0.1"
                        ng-model="realizedMonth.realized" ng-show="editing"/>
             </td>
         </tr>
