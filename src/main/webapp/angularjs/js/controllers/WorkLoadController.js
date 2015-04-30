@@ -3,8 +3,11 @@
 teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
     function ($scope, $http) {
 
+        var loaded = false;
+
         $http.get('../resources/workload/').success(function (data) {
             $scope.workloadContainer = data;
+            loaded = true;
         }, function (error) {
         });
 
@@ -149,10 +152,11 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
 
         $scope.sumBC = function ($workLoadContainer) {
             var total = 0;
-
-            angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
-                total += workLoadContainer.businessCase.amount;
-            });
+            if (loaded) {
+                angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
+                    total += workLoadContainer.businessCase.amount;
+                });
+            }
 
             return total;
         };
@@ -160,22 +164,25 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
 
         $scope.sumWorkLoad = function ($workLoadContainer) {
             var total = 0;
-
-            angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
-                angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
-                    total += workLoad.estimated;
+            if (loaded) {
+                angular.forEach($scope.workloadContainer.workLoadContainerList, function (workLoadContainer) {
+                    angular.forEach(workLoadContainer.workLoadList, function (workLoad) {
+                        total += workLoad.estimated;
+                    });
                 });
-            });
+            }
 
             return total;
         };
 
         $scope.sumMember = function () {
             var total = 0;
+            if (loaded) {
+                angular.forEach($scope.workloadContainer.memberList, function (member) {
+                    total += member.estimatedWorkDays;
+                });
 
-            angular.forEach($scope.workloadContainer.memberList, function (member) {
-                total += member.estimatedWorkDays;
-            });
+            }
 
             return total;
         };
