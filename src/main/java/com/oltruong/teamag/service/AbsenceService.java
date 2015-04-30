@@ -92,10 +92,13 @@ public class AbsenceService extends AbstractService<Absence> {
     }
 
     @Override
-    public void remove(Absence absence) {
-        absenceDayService.remove(absence.getId());
-        super.remove(absence);
-        emailService.sendEmailAdministrator(buildEmailDelete(absence));
+    public void remove(Long absenceId) {
+        Absence absence = find(absenceId);
+        if (absence != null) {
+            absenceDayService.remove(absenceId);
+            super.remove(absence);
+            emailService.sendEmailAdministrator(buildEmailDelete(absence));
+        }
     }
 
     @Override

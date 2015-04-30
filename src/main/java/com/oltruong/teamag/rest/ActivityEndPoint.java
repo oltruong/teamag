@@ -53,8 +53,8 @@ public class ActivityEndPoint extends AbstractEndPoint {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteActivity(@PathParam("id") Long activityId) {
-        return delete(() -> activityService.find(activityId), activity -> activityService.remove((Activity) activity));
+    public Response delete(@PathParam("id") Long activityId) {
+        return delete(activityService::remove, activityId);
     }
 
 }

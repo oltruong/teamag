@@ -143,14 +143,14 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         when(mockAbsenceService.find(eq(randomId))).thenReturn(absence);
 
         Response response = absenceEndPoint.deleteAbsence(memberId, randomId);
-        verify(mockAbsenceService).remove(eq(absence));
+        verify(mockAbsenceService).remove(eq(randomId));
         checkResponseNoContent(response);
     }
 
     @Test
     public void testDeleteAbsence_null() throws Exception {
         Response response = absenceEndPoint.deleteAbsence(randomId, randomId);
-        verify(mockAbsenceService, never()).remove(isA(Absence.class));
+        verify(mockAbsenceService, never()).remove(isA(Long.class));
         checkResponseNotFound(response);
     }
 
@@ -163,7 +163,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         when(mockAbsenceService.find(eq(randomId))).thenReturn(absence);
 
         Response response = absenceEndPoint.deleteAbsence(randomId, randomId);
-        verify(mockAbsenceService, never()).remove(isA(Absence.class));
+        verify(mockAbsenceService, never()).remove(isA(Long.class));
         checkResponseForbidden(response);
     }
 

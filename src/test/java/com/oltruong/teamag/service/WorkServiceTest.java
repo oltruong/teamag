@@ -197,8 +197,9 @@ public class WorkServiceTest extends AbstractServiceTest {
         workList.add(firstWork);
 
         Work firstWorkCloned = createWork(taskList, firstWorkingDay);
+        firstWorkCloned.setId(randomLong);
         workList.add(firstWorkCloned);
-
+        when(mockEntityManager.find(Work.class, randomLong)).thenReturn(firstWorkCloned);
 
         Map<Task, List<Work>> taskListMap = workService.findOrCreateWorks(member, month, taskList, absenceDayList);
         verifyFindOrCreateWorks(taskList, absenceTask, workingDays, firstWorkingDay, taskListMap);

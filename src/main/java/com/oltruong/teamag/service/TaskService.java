@@ -10,7 +10,6 @@ import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -36,15 +35,6 @@ public class TaskService extends AbstractService<Task> {
 
     public List<Task> findTaskWithActivity() {
         return createTypedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
-    }
-
-
-    public void deleteTask(Long taskId) {
-        Task task = find(taskId);
-        if (task == null) {
-            throw new EntityNotFoundException("Task with id " + taskId + " not found");
-        }
-        remove(task);
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -35,10 +36,14 @@ public abstract class AbstractService<Entity> {
     }
 
     public void remove(Long id) {
-        remove(find(id));
+        Entity entity = find(id);
+        if (entity == null) {
+            throw new EntityNotFoundException("Entity with id " + id + " not found");
+        }
+        remove(entity);
     }
 
-    public void remove(Entity entity) {
+    protected void remove(Entity entity) {
         entityManager.remove(entity);
     }
 

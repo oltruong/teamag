@@ -8,7 +8,12 @@ import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.Work;
-import com.oltruong.teamag.service.*;
+import com.oltruong.teamag.service.AbsenceDayService;
+import com.oltruong.teamag.service.EmailService;
+import com.oltruong.teamag.service.MailBean;
+import com.oltruong.teamag.service.TaskService;
+import com.oltruong.teamag.service.WeekCommentService;
+import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.ColumnDayBean;
 import com.oltruong.teamag.webbean.RealizedFormWebBean;
@@ -185,7 +190,7 @@ public class WorkController extends Controller {
     private void updateComment() {
         if (Strings.isNullOrEmpty(weekComment.getComment())) {
             if (weekComment.getId() != null) {
-                weekCommentService.remove(weekComment);
+                weekCommentService.remove(weekComment.getId());
             }
         } else {
             if (weekComment.getId() != null) {

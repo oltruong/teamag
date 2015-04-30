@@ -9,13 +9,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -104,25 +104,23 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDeleteActivity() throws Exception {
+    public void testDelete() throws Exception {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.find(randomId)).thenReturn(activity);
-        Response response = activityEndPoint.deleteActivity(randomId);
+        Response response = activityEndPoint.delete(randomId);
         checkResponseNoContent(response);
 
 
-        verify(mockActivityService).remove(eq(activity));
+        verify(mockActivityService).remove(eq(randomId));
     }
 
     @Test
     public void testDeleteActivity_notFound() throws Exception {
 
-        Response response = activityEndPoint.deleteActivity(randomId);
+
+        doThrow(new EntityNotFoundException()).when(mockActivityService).remove(eq(randomId));
+        Response response = activityEndPoint.delete(randomId);
         checkResponseNotFound(response);
-
-
-        verify(mockActivityService).find(eq(randomId));
-        verify(mockActivityService, never()).remove(any(Activity.class));
     }
 
 }

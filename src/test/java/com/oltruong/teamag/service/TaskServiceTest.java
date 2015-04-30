@@ -133,7 +133,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     public void testDeleteTask() {
         Task task = setupTask();
 
-        taskService.deleteTask(randomLong);
+        taskService.remove(randomLong);
         verify(mockEntityManager).find(eq(Task.class), eq(randomLong));
         verify(mockEntityManager).remove(eq(task));
     }
@@ -146,7 +146,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void testDeleteTask_null() {
-        taskService.deleteTask(randomLong);
+        taskService.remove(randomLong);
         verify(mockEntityManager).find(eq(Task.class), eq(randomLong));
         verify(mockEntityManager, never()).remove(any(Task.class));
     }

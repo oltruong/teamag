@@ -111,7 +111,7 @@ public class WorkService extends AbstractService<Work> {
                 logger.error("ERROR DUPLICATE IN WORK TASK[" + work.getTask().getId().toString() + "] DAY[" + work.getDay() + "] MEMBER ID[" + work.getMember().getId().toString() + "]");
                 logger.error("Removing WORK" + work.getId());
 
-                remove(work);
+                remove(work.getId());
             } else {
                 workReferenceList.add(workKey);
                 noDuplicateList.add(work);

@@ -9,7 +9,6 @@ import com.oltruong.teamag.webbean.TaskWebBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -100,14 +99,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{id}")
     public Response deleteTask(@PathParam("id") Long taskId) {
-        Response response;
-        try {
-            taskService.deleteTask(taskId);
-            response = noContent();
-        } catch (EntityNotFoundException exception) {
-            response = notFound();
-        }
-        return response;
+        return delete(taskService::remove, taskId);
     }
 
 

@@ -54,7 +54,6 @@ public class BusinessCaseEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long businessCaseId) {
-        businessCaseService.remove(businessCaseId);
-        return ok();
+        return delete(businessCaseService::remove, businessCaseId);
     }
 }

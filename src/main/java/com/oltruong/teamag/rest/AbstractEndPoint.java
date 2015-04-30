@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -42,25 +42,13 @@ public abstract class AbstractEndPoint {
         return created();
     }
 
-    protected Response delete(Supplier finder, Consumer deleter) {
-
-        return delete(finder, x -> true, deleter);
-    }
-
-    protected Response delete(Supplier finder, Predicate authorizer, Consumer deleter) {
-        Object result = finder.get();
-        Response response;
-        if (result == null) {
-            response = notFound();
-        } else {
-            if (authorizer.test(result)) {
-                deleter.accept(result);
-                response = noContent();
-            } else {
-                response = forbidden();
-            }
+    protected Response delete(Consumer<Long> deleter, Long id) {
+        try {
+            deleter.accept(id);
+            return noContent();
+        } catch (EntityNotFoundException e) {
+            return notFound();
         }
-        return response;
     }
 
 

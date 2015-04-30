@@ -63,9 +63,7 @@ public class AbsenceController extends Controller {
 
 
     public void deleteAbsence() {
-
-        Absence absenceToDelete = absenceService.find(getSelectedAbsence().getId());
-        absenceService.remove(absenceToDelete);
+        absenceService.remove(getSelectedAbsence().getId());
         refreshList();
 
     }

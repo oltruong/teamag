@@ -11,7 +11,7 @@
     <div class="bg-danger">{{error}}</div>
 
     <form name="newBusinessForm" role="form" ng-submit="newBusinessForm.$valid && create()" novalidate>
-        <h2 class="text-center">Ajout de BC</h2>
+        <h2 class="text-center">Ajout de Business Case</h2>
 
         <div class="form-group">
             <label for="identifier">Identifiant</label>
@@ -31,7 +31,8 @@
             <input type="text" class="form-control" id="comment" placeholder="" ng-model="newbc.comment">
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-success" ng-disabled="!newBusinessForm.$valid"><span
+            <button type="submit" class="btn btn-success"
+                    ng-disabled="!newBusinessForm.$valid || newBusinessForm.$pristine"><span
                     class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
             </button>
         </div>

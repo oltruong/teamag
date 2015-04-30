@@ -68,7 +68,16 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @DELETE
     @Path("/{absenceId}")
     public Response deleteAbsence(@HeaderParam("userid") Long memberId, @PathParam("absenceId") Long absenceId) {
-        return delete(() -> absenceService.find(absenceId), (absence) -> ((Absence) absence).getMember().getId().equals(memberId), (absence) -> absenceService.remove((Absence) absence));
+        Absence absence = absenceService.find(absenceId);
+        Response response;
+        if (absence == null) {
+            response = notFound();
+        } else if (absence.getMember().getId().equals(memberId)) {
+            response = delete(absenceService::remove, absenceId);
+        } else {
+            response = forbidden();
+        }
+        return response;
     }
 
 

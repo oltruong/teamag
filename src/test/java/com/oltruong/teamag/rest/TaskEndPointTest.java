@@ -138,14 +138,14 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     public void testDeleteTask() throws Exception {
         Response response = taskEndPoint.deleteTask(randomId);
         checkResponseNoContent(response);
-        verify(mockTaskService).deleteTask(eq(randomId));
+        verify(mockTaskService).remove(eq(randomId));
     }
 
     @Test
     public void testDeleteTask_NotFound() throws Exception {
-        doThrow(new EntityNotFoundException()).when(mockTaskService).deleteTask(anyLong());
+        doThrow(new EntityNotFoundException()).when(mockTaskService).remove(anyLong());
         Response response = taskEndPoint.deleteTask(randomId);
         checkResponseNotFound(response);
-        verify(mockTaskService).deleteTask(eq(randomId));
+        verify(mockTaskService).remove(eq(randomId));
     }
 }

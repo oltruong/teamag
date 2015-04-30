@@ -101,7 +101,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testDeleteBC() throws Exception {
         Response response = businessEndPoint.delete(randomId);
-        checkResponseOK(response);
+        checkResponseNoContent(response);
 
 
         verify(mockBusinessCaseService).remove(eq(randomId));
