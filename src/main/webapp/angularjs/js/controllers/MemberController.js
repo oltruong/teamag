@@ -1,8 +1,10 @@
 'use strict';
 
-teamagApp.controller('MemberController', ['$scope', '$http', 'Member',
-    function ($scope, $http, Member) {
+teamagApp.controller('MemberController', ['$scope', '$http', '$location', 'Member',
+    function ($scope, $http, $location, Member) {
 
+
+        $scope.types = ["BASIC", "ADMINISTRATOR"];
 
         $scope.members = Member.query(function () {
         }, function (error) {
@@ -17,9 +19,9 @@ teamagApp.controller('MemberController', ['$scope', '$http', 'Member',
             angular.forEach($scope.filteredMembers, function (member) {
 
                 totalDays += member.estimatedWorkDays;
-            })
+            });
             return totalDays;
-        }
+        };
 
         $scope.updateMember = function ($member) {
             Member.update({id: $member.id}, $member, function () {
@@ -46,7 +48,19 @@ teamagApp.controller('MemberController', ['$scope', '$http', 'Member',
                 $scope.error = 'Erreur HTTP' + error.status;
             });
 
-        }
+        };
+
+        $scope.create = function () {
+            Member.save($scope.newMember, function () {
+                $location.path('members').search({confirmation: 'Member ' + $scope.newMember.name + ' ajoutée'});
+            }, function (error) {
+                if (error.status === "406") {
+                    $scope.warning = "Le membre " + $scope.newMember.name + " existe déjà";
+                } else {
+                    $scope.error = 'Erreur HTTP' + error.status;
+                }
+            });
+        };
 
     }]);
 
