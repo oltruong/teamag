@@ -15,7 +15,7 @@
         <version.javaee>7.0</version.javaee>
         <version.primefaces>4.0</version.primefaces>
         <version.primefaces-theme>1.0.10</version.primefaces-theme>
-        <version.junit>4.11</version.junit>
+        <version.junit>4.12</version.junit>
         <version.assertj>1.7.1</version.assertj>
         <version.mockito>1.9.5</version.mockito>
         <powermock.version>1.6.1</powermock.version>
