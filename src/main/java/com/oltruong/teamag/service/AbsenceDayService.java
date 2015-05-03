@@ -18,6 +18,7 @@ public class AbsenceDayService extends AbstractService<AbsenceDay> {
     private WorkService workService;
 
 
+    @Override
     public List<AbsenceDay> findAll() {
         return getTypedQueryList("findAllAbsenceDays");
     }

@@ -51,7 +51,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindAllTasks() {
-        testFindTasks("Task.FIND_ALL", taskService::findAllTasks);
+        testFindTasks("Task.FIND_ALL", taskService::findAll);
 
     }
 

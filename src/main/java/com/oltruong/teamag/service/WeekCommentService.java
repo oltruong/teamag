@@ -31,4 +31,9 @@ public class WeekCommentService extends AbstractService<WeekComment> {
     Class<WeekComment> entityProvider() {
         return WeekComment.class;
     }
+
+    @Override
+    public List<WeekComment> findAll() {
+        throw new UnsupportedOperationException();
+    }
 }

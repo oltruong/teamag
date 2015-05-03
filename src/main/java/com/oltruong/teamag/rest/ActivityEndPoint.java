@@ -27,7 +27,7 @@ public class ActivityEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getActivities() {
-        return get(() -> activityService.findActivities());
+        return get(() -> activityService.findAll());
     }
 
     @GET

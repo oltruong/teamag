@@ -35,7 +35,7 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     @GET
     @Path("/all")
     public Response getAllAbsences() {
-        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAllAbsences()));
+        return ok(AbsenceWebBeanTransformer.transformList(absenceService.findAll()));
     }
 
     @GET

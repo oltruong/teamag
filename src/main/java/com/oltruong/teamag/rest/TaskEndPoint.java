@@ -31,7 +31,7 @@ public class TaskEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getTasks() {
-        return ok(buildTask(taskService.findAllTasks()));
+        return ok(buildTask(taskService.findAll()));
     }
 
     @GET

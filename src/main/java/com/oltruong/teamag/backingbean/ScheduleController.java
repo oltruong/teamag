@@ -42,7 +42,7 @@ public class ScheduleController extends Controller {
     private void fillEventModel() {
 
         eventModel = new DefaultScheduleModel();
-        members = memberService.findMembers();
+        members = memberService.findAll();
         fillAbsences();
         fillDaysOff();
 
@@ -54,7 +54,7 @@ public class ScheduleController extends Controller {
     }
 
     private void fillAbsences() {
-        List<Absence> absenceList = absenceService.findAllAbsences();
+        List<Absence> absenceList = absenceService.findAll();
         List<ScheduleEvent> eventList = ScheduleEventTransformer.convertAbsenceList(absenceList, getMessageManager());
         fillEventList(eventList);
     }

@@ -31,12 +31,12 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindActivities() throws Exception {
+    public void testFindAll() throws Exception {
 
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(mockTypedQuery.getResultList()).thenReturn(activityList);
 
-        List<Activity> activityFoundList = activityService.findActivities();
+        List<Activity> activityFoundList = activityService.findAll();
 
         assertThat(activityFoundList).isEqualTo(activityList);
         checkCreateTypedQuery("Activity.FIND_ALL");

@@ -27,9 +27,9 @@ public class AbsenceService extends AbstractService<Absence> {
     @Inject
     private WorkService workService;
 
-
-    public List<Absence> findAllAbsences() {
-        return getTypedQueryList("findAllAbsences");
+    @Override
+    public List<Absence> findAll() {
+        return getTypedQueryList("findAll");
     }
 
     public List<Absence> findAbsencesByMember(Long memberId) {
@@ -63,7 +63,7 @@ public class AbsenceService extends AbstractService<Absence> {
 
     public void reloadAllAbsenceDay() {
         absenceDayService.removeAll();
-        List<Absence> absenceList = findAllAbsences();
+        List<Absence> absenceList = findAll();
         if (absenceList != null) {
             absenceList.forEach(absence -> registerAbsence(absence));
         }

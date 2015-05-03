@@ -21,6 +21,7 @@ public class BusinessCaseService extends AbstractService<BusinessCase> {
     @Inject
     private ActivityService activityService;
 
+    @Override
     public List<BusinessCase> findAll() {
         return getTypedQueryList("findAllBC");
     }

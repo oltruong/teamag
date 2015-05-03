@@ -47,8 +47,8 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testGetTasks() throws Exception {
-        testFindTasks(mockTaskService::findAllTasks, taskEndPoint::getTasks);
-        verify(mockTaskService, atLeastOnce()).findAllTasks();
+        testFindTasks(mockTaskService::findAll, taskEndPoint::getTasks);
+        verify(mockTaskService, atLeastOnce()).findAll();
     }
 
     @Test

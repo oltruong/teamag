@@ -28,7 +28,8 @@ public class WorkRealizedService extends AbstractService<WorkRealized> {
     @Inject
     private BusinessCaseService businessCaseService;
 
-    public List<WorkRealized> getAllWorkRealized() {
+    @Override
+    public List<WorkRealized> findAll() {
         return getTypedQueryList("findAllWorkRealized");
     }
 

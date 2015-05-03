@@ -31,7 +31,7 @@ public class MemberController extends Controller {
     private static final String VIEWNAME = "members";
 
     public String init() {
-        memberList = memberEJB.findMembers();
+        memberList = memberEJB.findAll();
         return VIEWNAME;
     }
 
@@ -44,7 +44,7 @@ public class MemberController extends Controller {
 
     public String doCreateMember() {
         member = memberEJB.persist(member);
-        memberList = memberEJB.findMembers();
+        memberList = memberEJB.findAll();
 
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, getMessage("updated"), getMessage("memberCreated", member.getName()));
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);

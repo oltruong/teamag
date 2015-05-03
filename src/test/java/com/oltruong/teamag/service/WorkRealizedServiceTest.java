@@ -55,8 +55,8 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testGetAllWorkRealized() throws Exception {
-        List<WorkRealized> workRealizedServiceReturned = workRealizedService.getAllWorkRealized();
+    public void testFindAll() throws Exception {
+        List<WorkRealized> workRealizedServiceReturned = workRealizedService.findAll();
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
 

@@ -48,7 +48,7 @@ public class BCController extends Controller {
 
     public String init() {
         setBcList(this.businessCaseService.findAll());
-        setActivityList(this.activityService.findActivities());
+        setActivityList(this.activityService.findAll());
         bc = new BusinessCase();
 
         computeTotal();

@@ -31,7 +31,7 @@ public class MemberEndPoint extends AbstractEndPoint {
     @GET
     @AdminChecked
     public Response getMembers() {
-        return ok(memberService.findMembers());
+        return ok(memberService.findAll());
     }
 
 

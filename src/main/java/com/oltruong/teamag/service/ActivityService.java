@@ -18,8 +18,8 @@ public class ActivityService extends AbstractService<Activity> {
         return Activity.class;
     }
 
-
-    public List<Activity> findActivities() {
+    @Override
+    public List<Activity> findAll() {
         return getTypedQueryList("Activity.FIND_ALL");
     }
 

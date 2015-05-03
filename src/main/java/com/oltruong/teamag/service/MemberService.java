@@ -47,7 +47,7 @@ public class MemberService extends AbstractService<Member> {
 
     @PostConstruct
     public void buildList() {
-        memberList = findMembers();
+        memberList = findAll();
 
         if (memberList == null || memberList.isEmpty()) {
             initMemberList();
@@ -72,8 +72,9 @@ public class MemberService extends AbstractService<Member> {
     }
 
 
-    public List<Member> findMembers() {
-        return getTypedQueryList("findMembers");
+    @Override
+    public List<Member> findAll() {
+        return getTypedQueryList("Member.FIND_ALL");
     }
 
     public List<Member> findActiveMembers() {

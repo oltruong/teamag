@@ -48,14 +48,14 @@ public class ScheduleControllerTest extends ControllerTest {
             absence.getMember().setId(Long.valueOf(32l));
         }
 
-        when(mockAbsenceService.findAllAbsences()).thenReturn(absenceList);
+        when(mockAbsenceService.findAll()).thenReturn(absenceList);
 
         String view = scheduleController.init();
 
 
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(scheduleController, "VIEWNAME"));
-        verify(mockAbsenceService).findAllAbsences();
-        verify(mockMemberService).findMembers();
+        verify(mockAbsenceService).findAll();
+        verify(mockMemberService).findAll();
         assertThat(scheduleController.getEventModel().getEventCount()).isGreaterThan(0);
 
     }

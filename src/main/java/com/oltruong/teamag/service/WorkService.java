@@ -307,4 +307,9 @@ public class WorkService extends AbstractService<Work> {
     Class<Work> entityProvider() {
         return Work.class;
     }
+
+    @Override
+    public List<Work> findAll() {
+        throw new UnsupportedOperationException();
+    }
 }

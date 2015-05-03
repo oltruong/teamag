@@ -101,12 +101,12 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindMembers() {
+    public void testFindAll() {
 
-        List<Member> memberList = memberService.findMembers();
+        List<Member> memberList = memberService.findAll();
 
         assertThat(memberList).isEqualTo(testMemberList);
-        verify(mockEntityManager).createNamedQuery(eq("findMembers"), eq(Member.class));
+        verify(mockEntityManager).createNamedQuery(eq("Member.FIND_ALL"), eq(Member.class));
     }
 
     @Test

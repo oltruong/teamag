@@ -8,6 +8,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 
 // from http://www.tutorialspoint.com/java/java_sending_email.htm
@@ -68,5 +69,10 @@ public class EmailService extends AbstractService {
     @Override
     Class entityProvider() {
         return null;
+    }
+
+    @Override
+    public List findAll() {
+        throw new UnsupportedOperationException();
     }
 }

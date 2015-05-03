@@ -59,7 +59,7 @@ public class BCControllerTest extends ControllerTest {
     public void testInit() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         List<BusinessCase> bcList = EntityFactory.createList(EntityFactory::createBusinessCase);
-        when(mockActivityService.findActivities()).thenReturn(activityList);
+        when(mockActivityService.findAll()).thenReturn(activityList);
         when(mockBusinessCaseService.findAll()).thenReturn(bcList);
 
         String view = bcController.init();
@@ -82,7 +82,7 @@ public class BCControllerTest extends ControllerTest {
     }
 
     private void checkInitView(String view) {
-        verify(mockActivityService).findActivities();
+        verify(mockActivityService).findAll();
         verify(mockBusinessCaseService).findAll();
         assertThat(view).isEqualTo(TestUtils.getPrivateAttribute(bcController, "VIEWNAME"));
     }
@@ -148,7 +148,7 @@ public class BCControllerTest extends ControllerTest {
         String view = bcController.doCreateActivity();
 
         verify(mockActivityService, never()).persist(isA(Activity.class));
-        verify(mockActivityService).findActivities();
+        verify(mockActivityService).findAll();
         verify(mockMessageManager).displayMessageWithDescription(eq(MessageManager.ERROR), anyString(), anyString());
 
         checkInitView(view);

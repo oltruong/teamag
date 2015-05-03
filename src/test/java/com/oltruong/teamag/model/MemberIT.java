@@ -41,7 +41,7 @@ public class MemberIT extends AbstractEntityIT {
 
         transaction.commit();
         @SuppressWarnings("unchecked")
-        List<Member> listMembers = entityManager.createNamedQuery("findMembers").getResultList();
+        List<Member> listMembers = entityManager.createNamedQuery("Member.FIND_ALL").getResultList();
 
         Assertions.assertThat(listMembers).isNotNull().isNotEmpty();
 

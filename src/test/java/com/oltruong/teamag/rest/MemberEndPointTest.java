@@ -42,7 +42,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetMembers() {
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
-        when(mockMemberService.findMembers()).thenReturn(memberList);
+        when(mockMemberService.findAll()).thenReturn(memberList);
 
         Response response = memberEndPoint.getMembers();
         checkResponseOK(response);

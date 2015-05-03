@@ -107,4 +107,9 @@ public class ParameterService extends AbstractService<Parameter> {
     Class<Parameter> entityProvider() {
         return Parameter.class;
     }
+
+    @Override
+    public List<Parameter> findAll() {
+        throw new UnsupportedOperationException();
+    }
 }

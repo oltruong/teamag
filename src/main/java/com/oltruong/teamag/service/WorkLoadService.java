@@ -136,6 +136,11 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
         return WorkLoad.class;
     }
 
+    @Override
+    public List<WorkLoad> findAll() {
+        throw new UnsupportedOperationException();
+    }
+
     public void removeBusinessCase(Long businessCaseId) {
         Query removeQuery = createNamedQuery("WorkLoad.DELETE_FROM_BUSINESSCASE");
         removeQuery.setParameter("fBusinessCaseId", businessCaseId);

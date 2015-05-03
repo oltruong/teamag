@@ -25,7 +25,8 @@ public class TaskService extends AbstractService<Task> {
     private WorkService workService;
 
 
-    public List<Task> findAllTasks() {
+    @Override
+    public List<Task> findAll() {
         return createTypedQuery("Task.FIND_ALL", Task.class).getResultList();
     }
 

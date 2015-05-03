@@ -58,7 +58,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
 
         List<AbsenceWebBean> absenceWebBeanTransformed = AbsenceWebBeanTransformer.transformList(absenceList);
-        when(mockAbsenceService.findAllAbsences()).thenReturn(absenceList);
+        when(mockAbsenceService.findAll()).thenReturn(absenceList);
 
         Response response = absenceEndPoint.getAllAbsences();
         checkResponseOK(response);
@@ -67,7 +67,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
         List<AbsenceWebBean> absenceWebBeans = (List<AbsenceWebBean>) response.getEntity();
 
         assertThat(absenceWebBeans).isNotNull().usingFieldByFieldElementComparator().containsExactlyElementsOf(absenceWebBeanTransformed);
-        verify(mockAbsenceService).findAllAbsences();
+        verify(mockAbsenceService).findAll();
 
     }
 

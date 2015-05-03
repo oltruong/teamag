@@ -58,7 +58,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
         task.setId(randomId);
         when(mockTaskService.find(anyLong())).thenReturn(task);
 
-        when(mockWorkRealizedService.getAllWorkRealized()).thenReturn(workRealizedList);
+        when(mockWorkRealizedService.findAll()).thenReturn(workRealizedList);
 
         Response response = workRealizedEndPoint.getWorkRealized();
 
@@ -68,7 +68,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         assertThat(workRealizedListReturned).isEqualTo(workRealizedList);
 
-        verify(mockWorkRealizedService).getAllWorkRealized();
+        verify(mockWorkRealizedService).findAll();
 
     }
 

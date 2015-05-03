@@ -35,7 +35,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
 
     @GET
     public Response getWorkRealized() {
-        List<WorkRealized> workRealizedList = workRealizedService.getAllWorkRealized();
+        List<WorkRealized> workRealizedList = workRealizedService.findAll();
 
         List<WorkRealizedWrapper> workRealizedWrapperList = buildWorkRealizedWrapper(workRealizedList);
         return getResponse(workRealizedList);

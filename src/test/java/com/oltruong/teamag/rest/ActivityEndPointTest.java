@@ -39,7 +39,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetActivities() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
-        when(mockActivityService.findActivities()).thenReturn(activityList);
+        when(mockActivityService.findAll()).thenReturn(activityList);
         Response response = activityEndPoint.getActivities();
 
         checkResponseOK(response);
@@ -47,7 +47,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
         List<Activity> activityListReturned = (List<Activity>) response.getEntity();
 
         assertThat(activityListReturned).isEqualTo(activityList);
-        verify(mockActivityService).findActivities();
+        verify(mockActivityService).findAll();
     }
 
 
