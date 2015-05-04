@@ -3,6 +3,7 @@ package com.oltruong.teamag.rest;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.webbean.WorkWebBean;
 
@@ -26,7 +27,7 @@ public class WorkEndPoint extends AbstractEndPoint {
     WorkService workService;
 
     @GET
-    @Path("/{taskId}")
+    @Path("/task/{taskId}")
     public Response getWorks(@PathParam("taskId") Long taskId) {
 
         List<Work> workList = workService.findWorkByTask(taskId);
@@ -54,4 +55,8 @@ public class WorkEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return workService;
+    }
 }

@@ -8,6 +8,7 @@ import com.google.common.collect.Table;
 import com.oltruong.teamag.interfaces.SupervisorChecked;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.WorkWebBean;
@@ -122,4 +123,8 @@ public class CheckWorkEndPoint extends AbstractEndPoint {
 
     }
 
+    @Override
+    AbstractService getService() {
+        return workService;
+    }
 }

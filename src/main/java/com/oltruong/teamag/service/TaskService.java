@@ -46,17 +46,19 @@ public class TaskService extends AbstractService<Task> {
         super.merge(taskToUpdate);
     }
 
-    public void createTask(Task task) {
+    public Task persist(Task task) {
         List<Task> allTaskList = createTypedQuery("Task.FIND_BY_NAME", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
+
         if (CollectionUtils.isNotEmpty(allTaskList)) {
             throw new EntityExistsException();
         } else {
-            persist(task);
+            super.persist(task);
         }
+        return task;
     }
 
     @Transactional
-    public void createTask(DateTime month, Member member, Task task) {
+    public void persist(DateTime month, Member member, Task task) {
         TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
@@ -78,7 +80,7 @@ public class TaskService extends AbstractService<Task> {
             // Reset task ID
             task.setId(null);
             task.addMember(member);
-            persist(task);
+            super.persist(task);
             taskDB = task;
 
         }

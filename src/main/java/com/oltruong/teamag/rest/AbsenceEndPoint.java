@@ -5,6 +5,7 @@ import com.oltruong.teamag.exception.InconsistentDateException;
 import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.service.AbsenceService;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
@@ -81,4 +82,8 @@ public class AbsenceEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return absenceService;
+    }
 }

@@ -187,7 +187,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     @Test
     public void testCreateTask() {
         task.setId(randomLong);
-        taskService.createTask(task);
+        taskService.persist(task);
         verify(mockEntityManager).persist(eq(task));
         verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
         verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
@@ -200,7 +200,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.setId(randomLong);
 
         when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList(task));
-        taskService.createTask(task);
+        taskService.persist(task);
     }
 
 
@@ -286,7 +286,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
-        taskService.createTask(month, member, task);
+        taskService.persist(month, member, task);
 
         assertThat(task.getId()).isNull();
         Assertions.assertThat(task.getMembers()).containsExactly(member);
@@ -322,7 +322,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
-        taskService.createTask(month, member, task);
+        taskService.persist(month, member, task);
 
         verify(mockEntityManager).createNamedQuery(eq("Task.FIND_BY_NAME"), eq(Task.class));
         verify(mockTypedQuery).setParameter(eq("fname"), eq(task.getName()));
@@ -361,7 +361,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
-        taskService.createTask(month, member, task);
+        taskService.persist(month, member, task);
 
     }
 

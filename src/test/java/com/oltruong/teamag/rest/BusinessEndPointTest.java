@@ -37,7 +37,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     public void testGetBC() throws Exception {
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
-        Response response = businessEndPoint.get();
+        Response response = businessEndPoint.getAll();
 
         checkResponseOK(response);
 

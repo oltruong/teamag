@@ -127,7 +127,7 @@ public class WorkController extends Controller {
         } else {
 
             try {
-                taskService.createTask(realizedBean.getCurrentMonth(), getMember(), newTask);
+                taskService.persist(realizedBean.getCurrentMonth(), getMember(), newTask);
 
                 works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findByMemberAndMonth(getMember().getId(), DateTime.now().getMonthOfYear()));
                 initTaskWeek();

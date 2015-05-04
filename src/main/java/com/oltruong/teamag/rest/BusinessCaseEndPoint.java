@@ -2,6 +2,7 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.BusinessCase;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.BusinessCaseService;
 
 import javax.ejb.Stateless;
@@ -25,23 +26,6 @@ public class BusinessCaseEndPoint extends AbstractEndPoint {
     @Inject
     BusinessCaseService businessCaseService;
 
-    @GET
-    public Response get() {
-        return get(() -> businessCaseService.findAll());
-    }
-
-    @GET
-    @Path("/{id}")
-    public Response get(@PathParam("id") Long businessCaseId) {
-        return get(() -> businessCaseService.find(businessCaseId));
-    }
-
-
-    @POST
-    public Response create(BusinessCase businessCase) {
-        return create(() -> businessCaseService.persist(businessCase));
-    }
-
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long businessCaseId, BusinessCase businessCase) {
@@ -50,10 +34,8 @@ public class BusinessCaseEndPoint extends AbstractEndPoint {
         return ok();
     }
 
-
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") Long businessCaseId) {
-        return delete(businessCaseService::remove, businessCaseId);
+    @Override
+    AbstractService getService() {
+        return businessCaseService;
     }
 }

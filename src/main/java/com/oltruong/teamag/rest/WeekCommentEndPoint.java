@@ -1,6 +1,7 @@
 package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.SecurityChecked;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WeekCommentService;
 import org.joda.time.DateTime;
 
@@ -29,4 +30,8 @@ public class WeekCommentEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return weekCommentService;
+    }
 }

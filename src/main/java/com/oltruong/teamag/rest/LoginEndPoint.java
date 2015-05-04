@@ -1,11 +1,11 @@
 package com.oltruong.teamag.rest;
 
-import com.oltruong.teamag.utils.TeamagUtils;
-import com.oltruong.teamag.service.MemberService;
-import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.exception.UserNotFoundException;
+import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.service.AbstractService;
+import com.oltruong.teamag.service.MemberService;
+import com.oltruong.teamag.utils.TeamagUtils;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -58,4 +58,8 @@ public class LoginEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return memberService;
+    }
 }

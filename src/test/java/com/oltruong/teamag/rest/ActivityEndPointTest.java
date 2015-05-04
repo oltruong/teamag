@@ -37,10 +37,10 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetActivities() throws Exception {
+    public void testGetAll() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(mockActivityService.findAll()).thenReturn(activityList);
-        Response response = activityEndPoint.getActivities();
+        Response response = activityEndPoint.getAll();
 
         checkResponseOK(response);
 
@@ -57,7 +57,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.find(eq(randomId))).thenReturn(activity);
 
-        Response response = activityEndPoint.getActivity(randomId);
+        Response response = activityEndPoint.get(randomId);
         checkResponseOK(response);
 
         Activity activityReturned = (Activity) response.getEntity();
@@ -67,10 +67,10 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testCreateActivity() throws Exception {
+    public void testCreate() throws Exception {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.persist(eq(activity))).thenReturn(activity);
-        Response response = activityEndPoint.createActivity(activity);
+        Response response = activityEndPoint.create(activity);
 
         checkResponseCreated(response);
         verify(mockActivityService).persist(eq(activity));
@@ -79,11 +79,11 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreateActivity_existing() throws Exception {
+    public void testCreate_existing() throws Exception {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.persist(eq(activity))).thenThrow(new EntityExistsException());
 
-        Response response = activityEndPoint.createActivity(activity);
+        Response response = activityEndPoint.create(activity);
 
         checkResponseNotAcceptable(response);
         verify(mockActivityService).persist(eq(activity));

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.WorkLoad;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.BusinessCaseService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WorkLoadService;
@@ -83,4 +84,8 @@ public class WorkLoadEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return workLoadService;
+    }
 }

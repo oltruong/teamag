@@ -3,6 +3,7 @@ package com.oltruong.teamag.rest;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.TaskService;
 import com.oltruong.teamag.webbean.TaskWebBean;
 
@@ -29,10 +30,7 @@ public class TaskEndPoint extends AbstractEndPoint {
     @Inject
     TaskService taskService;
 
-    @GET
-    public Response getTasks() {
-        return ok(buildTask(taskService.findAll()));
-    }
+
 
     @GET
     @Path("/withactivity")
@@ -70,23 +68,6 @@ public class TaskEndPoint extends AbstractEndPoint {
         return taskWebBean;
     }
 
-    @GET
-    @Path("/{id}")
-    public Response getTask(@PathParam("id") Long taskId) {
-        return ok(taskService.find(taskId));
-    }
-
-    @POST
-    public Response createTask(Task task) {
-        try {
-            taskService.createTask(task);
-        } catch (EntityExistsException e) {
-            return notAcceptable();
-        }
-        return created();
-    }
-
-
     @PUT
     @Path("/{id}")
     public Response updateTask(@PathParam("id") Long taskId, Task task) {
@@ -96,11 +77,8 @@ public class TaskEndPoint extends AbstractEndPoint {
     }
 
 
-    @DELETE
-    @Path("/{id}")
-    public Response deleteTask(@PathParam("id") Long taskId) {
-        return delete(taskService::remove, taskId);
+    @Override
+    AbstractService getService() {
+        return taskService;
     }
-
-
 }

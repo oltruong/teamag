@@ -49,7 +49,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetWorkRealized() {
+    public void testGetAll() {
 
         List<WorkRealized> workRealizedList = EntityFactory.createList(EntityFactory::createWorkRealized);
 
@@ -60,7 +60,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         when(mockWorkRealizedService.findAll()).thenReturn(workRealizedList);
 
-        Response response = workRealizedEndPoint.getWorkRealized();
+        Response response = workRealizedEndPoint.getAll();
 
         checkResponseOK(response);
 

@@ -1,6 +1,6 @@
 'use strict';
 
 teamagApp.factory('Work', ['$resource', function ($resource) {
-    return $resource('../resources/work/:id', {id: '@id'},
-        { 'update': {method: 'PUT'} });
+    return $resource('../resources/work/task/:id', {id: '@id'},
+        {'update': {method: 'PUT'}});
 }]);

@@ -1,11 +1,17 @@
 package com.oltruong.teamag.rest;
 
+import com.oltruong.teamag.service.AbstractService;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,8 +25,36 @@ import java.util.function.Supplier;
 @Consumes({MediaType.APPLICATION_JSON})
 public abstract class AbstractEndPoint {
 
+
     @Inject
     protected static Logger LOGGER;
+
+    abstract AbstractService getService();
+
+    @GET
+    public Response getAll() {
+        return get(() -> getService().findAll());
+    }
+
+
+    @GET
+    @Path("/{id}")
+    public Response get(@PathParam("id") Long id) {
+        return get(() -> getService().find(id));
+    }
+
+    @POST
+    public Response create(Object entity) {
+        return create(() -> getService().persist(entity));
+    }
+
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        return delete(getService()::remove, id);
+    }
+
 
     protected Response get(Supplier finder) {
         Object result = finder.get();

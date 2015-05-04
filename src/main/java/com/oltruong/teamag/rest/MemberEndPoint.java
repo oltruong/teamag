@@ -3,6 +3,7 @@ package com.oltruong.teamag.rest;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -88,4 +89,8 @@ public class MemberEndPoint extends AbstractEndPoint {
     }
 
 
+    @Override
+    AbstractService getService() {
+        return memberService;
+    }
 }

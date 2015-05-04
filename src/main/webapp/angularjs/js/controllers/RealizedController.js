@@ -20,7 +20,7 @@ teamagApp.controller('RealizedController', ['$scope', '$http', 'Task', 'Member',
         $scope.orderProp = 'month';
 
         $scope.loadRealized = function () {
-            $http.get('../resources/workrealized/' + $scope.selectedMember.id).success(function (data) {
+            $http.get('../resources/workrealized/member/' + $scope.selectedMember.id).success(function (data) {
                 $scope.worksRealized = data;
             }, function (error) {
                 $scope.error = error;

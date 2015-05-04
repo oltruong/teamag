@@ -47,7 +47,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testGetTasks() throws Exception {
-        testFindTasks(mockTaskService::findAll, taskEndPoint::getTasks);
+        testFindTasks(mockTaskService::findAll, taskEndPoint::getAll);
         verify(mockTaskService, atLeastOnce()).findAll();
     }
 
@@ -82,12 +82,12 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetTask() throws Exception {
+    public void testGet() throws Exception {
 
 
         when(mockTaskService.find(any())).thenReturn(task);
 
-        Response response = taskEndPoint.getTask(randomId);
+        Response response = taskEndPoint.get(randomId);
         checkResponseOK(response);
 
         Task taskReturned = (Task) response.getEntity();
@@ -98,27 +98,27 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testCreateTask() throws Exception {
+    public void testCreate() throws Exception {
         task.setId(randomId);
 
-        Response response = taskEndPoint.createTask(task);
+        Response response = taskEndPoint.create(task);
 
         checkResponseCreated(response);
-        verify(mockTaskService).createTask(eq(task));
+        verify(mockTaskService).persist(eq(task));
 
     }
 
 
     @Test
-    public void testCreateTask_existing() throws Exception {
+    public void testCreate_existing() throws Exception {
 
         task.setId(randomId);
-        doThrow(new EntityExistsException()).when(mockTaskService).createTask(eq(task));
+        doThrow(new EntityExistsException()).when(mockTaskService).persist(eq(task));
 
-        Response response = taskEndPoint.createTask(task);
+        Response response = taskEndPoint.create(task);
 
         checkResponseNotAcceptable(response);
-        verify(mockTaskService).createTask(eq(task));
+        verify(mockTaskService).persist(eq(task));
 
     }
 
@@ -135,16 +135,16 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDeleteTask() throws Exception {
-        Response response = taskEndPoint.deleteTask(randomId);
+    public void testDelete() throws Exception {
+        Response response = taskEndPoint.delete(randomId);
         checkResponseNoContent(response);
         verify(mockTaskService).remove(eq(randomId));
     }
 
     @Test
-    public void testDeleteTask_NotFound() throws Exception {
+    public void testDelete_NotFound() throws Exception {
         doThrow(new EntityNotFoundException()).when(mockTaskService).remove(anyLong());
-        Response response = taskEndPoint.deleteTask(randomId);
+        Response response = taskEndPoint.delete(randomId);
         checkResponseNotFound(response);
         verify(mockTaskService).remove(eq(randomId));
     }

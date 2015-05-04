@@ -41,7 +41,7 @@ public class WorkServiceIT extends AbstractServiceIT {
 
         // WorkEJB workEJB = (WorkEJB) ctx.lookup( "java:global/classes/WorkEJB" );
 
-        // workEJB.createTask( task );
+        // workEJB.persist( task );
 
         assertThat(task.getId()).isNotNull();
 

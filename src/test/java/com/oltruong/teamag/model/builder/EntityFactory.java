@@ -142,7 +142,7 @@ public class EntityFactory {
     public static Task createTask() {
         Task task = new Task();
 
-        task.setName("createTask" + createRandomDouble().toString());
+        task.setName("persist" + createRandomDouble().toString());
         task.setProject("my project");
 
         task.addMember(createMember());

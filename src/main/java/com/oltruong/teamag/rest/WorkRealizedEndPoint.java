@@ -3,6 +3,7 @@ package com.oltruong.teamag.rest;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.WorkRealized;
+import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.TaskService;
 import com.oltruong.teamag.service.WorkRealizedService;
 import com.oltruong.teamag.webbean.TaskWebBean;
@@ -32,14 +33,6 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
 
     @Inject
     private TaskService taskService;
-
-    @GET
-    public Response getWorkRealized() {
-        List<WorkRealized> workRealizedList = workRealizedService.findAll();
-
-        List<WorkRealizedWrapper> workRealizedWrapperList = buildWorkRealizedWrapper(workRealizedList);
-        return getResponse(workRealizedList);
-    }
 
 
     private Response getResponse(List workRealizedList) {
@@ -142,7 +135,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
     }
 
     @GET
-    @Path("/{memberId}")
+    @Path("/member/{memberId}")
     public Response getWorkRealized(@PathParam("memberId") Long memberId) {
         List<WorkRealizedWrapper> workRealizedWrapperList = buildWorkRealizedWrapper(workRealizedService.getWorkRealizedbyMember(memberId));
         workRealizedWrapperList.forEach(workRealizedWrapper -> workRealizedWrapper.getWorkRealizedList().forEach(workRealized -> workRealized.setMemberId(memberId)));
@@ -166,4 +159,8 @@ public class WorkRealizedEndPoint extends AbstractEndPoint {
         return response;
     }
 
+    @Override
+    AbstractService getService() {
+        return workRealizedService;
+    }
 }
