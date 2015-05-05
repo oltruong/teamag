@@ -20,7 +20,7 @@ public abstract class AbstractService<Entity> {
     @Inject
     protected Logger logger;
 
-    abstract public List<Entity> findAll();
+    public abstract List<Entity> findAll();
 
     public Entity find(Long id) {
         return entityManager.find(entityProvider(), id);
