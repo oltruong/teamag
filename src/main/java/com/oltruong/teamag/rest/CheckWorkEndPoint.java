@@ -29,7 +29,7 @@ import java.util.List;
 @Path("checkWork")
 @SupervisorChecked
 @Stateless
-public class CheckWorkEndPoint extends AbstractEndPoint {
+public class CheckWorkEndPoint extends AbstractEndPoint<Work> {
 
     @Inject
     private WorkService workService;

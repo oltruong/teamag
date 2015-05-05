@@ -178,6 +178,7 @@ public class TaskService extends AbstractService<Task> {
             logger.info("Absence task is not found. Will be created");
             Task newTask = new Task();
             newTask.setName("Absence");
+            newTask.setProject("");
             persist(newTask);
             task = newTask;
         }

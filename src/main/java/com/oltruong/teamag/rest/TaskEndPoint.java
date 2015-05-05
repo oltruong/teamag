@@ -22,11 +22,16 @@ import java.util.List;
 @Path("task")
 @Stateless
 @AdminChecked
-public class TaskEndPoint extends AbstractEndPoint {
+public class TaskEndPoint extends AbstractEndPoint<Task> {
 
     @Inject
     TaskService taskService;
 
+
+    @GET
+    public Response getAll() {
+        return ok(buildTask(taskService.findAll()));
+    }
 
     @GET
     @Path("/withactivity")

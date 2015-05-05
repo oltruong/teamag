@@ -25,7 +25,7 @@ import java.util.List;
 @Path("workload")
 @Stateless
 @AdminChecked
-public class WorkLoadEndPoint extends AbstractEndPoint {
+public class WorkLoadEndPoint extends AbstractEndPoint<WorkLoad> {
 
     @Inject
     WorkLoadService workLoadService;

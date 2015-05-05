@@ -18,10 +18,11 @@ import javax.ws.rs.core.Response;
 @Path("business")
 @Stateless
 @AdminChecked
-public class BusinessCaseEndPoint extends AbstractEndPoint {
+public class BusinessCaseEndPoint extends AbstractEndPoint<BusinessCase> {
 
     @Inject
     BusinessCaseService businessCaseService;
+
 
     @PUT
     @Path("/{id}")

@@ -2,6 +2,7 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("login")
 @Stateless
-public class LoginEndPoint extends AbstractEndPoint {
+public class LoginEndPoint extends AbstractEndPoint<Member> {
 
     @Inject
     MemberService memberService;

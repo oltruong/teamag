@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  */
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
-public abstract class AbstractEndPoint {
+public abstract class AbstractEndPoint<T> {
 
 
     @Inject
@@ -39,12 +39,12 @@ public abstract class AbstractEndPoint {
 
     @GET
     @Path("/{id}")
-    public Response get(@PathParam("id") Long id) {
+    public Response getSingle(@PathParam("id") Long id) {
         return get(() -> getService().find(id));
     }
 
     @POST
-    public Response create(Object entity) {
+    public Response create(T entity) {
         return create(() -> getService().persist(entity));
     }
 

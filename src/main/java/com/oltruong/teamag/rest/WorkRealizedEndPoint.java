@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Path("workrealized")
 @Stateless
-public class WorkRealizedEndPoint extends AbstractEndPoint {
+public class WorkRealizedEndPoint extends AbstractEndPoint<WorkRealized> {
 
     @Inject
     private WorkRealizedService workRealizedService;

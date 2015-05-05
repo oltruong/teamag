@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 @Path("absences")
 @Stateless
 @SecurityChecked
-public class AbsenceEndPoint extends AbstractEndPoint {
+public class AbsenceEndPoint extends AbstractEndPoint<Absence> {
 
 
     @Inject

@@ -87,7 +87,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
         when(mockTaskService.find(any())).thenReturn(task);
 
-        Response response = taskEndPoint.get(randomId);
+        Response response = taskEndPoint.getSingle(randomId);
         checkResponseOK(response);
 
         Task taskReturned = (Task) response.getEntity();

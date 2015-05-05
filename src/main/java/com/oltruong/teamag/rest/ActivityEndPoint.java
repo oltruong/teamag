@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 @Path("activity")
 @Stateless
 @AdminChecked
-public class ActivityEndPoint extends AbstractEndPoint {
+public class ActivityEndPoint extends AbstractEndPoint<Activity> {
 
     @Inject
     ActivityService activityService;

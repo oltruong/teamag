@@ -52,7 +52,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         when(mockBusinessCaseService.find(eq(randomId))).thenReturn(businessCase);
 
-        Response response = businessEndPoint.get(randomId);
+        Response response = businessEndPoint.getSingle(randomId);
         checkResponseOK(response);
 
         BusinessCase businessCaseReturned = (BusinessCase) response.getEntity();

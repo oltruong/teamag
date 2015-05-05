@@ -57,7 +57,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.find(eq(randomId))).thenReturn(activity);
 
-        Response response = activityEndPoint.get(randomId);
+        Response response = activityEndPoint.getSingle(randomId);
         checkResponseOK(response);
 
         Activity activityReturned = (Activity) response.getEntity();

@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("member")
 @Stateless
-public class MemberEndPoint extends AbstractEndPoint {
+public class MemberEndPoint extends AbstractEndPoint<Member> {
 
     @Inject
     MemberService memberService;

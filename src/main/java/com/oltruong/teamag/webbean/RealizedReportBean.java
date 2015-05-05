@@ -38,7 +38,7 @@ public class RealizedReportBean {
         Double total = 0d;
         for (Task task : tasks) {
 
-            if (task.getId().intValue() != 1) {
+            if (!task.isAbsenceTask()) {
                 total += task.getTotal();
             }
         }

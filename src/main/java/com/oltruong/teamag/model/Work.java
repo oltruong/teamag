@@ -28,7 +28,7 @@ import javax.persistence.Transient;
         @NamedQuery(name = "Work.FIND_BY_MONTH", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
         @NamedQuery(name = "Work.FIND_BY_TASK_MEMBER", query = "SELECT w FROM Work w WHERE (w.total<>0 and w.task.id=:fTaskId) ORDER by w.member.name,w.day"),
         @NamedQuery(name = "Work.COUNT_BY_TASK", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
-        @NamedQuery(name = "Work.FIND_ABSENCE_BY_MEMBER", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.id=1)"),
+        @NamedQuery(name = "Work.FIND_ABSENCE_BY_MEMBER", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.name='Absence') order by w.task.id"),
         @NamedQuery(name = "Work.SUM_BY_MONTH_MEMBER", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
 public class Work {
 

@@ -1,6 +1,7 @@
 package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.interfaces.SecurityChecked;
+import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WeekCommentService;
 import org.joda.time.DateTime;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response;
 @Path("weekComment")
 @SecurityChecked
 @Stateless
-public class WeekCommentEndPoint extends AbstractEndPoint {
+public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
 
     @Inject
     private WeekCommentService weekCommentService;

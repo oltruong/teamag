@@ -156,6 +156,10 @@ public class Task {
     }
 
 
+    public boolean isAbsenceTask() {
+        return "Absence".equals(name) && "".equals(project);
+    }
+
     public String getDescription() {
         return this.getProject() + "-" + this.getName();
     }
