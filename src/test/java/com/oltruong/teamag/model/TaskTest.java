@@ -67,4 +67,24 @@ public class TaskTest {
     }
 
 
+    @Test
+    public void testIsAbsence() {
+
+        assertThat(testTaskAdmin(null, null)).isFalse();
+        assertThat(testTaskAdmin(null, "Absence")).isFalse();
+        assertThat(testTaskAdmin("hello", "Absence")).isFalse();
+        assertThat(testTaskAdmin("", "Absence")).isTrue();
+
+
+    }
+
+    private boolean testTaskAdmin(String project, String name) {
+
+        Task myTask = new Task();
+        myTask.setProject(project);
+        myTask.setName(name);
+        return (myTask.isAbsenceTask());
+    }
+
+
 }
