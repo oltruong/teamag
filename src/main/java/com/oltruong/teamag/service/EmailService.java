@@ -1,5 +1,7 @@
 package com.oltruong.teamag.service;
 
+import org.slf4j.Logger;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.Message;
@@ -11,29 +13,43 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
 
-// from http://www.tutorialspoint.com/java/java_sending_email.htm
 @Stateless
-public class EmailService extends AbstractService {
+public class EmailService {
 
 
     private static final String SENDER = "TEAMAG";
 
+    @Inject
+    protected Logger logger;
 
     @Inject
     private ParameterService parameterService;
 
 
     public void sendEmailAdministrator(MailBean email) {
-        email.setRecipient(parameterService.getAdministratorEmail());
+        email.getRecipientList().clear();
+        email.addRecipient(parameterService.getAdministratorEmail());
+
+        sendEmail(email);
+    }
+
+    public void sendEmailCopyBlindAdministrator(MailBean email) {
+        email.getBlindRecipientList().clear();
+        email.addBlindRecipient(parameterService.getAdministratorEmail());
+
+        sendEmail(email);
+    }
+
+    public void sendEmail(MailBean email) {
         if (parameterService.getSmtpHost() != null) {
-            sendEmail(email);
+            send(email);
         } else {
             logger.warn("no email will be sent as SMTP HOST is not defined");
         }
     }
 
 
-    private void sendEmail(MailBean email) {
+    private void send(MailBean email) {
 
         Properties properties = System.getProperties();
 
@@ -43,7 +59,6 @@ public class EmailService extends AbstractService {
 
         try {
             MimeMessage message = buildMessage(email, session);
-
             Transport.send(message);
         } catch (MessagingException messagingException) {
             logger.error("Error in sending message [" + messagingException.getMessage() + "]");
@@ -57,7 +72,8 @@ public class EmailService extends AbstractService {
 
         message.setFrom(new InternetAddress(SENDER + "<" + parameterService.getAdministratorEmail() + ">"));
 
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(email.getRecipient()));
+        addRecipient(message, Message.RecipientType.TO, email.getRecipientList());
+        addRecipient(message, Message.RecipientType.BCC, email.getBlindRecipientList());
 
         message.setSubject(email.getSubject());
 
@@ -65,14 +81,10 @@ public class EmailService extends AbstractService {
         return message;
     }
 
-
-    @Override
-    Class entityProvider() {
-        return null;
+    private void addRecipient(MimeMessage message, Message.RecipientType recipientType, List<String> recipientList) throws MessagingException {
+        for (String recipient : recipientList) {
+            message.addRecipient(recipientType, new InternetAddress(recipient));
+        }
     }
 
-    @Override
-    public List findAll() {
-        throw new UnsupportedOperationException();
-    }
 }

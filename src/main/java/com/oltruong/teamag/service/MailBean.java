@@ -1,22 +1,37 @@
 package com.oltruong.teamag.service;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public class MailBean {
 
     private String subject;
 
     private String content;
 
-    private String recipient;
+    private List<String> recipientList = Lists.newArrayList();
+
+    private List<String> blindRecipientList = Lists.newArrayList();
 
     public MailBean() {
     }
 
-    public String getRecipient() {
-        return this.recipient;
+
+    public void addRecipient(String recipient) {
+        recipientList.add(recipient);
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public List<String> getRecipientList() {
+        return recipientList;
+    }
+
+    public void addBlindRecipient(String recipient) {
+        blindRecipientList.add(recipient);
+    }
+
+    public List<String> getBlindRecipientList() {
+        return blindRecipientList;
     }
 
     public String getSubject() {

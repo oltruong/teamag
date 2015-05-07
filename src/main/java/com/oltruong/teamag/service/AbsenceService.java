@@ -29,12 +29,12 @@ public class AbsenceService extends AbstractService<Absence> {
 
     @Override
     public List<Absence> findAll() {
-        return getTypedQueryList("findAll");
+        return getTypedQueryList("Absence.FIND_ALL");
     }
 
     public List<Absence> findAbsencesByMember(Long memberId) {
         Preconditions.checkArgument(memberId != null);
-        TypedQuery<Absence> query = createTypedQuery("findAbsencesByMember");
+        TypedQuery<Absence> query = createTypedQuery("Absence.FIND_BY_MEMBER");
         query.setParameter("fmemberId", memberId);
         return query.getResultList();
     }

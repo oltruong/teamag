@@ -20,6 +20,10 @@ public final class CalendarUtils {
     private static List<DateTime> listDaysOff;
 
 
+    public static boolean isWorkingDay(DateTime day) {
+        return !isDayOff(day);
+    }
+
     public static boolean isDayOff(DateTime day) {
         boolean verdict = false;
 
@@ -76,6 +80,27 @@ public final class CalendarUtils {
         }
         return listWorkingDays;
 
+    }
+
+
+    public static boolean isLastWorkingDayOfWeek(DateTime day, List<DateTime> workingDays) {
+
+
+        if (!workingDays.contains(day)) {
+            return false;
+        } else {
+            int weekNumber = day.getWeekOfWeekyear();
+
+            MutableDateTime mutableDateTime = new MutableDateTime(day);
+            mutableDateTime.addDays(1);
+            boolean foundAnotherWorkingDay = false;
+            while (mutableDateTime.getWeekOfWeekyear() == weekNumber && !foundAnotherWorkingDay) {
+                foundAnotherWorkingDay = workingDays.contains(mutableDateTime.toDateTime());
+                mutableDateTime.addDays(1);
+            }
+            return !foundAnotherWorkingDay;
+
+        }
     }
 
     public static boolean isInFirstWorkingWeekOfMonth(DateTime day) {

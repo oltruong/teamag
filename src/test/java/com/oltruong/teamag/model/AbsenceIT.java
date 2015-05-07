@@ -57,7 +57,7 @@ public class AbsenceIT extends AbstractEntityIT {
 
         transaction.commit();
 
-        Query query = entityManager.createNamedQuery("findAbsencesByMember");
+        Query query = entityManager.createNamedQuery("Absence.FIND_BY_MEMBER");
         query.setParameter("fmemberId", member2.getId());
         List<Absence> absenceList = query.getResultList();
 

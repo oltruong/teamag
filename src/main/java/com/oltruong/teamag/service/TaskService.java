@@ -122,7 +122,7 @@ public class TaskService extends AbstractService<Task> {
             logger.info("Task has no more Members on it. It will be deleted");
             remove(taskDb);
         } else {
-            persist(taskDb);
+            super.persist(taskDb);
         }
     }
 

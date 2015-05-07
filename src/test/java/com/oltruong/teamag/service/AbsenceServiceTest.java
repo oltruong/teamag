@@ -63,7 +63,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     public void testFindAll() {
         List<Absence> allAbsenceList = absenceService.findAll();
         assertThat(allAbsenceList).isEqualTo(absenceList);
-        checkCreateTypedQuery("findAll");
+        checkCreateTypedQuery("Absence.FIND_ALL");
     }
 
     @Test
@@ -143,7 +143,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     public void testFindAbsencesByMemberId() {
         List<Absence> absences = absenceService.findAbsencesByMember(idTest);
         assertThat(absences).isEqualTo(absenceList);
-        checkCreateTypedQuery("findAbsencesByMember");
+        checkCreateTypedQuery("Absence.FIND_BY_MEMBER");
         verify(mockTypedQuery).setParameter(eq("fmemberId"), eq(idTest));
     }
 
@@ -175,7 +175,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
         absenceService.reloadAllAbsenceDay();
 
-        checkCreateTypedQuery("findAll");
+        checkCreateTypedQuery("Absence.FIND_ALL");
         verify(mockAbsenceDayService).removeAll();
         absenceList.forEach(absence -> AbsenceDayTransformer.transformAbsence(absence).forEach(absenceDay -> {
             verify(mockAbsenceDayService).persist(Matchers.refEq(absenceDay));
@@ -190,7 +190,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
         Query mockTypedQueryAbsence = mock(Query.class);
 
         when(mockEntityManager.createNamedQuery(eq("findAllAbsenceDays"))).thenReturn(mockTypedQueryAbsenceDay);
-        when(mockEntityManager.createNamedQuery(eq("findAll"))).thenReturn(mockTypedQueryAbsence);
+        when(mockEntityManager.createNamedQuery(eq("Absence.FIND_ALL"))).thenReturn(mockTypedQueryAbsence);
 
         when(mockTypedQueryAbsenceDay.getResultList()).thenReturn(null);
         when(mockTypedQueryAbsence.getResultList()).thenReturn(null);
