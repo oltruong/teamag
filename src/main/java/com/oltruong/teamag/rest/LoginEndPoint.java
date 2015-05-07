@@ -2,7 +2,6 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.model.Member;
-import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
@@ -29,7 +28,7 @@ public class LoginEndPoint extends AbstractEndPoint<Member> {
     public Response login(@PathParam("loginInformation") String loginInformation) {
 
 
-        Response response = null;
+        Response response;
         if (loginInformation != null && loginInformation.contains("-")) {
             String username = extractUsername(loginInformation);
             String password = extractPassword(loginInformation);
