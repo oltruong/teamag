@@ -7,8 +7,11 @@ import com.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -16,12 +19,16 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
  * @author Olivier Truong
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DateTime.class})
 public class ScheduleServiceTest {
 
 
@@ -50,7 +57,39 @@ public class ScheduleServiceTest {
     }
 
     @Test
-    public void testSendReminder() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testSendReminder_warning() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(2015).withMonthOfYear(5).withDayOfMonth(7);
+
+        testSendReminder(date);
+        verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(date.getMonthOfYear()));
+        verify(mockEmailService).sendEmailCopyBlindAdministrator(any());
+    }
+
+    @Test
+    public void testSendReminder_nowarning() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(2015).withMonthOfYear(5).withDayOfMonth(6);
+
+        testSendReminder(date);
+        verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(date.getMonthOfYear()));
+        verify(mockEmailService, never()).sendEmailCopyBlindAdministrator(any());
+    }
+
+    @Test
+    public void testSendReminder_nowarningDayOff() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(2015).withMonthOfYear(5).withDayOfMonth(8);
+
+        testSendReminder(date);
+        verify(mockAbsenceDayService, never()).findByMemberAndMonth(eq(randomLong), eq(date.getMonthOfYear()));
+        verify(mockEmailService, never()).sendEmailCopyBlindAdministrator(any());
+    }
+
+    private void testSendReminder(DateTime date) {
+        mockStatic(DateTime.class);
+        when(DateTime.now()).thenReturn(date);
+
         Member member = EntityFactory.createMember();
         member.setId(randomLong);
         when(mockMemberService.findActiveMembers()).thenReturn(Lists.newArrayList(member));
@@ -59,8 +98,6 @@ public class ScheduleServiceTest {
 
         scheduleService.sendReminder();
 
-        verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(DateTime.now().getMonthOfYear()));
-        verify(mockEmailService).sendEmailCopyBlindAdministrator(any());
     }
 
 }
