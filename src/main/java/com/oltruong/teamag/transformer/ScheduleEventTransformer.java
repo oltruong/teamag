@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.MessageManager;
-import org.joda.time.DateTime;
-import org.joda.time.MutableDateTime;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.ScheduleEvent;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,22 +25,20 @@ public final class ScheduleEventTransformer {
         for (Absence absence : absenceList) {
             eventList.addAll(convertAbsence(absence, "member-" + absence.getMember().getId(), messageManager));
         }
-
-
         return eventList;
     }
 
     public static List<ScheduleEvent> getDaysOff(MessageManager messageManager) {
-        List<DateTime> daysOffList = CalendarUtils.getListDaysOff();
+        List<LocalDate> daysOffList = CalendarUtils.getListDaysOff();
 
         List<ScheduleEvent> daysOffEvents = Lists.newArrayListWithExpectedSize(daysOffList.size());
 
         String dayOffMessage = messageManager.getMessage("dayOff");
-        for (DateTime dayOff : daysOffList) {
+        for (LocalDate dayOff : daysOffList) {
             DefaultScheduleEvent event = new DefaultScheduleEvent();
             event.setTitle(dayOffMessage);
-            event.setStartDate(dayOff.toDate());
-            event.setEndDate(dayOff.toDate());
+            event.setStartDate(Date.from(dayOff.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            event.setEndDate(Date.from(dayOff.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             event.setAllDay(true);
             event.setStyleClass("dayOff");
             daysOffEvents.add(event);
@@ -52,30 +51,30 @@ public final class ScheduleEventTransformer {
         List<ScheduleEvent> eventList = Lists.newArrayList();
 
         //Same day
-        if (absence.getBeginDate().withTimeAtStartOfDay().isEqual(absence.getEndDate().withTimeAtStartOfDay())) {
+        if (absence.getBeginDate().isEqual(absence.getEndDate())) {
             eventList.add(buildBeginDayEvent(absence, className, messageManager));
             //Several days
         } else {
 
-            MutableDateTime beginMutableTime = absence.getBeginDate().withTimeAtStartOfDay().toMutableDateTime();
-            MutableDateTime endMutableTime = absence.getEndDate().withTimeAtStartOfDay().toMutableDateTime();
+            LocalDate beginMutableTime = absence.getBeginDate();
+            LocalDate endMutableTime = absence.getEndDate();
 
 
             if (Absence.AFTERNOON_ONLY.equals(absence.getBeginType())) {
                 eventList.add(buildBeginDayEvent(absence, className, messageManager));
-                beginMutableTime.addDays(1);
+                beginMutableTime = beginMutableTime.plusDays(1);
             }
 
             if (Absence.MORNING_ONLY.equals(absence.getEndType())) {
                 eventList.add(buildEndMorningDayEvent(absence, className, messageManager));
-                endMutableTime.addDays(-1);
+                endMutableTime = endMutableTime.plusDays(-1);
             }
 
             if (!beginMutableTime.isAfter(endMutableTime)) {
                 DefaultScheduleEvent event = new DefaultScheduleEvent();
                 event.setTitle(messageManager.getMessage("absencePerson", absence.getMember().getName()));
-                event.setStartDate(beginMutableTime.toDate());
-                event.setEndDate(endMutableTime.toDate());
+                event.setStartDate(Date.from(beginMutableTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+                event.setEndDate(Date.from(endMutableTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
                 event.setAllDay(true);
                 event.setStyleClass(className);
                 eventList.add(event);
@@ -93,17 +92,17 @@ public final class ScheduleEventTransformer {
 
         if (Absence.MORNING_ONLY.equals(absence.getBeginType())) {
             event.setTitle(messageManager.getMessage("absenceMorningPerson", absence.getMember().getName()));
-            event.setStartDate(absence.getBeginDate().withTimeAtStartOfDay().toDate());
-            event.setEndDate(absence.getBeginDate().withTimeAtStartOfDay().plusHours(12).toDate());
+            event.setStartDate(Date.from(absence.getBeginDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            event.setEndDate(absence.getBeginDate().plusHours(12).toDate());
         } else if (Absence.AFTERNOON_ONLY.equals(absence.getBeginType()) || Absence.AFTERNOON_ONLY.equals(absence.getEndType())) {
             event.setTitle(messageManager.getMessage("absenceAfternoonPerson", absence.getMember().getName()));
-            event.setStartDate(absence.getBeginDate().withTimeAtStartOfDay().plusHours(13).toDate());
-            event.setEndDate(absence.getBeginDate().withTimeAtStartOfDay().plusHours(23).toDate());
+            event.setStartDate(absence.getBeginDate().plusHours(13).toDate());
+            event.setEndDate(absence.getBeginDate().plusHours(23).toDate());
 
         } else {
             event.setTitle(messageManager.getMessage("absencePerson", absence.getMember().getName()));
-            event.setStartDate(absence.getBeginDate().withTimeAtStartOfDay().toDate());
-            event.setEndDate(absence.getBeginDate().withTimeAtStartOfDay().toDate());
+            event.setStartDate(Date.from(absence.getBeginDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            event.setEndDate(Date.from(absence.getBeginDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             event.setAllDay(true);
         }
         event.setStyleClass(className);
@@ -115,8 +114,8 @@ public final class ScheduleEventTransformer {
         DefaultScheduleEvent event = new DefaultScheduleEvent();
 
         event.setTitle(messageManager.getMessage("absenceMorningPerson", absence.getMember().getName()));
-        event.setStartDate(absence.getEndDate().withTimeAtStartOfDay().toDate());
-        event.setEndDate(absence.getEndDate().withTimeAtStartOfDay().plusHours(12).toDate());
+        event.setStartDate(Date.from(absence.getEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        event.setEndDate(absence.getEndDate().plusHours(12).toDate());
         event.setStyleClass(className);
         return event;
     }

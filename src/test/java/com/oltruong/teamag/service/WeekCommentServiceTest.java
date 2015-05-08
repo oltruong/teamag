@@ -3,7 +3,7 @@ package com.oltruong.teamag.service;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.builder.EntityFactory;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
     private WeekCommentService weekCommentService;
 
     private WeekComment weekComment;
-    private int year = DateTime.now().getYear();
-    private int week = DateTime.now().getWeekOfWeekyear();
+    private int year = LocalDate.now().getYear();
+    private int week = LocalDate.now().getWeekOfWeekyear();
 
 
     @Before

@@ -5,7 +5,7 @@ import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Test;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class AbsenceDayTransformerTest {
 
     @Test
     public void testTransformAbsence_singleDay() throws Exception {
-        DateTime now = getNextDateTimeNotOff();
+        LocalDate now = getNextLocalDateNotOff();
 
         Absence absence = EntityFactory.createAbsence(now, Absence.ALL_DAY, now, Absence.ALL_DAY);
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(absence);
@@ -49,7 +49,7 @@ public class AbsenceDayTransformerTest {
 
     @Test
     public void testTransformAbsence_dayOff() throws Exception {
-        DateTime now = getNextDateTimeOff();
+        LocalDate now = getNextLocalDateOff();
 
         Absence absence = EntityFactory.createAbsence(now, Absence.ALL_DAY, now, Absence.ALL_DAY);
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(absence);
@@ -61,7 +61,7 @@ public class AbsenceDayTransformerTest {
 
     @Test
     public void testTransformAbsence_halfDay() throws Exception {
-        DateTime now = getNextDateTimeNotOff();
+        LocalDate now = getNextLocalDateNotOff();
 
 
         Absence absence = EntityFactory.createAbsence(now, Absence.MORNING_ONLY, now, Absence.ALL_DAY);
@@ -77,13 +77,13 @@ public class AbsenceDayTransformerTest {
 
     @Test
     public void testTransformAbsence_threeDays() throws Exception {
-        DateTime beginDate = DateTime.now();
+        LocalDate beginDate = LocalDate.now();
 
         while (next3daysOff(beginDate)) {//Make sure this is not a day off !
             beginDate = beginDate.plusDays(1);
         }
 
-        DateTime threeDaysLater = beginDate.plusDays(3);
+        LocalDate threeDaysLater = beginDate.plusDays(3);
 
         Absence absence = EntityFactory.createAbsence(beginDate, Absence.AFTERNOON_ONLY, threeDaysLater, Absence.MORNING_ONLY);
         List<AbsenceDay> absenceDayList = AbsenceDayTransformer.transformAbsence(absence);
@@ -111,8 +111,8 @@ public class AbsenceDayTransformerTest {
         assertThat(lastAbsenceDay.getValue()).isEqualTo(Float.valueOf(0.5f));
     }
 
-    private boolean next3daysOff(DateTime now) {
-        DateTime tester = new DateTime(now);
+    private boolean next3daysOff(LocalDate now) {
+        LocalDate tester = new LocalDate(now);
         boolean result = CalendarUtils.isDayOff(tester);
         for (int i = 1; i <= 3; i++) {
             result |= CalendarUtils.isDayOff(now.plusDays(i));
@@ -122,8 +122,8 @@ public class AbsenceDayTransformerTest {
     }
 
 
-    private DateTime getNextDateTimeNotOff() {
-        DateTime now = DateTime.now();
+    private LocalDate getNextLocalDateNotOff() {
+        LocalDate now = LocalDate.now();
         while (CalendarUtils.isDayOff(now)) {
             now = now.plusDays(1);
         }
@@ -131,8 +131,8 @@ public class AbsenceDayTransformerTest {
     }
 
 
-    private DateTime getNextDateTimeOff() {
-        DateTime now = DateTime.now();
+    private LocalDate getNextLocalDateOff() {
+        LocalDate now = LocalDate.now();
         while (!CalendarUtils.isDayOff(now)) {
             now = now.plusDays(1);
         }

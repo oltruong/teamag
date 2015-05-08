@@ -13,15 +13,17 @@ import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.webbean.ColumnDayBean;
 import com.oltruong.teamag.webbean.RealizedFormWebBean;
 import com.oltruong.teamag.webbean.TaskWeekBean;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import javax.enterprise.inject.Instance;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,14 +68,14 @@ public class CheckWorkController extends Controller {
         memberList.add(memberInstance.get());
 
         memberToCheck = memberList.get(memberList.size() - 1);
-        realizedBean.setDayCursor(DateTime.now());
+        realizedBean.setDayCursor(LocalDate.now());
         return refresh();
     }
 
     public String refresh() {
         memberToCheck = memberService.find(memberToCheck.getId());
 
-        DateTime firstDayOfMonth = realizedBean.getDayCursor().withDayOfMonth(1);
+        LocalDate firstDayOfMonth = realizedBean.getDayCursor().withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         works = workService.findWorksNotNullByMonth(memberToCheck, firstDayOfMonth);
 
@@ -109,7 +111,7 @@ public class CheckWorkController extends Controller {
                 boolean emptyWork = true;
                 for (Work work : works.get(task)) {
 
-                    if (work.getDay().getWeekOfWeekyear() == weekNumber) {
+                    if (work.getDay().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) == weekNumber) {
 
                         ColumnDayBean columnDay = new ColumnDayBean();
                         columnDay.setDay(work.getDay());

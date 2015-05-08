@@ -4,7 +4,7 @@ import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WeekCommentService;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
 
     @GET
     public Response getWeekComment(@QueryParam("memberId") Long memberId, @QueryParam("weekNumber") int weekNumber) {
-        return get(() -> weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear()));
+        return get(() -> weekCommentService.findWeekComment(memberId, weekNumber, LocalDate.now().getYear()));
     }
 
 

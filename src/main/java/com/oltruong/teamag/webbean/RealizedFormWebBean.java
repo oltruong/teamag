@@ -2,7 +2,7 @@ package com.oltruong.teamag.webbean;
 
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.utils.CalendarUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -15,11 +15,11 @@ public class RealizedFormWebBean {
     @Inject
     private Logger logger;
 
-    private DateTime dayCursor;
+    private LocalDate dayCursor;
 
     private int weekNumberMonth;
 
-    private DateTime currentMonth;
+    private LocalDate currentMonth;
 
     private final List<ColumnDayBean> columnsDay = Lists.newArrayListWithExpectedSize(5);
 
@@ -90,7 +90,7 @@ public class RealizedFormWebBean {
 
     }
 
-    public DateTime getCurrentMonth() {
+    public LocalDate getCurrentMonth() {
         return currentMonth;
     }
 
@@ -98,16 +98,16 @@ public class RealizedFormWebBean {
         return currentMonth.toString("MMMMM");
     }
 
-    public void setCurrentMonth(DateTime currentMonth) {
+    public void setCurrentMonth(LocalDate currentMonth) {
         this.currentMonth = currentMonth;
     }
 
-    public void setDayCursor(DateTime dayCursor) {
+    public void setDayCursor(LocalDate dayCursor) {
         this.dayCursor = dayCursor;
         weekNumberMonth = dayCursor.toCalendar(Locale.getDefault()).get(Calendar.WEEK_OF_MONTH);
     }
 
-    public DateTime getDayCursor() {
+    public LocalDate getDayCursor() {
         return dayCursor;
     }
 }

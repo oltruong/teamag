@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -59,7 +59,7 @@ public class ScheduleServiceTest {
 
         scheduleService.sendReminder();
 
-        verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(DateTime.now().getMonthOfYear()));
+        verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(LocalDate.now().getMonthOfYear()));
         verify(mockEmailService).sendEmailCopyBlindAdministrator(any());
     }
 

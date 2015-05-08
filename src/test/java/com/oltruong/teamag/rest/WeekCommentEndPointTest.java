@@ -5,7 +5,7 @@ import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.WeekCommentService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -41,7 +41,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
 
     private void testGetWeekComment(int weekNumber, int weekArgument) {
 
-        int year = DateTime.now().getYear();
+        int year = LocalDate.now().getYear();
 
         WeekComment weekComment = EntityFactory.createWeekComment();
         when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(year))).thenReturn(weekComment);
@@ -60,7 +60,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
     @Test
     public void testGetWeekComment_null() {
         int weekNumber = 33;
-        int year = DateTime.now().getYear();
+        int year = LocalDate.now().getYear();
 
 
         Response response = weekCommentEndPoint.getWeekComment(randomId, weekNumber);

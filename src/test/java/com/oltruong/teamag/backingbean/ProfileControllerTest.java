@@ -7,7 +7,7 @@ import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.utils.MessageManager;
 import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.webbean.ProfileWebBean;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -65,7 +65,7 @@ public class ProfileControllerTest extends ControllerTest {
     public void testUpdatePassword() throws Exception {
 
 
-        String newPassword = "SecurityFilter" + DateTime.now().toString();
+        String newPassword = "SecurityFilter" + LocalDate.now().toString();
         String newPasswordEncrypted = TeamagUtils.hashPassword(newPassword);
 
         profileController.setProfileWebBean(new ProfileWebBean(member));

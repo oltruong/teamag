@@ -2,7 +2,6 @@ package com.oltruong.teamag.model;
 
 import com.oltruong.teamag.model.converter.DateConverter;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -17,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Table(name = "TM_WORK")
 @Entity
@@ -39,12 +40,12 @@ public class Work {
     @Column(nullable = false)
     //  @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
-    private DateTime month;
+    private LocalDate month;
 
     @Column(nullable = false)
     //@Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
-    private DateTime day;
+    private LocalDate day;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "MEMBER_ID")
@@ -71,19 +72,19 @@ public class Work {
         this.id = id;
     }
 
-    public DateTime getMonth() {
+    public LocalDate getMonth() {
         return month;
     }
 
-    public void setMonth(DateTime month) {
+    public void setMonth(LocalDate month) {
         this.month = month;
     }
 
-    public DateTime getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(DateTime day) {
+    public void setDay(LocalDate day) {
         this.day = day;
     }
 
@@ -147,7 +148,7 @@ public class Work {
     }
 
     public String getDayStr() {
-        return getDay().toString("E mmm dd");
+        return DateTimeFormatter.ofPattern("E mmm dd").format(getDay());
     }
 
     public boolean hasChanged() {

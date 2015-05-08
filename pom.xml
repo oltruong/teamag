@@ -19,7 +19,6 @@
         <version.assertj>1.7.1</version.assertj>
         <version.mockito>1.9.5</version.mockito>
         <powermock.version>1.6.1</powermock.version>
-        <version.joda-time>2.3</version.joda-time>
 
         <version.commons-lang>3.1</version.commons-lang>
         <version.commons-collections>3.2.1</version.commons-collections>
@@ -125,12 +124,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${version.guava}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${version.joda-time}</version>
         </dependency>
 
         <dependency>

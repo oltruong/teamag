@@ -1,13 +1,14 @@
 package com.oltruong.teamag.utils;
 
 import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.MutableDateTime;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.temporal.ChronoField;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Olivier Truong
@@ -17,43 +18,40 @@ public final class CalendarUtils {
     private CalendarUtils() {
     }
 
-    private static List<DateTime> listDaysOff;
+    private static List<LocalDate> listDaysOff;
 
 
-    public static boolean isWorkingDay(DateTime day) {
+    public static boolean isWorkingDay(LocalDate day) {
         return !isDayOff(day);
     }
 
-    public static boolean isDayOff(DateTime day) {
-        boolean verdict = false;
-
-        int dayOfWeek = day.getDayOfWeek();
-        if (dayOfWeek == DateTimeConstants.SUNDAY || dayOfWeek == DateTimeConstants.SATURDAY) {
+    public static boolean isDayOff(LocalDate day) {
+        DayOfWeek dayOfWeek = day.getDayOfWeek();
+        if (dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.SATURDAY) {
             return true;
         } else {
-            verdict = getListDaysOff().contains(day.withTimeAtStartOfDay());
+            return getListDaysOff().contains(day);
         }
-        return verdict;
 
     }
 
-    public static List<DateTime> getListDaysOff() {
+    public static List<LocalDate> getListDaysOff() {
 
         if (listDaysOff == null) {
             int numberDaysOff = 11;
-            List<DateTime> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
+            List<LocalDate> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
 
-            daysOff.add(buildDayOff(1, DateTimeConstants.JANUARY));
-            daysOff.add(buildDayOff(6, DateTimeConstants.APRIL));
-            daysOff.add(buildDayOff(1, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(8, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(14, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(25, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(14, DateTimeConstants.JULY));
-            daysOff.add(buildDayOff(15, DateTimeConstants.AUGUST));
-            daysOff.add(buildDayOff(1, DateTimeConstants.NOVEMBER));
-            daysOff.add(buildDayOff(11, DateTimeConstants.NOVEMBER));
-            daysOff.add(buildDayOff(25, DateTimeConstants.DECEMBER));
+            daysOff.add(buildDayOff(1, Month.JANUARY));
+            daysOff.add(buildDayOff(6, Month.APRIL));
+            daysOff.add(buildDayOff(1, Month.MAY));
+            daysOff.add(buildDayOff(8, Month.MAY));
+            daysOff.add(buildDayOff(14, Month.MAY));
+            daysOff.add(buildDayOff(25, Month.MAY));
+            daysOff.add(buildDayOff(14, Month.JULY));
+            daysOff.add(buildDayOff(15, Month.AUGUST));
+            daysOff.add(buildDayOff(1, Month.NOVEMBER));
+            daysOff.add(buildDayOff(11, Month.NOVEMBER));
+            daysOff.add(buildDayOff(25, Month.DECEMBER));
 
 
             listDaysOff = daysOff;
@@ -63,89 +61,85 @@ public final class CalendarUtils {
 
     }
 
-    private static DateTime buildDayOff(int day, int month) {
-        return DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day);
+    private static LocalDate buildDayOff(int day, Month month) {
+        return LocalDate.now().withMonth(month.getValue()).withDayOfMonth(day);
     }
 
-    public static List<DateTime> getWorkingDays(DateTime month) {
-        List<DateTime> listWorkingDays = Lists.newArrayListWithCapacity(22);
+    public static List<LocalDate> getWorkingDays(LocalDate month) {
+        List<LocalDate> listWorkingDays = Lists.newArrayListWithCapacity(22);
         boolean finished = false;
-        DateTime day = month.withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate day = month.withDayOfMonth(1);
         while (!finished) {
             if (!CalendarUtils.isDayOff(day)) {
                 listWorkingDays.add(day);
             }
             day = day.plusDays(1);
-            finished = day.getMonthOfYear() != month.getMonthOfYear();
+            finished = day.getMonthValue() != month.getMonthValue();
         }
         return listWorkingDays;
 
     }
 
 
-    public static boolean isLastWorkingDayOfWeek(DateTime day, List<DateTime> workingDays) {
+    public static boolean isLastWorkingDayOfWeek(LocalDate day, List<LocalDate> workingDays) {
 
 
         if (!workingDays.contains(day)) {
             return false;
         } else {
-            int weekNumber = day.getWeekOfWeekyear();
+            int weekNumber = day.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
 
-            MutableDateTime mutableDateTime = new MutableDateTime(day);
-            mutableDateTime.addDays(1);
+            LocalDate localDate = day.plusDays(1);
             boolean foundAnotherWorkingDay = false;
-            while (mutableDateTime.getWeekOfWeekyear() == weekNumber && !foundAnotherWorkingDay) {
-                foundAnotherWorkingDay = workingDays.contains(mutableDateTime.toDateTime());
-                mutableDateTime.addDays(1);
+            while (localDate.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) == weekNumber && !foundAnotherWorkingDay) {
+                foundAnotherWorkingDay = workingDays.contains(localDate);
+                localDate = localDate.plusDays(1);
             }
             return !foundAnotherWorkingDay;
 
         }
     }
 
-    public static boolean isInFirstWorkingWeekOfMonth(DateTime day) {
+    public static boolean isInFirstWorkingWeekOfMonth(LocalDate day) {
 
 
-        DateTime firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthOfYear());
-        return firstWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
+        LocalDate firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthValue());
+        return firstWorkingDayOfMonth.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) == day.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
 
 
     }
 
-    public static DateTime findFirstWorkingDayMonth(int monthOfYear) {
+    public static LocalDate findFirstWorkingDayMonth(int monthOfYear) {
 
-        MutableDateTime dayOfMonth = MutableDateTime.now();
-        dayOfMonth.setDayOfMonth(1);
-        dayOfMonth.setMonthOfYear(monthOfYear);
+        LocalDate dayOfMonth = LocalDate.now().withDayOfMonth(1).withMonth(monthOfYear);
 
-        while (isDayOff(dayOfMonth.toDateTime())) {
-            dayOfMonth.addDays(1);
+        while (isDayOff(dayOfMonth)) {
+            dayOfMonth = dayOfMonth.plusDays(1);
         }
 
-        return dayOfMonth.toDateTime();
+        return dayOfMonth;
     }
 
-    public static boolean isInLastWorkingWeekOfMonth(DateTime day) {
-        DateTime lastWorkingDayOfMonth = findLastWorkingDayMonth(day.getMonthOfYear());
-        return lastWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
+    public static boolean isInLastWorkingWeekOfMonth(LocalDate day) {
+        LocalDate lastWorkingDayOfMonth = findLastWorkingDayMonth(day.getMonthValue());
+        return lastWorkingDayOfMonth.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) == day.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
     }
 
-    private static DateTime findLastWorkingDayMonth(int monthOfYear) {
+    private static LocalDate findLastWorkingDayMonth(int monthOfYear) {
 
-        MutableDateTime dayOfMonth = MutableDateTime.now();
-        dayOfMonth.setDayOfMonth(1);
+        LocalDate dayOfMonth = LocalDate.now().withDayOfMonth(1);
+
         if (monthOfYear == 12) {
-            dayOfMonth.addYears(1);
-            dayOfMonth.setMonthOfYear(1);
+            dayOfMonth = dayOfMonth.plusYears(1).withMonth(1);
         } else {
-            dayOfMonth.setMonthOfYear(monthOfYear + 1);
+            dayOfMonth = dayOfMonth.withMonth(monthOfYear + 1);
         }
 
-        dayOfMonth.addDays(-1);
-        while (isDayOff(dayOfMonth.toDateTime())) {
-            dayOfMonth.addDays(-1);
+        dayOfMonth = dayOfMonth.minusDays(1);
+        while (isDayOff(dayOfMonth)) {
+            dayOfMonth = dayOfMonth.minusDays(1);
         }
-        return dayOfMonth.toDateTime();
+        return dayOfMonth;
     }
 
 

@@ -8,7 +8,7 @@ import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
 import org.assertj.core.api.Assertions;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -214,7 +214,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.getMembers().get(0).setId(EntityFactory.createRandomLong());
         task.getMembers().add(member);
 
-        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate month = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
         when(mockEntityManager.find(eq(Task.class), any())).thenReturn(task);
         when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
@@ -253,7 +253,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.getMembers().clear();
         task.getMembers().add(member);
 
-        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate month = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
         when(mockEntityManager.find(eq(Task.class), any())).thenReturn(task);
         when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
@@ -268,7 +268,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
 
-    private void testRemoveTask(Member member, Long randomId, DateTime month) {
+    private void testRemoveTask(Member member, Long randomId, LocalDate month) {
         taskService.remove(task, member, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.DELETE_BY_MEMBERTaskMonth"));
         verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomId));
@@ -284,7 +284,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.getMembers().clear();
         Member member = EntityFactory.createMember();
 
-        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate month = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
         taskService.persist(month, member, task);
 
@@ -299,7 +299,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
         verify(mockEntityManager).persist(taskCaptor.capture());
-        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDayList = CalendarUtils.getWorkingDays(month);
         workingDayList.forEach(day -> verify(mockWorkService).createWork(eq(member), eq(month), taskCaptor.capture(), eq(day)));
         taskCaptor.getAllValues().forEach(myTask -> assertThat(myTask).isEqualToComparingFieldByField(task));
     }
@@ -314,7 +314,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.getMembers().clear();
         task.getMembers().add(member);
 
-        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate month = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask, 1);
         final Task existingTask = taskList.get(0);
@@ -333,7 +333,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
 
         Assertions.assertThat(existingTask.getMembers()).contains(member);
-        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDayList = CalendarUtils.getWorkingDays(month);
 
 
         ArgumentCaptor<Task> taskCaptor = ArgumentCaptor.forClass(Task.class);
@@ -352,7 +352,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         task.getMembers().clear();
         task.getMembers().add(member);
 
-        DateTime month = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate month = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
 
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask, 1);
         final Task existingTask = taskList.get(0);

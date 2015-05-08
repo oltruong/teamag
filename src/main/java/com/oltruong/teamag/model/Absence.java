@@ -1,7 +1,7 @@
 package com.oltruong.teamag.model;
 
 import com.oltruong.teamag.model.converter.DateConverter;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -33,14 +33,14 @@ public class Absence {
 
     @Column(nullable = false)
     @Convert(converter = DateConverter.class)
-    private DateTime beginDate;
+    private LocalDate beginDate;
 
     @Column(nullable = false)
     private Integer beginType = ALL_DAY;
 
     @Column(nullable = false)
     @Convert(converter = DateConverter.class)
-    private DateTime endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "MEMBER_FK")
@@ -57,19 +57,19 @@ public class Absence {
         return id;
     }
 
-    public DateTime getBeginDate() {
+    public LocalDate getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(DateTime beginDate) {
+    public void setBeginDate(LocalDate beginDate) {
         this.beginDate = beginDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

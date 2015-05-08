@@ -7,7 +7,7 @@ import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.CalendarUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -30,7 +30,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     private WorkService workService;
     private List<Work> workList;
-    DateTime month;
+    LocalDate month;
 
     private Member member;
 
@@ -43,7 +43,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         prepareService(workService);
         workList = EntityFactory.createList(EntityFactory::createWork, 10);
         workList.forEach(w -> w.setTotal(0d));
-        month = DateTime.now().withDayOfMonth(1);
+        month = LocalDate.now().withDayOfMonth(1);
         when(mockTypedQuery.getResultList()).thenReturn(workList);
         when(mockTypedQuery.getResultList()).thenReturn(workList);
     }
@@ -69,7 +69,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindWorksNotNullByWeek() {
-        int currentWeek = DateTime.now().getWeekOfWeekyear();
+        int currentWeek = LocalDate.now().getWeekOfWeekyear();
 
 
         workList.forEach(w -> w.getTask().setId(EntityFactory.createRandomLong()));
@@ -83,11 +83,11 @@ public class WorkServiceTest extends AbstractServiceTest {
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_BY_MEMBER_MONTH"), eq(Work.class));
         verify(mockTypedQuery).setParameter(eq("fmemberId"), eq(randomLong));
 
-        ArgumentCaptor<DateTime> dateTimeArgumentCaptor = ArgumentCaptor.forClass(DateTime.class);
+        ArgumentCaptor<LocalDate> dateTimeArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
 
         verify(mockTypedQuery).setParameter(eq("fmonth"), dateTimeArgumentCaptor.capture());
 
-        assertThat(dateTimeArgumentCaptor.getValue().withDayOfMonth(1).withTimeAtStartOfDay()).isEqualTo(DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay());
+        assertThat(dateTimeArgumentCaptor.getValue().withDayOfMonth(1).withTimeAtStartOfDay()).isEqualTo(LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay());
 
         assertThat(workListFound).containsExactly(workList.get(0), workList.get(1), workList.get(2));
     }
@@ -100,10 +100,10 @@ public class WorkServiceTest extends AbstractServiceTest {
         Task absenceTask = EntityFactory.createTask();
         absenceTask.setId(1L);
         taskList.add(absenceTask);
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
 
         List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-        DateTime firstWorkingDay = workingDays.get(0);
+        LocalDate firstWorkingDay = workingDays.get(0);
 
         absenceDayList.get(0).setDay(firstWorkingDay);
 
@@ -144,10 +144,10 @@ public class WorkServiceTest extends AbstractServiceTest {
         Task absenceTask = EntityFactory.createTask();
         absenceTask.setId(1L);
         taskList.add(absenceTask);
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
 
         List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-        DateTime firstWorkingDay = workingDays.get(0);
+        LocalDate firstWorkingDay = workingDays.get(0);
 
         absenceDayList.get(0).setDay(firstWorkingDay);
 
@@ -163,7 +163,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     }
 
-    private void verifyFindOrCreateWorks(List<Task> taskList, Task absenceTask, List<DateTime> workingDays, DateTime firstWorkingDay, Map<Task, List<Work>> taskListMap) {
+    private void verifyFindOrCreateWorks(List<Task> taskList, Task absenceTask, List<LocalDate> workingDays, LocalDate firstWorkingDay, Map<Task, List<Work>> taskListMap) {
         assertThat(taskListMap).hasSameSizeAs(taskList);
         List<Work> workListReturned = taskListMap.get(absenceTask);
         assertThat(workListReturned).hasSameSizeAs(workingDays);
@@ -185,10 +185,10 @@ public class WorkServiceTest extends AbstractServiceTest {
         Task absenceTask = EntityFactory.createTask();
         absenceTask.setId(1L);
         taskList.add(absenceTask);
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
 
         List<AbsenceDay> absenceDayList = EntityFactory.createList(EntityFactory::createAbsenceDay);
-        DateTime firstWorkingDay = workingDays.get(0);
+        LocalDate firstWorkingDay = workingDays.get(0);
 
         absenceDayList.get(0).setDay(firstWorkingDay);
 
@@ -207,7 +207,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         verify(mockEntityManager).remove(eq(firstWorkCloned));
     }
 
-    private Work createWork(List<Task> taskList, DateTime firstWorkingDay) {
+    private Work createWork(List<Task> taskList, LocalDate firstWorkingDay) {
         Work work = new Work();
         work.setTask(taskList.get(0));
         work.setMember(member);
@@ -217,7 +217,7 @@ public class WorkServiceTest extends AbstractServiceTest {
         return work;
     }
 
-    private void checkWork(List<DateTime> workingDays, Task task, Work work) {
+    private void checkWork(List<LocalDate> workingDays, Task task, Work work) {
         assertThat(work.getTotal()).isEqualTo(0d);
         assertThat(work.getMember()).isEqualTo(member);
         assertThat(workingDays.contains(work.getDay()));
@@ -230,7 +230,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
         Member member = EntityFactory.createMember();
         Task task = EntityFactory.createTask();
-        DateTime day = DateTime.now();
+        LocalDate day = LocalDate.now();
 
         Work workCreated = workService.createWork(member, month, task, day);
 
@@ -270,11 +270,11 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindWorkDays() {
-        DateTime month = DateTime.now();
+        LocalDate month = LocalDate.now();
         Member member = EntityFactory.createMember();
         member.setId(randomLong);
 
-        DateTime beginMonth = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        LocalDate beginMonth = LocalDate.now().withDayOfMonth(1).withTimeAtStartOfDay();
         Double sum = EntityFactory.createRandomDouble();
 
         Object[] result = {beginMonth, sum};
@@ -284,7 +284,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
         when(mockTypedQuery.getResultList()).thenReturn(resultList);
 
-        Map<DateTime, Double> workDaysMap = workService.findWorkDays(member, month);
+        Map<LocalDate, Double> workDaysMap = workService.findWorkDays(member, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_WORKDAYS_BY_MEMBER_MONTH"), eq(Object[].class));
         verify(mockTypedQuery).setParameter(eq("fmemberId"), eq(randomLong));
         verify(mockTypedQuery).setParameter(eq("fmonth"), eq(month));
@@ -313,7 +313,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
         when(mockNamedQuery.getSingleResult()).thenReturn(randomInt);
 
-        DateTime month = DateTime.now();
+        LocalDate month = LocalDate.now();
         Member member = EntityFactory.createMember();
         member.setId(randomLong);
 
@@ -353,7 +353,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     @Test
     public void testRemoveWorkAbsence_past() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
-        absenceDay.setDay(DateTime.now().minusMonths(1));
+        absenceDay.setDay(LocalDate.now().minusMonths(1));
         workService.removeWorkAbsence(absenceDay);
         verify(mockEntityManager, never()).createNamedQuery(any(), any());
         verify(mockEntityManager, never()).merge(any());

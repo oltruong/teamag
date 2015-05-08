@@ -1,10 +1,10 @@
 package com.oltruong.teamag.webbean;
 
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 public class ColumnDayBean implements Comparable<ColumnDayBean> {
 
-    private DateTime day;
+    private LocalDate day;
 
     private Double total = 0d;
 
@@ -16,11 +16,11 @@ public class ColumnDayBean implements Comparable<ColumnDayBean> {
         this.total += total;
     }
 
-    public void setDay(DateTime day) {
+    public void setDay(LocalDate day) {
         this.day = day;
     }
 
-    public DateTime getDay() {
+    public LocalDate getDay() {
         return day;
     }
 

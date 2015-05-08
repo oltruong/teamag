@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public final class AbsenceWebBeanTransformer {
     public static Absence transformWebBean(AbsenceWebBean absenceWebBean) {
         Preconditions.checkArgument(absenceWebBean != null);
         Absence absence = new Absence();
-        absence.setBeginDate(absenceWebBean.getBeginDateTime());
-        absence.setEndDate(absenceWebBean.getEndDateTime());
+        absence.setBeginDate(absenceWebBean.getBeginLocalDate());
+        absence.setEndDate(absenceWebBean.getEndLocalDate());
         absence.setBeginType(Integer.valueOf(absenceWebBean.getBeginType()));
         absence.setEndType(Integer.valueOf(absenceWebBean.getEndType()));
         return absence;
@@ -31,8 +31,8 @@ public final class AbsenceWebBeanTransformer {
         Preconditions.checkArgument(absence != null);
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
         absenceWebBean.setId(absence.getId());
-        absenceWebBean.setBeginDateTime(absence.getBeginDate());
-        absenceWebBean.setEndDateTime(absence.getEndDate());
+        absenceWebBean.setBeginLocalDate(absence.getBeginDate());
+        absenceWebBean.setEndLocalDate(absence.getEndDate());
         absenceWebBean.setBeginType(absence.getBeginType().intValue());
         absenceWebBean.setEndType(absence.getEndType().intValue());
         absenceWebBean.setMemberName(absence.getMember().getName());
@@ -47,13 +47,13 @@ public final class AbsenceWebBeanTransformer {
         return absenceWebBeanList;
     }
 
-    public static List<AbsenceWebBean> transformListfromDays(List<DateTime> listDaysOff) {
+    public static List<AbsenceWebBean> transformListfromDays(List<LocalDate> listDaysOff) {
         List<AbsenceWebBean> absenceWebBeanList = Lists.newArrayListWithExpectedSize(listDaysOff.size());
 
         listDaysOff.forEach(date -> {
             AbsenceWebBean absenceWebBean = new AbsenceWebBean();
-            absenceWebBean.setBeginDateTime(date);
-            absenceWebBean.setEndDateTime(date);
+            absenceWebBean.setBeginLocalDate(date);
+            absenceWebBean.setEndLocalDate(date);
             absenceWebBeanList.add(absenceWebBean);
         });
         return absenceWebBeanList;

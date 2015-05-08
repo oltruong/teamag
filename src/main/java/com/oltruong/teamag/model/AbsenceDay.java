@@ -2,7 +2,6 @@ package com.oltruong.teamag.model;
 
 
 import com.oltruong.teamag.model.converter.DateConverter;
-import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -15,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 
 @Table(name = "TM_ABSENCE_DAY")
 @Entity
@@ -35,7 +37,7 @@ public class AbsenceDay {
     @Column(nullable = false)
     // @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
-    private DateTime day;
+    private LocalDate day;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "MEMBER_FK")
@@ -70,14 +72,14 @@ public class AbsenceDay {
     }
 
 
-    public DateTime getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(DateTime day) {
+    public void setDay(LocalDate day) {
         this.day = day;
-        this.month = day.getMonthOfYear();
-        this.week = day.getWeekOfWeekyear();
+        this.month = day.getMonthValue();
+        this.week = day.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
     }
 
     public Member getMember() {

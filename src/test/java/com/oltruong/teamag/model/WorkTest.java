@@ -1,7 +1,7 @@
 package com.oltruong.teamag.model;
 
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class WorkTest {
 
     @Test
     public void testGetDay() {
-        DateTime day = DateTime.now();
+        LocalDate day = LocalDate.now();
         work.setDay(day);
         assertThat(work.getDayStr()).isEqualTo(work.getDay().toString("E mmm dd"));
     }

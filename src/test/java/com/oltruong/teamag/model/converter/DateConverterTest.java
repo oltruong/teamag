@@ -1,6 +1,6 @@
 package com.oltruong.teamag.model.converter;
 
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,13 +20,13 @@ public class DateConverterTest {
 
     @Test
     public void testConvertToDatabaseColumn() throws Exception {
-        DateTime dateTime = DateTime.now();
+        LocalDate dateTime = LocalDate.now();
         assertThat(dateConverter.convertToDatabaseColumn(dateTime)).isEqualTo(dateTime.withTimeAtStartOfDay().toDate());
     }
 
     @Test
     public void testConvertToEntityAttribute() throws Exception {
-        DateTime dateTime = DateTime.now();
+        LocalDate dateTime = LocalDate.now();
         assertThat(dateConverter.convertToEntityAttribute(dateTime.toDate())).isEqualTo(dateTime);
     }
 }

@@ -2,7 +2,7 @@ package com.oltruong.teamag.model;
 
 import com.oltruong.teamag.model.builder.EntityFactory;
 import org.assertj.core.api.Assertions;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Test;
 
 import javax.persistence.Query;
@@ -43,7 +43,7 @@ public class WorkIT extends AbstractEntityIT {
 
         Query query = entityManager.createNamedQuery("Work.FIND_BY_MEMBER_MONTH");
         query.setParameter("fmemberId", work.getMember().getId());
-        query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
+        query.setParameter("fmonth", LocalDate.now().withDayOfMonth(1));
 
         @SuppressWarnings("unchecked")
         List<Work> listWorks = query.getResultList();
@@ -69,7 +69,7 @@ public class WorkIT extends AbstractEntityIT {
 
         Query query = entityManager.createNamedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH");
         query.setParameter("fmemberId", work.getMember().getId());
-        query.setParameter("fmonth", DateTime.now().withDayOfMonth(1));
+        query.setParameter("fmonth", LocalDate.now().withDayOfMonth(1));
 
         List<Object[]> objects = query.getResultList();
 

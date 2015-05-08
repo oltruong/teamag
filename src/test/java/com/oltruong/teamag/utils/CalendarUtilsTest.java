@@ -1,8 +1,8 @@
 package com.oltruong.teamag.utils;
 
 import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
+import java.time.LocalDate;
+import org.joda.time.LocalDateConstants;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class CalendarUtilsTest {
 
     @Test
     public void testGetListDaysOff() {
-        List<DateTime> daysOff = CalendarUtils.getListDaysOff();
+        List<LocalDate> daysOff = CalendarUtils.getListDaysOff();
 
         assertThat(daysOff).hasSize(11);
 
@@ -64,7 +64,7 @@ public class CalendarUtilsTest {
     public void testIsLastWorkingDayOfWeek() {
 
 
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, 2015));
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, 2015));
         assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(7, 5, 2015), workingDays)).isTrue();
         assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(8, 5, 2015), workingDays)).isFalse();
         assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(6, 5, 2015), workingDays)).isFalse();
@@ -74,18 +74,18 @@ public class CalendarUtilsTest {
     }
 
 
-    private void checkContains(List<DateTime> daysOff, int day, int month, int year) {
+    private void checkContains(List<LocalDate> daysOff, int day, int month, int year) {
         assertThat(contains(daysOff, day, month, year)).isTrue();
     }
 
-    private void checkNotContains(List<DateTime> daysOff, int day, int month, int year) {
+    private void checkNotContains(List<LocalDate> daysOff, int day, int month, int year) {
         assertThat(contains(daysOff, day, month, year)).isFalse();
     }
 
-    private boolean contains(List<DateTime> daysOff, int day, int month, int year) {
-        DateTime dayOffCheck = createDay(day, month, year);
+    private boolean contains(List<LocalDate> daysOff, int day, int month, int year) {
+        LocalDate dayOffCheck = createDay(day, month, year);
         boolean found = false;
-        for (DateTime dayOff : daysOff) {
+        for (LocalDate dayOff : daysOff) {
             if (dayOff.isEqual(dayOffCheck)) {
                 found = true;
                 break;
@@ -95,8 +95,8 @@ public class CalendarUtilsTest {
     }
 
 
-    private DateTime createDay(int day, int month, int year) {
-        return DateTime.now().withTimeAtStartOfDay().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
+    private LocalDate createDay(int day, int month, int year) {
+        return LocalDate.now().withTimeAtStartOfDay().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
     }
 
     @Test
@@ -115,11 +115,11 @@ public class CalendarUtilsTest {
     }
 
     private void testWorkingDays(int monthNumber, Iterable<Integer> values) {
-        DateTime month = DateTime.now().withMonthOfYear(monthNumber);
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+        LocalDate month = LocalDate.now().withMonthOfYear(monthNumber);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
         assertThat(workingDays).isNotNull();
-        for (DateTime day : workingDays) {
-            assertThat(day.getDayOfWeek()).isNotEqualTo(DateTimeConstants.SUNDAY).isNotEqualTo(DateTimeConstants.SATURDAY);
+        for (LocalDate day : workingDays) {
+            assertThat(day.getDayOfWeek()).isNotEqualTo(LocalDateConstants.SUNDAY).isNotEqualTo(LocalDateConstants.SATURDAY);
             assertThat(Integer.valueOf(day.getDayOfMonth())).isNotIn(values);
 
         }

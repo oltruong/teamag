@@ -6,7 +6,7 @@ import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.MessageManager;
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -81,17 +81,17 @@ public class ScheduleEventTransformerTest {
         Absence absence = absenceList.get(0);
 
         ScheduleEvent eventBeginAfternoon = eventList.get(0);
-        assertThat(new DateTime(eventBeginAfternoon.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
-        assertThat(new DateTime(eventBeginAfternoon.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventBeginAfternoon.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventBeginAfternoon.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
 
 
         ScheduleEvent eventEndMorning = eventList.get(1);
-        assertThat(new DateTime(eventEndMorning.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay());
-        assertThat(new DateTime(eventEndMorning.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventEndMorning.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventEndMorning.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay());
 
         ScheduleEvent eventBetween = eventList.get(2);
-        assertThat(new DateTime(eventBetween.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay().plusDays(1));
-        assertThat(new DateTime(eventBetween.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay().plusDays(-1));
+        assertThat(new LocalDate(eventBetween.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay().plusDays(1));
+        assertThat(new LocalDate(eventBetween.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getEndDate().withTimeAtStartOfDay().plusDays(-1));
 
 
     }
@@ -121,8 +121,8 @@ public class ScheduleEventTransformerTest {
 
         assertThat(eventList).hasSize(1);
         ScheduleEvent eventBeginMorning = eventList.get(0);
-        assertThat(new DateTime(eventBeginMorning.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
-        assertThat(new DateTime(eventBeginMorning.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventBeginMorning.getStartDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
+        assertThat(new LocalDate(eventBeginMorning.getEndDate()).withTimeAtStartOfDay()).isEqualTo(absence.getBeginDate().withTimeAtStartOfDay());
 
     }
 
@@ -144,7 +144,7 @@ public class ScheduleEventTransformerTest {
 
         List<ScheduleEvent> daysOff = ScheduleEventTransformer.getDaysOff(mockMessageManager);
 
-        List<DateTime> dateTimeOff = CalendarUtils.getListDaysOff();
+        List<LocalDate> dateTimeOff = CalendarUtils.getListDaysOff();
 
         assertThat(daysOff).hasSameSizeAs(dateTimeOff);
         for (int i = 0; i < daysOff.size(); i++) {

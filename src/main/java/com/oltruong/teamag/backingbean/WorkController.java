@@ -19,7 +19,6 @@ import com.oltruong.teamag.webbean.ColumnDayBean;
 import com.oltruong.teamag.webbean.RealizedFormWebBean;
 import com.oltruong.teamag.webbean.TaskWeekBean;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import javax.enterprise.inject.Instance;
@@ -29,8 +28,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SessionScoped
@@ -69,19 +71,19 @@ public class WorkController extends Controller {
 
     public String init() {
 
-        return initInformation(DateTime.now());
+        return initInformation(LocalDate.now());
     }
 
-    public String initInformation(DateTime dateTime) {
+    public String initInformation(LocalDate dateTime) {
 
 
-        DateTime firstDayOfMonth = dateTime.withDayOfMonth(1);
+        LocalDate firstDayOfMonth = dateTime.withDayOfMonth(1);
         realizedBean.setCurrentMonth(firstDayOfMonth);
         taskList = taskService.findTasksForMember(getMember());
-        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskList, absenceDayService.findByMemberAndMonth(getMember().getId(), firstDayOfMonth.getMonthOfYear()));
+        works = workService.findOrCreateWorks(getMember(), firstDayOfMonth, taskList, absenceDayService.findByMemberAndMonth(getMember().getId(), firstDayOfMonth.getMonthValue()));
 
 
-        DateTime firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
+        LocalDate firstIncompleteDay = findFirstIncompleteDay(firstDayOfMonth);
 
         if (firstIncompleteDay != null) {
             realizedBean.setDayCursor(firstIncompleteDay);
@@ -92,16 +94,16 @@ public class WorkController extends Controller {
         return VIEWNAME;
     }
 
-    private DateTime findFirstIncompleteDay(DateTime firstDayOfMonth) {
+    private LocalDate findFirstIncompleteDay(LocalDate firstDayOfMonth) {
 
-        DateTime result = null;
+        LocalDate result = null;
 
-        Map<DateTime, Double> map = workService.findWorkDays(getMember(), firstDayOfMonth);
+        Map<LocalDate, Double> map = workService.findWorkDays(getMember(), firstDayOfMonth);
 
 
         if (map != null && !map.isEmpty()) {
 
-            for (DateTime day : map.keySet()) {
+            for (LocalDate day : map.keySet()) {
                 if (Math.abs(map.get(day).doubleValue() - 1d) > 0.01) {
                     if (result == null || day.isBefore(result)) {
                         result = day;
@@ -129,7 +131,7 @@ public class WorkController extends Controller {
             try {
                 taskService.persist(realizedBean.getCurrentMonth(), getMember(), newTask);
 
-                works = workService.findOrCreateWorks(getMember(), DateTime.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findByMemberAndMonth(getMember().getId(), DateTime.now().getMonthOfYear()));
+                works = workService.findOrCreateWorks(getMember(), LocalDate.now().withDayOfMonth(1), taskService.findTasksForMember(getMember()), absenceDayService.findByMemberAndMonth(getMember().getId(), LocalDate.now().getMonthValue()));
                 initTaskWeek();
 
                 FacesMessage msg = null;
@@ -270,7 +272,7 @@ public class WorkController extends Controller {
         weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
 
         if (weekComment == null) {
-            weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());
+            weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthValue(), realizedBean.getYear());
         }
 
         if (works != null) {
@@ -284,7 +286,7 @@ public class WorkController extends Controller {
                 taskWeek.setTask(task);
                 for (Work work : works.get(task)) {
 
-                    if (work.getDay().getWeekOfWeekyear() == weekNumber) {
+                    if (work.getDay().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) == weekNumber) {
 
                         ColumnDayBean columnDay = new ColumnDayBean();
                         columnDay.setDay(work.getDay());

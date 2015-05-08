@@ -1,19 +1,20 @@
 package com.oltruong.teamag.backingbean;
 
 import com.oltruong.teamag.model.AbsenceDay;
-import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.service.AbsenceDayService;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.WeekLoadWebBean;
 import com.oltruong.teamag.webbean.WorkLoadFormWebBean;
-import org.joda.time.DateTime;
-import org.joda.time.MutableDateTime;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 
 
 @SessionScoped
@@ -24,7 +25,7 @@ public class WorkLoadController extends Controller {
     private AbsenceDayService absenceDayService;
 
     @Inject
-    private MemberService memberEJB;
+    private MemberService memberService;
 
 
     private WorkLoadFormWebBean formWebBean;
@@ -42,28 +43,28 @@ public class WorkLoadController extends Controller {
     private void fillInformation() {
         List<AbsenceDay> absenceDayList = absenceDayService.findAll();
 
-        List<Member> memberNonAdminList = memberEJB.findActiveNonAdminMembers();
+        List<Member> memberNonAdminList = memberService.findActiveNonAdminMembers();
         formWebBean.setMemberList(memberNonAdminList);
-        MutableDateTime dayCursor = DateTime.now().withTimeAtStartOfDay().withDayOfYear(1).toMutableDateTime();
+        LocalDate dayCursor = LocalDate.now().withDayOfYear(1);
 
         int currentYear = dayCursor.getYear();
 
-        int weekCursor = dayCursor.getWeekOfWeekyear() - 1;
+        int weekCursor = dayCursor.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) - 1;
         WeekLoadWebBean weekLoadWebBean = null;
         while (dayCursor.getYear() == currentYear) {
-            if (!CalendarUtils.isDayOff(dayCursor.toDateTime())) {
+            if (!CalendarUtils.isDayOff(dayCursor)) {
 
 
                 //New week
-                if (weekCursor != dayCursor.getWeekOfWeekyear()) {
+                if (weekCursor != dayCursor.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear())) {
 
-                    weekCursor = dayCursor.getWeekOfWeekyear();
-                    weekLoadWebBean = new WeekLoadWebBean(dayCursor.toDateTime());
+                    weekCursor = dayCursor.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
+                    weekLoadWebBean = new WeekLoadWebBean(dayCursor);
                     formWebBean.addWeek(weekLoadWebBean);
                 }
 
                 for (Member member : memberNonAdminList) {
-                    AbsenceDay absenceDay = findAbsenceDay(member, dayCursor.toDateTime(), absenceDayList);
+                    AbsenceDay absenceDay = findAbsenceDay(member, dayCursor, absenceDayList);
                     float value = 1f;
                     if (absenceDay != null) {
                         value = value - absenceDay.getValue().floatValue();
@@ -71,7 +72,7 @@ public class WorkLoadController extends Controller {
                     addValue(weekLoadWebBean, member, value);
                 }
             }
-            dayCursor.addDays(1);
+            dayCursor = dayCursor.plusDays(1);
         }
     }
 
@@ -84,7 +85,7 @@ public class WorkLoadController extends Controller {
         }
     }
 
-    private AbsenceDay findAbsenceDay(Member member, DateTime dateTime, List<AbsenceDay> absenceDayList) {
+    private AbsenceDay findAbsenceDay(Member member, LocalDate dateTime, List<AbsenceDay> absenceDayList) {
         for (AbsenceDay absenceDay : absenceDayList) {
             if (absenceDay.getDay().isEqual(dateTime) && absenceDay.getMember().equals(member)) {
                 return absenceDay;

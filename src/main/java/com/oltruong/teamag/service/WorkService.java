@@ -10,28 +10,30 @@ import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Stateless
 public class WorkService extends AbstractService<Work> {
 
 
-    public Map<Task, List<Work>> findWorksNotNullByMonth(Member member, DateTime month) {
+    public Map<Task, List<Work>> findWorksNotNullByMonth(Member member, LocalDate month) {
         return transformWorkList(findWorkByMemberMonth(member.getId(), month, "Work.FIND_BY_MEMBER_MONTH_NOT_NULL"));
     }
 
     public List<Work> findWorksNotNullByWeek(Long memberId, int weekNumber) {
-        List<Work> workList = findWorkListByMemberMonth(memberId, DateTime.now().withWeekOfWeekyear(weekNumber).withDayOfMonth(1));
+        List<Work> workList = findWorkListByMemberMonth(memberId, LocalDate.now().with(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(), weekNumber).withDayOfMonth(1));
 
-        workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != weekNumber);
+        workList.removeIf(work -> work.getDay().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()) != weekNumber);
 
         List<Task> tasksNotEmpty = Lists.newArrayList();
         workList.forEach(work -> {
@@ -43,7 +45,7 @@ public class WorkService extends AbstractService<Work> {
         return workList;
     }
 
-    public Map<Task, List<Work>> findOrCreateWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
+    public Map<Task, List<Work>> findOrCreateWorks(Member member, LocalDate month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
 
         List<Work> listWorks = findWorkListByMemberMonth(member.getId(), month);
 
@@ -52,7 +54,7 @@ public class WorkService extends AbstractService<Work> {
         } else {
             //Check if all work are here
             Multimap<Task, Work> taskWorkMap = buildTaskWorkMap(listWorks);
-            List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+            List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
 
             //FIXME when Task has a real equals, clean this
             List<Task> missingTaskList = Lists.newArrayListWithCapacity(taskList.size());
@@ -76,7 +78,7 @@ public class WorkService extends AbstractService<Work> {
             }
 
             //Check all days are present
-            for (DateTime day : workingDays) {
+            for (LocalDate day : workingDays) {
 
                 for (Task task : taskWorkMap.keySet()) {
 
@@ -140,13 +142,13 @@ public class WorkService extends AbstractService<Work> {
         return work.getMember().getId().toString() + work.getTask().getId().toString() + work.getDay().toString();
     }
 
-    private List<Work> createWorks(Member member, DateTime month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
+    private List<Work> createWorks(Member member, LocalDate month, List<Task> taskList, List<AbsenceDay> absenceDayList) {
 
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(month);
 
         List<Work> workList = Lists.newArrayListWithExpectedSize(taskList.size() * workingDays.size());
         for (Task task : taskList) {
-            for (DateTime day : workingDays) {
+            for (LocalDate day : workingDays) {
                 Double total = 0d;
                 //Absence Task
                 if (Long.valueOf(1L).equals(task.getId())) {
@@ -164,7 +166,7 @@ public class WorkService extends AbstractService<Work> {
     }
 
 
-    private AbsenceDay findAbsenceDay(List<AbsenceDay> absenceDayList, DateTime day) {
+    private AbsenceDay findAbsenceDay(List<AbsenceDay> absenceDayList, LocalDate day) {
         if (absenceDayList != null) {
             for (AbsenceDay absenceDay : absenceDayList) {
                 if (absenceDay.getDay().isEqual(day)) {
@@ -176,11 +178,11 @@ public class WorkService extends AbstractService<Work> {
         return null;
     }
 
-    private List<Work> findWorkListByMemberMonth(Long memberId, DateTime month) {
+    private List<Work> findWorkListByMemberMonth(Long memberId, LocalDate month) {
         return findWorkByMemberMonth(memberId, month, "Work.FIND_BY_MEMBER_MONTH");
     }
 
-    private List<Work> findWorkByMemberMonth(Long memberId, DateTime month, String queryString) {
+    private List<Work> findWorkByMemberMonth(Long memberId, LocalDate month, String queryString) {
         TypedQuery<Work> query = createTypedQuery(queryString, Work.class);
         query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", month);
@@ -188,18 +190,18 @@ public class WorkService extends AbstractService<Work> {
         return query.getResultList();
     }
 
-    public Map<DateTime, Double> findWorkDays(Member member, DateTime month) {
+    public Map<LocalDate, Double> findWorkDays(Member member, LocalDate month) {
         TypedQuery<Object[]> query = createTypedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH", Object[].class);
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
         List<Object[]> objects = query.getResultList();
 
-        Map<DateTime, Double> map = Maps.newHashMapWithExpectedSize(objects.size());
-        objects.forEach(object -> map.put((DateTime) object[0], (Double) object[1]));
+        Map<LocalDate, Double> map = Maps.newHashMapWithExpectedSize(objects.size());
+        objects.forEach(object -> map.put((LocalDate) object[0], (Double) object[1]));
         return map;
     }
 
-    public int getSumWorks(Member member, DateTime month) {
+    public int getSumWorks(Member member, LocalDate month) {
         Query query = createNamedQuery("Work.SUM_BY_MONTH_MEMBER");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("fmonth", month);
@@ -224,11 +226,11 @@ public class WorkService extends AbstractService<Work> {
         return worksByTask;
     }
 
-    public Work createWork(Member member, DateTime month, Task task, DateTime day) {
+    public Work createWork(Member member, LocalDate month, Task task, LocalDate day) {
         return createWork(member, month, task, day, 0d);
     }
 
-    private Work createWork(Member member, DateTime month, Task task, DateTime day, Double value) {
+    private Work createWork(Member member, LocalDate month, Task task, LocalDate day, Double value) {
         Work work = new Work();
         work.setDay(day);
         work.setMember(member);
@@ -248,7 +250,7 @@ public class WorkService extends AbstractService<Work> {
     }
 
 
-    public List<Work> getWorksMonth(DateTime month) {
+    public List<Work> getWorksMonth(LocalDate month) {
         TypedQuery<Work> query = createTypedQuery("Work.FIND_BY_MONTH", Work.class);
         query.setParameter("fmonth", month);
 
@@ -299,7 +301,7 @@ public class WorkService extends AbstractService<Work> {
     }
 
     private boolean isPresentOrFutureMonth(AbsenceDay absenceDay) {
-        return absenceDay.getDay().withDayOfMonth(2).withTimeAtStartOfDay().isAfter(DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay());
+        return absenceDay.getDay().withDayOfMonth(2).isAfter(LocalDate.now().withDayOfMonth(1));
     }
 
 

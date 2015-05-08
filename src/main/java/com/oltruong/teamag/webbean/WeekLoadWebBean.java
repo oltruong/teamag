@@ -3,7 +3,7 @@ package com.oltruong.teamag.webbean;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oltruong.teamag.model.Member;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Map;
@@ -15,10 +15,10 @@ public class WeekLoadWebBean {
 
     String weekNumberString;
     int yearNumber;
-    DateTime firstDayWeek;
+    LocalDate firstDayWeek;
     Map<Member, Float> memberLoadMap;
 
-    public WeekLoadWebBean(DateTime date) {
+    public WeekLoadWebBean(LocalDate date) {
         int weekNumber = date.getWeekOfWeekyear();
         this.yearNumber = date.getYear();
         firstDayWeek = date.withDayOfWeek(1);

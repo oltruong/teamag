@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.utils.CalendarUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -29,7 +29,7 @@ public class ScheduleService {
 
     @Schedule(second = "0", minute = "0", hour = "15")
     public void sendReminder() {
-        final DateTime now = DateTime.now();
+        final LocalDate now = LocalDate.now();
         if (CalendarUtils.isWorkingDay(now)) {
             List<Member> activeMembers = memberService.findActiveMembers();
             activeMembers.forEach(this::sendReminder);
@@ -37,7 +37,7 @@ public class ScheduleService {
     }
 
     private void sendReminder(Member member) {
-        final DateTime now = DateTime.now().withTimeAtStartOfDay();
+        final LocalDate now = LocalDate.now().withTimeAtStartOfDay();
         List<AbsenceDay> absenceDayList = absenceDayService.findByMemberAndMonth(member.getId(), now.getMonthOfYear());
 
         if (isLastWorkingWeekDay(now, absenceDayList)) {
@@ -46,12 +46,12 @@ public class ScheduleService {
         }
     }
 
-    private boolean isLastWorkingWeekDay(DateTime now, List<AbsenceDay> absenceDayList) {
+    private boolean isLastWorkingWeekDay(LocalDate now, List<AbsenceDay> absenceDayList) {
 
-        List<DateTime> absenceDays = Lists.newArrayListWithExpectedSize(absenceDayList.size());
+        List<LocalDate> absenceDays = Lists.newArrayListWithExpectedSize(absenceDayList.size());
         absenceDayList.forEach(absence -> absenceDays.add(absence.getDay()));
 
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(now);
+        List<LocalDate> workingDays = CalendarUtils.getWorkingDays(now);
 
         workingDays.removeIf(day -> absenceDays.contains(day));
 

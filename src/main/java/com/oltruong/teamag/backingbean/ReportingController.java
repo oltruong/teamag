@@ -1,18 +1,18 @@
 package com.oltruong.teamag.backingbean;
 
 import com.google.common.collect.Maps;
-import com.oltruong.teamag.model.Work;
-import com.oltruong.teamag.service.WorkService;
-import com.oltruong.teamag.webbean.RealizedReportBean;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.TeamagConstants;
-import org.joda.time.DateTime;
-import org.joda.time.MutableDateTime;
+import com.oltruong.teamag.webbean.RealizedReportBean;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,28 +23,28 @@ import java.util.Set;
 public class ReportingController {
 
     @Inject
-    private WorkService workEJB;
+    private WorkService workService;
     private List<RealizedReportBean> realizedPersons;
     private List<RealizedReportBean> realizedCompanies;
-    private MutableDateTime month;
+    private LocalDate month;
 
     private static final String VIEWNAME = "reporting";
 
 
     public String previousMonth() {
-        month.addMonths(-1);
+        month = month.minusMonths(1);
         return refreshView();
     }
 
     public String nextMonth() {
-        month.addMonths(1);
+        month = month.plusMonths(1);
         return refreshView();
     }
 
 
     public String init() {
 
-        month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).toMutableDateTime();
+        month = LocalDate.now().withDayOfMonth(1);
 
         return refreshView();
     }
@@ -55,7 +55,7 @@ public class ReportingController {
     }
 
     private void initLists() {
-        List<Work> works = workEJB.getWorksMonth(month.toDateTime());
+        List<Work> works = workService.getWorksMonth(month);
 
         initRealizedPersons(works);
 
@@ -67,7 +67,7 @@ public class ReportingController {
 
         for (Work work : works) {
             if (!map.containsKey(work.getMember().getCompany())) {
-                map.put(work.getMember().getCompany(), new ArrayList<Task>());
+                map.put(work.getMember().getCompany(), new ArrayList<>());
             }
             List<Task> tasks = map.get(work.getMember().getCompany());
             if (tasks.contains(work.getTask())) {
@@ -79,7 +79,7 @@ public class ReportingController {
             }
 
         }
-        realizedCompanies = new ArrayList<RealizedReportBean>(map.size());
+        realizedCompanies = new ArrayList<>(map.size());
 
         final Set<Map.Entry<String, List<Task>>> entries = map.entrySet();
         for (Map.Entry<String, List<Task>> entry : entries) {
@@ -95,7 +95,7 @@ public class ReportingController {
 
         for (Work work : works) {
             if (!map.containsKey(work.getMember())) {
-                map.put(work.getMember(), new ArrayList<Task>());
+                map.put(work.getMember(), new ArrayList<>());
             }
             List<Task> tasks = map.get(work.getMember());
             if (tasks.contains(work.getTask())) {
@@ -108,7 +108,7 @@ public class ReportingController {
 
         }
 
-        realizedPersons = new ArrayList<RealizedReportBean>(map.size());
+        realizedPersons = new ArrayList<>(map.size());
 
         final Set<Map.Entry<Member, List<Task>>> entries = map.entrySet();
 
@@ -138,15 +138,15 @@ public class ReportingController {
     }
 
     public String getMonthString() {
-        return month.toString(TeamagConstants.MONTH_YEAR_FORMAT);
+        return DateTimeFormatter.ofPattern(TeamagConstants.MONTH_YEAR_FORMAT).format(month);
     }
 
     public String getPreviousMonthString() {
-        return month.toDateTime().minusMonths(1).toString(TeamagConstants.MONTH_YEAR_FORMAT);
+        return DateTimeFormatter.ofPattern(TeamagConstants.MONTH_YEAR_FORMAT).format(month.minusMonths(1));
     }
 
     public String getNextMonthString() {
-        return month.toDateTime().plusMonths(1).toString(TeamagConstants.MONTH_YEAR_FORMAT);
+        return DateTimeFormatter.ofPattern(TeamagConstants.MONTH_YEAR_FORMAT).format(month.plusMonths(1));
     }
 
 }

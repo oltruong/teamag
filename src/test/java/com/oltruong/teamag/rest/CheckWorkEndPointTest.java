@@ -9,7 +9,7 @@ import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.service.WeekCommentService;
 import org.assertj.core.util.Lists;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

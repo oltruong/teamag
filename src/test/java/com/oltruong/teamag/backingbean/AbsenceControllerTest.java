@@ -73,7 +73,7 @@ public class AbsenceControllerTest extends ControllerTest {
     public void testAddAbsence_inconsistent() throws Exception {
         AbsenceWebBean absenceWebBean = WebBeanFactory.generateAbsenceWebBean();
 
-        absenceWebBean.setBeginDateTime(absenceWebBean.getEndDateTime().plusDays(4));
+        absenceWebBean.setBeginLocalDate(absenceWebBean.getEndLocalDate().plusDays(4));
         absenceController.setAbsence(absenceWebBean);
 
 

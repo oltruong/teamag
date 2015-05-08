@@ -1,22 +1,22 @@
 package com.oltruong.teamag.model.converter;
 
-import org.joda.time.DateTime;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Converter
-public class DateConverter implements AttributeConverter<DateTime, Date> {
+public class DateConverter implements AttributeConverter<LocalDate, Date> {
 
     @Override
-    public Date convertToDatabaseColumn(DateTime dateTime) {
-        return dateTime.withTimeAtStartOfDay().toDate();
+    public Date convertToDatabaseColumn(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
     @Override
-    public DateTime convertToEntityAttribute(Date date) {
-        return new DateTime(date);
+    public LocalDate convertToEntityAttribute(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 }

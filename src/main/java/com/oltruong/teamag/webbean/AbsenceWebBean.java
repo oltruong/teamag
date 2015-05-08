@@ -1,8 +1,8 @@
 package com.oltruong.teamag.webbean;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import org.joda.time.format.LocalDateFormat;
+import org.joda.time.format.LocalDateFormatter;
 
 import java.util.Date;
 
@@ -14,11 +14,11 @@ public class AbsenceWebBean {
 
     private Long id;
 
-    private DateTime beginDateTime;
+    private LocalDate beginLocalDate;
 
     private int beginType;
 
-    private DateTime endDateTime;
+    private LocalDate endLocalDate;
 
     private String beginDateString;
     private String endDateString;
@@ -32,13 +32,13 @@ public class AbsenceWebBean {
     private Long beginDateLong;
     private Long endDateLong;
 
-    public DateTime getBeginDateTime() {
-        return beginDateTime;
+    public LocalDate getBeginLocalDate() {
+        return beginLocalDate;
     }
 
-    public void setBeginDateTime(DateTime beginDateTime) {
-        this.beginDateTime = beginDateTime;
-        this.beginDateLong = beginDateTime.toDate().getTime();
+    public void setBeginLocalDate(LocalDate beginLocalDate) {
+        this.beginLocalDate = beginLocalDate;
+        this.beginDateLong = beginLocalDate.toDate().getTime();
     }
 
     public int getBeginType() {
@@ -49,13 +49,13 @@ public class AbsenceWebBean {
         this.beginType = beginType;
     }
 
-    public DateTime getEndDateTime() {
-        return endDateTime;
+    public LocalDate getEndLocalDate() {
+        return endLocalDate;
     }
 
-    public void setEndDateTime(DateTime endDateTime) {
-        this.endDateTime = endDateTime;
-        this.endDateLong = endDateTime.toDate().getTime();
+    public void setEndLocalDate(LocalDate endLocalDate) {
+        this.endLocalDate = endLocalDate;
+        this.endDateLong = endLocalDate.toDate().getTime();
 
     }
 
@@ -80,33 +80,33 @@ public class AbsenceWebBean {
 
     public Date getEndDate() {
         Date endDate = null;
-        if (endDateTime != null) {
-            endDate = endDateTime.toDate();
+        if (endLocalDate != null) {
+            endDate = endLocalDate.toDate();
         }
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
         if (endDate != null) {
-            endDateTime = new DateTime(endDate).withTimeAtStartOfDay();
+            endLocalDate = new LocalDate(endDate).withTimeAtStartOfDay();
         } else {
-            endDateTime = null;
+            endLocalDate = null;
         }
     }
 
     public Date getBeginDate() {
         Date beginDate = null;
-        if (beginDateTime != null) {
-            beginDate = beginDateTime.toDate();
+        if (beginLocalDate != null) {
+            beginDate = beginLocalDate.toDate();
         }
         return beginDate;
     }
 
     public void setBeginDate(Date beginDate) {
         if (beginDate != null) {
-            beginDateTime = new DateTime(beginDate).withTimeAtStartOfDay();
+            beginLocalDate = new LocalDate(beginDate).withTimeAtStartOfDay();
         } else {
-            beginDateTime = null;
+            beginLocalDate = null;
         }
     }
 
@@ -117,8 +117,8 @@ public class AbsenceWebBean {
     public void setBeginDateString(String beginDateString) {
         this.beginDateString = beginDateString;
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        this.beginDateTime = formatter.parseDateTime(beginDateString);
+        LocalDateFormatter formatter = LocalDateFormat.forPattern("yyyy-MM-dd");
+        this.beginLocalDate = formatter.parseLocalDate(beginDateString);
 
     }
 
@@ -129,8 +129,8 @@ public class AbsenceWebBean {
     public void setEndDateString(String endDateString) {
 
         this.endDateString = endDateString;
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        this.endDateTime = formatter.parseDateTime(endDateString);
+        LocalDateFormatter formatter = LocalDateFormat.forPattern("yyyy-MM-dd");
+        this.endLocalDate = formatter.parseLocalDate(endDateString);
     }
 
     public String getMemberName() {

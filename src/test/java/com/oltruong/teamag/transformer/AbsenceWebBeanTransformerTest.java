@@ -4,7 +4,7 @@ import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.junit.Test;
 
 import java.util.List;
@@ -70,15 +70,15 @@ public class AbsenceWebBeanTransformerTest {
         AbsenceWebBean absenceWebBean = new AbsenceWebBean();
         absenceWebBean.setId(Long.valueOf(326l));
         absenceWebBean.setBeginType(Absence.MORNING_ONLY.intValue());
-        absenceWebBean.setBeginDateTime((DateTime.now()));
-        absenceWebBean.setEndDateTime((DateTime.now().plusDays(5)));
+        absenceWebBean.setBeginLocalDate((LocalDate.now()));
+        absenceWebBean.setEndLocalDate((LocalDate.now().plusDays(5)));
         absenceWebBean.setEndType(Absence.AFTERNOON_ONLY.intValue());
         return absenceWebBean;
     }
 
     private void compare(AbsenceWebBean absenceWebBean, Absence absence) {
-        assertThat(new DateTime(absenceWebBean.getBeginDateTime())).isEqualTo(absence.getBeginDate());
-        assertThat(new DateTime(absenceWebBean.getEndDate())).isEqualTo(absence.getEndDate());
+        assertThat(new LocalDate(absenceWebBean.getBeginLocalDate())).isEqualTo(absence.getBeginDate());
+        assertThat(new LocalDate(absenceWebBean.getEndDate())).isEqualTo(absence.getEndDate());
         assertThat(absenceWebBean.getBeginType()).isEqualTo(absence.getBeginType().intValue());
         assertThat(absenceWebBean.getEndType()).isEqualTo(absence.getEndType().intValue());
 

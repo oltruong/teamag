@@ -6,7 +6,7 @@ import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.CalendarUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
@@ -58,7 +58,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     @Transactional
-    public void persist(DateTime month, Member member, Task task) {
+    public void persist(LocalDate month, Member member, Task task) {
         TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
@@ -87,9 +87,9 @@ public class TaskService extends AbstractService<Task> {
 
         flush();
 
-        List<DateTime> workingDayList = CalendarUtils.getWorkingDays(month);
+        List<LocalDate> workingDayList = CalendarUtils.getWorkingDays(month);
 
-        for (DateTime day : workingDayList) {
+        for (LocalDate day : workingDayList) {
             workService.createWork(member, month, taskDB, day);
         }
 
@@ -111,7 +111,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     @Transactional
-    public void remove(Task task, Member member, DateTime month) {
+    public void remove(Task task, Member member, LocalDate month) {
         deleteWorks(task, member, month);
 
         Task taskDb = find(task.getId());
@@ -126,7 +126,7 @@ public class TaskService extends AbstractService<Task> {
         }
     }
 
-    private void deleteWorks(Task task, Member member, DateTime month) {
+    private void deleteWorks(Task task, Member member, LocalDate month) {
         Query query = createNamedQuery("Work.DELETE_BY_MEMBERTaskMonth");
         query.setParameter("fmemberId", member.getId());
         query.setParameter("ftaskId", task.getId());

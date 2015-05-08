@@ -5,8 +5,8 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Absence;
 import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.utils.CalendarUtils;
-import org.joda.time.MutableDateTime;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public final class AbsenceDayTransformer {
@@ -19,35 +19,32 @@ public final class AbsenceDayTransformer {
     public static List<AbsenceDay> transformAbsence(Absence absence) {
 
         Preconditions.checkArgument(absence != null);
-        List<AbsenceDay> absenceDayList = null;
-
+        List<AbsenceDay> absenceDayList;
 
         if (isAbsenceSingleDay(absence)) {
             absenceDayList = buildAbsenceListSameDay(absence);
-
         } else {
             absenceDayList = buildAbsenceListDifferentDays(absence);
         }
-
 
         return absenceDayList;
     }
 
     private static boolean isAbsenceSingleDay(Absence absence) {
-        return absence.getBeginDate().withTimeAtStartOfDay().isEqual(absence.getEndDate().withTimeAtStartOfDay());
+        return absence.getBeginDate().isEqual(absence.getEndDate());
     }
 
     private static List<AbsenceDay> buildAbsenceListDifferentDays(Absence absence) {
         List<AbsenceDay> absenceDayList = Lists.newArrayList();
         boolean firstDay = true;
-        MutableDateTime beginMutableTime = absence.getBeginDate().withTimeAtStartOfDay().toMutableDateTime();
-        MutableDateTime endMutableTime = absence.getEndDate().withTimeAtStartOfDay().toMutableDateTime();
+        LocalDate beginDate = absence.getBeginDate();
+        LocalDate endDate = absence.getEndDate();
 
         //days between
-        while (!beginMutableTime.isEqual(endMutableTime)) {
-            if (!CalendarUtils.isDayOff(beginMutableTime.toDateTime())) {
+        while (!beginDate.isEqual(endDate)) {
+            if (!CalendarUtils.isDayOff(beginDate)) {
                 AbsenceDay absenceDay = new AbsenceDay(absence);
-                absenceDay.setDay(beginMutableTime.toDateTime());
+                absenceDay.setDay(beginDate);
                 absenceDay.setMember(absence.getMember());
 
                 if (firstDay && Absence.AFTERNOON_ONLY.equals(absence.getBeginType())) {
@@ -55,14 +52,14 @@ public final class AbsenceDayTransformer {
                 }
                 absenceDayList.add(absenceDay);
             }
-            beginMutableTime.addDays(1);
+            beginDate = beginDate.plusDays(1);
             firstDay = false;
         }
 
         //Final day
-        if (!CalendarUtils.isDayOff(beginMutableTime.toDateTime())) {
+        if (!CalendarUtils.isDayOff(beginDate)) {
             AbsenceDay absenceDay = new AbsenceDay(absence);
-            absenceDay.setDay(beginMutableTime.toDateTime());
+            absenceDay.setDay(beginDate);
             absenceDay.setMember(absence.getMember());
 
             if (Absence.MORNING_ONLY.equals(absence.getEndType())) {
@@ -79,7 +76,7 @@ public final class AbsenceDayTransformer {
 
         if (!CalendarUtils.isDayOff(absence.getBeginDate())) {
             AbsenceDay absenceDay = new AbsenceDay(absence);
-            absenceDay.setDay(absence.getBeginDate().withTimeAtStartOfDay());
+            absenceDay.setDay(absence.getBeginDate());
             absenceDay.setMember(absence.getMember());
 
             if (Absence.MORNING_ONLY.equals(absence.getBeginType()) || Absence.AFTERNOON_ONLY.equals(absence.getBeginType()) || Absence.AFTERNOON_ONLY.equals(absence.getEndType())) {

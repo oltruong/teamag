@@ -7,7 +7,7 @@ import com.oltruong.teamag.model.*;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.model.enumeration.ParameterName;
 import com.oltruong.teamag.utils.TestUtils;
-import org.joda.time.DateTime;
+import java.time.LocalDate;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
@@ -44,7 +44,7 @@ public class EntityFactory {
     public static Member createMember() {
         Member member = new Member();
 
-        member.setName("Carot" + DateTime.now().getMillis() + String.valueOf(new Random().nextDouble()));
+        member.setName("Carot" + LocalDate.now().getMillis() + String.valueOf(new Random().nextDouble()));
         member.setPassword(Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
         member.setCompany("my company");
         member.setEmail("dummy@email.com");
@@ -58,16 +58,16 @@ public class EntityFactory {
     public static Absence createAbsence() {
 
         Absence absence = new Absence();
-        absence.setBeginDate(DateTime.now());
+        absence.setBeginDate(LocalDate.now());
         absence.setBeginType(Absence.AFTERNOON_ONLY);
-        absence.setEndDate(DateTime.now().plusDays(5));
+        absence.setEndDate(LocalDate.now().plusDays(5));
         absence.setEndType(Absence.MORNING_ONLY);
         absence.setMember(createMember());
         return absence;
     }
 
 
-    public static Absence createAbsence(DateTime beginDate, Integer beginType, DateTime endDate, Integer endType) {
+    public static Absence createAbsence(LocalDate beginDate, Integer beginType, LocalDate endDate, Integer endType) {
         Absence absence = new Absence();
         absence.setBeginDate(beginDate.withTimeAtStartOfDay());
         absence.setBeginType(beginType);
@@ -82,7 +82,7 @@ public class EntityFactory {
 
         AbsenceDay absenceDay = new AbsenceDay(createAbsence());
 
-        DateTime now = DateTime.now();
+        LocalDate now = LocalDate.now();
         absenceDay.setDay(now);
         absenceDay.setMember(createMember());
         return absenceDay;
@@ -92,7 +92,7 @@ public class EntityFactory {
     public static Activity createActivity() {
         Activity activity = new Activity();
         activity.setId(null);
-        activity.setName("MyActivity" + DateTime.now().getMillis());
+        activity.setName("MyActivity" + LocalDate.now().getMillis());
         activity.setBusinessCase(createBusinessCase());
         activity.setComment("MyComment" + LocalDate.now().toString());
         activity.setDelegated(Boolean.FALSE);
@@ -102,7 +102,7 @@ public class EntityFactory {
 
 
     public static BusinessCase createBusinessCase() {
-        DateTime now = DateTime.now();
+        LocalDate now = LocalDate.now();
         BusinessCase businessCase = new BusinessCase();
         businessCase.setName("MyBC" + now.getMillis());
         businessCase.setAmount(Double.valueOf(now.getMillis()));
@@ -113,7 +113,7 @@ public class EntityFactory {
     }
 
     public static WeekComment createWeekComment() {
-        DateTime now = DateTime.now();
+        LocalDate now = LocalDate.now();
         WeekComment weekComment = new WeekComment(createMember(), now.getWeekOfWeekyear(), now.getMonthOfYear(), now.getYear());
         weekComment.setComment("Comment" + now.toString());
         weekComment.setYear(now.getYear());
@@ -159,9 +159,9 @@ public class EntityFactory {
 
         TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
         work.setMember(createMember());
-        work.setDay(DateTime.now());
+        work.setDay(LocalDate.now());
         work.setTask(createTask());
-        work.setMonth(DateTime.now().withDayOfMonth(1));
+        work.setMonth(LocalDate.now().withDayOfMonth(1));
 
         work.setTotal(Double.valueOf(0.5d));
         return work;

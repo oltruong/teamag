@@ -12,7 +12,6 @@ import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.WorkWebBean;
-import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,7 +19,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,7 +78,7 @@ public class CheckWorkEndPoint extends AbstractEndPoint<Work> {
         }
 
         //Eliminate double
-        Table<Task, DateTime, Work> workTable = HashBasedTable.create();
+        Table<Task, LocalDate, Work> workTable = HashBasedTable.create();
 
 
         for (Work work : workListTransformed) {
@@ -100,7 +102,7 @@ public class CheckWorkEndPoint extends AbstractEndPoint<Work> {
         for (Work work : workList) {
             WorkWebBean workWebBean = new WorkWebBean();
             workWebBean.setAmount(work.getTotal());
-            workWebBean.setDay(work.getDay().toDate());
+            workWebBean.setDay(Date.from(work.getDay().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             workWebBean.setTask(work.getTask().getDescription());
             if (work.getTask().getActivity() != null) {
                 workWebBean.setTask(work.getTask().getActivity().getName() + "-" + workWebBean.getTask());
