@@ -37,17 +37,17 @@
 
 
         <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
-        <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
-        <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
-        <version.maven-failsafe-plugin>2.17</version.maven-failsafe-plugin>
+        <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
+        <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
+        <version.maven-failsafe-plugin>2.18.1</version.maven-failsafe-plugin>
         <version.maven-war-plugin>2.6</version.maven-war-plugin>
-        <version.maven-surefire-plugin>2.17</version.maven-surefire-plugin>
-        <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
-        <version.maven-install-plugin>2.5.1</version.maven-install-plugin>
+        <version.maven-surefire-plugin>2.18.1</version.maven-surefire-plugin>
+        <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
+        <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.maven-dependency-plugin>2.7</version.maven-dependency-plugin>
         <version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
-        <version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
-        <version.maven-site-plugin>3.3</version.maven-site-plugin>
+        <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
+        <version.maven-site-plugin>3.4</version.maven-site-plugin>
 
         <version.webjars.bootstrap>3.1.1</version.webjars.bootstrap>
         <version.webjars.jquery>2.1.0-2</version.webjars.jquery>
