@@ -27,7 +27,6 @@
         <version.commons-io>1.4</version.commons-io>
         <version.apache.poi>3.7</version.apache.poi>
         <version.guava>18.0</version.guava>
-        <version.eclipselink>2.5.0</version.eclipselink>
         <version.logback>1.1.2</version.logback>
         <version.genson>0.98</version.genson>
         <version.jacoco-plugin>0.7.0.201403182114</version.jacoco-plugin>
