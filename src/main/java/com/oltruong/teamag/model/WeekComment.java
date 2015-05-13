@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Table(name = "TM_WEEK_COMMENT")
 @Entity
-@NamedQueries({@NamedQuery(name = "findWeekComment", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.year=:fyear")})
+@NamedQueries({@NamedQuery(name = "WeekComment.FIND_BY_MEMBER_WEEK_YEAR", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.year=:fyear")})
 public class WeekComment {
 
     @Id

@@ -45,7 +45,7 @@ public class ParameterService extends AbstractService<Parameter> {
     }
 
     private void loadParameters() {
-        List<Parameter> parameterList = getTypedQueryList("findParameters");
+        List<Parameter> parameterList = getTypedQueryList("Parameter.FIND_ALL");
         if (CollectionUtils.isNotEmpty(parameterList)) {
             parameterMap = Maps.newHashMapWithExpectedSize(parameterList.size());
             for (Parameter parameter : parameterList) {

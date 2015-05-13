@@ -48,18 +48,16 @@ public class AbsenceDay {
 
     private Float value = Float.valueOf(1f);
 
-    public AbsenceDay() {
-
-    }
-
     public AbsenceDay(Absence absenceReference) {
         absence = absenceReference;
+    }
+
+    public AbsenceDay() {
     }
 
     public Long getId() {
         return id;
     }
-
 
     public Integer getMonth() {
         return month;
@@ -68,7 +66,6 @@ public class AbsenceDay {
     public Integer getWeek() {
         return week;
     }
-
 
     public DateTime getDay() {
         return day;

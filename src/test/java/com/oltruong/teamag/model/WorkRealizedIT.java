@@ -50,7 +50,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
         transaction.begin();
         WorkRealized workRealized2 = createWorkRealized();
 
-        Query query = entityManager.createNamedQuery("findAllWorkRealized");
+        Query query = entityManager.createNamedQuery("WorkRealized.FIND_ALL");
         assertThat(query.getResultList()).containsExactly(workRealized, workRealized2);
 
     }
@@ -67,7 +67,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
         persist(workRealizedWithoutMember);
         commit();
 
-        Query query = entityManager.createNamedQuery("findAllWorkRealizedByMember");
+        Query query = entityManager.createNamedQuery("WorkRealized.FIND_BY_MEMBER");
         query.setParameter("fMemberId", workRealized.getMemberId());
         assertThat(query.getResultList()).containsExactly(workRealized);
 

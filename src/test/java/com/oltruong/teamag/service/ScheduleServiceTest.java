@@ -3,11 +3,13 @@ package com.oltruong.teamag.service;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.builder.EntityFactory;
+import com.oltruong.teamag.utils.CalendarUtilsTest;
 import com.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -15,6 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.InvocationTargetException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -57,13 +60,28 @@ public class ScheduleServiceTest {
     }
 
     @Test
-    public void testSendReminder_warning() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public void testSendReminder_week_warning() throws Exception {
+        testSendReminder_warning(CalendarUtilsTest.createDay(7, 5, 2015), "semaine", "mois");
+    }
 
-        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(2015).withMonthOfYear(5).withDayOfMonth(7);
+    @Test
+    public void testSendReminder_month_warning() throws Exception {
+        testSendReminder_warning(CalendarUtilsTest.createDay(29, 5, 2015), "mois", "semaine");
+    }
+
+
+    private void testSendReminder_warning(DateTime date, String expected, String notExpected) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         testSendReminder(date);
+
+        ArgumentCaptor<MailBean> emailCaptor = ArgumentCaptor.forClass(MailBean.class);
+
         verify(mockAbsenceDayService).findByMemberAndMonth(eq(randomLong), eq(date.getMonthOfYear()));
-        verify(mockEmailService).sendEmailCopyBlindAdministrator(any());
+        verify(mockEmailService).sendEmailCopyBlindAdministrator(emailCaptor.capture());
+
+        MailBean mailBean = emailCaptor.getValue();
+
+        assertThat(mailBean.getContent()).contains(expected).doesNotContain(notExpected);
     }
 
     @Test
@@ -86,6 +104,7 @@ public class ScheduleServiceTest {
         verify(mockEmailService, never()).sendEmailCopyBlindAdministrator(any());
     }
 
+
     private void testSendReminder(DateTime date) {
         mockStatic(DateTime.class);
         when(DateTime.now()).thenReturn(date);
@@ -96,7 +115,7 @@ public class ScheduleServiceTest {
         when(mockAbsenceDayService.findByMemberAndMonth(anyLong(), anyInt())).thenReturn(Lists.newArrayListWithExpectedSize(0));
 
 
-        scheduleService.sendReminder();
+        scheduleService.sendReminderAfternoon();
 
     }
 

@@ -60,7 +60,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
 
-        checkCreateTypedQuery("findAllWorkRealized");
+        checkCreateTypedQuery("WorkRealized.FIND_ALL");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
 
-        checkCreateTypedQuery("findAllWorkRealizedByMember");
+        checkCreateTypedQuery("WorkRealized.FIND_BY_MEMBER");
         verify(mockTypedQuery).setParameter(eq("fMemberId"), eq(idTest));
 
     }

@@ -54,7 +54,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
     }
 
     private void checkCallFind() {
-        checkCreateTypedQuery("findWeekComment");
+        checkCreateTypedQuery("WeekComment.FIND_BY_MEMBER_WEEK_YEAR");
         checkParameter("fmemberId", randomLong);
         checkParameter("fweekYear", week);
         checkParameter("fyear", year);

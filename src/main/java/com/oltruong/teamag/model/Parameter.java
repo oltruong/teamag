@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Table(name = "TM_PARAMETER")
 @Entity
-@NamedQuery(name = "findParameters", query = "SELECT p from Parameter p")
+@NamedQuery(name = "Parameter.FIND_ALL", query = "SELECT p from Parameter p")
 public class Parameter {
 
     @Id
@@ -28,7 +28,6 @@ public class Parameter {
     private String value;
 
     public Parameter() {
-
     }
 
     public Parameter(ParameterName name) {

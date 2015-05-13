@@ -15,7 +15,7 @@ public class WeekCommentService extends AbstractService<WeekComment> {
     public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
 
         WeekComment result = null;
-        TypedQuery<WeekComment> query = createTypedQuery("findWeekComment");
+        TypedQuery<WeekComment> query = createTypedQuery("WeekComment.FIND_BY_MEMBER_WEEK_YEAR");
         query.setParameter("fmemberId", memberId);
         query.setParameter("fweekYear", weekYear);
         query.setParameter("fyear", year);

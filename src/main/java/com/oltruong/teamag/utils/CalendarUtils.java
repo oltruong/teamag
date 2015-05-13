@@ -4,10 +4,12 @@ import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.MutableDateTime;
+import org.joda.time.base.BaseDateTime;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Olivier Truong
@@ -84,17 +86,23 @@ public final class CalendarUtils {
 
 
     public static boolean isLastWorkingDayOfWeek(DateTime day, List<DateTime> workingDays) {
+        return isLastWorkingDayOf(day, workingDays, BaseDateTime::getWeekOfWeekyear);
+    }
+
+    public static boolean isLastWorkingDayOfMonth(DateTime day, List<DateTime> workingDays) {
+        return isLastWorkingDayOf(day, workingDays, BaseDateTime::getMonthOfYear);
+    }
 
 
+    public static boolean isLastWorkingDayOf(DateTime day, List<DateTime> workingDays, Function<BaseDateTime, Integer> function) {
         if (!workingDays.contains(day)) {
             return false;
         } else {
-            int weekNumber = day.getWeekOfWeekyear();
-
+            int unitNumber = function.apply(day);
             MutableDateTime mutableDateTime = new MutableDateTime(day);
             mutableDateTime.addDays(1);
             boolean foundAnotherWorkingDay = false;
-            while (mutableDateTime.getWeekOfWeekyear() == weekNumber && !foundAnotherWorkingDay) {
+            while (function.apply(mutableDateTime) == unitNumber && !foundAnotherWorkingDay) {
                 foundAnotherWorkingDay = workingDays.contains(mutableDateTime.toDateTime());
                 mutableDateTime.addDays(1);
             }

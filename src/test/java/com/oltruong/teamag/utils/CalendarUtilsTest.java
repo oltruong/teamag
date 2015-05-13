@@ -73,6 +73,16 @@ public class CalendarUtilsTest {
         assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(24, 5, 2015), workingDays)).isFalse();
     }
 
+    @Test
+    public void testIsLastWorkingDayOfMonth() {
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, 2015));
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(29, 5, 2015), workingDays)).isTrue();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(30, 5, 2015), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(31, 5, 2015), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(22, 5, 2015), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(8, 5, 2015), workingDays)).isFalse();
+    }
+
 
     private void checkContains(List<DateTime> daysOff, int day, int month, int year) {
         assertThat(contains(daysOff, day, month, year)).isTrue();
@@ -95,7 +105,7 @@ public class CalendarUtilsTest {
     }
 
 
-    private DateTime createDay(int day, int month, int year) {
+    public static DateTime createDay(int day, int month, int year) {
         return DateTime.now().withTimeAtStartOfDay().withYear(year).withMonthOfYear(month).withDayOfMonth(day);
     }
 

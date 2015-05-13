@@ -50,7 +50,7 @@ public class ParameterServiceTest extends AbstractServiceTest {
 
         verify(mockEntityManager).merge(eq(smtpParameter));
         verify(mockEntityManager).merge(eq(emailParameter));
-        verify(mockEntityManager, times(2)).createNamedQuery(eq("findParameters"), eq(Parameter.class));
+        verify(mockEntityManager, times(2)).createNamedQuery(eq("Parameter.FIND_ALL"), eq(Parameter.class));
         verify(mockTypedQuery, times(2)).getResultList();
 
     }

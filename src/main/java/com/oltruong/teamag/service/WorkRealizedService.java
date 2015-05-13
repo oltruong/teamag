@@ -30,12 +30,12 @@ public class WorkRealizedService extends AbstractService<WorkRealized> {
 
     @Override
     public List<WorkRealized> findAll() {
-        return getTypedQueryList("findAllWorkRealized");
+        return getTypedQueryList("WorkRealized.FIND_ALL");
     }
 
 
     public List<WorkRealized> getWorkRealizedbyMember(Long memberId) {
-        Query query = createTypedQuery("findAllWorkRealizedByMember");
+        Query query = createTypedQuery("WorkRealized.FIND_BY_MEMBER");
         query.setParameter("fMemberId", memberId);
         return query.getResultList();
     }
