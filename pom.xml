@@ -19,7 +19,7 @@
         <version.assertj>3.0.0</version.assertj>
         <version.mockito>1.9.5</version.mockito>
         <powermock.version>1.6.1</powermock.version>
-        <version.joda-time>2.3</version.joda-time>
+        <version.joda-time>2.7</version.joda-time>
 
         <version.commons-lang>3.1</version.commons-lang>
         <version.commons-collections>3.2.1</version.commons-collections>
