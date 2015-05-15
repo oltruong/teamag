@@ -271,8 +271,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     @Test
     public void testFindWorkDays() {
         DateTime month = DateTime.now();
-        Member member = EntityFactory.createMember();
-        member.setId(randomLong);
+
 
         DateTime beginMonth = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
         Double sum = EntityFactory.createRandomDouble();
@@ -284,7 +283,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
         when(mockTypedQuery.getResultList()).thenReturn(resultList);
 
-        Map<DateTime, Double> workDaysMap = workService.findWorkDays(member, month);
+        Map<DateTime, Double> workDaysMap = workService.findWorkDays(randomLong, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_WORKDAYS_BY_MEMBER_MONTH"), eq(Object[].class));
         verify(mockTypedQuery).setParameter(eq("fmemberId"), eq(randomLong));
         verify(mockTypedQuery).setParameter(eq("fmonth"), eq(month));

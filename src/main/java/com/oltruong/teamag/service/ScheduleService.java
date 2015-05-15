@@ -3,6 +3,7 @@ package com.oltruong.teamag.service;
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.utils.CalendarUtils;
 import org.joda.time.DateTime;
 
@@ -27,6 +28,25 @@ public class ScheduleService {
 
     @Inject
     AbsenceDayService absenceDayService;
+
+    @Inject
+    TaskService taskService;
+
+    @Inject
+    WorkService workService;
+
+    @Schedule(second = "0", minute = "0", hour = "2", dayOfMonth = "1")
+    public void generateWorkList() {
+        memberService.findActiveMembers().forEach(this::generateWork);
+    }
+
+    private void generateWork(Member member) {
+        DateTime dateTimeMonth = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+
+        List<AbsenceDay> absenceDayList = absenceDayService.findByMemberAndMonth(member.getId(), dateTimeMonth.getMonthOfYear());
+        List<Task> taskList = taskService.findTasksForMember(member);
+        workService.findOrCreateWorks(member, dateTimeMonth, taskList, absenceDayList);
+    }
 
 
     @Schedule(second = "0", minute = "0", hour = "15")

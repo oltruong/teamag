@@ -1,6 +1,6 @@
 'use strict';
 
-teamagApp.controller('WorkLoadController', ['$scope', '$http', 'WorkLoad',
+teamagApp.controller('WorkLoadController', ['$scope', '$http',
     function ($scope, $http) {
 
         var loaded = false;

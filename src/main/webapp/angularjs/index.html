@@ -28,7 +28,8 @@
             <li ng-show="loggedIn && !admin" ng-class="{active: routeIs('/absences')}"><a href="#/absences"><span
                     class="glyphicon glyphicon-briefcase"></span>&nbsp;Mes absences</a>
             </li>
-            <li ng-show="false"><a href="#"><span class="glyphicon glyphicon-tasks"></span>&nbsp;Mon r&eacute;alis&eacute;
+            <li ng-show="loggedIn && !admin" ng-class="{active: routeIs('/workrealized')}"><a
+                    href="#/workrealized"><span class="glyphicon glyphicon-tasks"></span>&nbsp;Mon r&eacute;alis&eacute;
             </a>
             </li>
 
@@ -46,6 +47,11 @@
                     <li ng-show="admin" ng-class="{active: routeIs('/absences')}"><a href="#/absences"><span
                             class="glyphicon glyphicon-briefcase"></span>&nbsp;Mes absences</a>
                     </li>
+                    <li ng-show="admin" ng-class="{active: routeIs('/workrealized')}"><a href="#/workrealized"><span
+                            class="glyphicon glyphicon-tasks"></span>&nbsp;Mon r&eacute;alis&eacute;
+                    </a>
+                    </li>
+
                     <li ng-show="admin" ng-class="{active: routeIs('/absencescalendar')}"><a
                             href="#/absencescalendar"><span
                             class="glyphicon glyphicon-calendar"></span>&nbsp;Tableau des
@@ -165,9 +171,10 @@
 <script src="js/services/Activity.js"></script>
 <script src="js/services/Member.js"></script>
 <script src="js/work/CheckWorkService.js"></script>
+<script src="js/workrealized/WorkRealizedController.js"></script>
 <script src="js/services/Login.js"></script>
 <script src="js/services/Task.js"></script>
-<script src="js/services/Work.js"></script>
+<script src="js/workrealized/Work.js"></script>
 <script src="js/services/WorkLoad.js"></script>
 <script src="js/services/WorkRealized.js"></script>
 <script src="js/services/localStorage.js"></script>

@@ -96,7 +96,7 @@ public class WorkController extends Controller {
 
         DateTime result = null;
 
-        Map<DateTime, Double> map = workService.findWorkDays(getMember(), firstDayOfMonth);
+        Map<DateTime, Double> map = workService.findWorkDays(getMember().getId(), firstDayOfMonth);
 
 
         if (map != null && !map.isEmpty()) {

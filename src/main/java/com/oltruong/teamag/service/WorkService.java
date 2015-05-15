@@ -176,7 +176,7 @@ public class WorkService extends AbstractService<Work> {
         return null;
     }
 
-    private List<Work> findWorkListByMemberMonth(Long memberId, DateTime month) {
+    public List<Work> findWorkListByMemberMonth(Long memberId, DateTime month) {
         return findWorkByMemberMonth(memberId, month, "Work.FIND_BY_MEMBER_MONTH");
     }
 
@@ -188,9 +188,9 @@ public class WorkService extends AbstractService<Work> {
         return query.getResultList();
     }
 
-    public Map<DateTime, Double> findWorkDays(Member member, DateTime month) {
+    public Map<DateTime, Double> findWorkDays(Long memberId, DateTime month) {
         TypedQuery<Object[]> query = createTypedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH", Object[].class);
-        query.setParameter("fmemberId", member.getId());
+        query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", month);
         List<Object[]> objects = query.getResultList();
 

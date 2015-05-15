@@ -27,15 +27,15 @@ public class TaskService extends AbstractService<Task> {
 
     @Override
     public List<Task> findAll() {
-        return createTypedQuery("Task.FIND_ALL", Task.class).getResultList();
+        return createTypedQuery("Task.FIND_ALL", entityProvider()).getResultList();
     }
 
     public List<Task> findAllNonAdminTasks() {
-        return createTypedQuery("Task.FIND_NONTYPE", Task.class).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
+        return createTypedQuery("Task.FIND_NONTYPE", entityProvider()).setParameter("memberType", MemberType.ADMINISTRATOR).getResultList();
     }
 
     public List<Task> findTaskWithActivity() {
-        return createTypedQuery("Task.FIND_ALL_WITH_ACTIVITY", Task.class).getResultList();
+        return createTypedQuery("Task.FIND_ALL_WITH_ACTIVITY", entityProvider()).getResultList();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     public Task persist(Task task) {
-        List<Task> allTaskList = createTypedQuery("Task.FIND_BY_NAME", Task.class).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
+        List<Task> allTaskList = createTypedQuery("Task.FIND_BY_NAME", entityProvider()).setParameter("fname", task.getName()).setParameter("fproject", task.getProject()).getResultList();
 
         if (CollectionUtils.isNotEmpty(allTaskList)) {
             throw new EntityExistsException();
@@ -59,7 +59,7 @@ public class TaskService extends AbstractService<Task> {
 
     @Transactional
     public void persist(DateTime month, Member member, Task task) {
-        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
+        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", entityProvider());
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
 
@@ -96,7 +96,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     public List<Task> findTasksForMember(Member member) {
-        List<Task> taskList = entityManager.createNamedQuery("Task.FIND_MEMBER", Task.class).setParameter("memberId", member.getId()).getResultList();
+        List<Task> taskList = entityManager.createNamedQuery("Task.FIND_MEMBER", entityProvider()).setParameter("memberId", member.getId()).getResultList();
         if (CollectionUtils.isEmpty(taskList)) {
             addAbsenceTask(member, taskList);
         }
@@ -165,7 +165,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     public Task getOrCreateAbsenceTask() {
-        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", Task.class);
+        TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", entityProvider());
         query.setParameter("fname", "Absence");
         query.setParameter("fproject", "");
 

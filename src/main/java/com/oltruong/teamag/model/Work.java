@@ -11,6 +11,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -18,7 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-@Table(name = "TM_WORK")
+@Table(name = "TM_WORK", indexes = {@Index(name = "work_month", columnList = "month"), @Index(name = "work_member", columnList = "member_id"), @Index(name = "work_task", columnList = "task_id")})
 @Entity
 @NamedQueries({@NamedQuery(name = "Work.FIND_BY_MEMBER_MONTH", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth order by w.task.name, w.day"),
         @NamedQuery(name = "Work.FIND_BY_MEMBER_MONTH_NOT_NULL", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth and w.task IN (SELECT w.task from Work w where w.member.id=:fmemberId and w.month=:fmonth and w.total<>0)  order by w.task.name, w.day"),

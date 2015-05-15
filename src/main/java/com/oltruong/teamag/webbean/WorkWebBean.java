@@ -7,6 +7,9 @@ import java.util.Date;
  */
 public class WorkWebBean {
 
+
+    private String project;
+    private TaskWebBean taskBean;
     private String task;
 
     private String member;
@@ -15,6 +18,31 @@ public class WorkWebBean {
 
     private Double amount;
 
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public TaskWebBean getTaskBean() {
+        return taskBean;
+    }
+
+    public void setTaskBean(TaskWebBean task) {
+        this.taskBean = task;
+    }
 
     public String getTask() {
         return task;
@@ -45,6 +73,10 @@ public class WorkWebBean {
     }
 
     public Double getAmount() {
+        return amount;
+    }
+
+    public Double getOriginal() {
         return amount;
     }
 
