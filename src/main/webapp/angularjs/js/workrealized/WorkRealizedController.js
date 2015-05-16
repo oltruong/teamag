@@ -16,6 +16,10 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
             buildDays();
         });
 
+        $http.get('../resources/task/nonadmin').success(function (data) {
+            $scope.tasks = data;
+        });
+
 
         function buildDays() {
             $scope.days = [];
@@ -87,19 +91,42 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
         $scope.update = function () {
 
             var updatedWorks = [];
+            var updatedWorkList = [];
             for (var i = 0; i < $scope.works.length; i++) {
                 var work = $scope.works[i];
+                if (work.amount === null) {
+                    work.amount = 0;
+                }
+
                 if (work.amount !== work.original) {
+
+                    console.log('nouveau [' + work.amount + ']');
                     updatedWorks.push({id: work.id, total: work.amount});
+                    updatedWorkList.push(work);
                 }
             }
+            if (updatedWorkList.length > 0) {
+                $http.patch('../resources/works', updatedWorks).success(function (data) {
+                    console.log('ok mis a jour');
+                }).error(function (data, status, headers, config) {
+                    console.log('ERROR');
+                });
+                for (var i = 0; i < updatedWorkList.length; i++) {
+                    updatedWorkList[i].original = updatedWorkList[i].amount;
+                }
 
-            $http.patch('../resources/works', updatedWorks).success(function (data) {
-                console.log('ok mis a jour');
-            }).error(function (data, status, headers, config) {
-                console.log('ERREUr');
-            });
+            } else {
+                console.log("no change");
+            }
         };
+
+        $scope.class = function ($value) {
+            if ($value === 0) {
+                return "white";
+            } else {
+                return "";
+            }
+        }
 
 
     }])

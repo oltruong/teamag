@@ -55,6 +55,7 @@ public class Work {
     @JoinColumn(nullable = false, name = "TASK_ID")
     private Task task;
 
+    @Column(nullable = false)
     private Double total = 0d;
 
     @Transient

@@ -29,8 +29,9 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
 
 
     @GET
-    public Response getAll() {
-        return ok(buildTask(taskService.findAll()));
+    @Path("/nonadmin")
+    public Response getNonAdmin() {
+        return get(() -> taskService.findAllNonAdminTasks());
     }
 
     @GET

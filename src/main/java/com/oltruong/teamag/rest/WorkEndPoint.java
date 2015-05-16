@@ -42,8 +42,6 @@ public class WorkEndPoint extends AbstractEndPoint {
         }
 
         List<WorkWebBean> workWebBeanList = transform(workList);
-
-
         return ok(workWebBeanList);
     }
 
