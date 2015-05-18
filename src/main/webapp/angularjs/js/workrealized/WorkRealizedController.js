@@ -9,7 +9,8 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
         var today = new Date();
         $scope.month = today.getMonth();
         $scope.year = today.getFullYear();
-
+        $scope.minWeek = 52;
+        $scope.maxWeek = 0;
 
         $scope.works = Work.query({month: $scope.month + 1, year: $scope.year}).$promise.then(function (works) {
             $scope.works = works;
@@ -36,17 +37,50 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
                 }
 
                 if ($scope.days.indexOf(work.daylong) === -1) {
+
+                    var weekDay = getWeekNumber(new Date(work.daylong));
+                    if ($scope.minWeek > weekDay) {
+                        $scope.minWeek = weekDay;
+                    }
+                    if ($scope.maxWeek < weekDay) {
+                        $scope.maxWeek = weekDay;
+                    }
+
                     $scope.days.push(work.daylong);
                 }
 
                 $scope.worktasks[work.taskBean.id + work.daylong] = work;
             }
 
+            var beginWeek = 52;
+            for (var d = 0; d < $scope.days.length; d++) {
+                if ($scope.displayTotal($scope.days[d]) !== 1) {
+                    var week = getWeekNumber(new Date($scope.days[d]));
+                    if (beginWeek > week) {
+                        beginWeek = week;
+                    }
+                }
+            }
+            console.log('premiere semaine ' + beginWeek);
+
+
         }
 
         $scope.displayString = function ($day) {
             var day = new Date($day);
             return $scope.daysOfWeek[day.getDay() - 1] + " " + day.getDate();
+        };
+
+
+        $scope.sum = function ($task) {
+            var total = 0;
+            for (var i = 0; i < $scope.works.length; i++) {
+                if ($scope.works[i].taskBean.id === $task.id) {
+                    total += $scope.works[i].amount;
+                }
+            }
+            return total;
+
         };
 
         $scope.displayTotal = function ($day) {
@@ -126,6 +160,20 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
             } else {
                 return "";
             }
+        };
+
+        $scope.resetWorks = function () {
+            for (var i = 0; i < $scope.works.length; i++) {
+                $scope.works[i].amount = $scope.works[i].original;
+            }
+        };
+
+        function getWeekNumber(d) {
+            d = new Date(+d);
+            d.setHours(0, 0, 0);
+            d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+            var yearStart = new Date(d.getFullYear(), 0, 1);
+            return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7)
         }
 
 

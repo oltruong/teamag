@@ -1,17 +1,17 @@
-<h1 class="text-center">Réalisé {{months[month]+" "+year}} </h1>
+<h1 class="text-center">Réalisé {{months[month]+" "+year}} entre semaines {{minWeek}} et {{maxWeek}}</h1>
 <div class="row">
     <div class="col-md-12">
 
-        <input type="text" ng-model="query" placeholder="Filtrer tâche">
 
         <form name="realizedForm" role="form" ng-submit="realizedForm.$valid && update()" novalidate>
 
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th colspan="2">T&acirc;che</th>
+                    <th>T&acirc;che<br/> <input type="text" ng-model="query" placeholder="Filtrer"></th>
+                    <th>Total</th>
                     <th ng-repeat="day in days" ng-class="displayClass(day)"><span
-                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}
+                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}<br/>&nbsp;
                     </th>
                 </tr>
                 </thead>
@@ -21,7 +21,8 @@
                 </tfoot>
                 <tbody>
                 <tr ng-repeat="task in tasks | filter:query">
-                    <td colspan="2">{{task.project}}-{{task.name}}</td>
+                    <td>{{task.project}}-{{task.name}}</td>
+                    <td>{{sum(task)}}</td>
                     <td ng-repeat="day in days"><input type="number" step="0.1" min="0"
                                                        ng-class="class(worktasks [task.id+day].amount)"
                                                        ng-model="worktasks [task.id+day].amount">
@@ -34,6 +35,9 @@
             <button type="submit" class="btn btn-success"
                     ng-disabled="!realizedForm.$valid || realizedForm.$pristine"><span
                     class="glyphicon glyphicon-save"></span>&nbsp;Sauvegarder
+            </button>
+            <button class="btn btn-warning" ng-disabled="realizedForm.$pristine" ng-click="resetWorks()"><span
+                    class="glyphicon glyphicon-repeat"></span>&nbsp;Annuler
             </button>
         </form>
     </div>
