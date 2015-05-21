@@ -32,13 +32,18 @@ public class WorkEndPoint extends AbstractEndPoint {
     WorkService workService;
 
     @GET
-    public Response getWorksBySearchCriteria(@HeaderParam("userid") Long memberId, @QueryParam("taskId") Long taskId, @QueryParam("month") int month, @QueryParam("year") int year) {
+    public Response getWorksBySearchCriteria(@HeaderParam("userid") Long memberId, @QueryParam("taskId") Long taskId, @QueryParam("month") Integer month, @QueryParam("year") Integer year) {
         List<Work> workList;
-        if (taskId != null) {
+        if (taskId != null && month == null && year == null) {
             workList = workService.findWorkByTask(taskId);
         } else {
             DateTime monthDateTime = new DateTime(year, month, 1, 0, 0);
             workList = workService.findWorkListByMemberMonth(memberId, monthDateTime);
+
+            if (taskId != null) {
+                workList.removeIf(w -> !taskId.equals(w.getTask().getId()));
+            }
+
         }
 
         List<WorkWebBean> workWebBeanList = transform(workList);

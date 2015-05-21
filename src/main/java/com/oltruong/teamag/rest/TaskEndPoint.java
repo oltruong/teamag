@@ -4,34 +4,94 @@ import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.service.AbstractService;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.TaskService;
 import com.oltruong.teamag.webbean.TaskWebBean;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
 
 /**
  * @author Olivier Truong
  */
-@Path("task")
+@Path("tasks")
 @Stateless
 @AdminChecked
 public class TaskEndPoint extends AbstractEndPoint<Task> {
 
     @Inject
+    private Logger LOGGER;
+
+    @Context
+    private UriInfo uriInfo;
+
+    @Inject
     TaskService taskService;
 
+    @Inject
+    MemberService memberService;
+
+    @Override
+    @GET
+    public Response getAll() {
+        return get(() -> buildTask(getService().findAll()));
+    }
 
     @GET
     @Path("/nonadmin")
     public Response getNonAdmin() {
         return get(() -> buildTask(taskService.findAllNonAdminTasks()));
+    }
+
+
+    @POST
+    public Response create(@HeaderParam("userid") Long memberId, @QueryParam("month") Integer month, @QueryParam("year") Integer year, Task task) {
+
+        if (month == null || year == null) {
+            return super.create(task);
+        } else {
+            DateTime theMonth = new DateTime(year, month, 1, 0, 0);
+            try {
+                taskService.persist(theMonth, memberService.find(memberId), task);
+
+                URI taskURI = uriInfo.getAbsolutePathBuilder().path(task.getId().toString()).build();
+                return Response.created(taskURI).build();
+            } catch (EntityExistsException e) {
+                LOGGER.info("trying to add an already existing task", e);
+                return badRequest();
+            }
+        }
+
+    }
+
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@HeaderParam("userid") Long memberId, @PathParam("id") Long id, @QueryParam("month") Integer month, @QueryParam("year") Integer year) {
+
+        if (month == null || year == null) {
+            return super.delete(id);
+        } else {
+            DateTime theMonth = new DateTime(year, month, 1, 0, 0);
+            taskService.remove(id, memberId, theMonth);
+            return noContent();
+        }
     }
 
     @GET

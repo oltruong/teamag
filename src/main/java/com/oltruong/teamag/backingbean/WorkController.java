@@ -149,7 +149,7 @@ public class WorkController extends Controller {
     public String deleteTask() {
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        taskService.remove(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
+        taskService.remove(realizedBean.getSelectedTaskWeek().getTask().getId(), getMember().getId(), realizedBean.getCurrentMonth());
 
         initInformation(realizedBean.getDayCursor());
         return VIEWNAME;

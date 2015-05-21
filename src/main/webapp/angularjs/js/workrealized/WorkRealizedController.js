@@ -7,33 +7,33 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
         $scope.daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
 
         var today = new Date();
-        $scope.month = today.getMonth();
+        $scope.month = today.getMonth() + 1;
         $scope.year = today.getFullYear();
         $scope.minWeek = 52;
         $scope.maxWeek = 0;
+        $scope.beginWeek = 52;
+        $scope.weekdays = [];
+        $scope.days = [];
+        $scope.worktasks = [];
 
-        $scope.works = Work.query({month: $scope.month + 1, year: $scope.year}).$promise.then(function (works) {
+
+        $scope.newTask = {};
+
+        Work.query({month: $scope.month, year: $scope.year}).$promise.then(function (works) {
             $scope.works = works;
-            buildDays();
-        });
-
-        $http.get('../resources/task/nonadmin').success(function (data) {
-            $scope.tasks = data;
+            initData();
         });
 
 
-        function buildDays() {
-            $scope.days = [];
+        function initData() {
             $scope.tasks = [];
-            $scope.worktasks = [];
-
-            var taskId = -1;
+            var taskIndex = "";
 
             for (var i = 0; i < $scope.works.length; i++) {
                 var work = $scope.works[i];
-                if (work.taskBean.id !== taskId) {
+                if (taskIndex.indexOf(work.taskBean.id) === -1) {
                     $scope.tasks.push(work.taskBean);
-                    taskId = work.taskBean.id;
+                    taskIndex = taskIndex + ";" + work.taskBean.id + ";";
                 }
 
                 if ($scope.days.indexOf(work.daylong) === -1) {
@@ -52,19 +52,38 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
                 $scope.worktasks[work.taskBean.id + work.daylong] = work;
             }
 
-            var beginWeek = 52;
+
             for (var d = 0; d < $scope.days.length; d++) {
                 if ($scope.displayTotal($scope.days[d]) !== 1) {
                     var week = getWeekNumber(new Date($scope.days[d]));
-                    if (beginWeek > week) {
-                        beginWeek = week;
+                    if ($scope.beginWeek > week) {
+                        $scope.beginWeek = week;
                     }
                 }
             }
-            console.log('premiere semaine ' + beginWeek);
+            initWeekDays();
 
 
         }
+
+        function initWeekDays() {
+            $scope.weekdays = [];
+            for (var d = 0; d < $scope.days.length; d++) {
+                if (getWeekNumber(new Date($scope.days[d])) === $scope.beginWeek) {
+                    $scope.weekdays.push($scope.days[d]);
+                }
+            }
+        }
+
+        $scope.increaseWeek = function () {
+            $scope.beginWeek++;
+            initWeekDays();
+        };
+
+        $scope.decreaseWeek = function () {
+            $scope.beginWeek--;
+            initWeekDays();
+        };
 
         $scope.displayString = function ($day) {
             var day = new Date($day);
@@ -74,14 +93,42 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
 
         $scope.sum = function ($task) {
             var total = 0;
-            for (var i = 0; i < $scope.works.length; i++) {
-                if ($scope.works[i].taskBean.id === $task.id) {
-                    total += $scope.works[i].amount;
-                }
+            for (var i = 0; i < $scope.weekdays.length; i++) {
+                total += $scope.worktasks [$task.id + $scope.weekdays[i]].amount;
             }
             return total;
 
         };
+
+        $scope.removetask = function ($task) {
+            console.log("removing task" + $task.id);
+
+            $http.delete('../resources/tasks/' + $task.id + '?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
+                console.log("Response " + status);
+            }).error(function (data, status, headers, config) {
+                console.log('ERROR ' + status);
+            });
+
+
+            for (var i = 0; i < $scope.tasks.length; i++) {
+                if ($scope.tasks[i].id === $task.id) {
+                    $scope.tasks.splice(i, 1);
+                    return;
+                }
+            }
+        };
+
+        $scope.sumTotal = function ($task) {
+
+
+            var total = 0;
+            for (var i = 0; i < $scope.days.length; i++) {
+                total += $scope.worktasks [$task.id + $scope.days[i]].original;
+            }
+            return total;
+
+        };
+
 
         $scope.displayTotal = function ($day) {
             var total = 0;
@@ -152,6 +199,26 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
             } else {
                 console.log("no change");
             }
+        };
+
+        $scope.addTask = function () {
+            $http.post('../resources/tasks?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
+                console.log("Response " + status);
+                var taskId = headers('Location').substring(headers('Location').lastIndexOf('/') + 1);
+                console.log("taskId " + taskId);
+                Work.query({month: $scope.month, year: $scope.year, taskId: taskId}).$promise.then(function (newWorks) {
+                    for (var index = 0; index < newWorks.length; index++) {
+                        $scope.works.push(newWorks[index]);
+                        $scope.worktasks[newWorks[index].taskBean.id + newWorks[index].daylong] = newWorks[index];
+                    }
+                    $scope.tasks.push(newWorks[0].taskBean);
+                });
+                console.log("yay");
+
+            }).error(function (data, status, headers, config) {
+                console.log('ERROR ' + status);
+                console.log(status);
+            });
         };
 
         $scope.class = function ($value) {

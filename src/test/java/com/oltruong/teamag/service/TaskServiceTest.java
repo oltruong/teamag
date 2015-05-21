@@ -269,7 +269,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
 
     private void testRemoveTask(Member member, Long randomId, DateTime month) {
-        taskService.remove(task, member, month);
+        taskService.remove(task.getId(), randomLong, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.DELETE_BY_MEMBERTaskMonth"));
         verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomId));
         verify(mockNamedQuery).setParameter(eq("ftaskId"), eq(randomLong));
