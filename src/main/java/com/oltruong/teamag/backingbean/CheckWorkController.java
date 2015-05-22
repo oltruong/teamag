@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @SessionScoped
@@ -95,7 +96,7 @@ public class CheckWorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = weekCommentService.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = weekCommentService.findWeekComment(memberToCheck.getId(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());
 
         if (works != null) {
             Integer weekNumber = realizedBean.getWeekNumber();
@@ -156,6 +157,20 @@ public class CheckWorkController extends Controller {
             }
         }
         return taskList;
+    }
+
+    public String getTotalTask() {
+
+        double total = works.keySet().stream().collect(Collectors.summingDouble(t -> t.getTotal())).doubleValue();
+
+        return String.valueOf(total);
+    }
+
+    public String getTotalWorkedTask() {
+
+        double total = works.keySet().stream().filter(t -> !t.isAbsenceTask()).collect(Collectors.summingDouble(t -> t.getTotal())).doubleValue();
+
+        return String.valueOf(total);
     }
 
 

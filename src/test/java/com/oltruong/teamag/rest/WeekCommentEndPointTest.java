@@ -42,18 +42,19 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
     private void testGetWeekComment(int weekNumber, int weekArgument) {
 
         int year = DateTime.now().getYear();
+        int month = DateTime.now().getMonthOfYear();
 
         WeekComment weekComment = EntityFactory.createWeekComment();
-        when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(year))).thenReturn(weekComment);
+        when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(month), eq(year))).thenReturn(weekComment);
 
-        Response response = weekCommentEndPoint.getWeekComment(randomId, weekArgument);
+        Response response = weekCommentEndPoint.getWeekComment(randomId, randomId, weekArgument, month, year);
 
         checkResponseOK(response);
 
         WeekComment weekCommentReturned = (WeekComment) response.getEntity();
 
         assertThat(weekCommentReturned).isEqualTo(weekComment);
-        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
+        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(month), eq(year));
     }
 
 
@@ -61,13 +62,13 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
     public void testGetWeekComment_null() {
         int weekNumber = 33;
         int year = DateTime.now().getYear();
+        int month = DateTime.now().getMonthOfYear();
 
-
-        Response response = weekCommentEndPoint.getWeekComment(randomId, weekNumber);
+        Response response = weekCommentEndPoint.getWeekComment(randomId, randomId, weekNumber, month, year);
 
         checkResponseNotFound(response);
 
-        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(year));
+        verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(month), eq(year));
     }
 
     @Test

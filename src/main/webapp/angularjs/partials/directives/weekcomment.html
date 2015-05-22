@@ -1,3 +1,4 @@
-<div class="form-group" ng-hide="!weekcomment.comment">
-    <textarea class="form-control" rows="10" disabled>{{weekcomment.comment}}</textarea>
+<div class="form-group" ng-hide="hide">
+    <h3>Commentaires</h3>
+    <textarea class="form-control" rows="10" ng-disabled="disabled" ng-model="weekcomment.comment"></textarea>
 </div>

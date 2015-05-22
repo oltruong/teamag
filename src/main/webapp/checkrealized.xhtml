@@ -103,6 +103,14 @@
                                 <h:outputText
                                         value="#{task.total}"/>
                             </p:column>
+                            <p:columnGroup type="footer">
+                                <p:row>
+                                    <p:column footerText="#{i18n.total}" style="text-align:right"/>
+                                    <p:column
+                                            footerText="#{checkWorkController.totalTask} #{i18n.including} #{checkWorkController.totalWorkedTask} #{i18n.reportingPageworked}"
+                                            style="text-align:left"/>
+                                </p:row>
+                            </p:columnGroup>
 
 
                         </p:dataTable>

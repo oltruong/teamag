@@ -51,10 +51,15 @@ public class WorkEndPoint extends AbstractEndPoint {
     }
 
     @PATCH
-    public Response updateMultiple(List<WorkPatch> workWebBeanList) {
+    public Response updateMultiple(@HeaderParam("userid") Long memberId, List<WorkPatch> workWebBeanList) {
         List<Work> workList = Lists.newArrayListWithExpectedSize(workWebBeanList.size());
         for (WorkPatch workWebBean : workWebBeanList) {
             Work work = workService.find(workWebBean.getId());
+
+            if (workDoesNotBelongToMember(work, memberId)) {
+                return forbidden();
+            }
+
             if (!work.getTotal().equals(workWebBean.getTotal())) {
                 work.setTotal(workWebBean.getTotal());
                 workList.add(work);
@@ -64,6 +69,10 @@ public class WorkEndPoint extends AbstractEndPoint {
 
         workService.mergeList(workList);
         return ok();
+    }
+
+    protected boolean workDoesNotBelongToMember(Work work, Long memberId) {
+        return !memberId.equals(work.getMember().getId());
     }
 
 

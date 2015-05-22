@@ -267,7 +267,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());

@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
-    function ($scope, Work, $http) {
+teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment', '$http',
+    function ($scope, Work, WeekComment, $http) {
 
         $scope.months = ["Janv", "Fev", "Mars", "Avril", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Dec"];
         $scope.daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
@@ -22,6 +22,7 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
         Work.query({month: $scope.month, year: $scope.year}).$promise.then(function (works) {
             $scope.works = works;
             initData();
+            loadWeekComment();
         });
 
 
@@ -78,11 +79,15 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
         $scope.increaseWeek = function () {
             $scope.beginWeek++;
             initWeekDays();
+            loadWeekComment();
+
         };
 
         $scope.decreaseWeek = function () {
             $scope.beginWeek--;
             initWeekDays();
+            loadWeekComment();
+
         };
 
         $scope.displayString = function ($day) {
@@ -241,6 +246,23 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
             d.setDate(d.getDate() + 4 - (d.getDay() || 7));
             var yearStart = new Date(d.getFullYear(), 0, 1);
             return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7)
+        }
+
+        function loadWeekComment() {
+            WeekComment.get({
+                weekNumber: $scope.beginWeek,
+                month: $scope.month,
+                year: $scope.year
+            }).$promise.then(function (data) {
+                    $scope.weekcomment = data;
+                    if ($scope.weekcomment.comment) {
+                        console.log('weekcomment');
+                        $scope.weekcomment.original = $scope.weekcomment.comment;
+                    } else {
+                        console.log('No weekComment');
+                        $scope.weekcomment = {comment: '', original: ''};
+                    }
+                });
         }
 
 

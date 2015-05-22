@@ -220,7 +220,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         when(mockEntityManager.find(eq(Member.class), any())).thenReturn(member);
 
 
-        testRemoveTask(member, randomId, month);
+        testRemoveTask(randomId, month);
 
         verify(mockEntityManager).persist(eq(task));
         Assertions.assertThat(task.getMembers()).hasSize(1).doesNotContain(member);
@@ -260,7 +260,7 @@ public class TaskServiceTest extends AbstractServiceTest {
         when(mockNamedQuery.getSingleResult()).thenReturn(Integer.valueOf(value));
 
 
-        testRemoveTask(member, randomId, month);
+        testRemoveTask(randomId, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.COUNT_BY_TASK"));
         verify(mockNamedQuery).setParameter(eq("fTaskId"), eq(randomLong));
         verify(mockNamedQuery).executeUpdate();
@@ -268,8 +268,8 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
 
-    private void testRemoveTask(Member member, Long randomId, DateTime month) {
-        taskService.remove(task.getId(), randomLong, month);
+    private void testRemoveTask(Long randomId, DateTime month) {
+        taskService.remove(task.getId(), randomId, month);
         verify(mockEntityManager).createNamedQuery(eq("Work.DELETE_BY_MEMBERTaskMonth"));
         verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomId));
         verify(mockNamedQuery).setParameter(eq("ftaskId"), eq(randomLong));

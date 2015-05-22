@@ -118,6 +118,7 @@ public abstract class AbstractEndPoint<T> {
         return buildResponse(Response.Status.BAD_REQUEST);
     }
 
+
     private Response buildResponse(Response.Status status) {
         return Response.status(status).build();
     }

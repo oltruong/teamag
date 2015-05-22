@@ -4,11 +4,11 @@ import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.WeekCommentService;
-import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 /**
  * @author oltruong
  */
-@Path("weekComment")
+@Path("weekcomments")
 @SecurityChecked
 @Stateless
 public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
@@ -26,8 +26,18 @@ public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
 
 
     @GET
-    public Response getWeekComment(@QueryParam("memberId") Long memberId, @QueryParam("weekNumber") int weekNumber) {
-        return get(() -> weekCommentService.findWeekComment(memberId, weekNumber, DateTime.now().getYear()));
+    public Response getWeekComment(@HeaderParam("userid") Long userId, @QueryParam("memberId") Long memberId, @QueryParam("weekNumber") int weekNumber, @QueryParam("month") int month, @QueryParam("year") int year) {
+
+        if (memberId == null) {
+            memberId = userId;
+        }
+
+        WeekComment weekComment = weekCommentService.findWeekComment(memberId, weekNumber, month, year);
+        if (weekComment != null) {
+            return ok(weekComment);
+        } else {
+            return noContent();
+        }
     }
 
 

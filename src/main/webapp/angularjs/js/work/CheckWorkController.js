@@ -1,9 +1,14 @@
 'use strict';
 
-teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'CheckWork',
-    function ($scope, $http, Member, CheckWork) {
+teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'CheckWork', 'WeekComment',
+    function ($scope, $http, Member, CheckWork, WeekComment) {
 
-        $scope.weekNumber = -1;
+        var today = new Date();
+
+        $scope.weekNumber = getWeekNumber(today);
+        $scope.month = today.getMonth() + 1;
+        $scope.year = today.getFullYear();
+
         $scope.macroTask = false;
         $scope.members = Member.query(function () {
             $scope.selectedMember = $scope.members[0];
@@ -48,12 +53,16 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                     }
                 }
 
-                $http.get('../resources/weekComment?memberId=' + $scope.selectedMember.id + '&weekNumber=' + $scope.weekNumber).success(function (data) {
 
-                    $scope.weekcomment = data;
-                    $scope.weekNumber = $scope.weekcomment.weekYear;
-                }).error(function (data, status, headers, config) {
-                });
+                WeekComment.get({
+                    memberId: $scope.selectedMember.id,
+                    weekNumber: $scope.weekNumber,
+                    month: $scope.month,
+                    year: $scope.year
+                }).$promise.then(function (data) {
+                        $scope.weekcomment = data;
+
+                    });
 
             }, function (error) {
                 $scope.error = 'Erreur HTTP ' + error.status;
@@ -70,5 +79,14 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
             $scope.weekNumber++;
             $scope.findWorks();
         };
+
+        function getWeekNumber(d) {
+            d = new Date(+d);
+            d.setHours(0, 0, 0);
+            d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+            var yearStart = new Date(d.getFullYear(), 0, 1);
+            return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7)
+        }
+
     }]);
 

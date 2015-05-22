@@ -82,7 +82,7 @@
                     <th>Total</th>
 
                     <th ng-repeat="day in weekdays" ng-class="displayClass(day)"><span
-                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}
+                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}<br/>{{displayTotal(day)}}
                     </th>
 
                 </tr>
@@ -120,6 +120,9 @@
                         class="glyphicon glyphicon-repeat"></span>&nbsp;Annuler
                 </button>
             </div>
+
+            <weekcomment disabled="false" comment="weekcomment" hide="false"></weekcomment>
+
         </form>
     </div>
 </div>
