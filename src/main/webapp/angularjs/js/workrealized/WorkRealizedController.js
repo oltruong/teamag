@@ -218,12 +218,20 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                 if ($scope.weekcomment.comment === '') {
                     console.log("delete week comment");
                     WeekComment.delete({id: $scope.weekcomment.id});
+                    $scope.weekcomment.id = null;
                 } else if ($scope.weekcomment.original === '') {
                     console.log("ajout week comment");
+                    console.log("weekcomment.id" + $scope.weekcomment.id);
                     $scope.weekcomment.month = $scope.month;
                     $scope.weekcomment.weekYear = $scope.beginWeek;
                     $scope.weekcomment.year = $scope.year;
-                    WeekComment.save($scope.weekcomment);
+                    WeekComment.save($scope.weekcomment, function (u, putResponseHeaders) {
+                        var taskId = putResponseHeaders('Location').substring(putResponseHeaders('Location').lastIndexOf('/') + 1);
+                        console.log("weekcomment function " + taskId);
+                        //u => saved user object
+                        //putResponseHeaders => $http header getter
+                    });
+                    console.log("weekcomment.id" + $scope.weekcomment.id);
 
                     loadWeekComment();
 
