@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "TM_WORK_LOAD")
 @Entity
 @NamedQueries({@NamedQuery(name = "WorkLoad.FIND_ALL", query = "SELECT w FROM WorkLoad w order by w.businessCase.id, w.member.id"), @NamedQuery(name = "WorkLoad.DELETE_FROM_BUSINESSCASE", query = "DELETE FROM WorkLoad where businessCase.id=:fBusinessCaseId")})
-public class WorkLoad {
+public class WorkLoad implements IModel {
 
     @Id
     @GeneratedValue

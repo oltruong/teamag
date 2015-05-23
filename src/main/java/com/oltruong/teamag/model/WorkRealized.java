@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @NamedQueries({@NamedQuery(name = "WorkRealized.FIND_ALL", query = "SELECT w FROM WorkRealized w order by w.year, w.month, w.taskId, w.memberId"),
         @NamedQuery(name = "WorkRealized.FIND_BY_MEMBER", query = "SELECT w FROM WorkRealized w where w.memberId=:fMemberId order by w.year, w.month, w.taskId ")})
 
-public class WorkRealized {
+public class WorkRealized implements IModel {
 
 
     @Id

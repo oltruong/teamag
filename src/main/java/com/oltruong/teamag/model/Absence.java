@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({@NamedQuery(name = "Absence.FIND_BY_MEMBER", query = "SELECT a FROM Absence a WHERE a.member.id=:fmemberId order by a.beginDate"),
         @NamedQuery(name = "Absence.FIND_ALL", query = "SELECT a FROM Absence a order by a.member.name, a.beginDate")})
-public class Absence {
+public class Absence implements IModel {
 
     public static final Integer ALL_DAY = 0;
 

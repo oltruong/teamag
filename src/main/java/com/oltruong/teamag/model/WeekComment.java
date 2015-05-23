@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "TM_WEEK_COMMENT")
 @Entity
 @NamedQueries({@NamedQuery(name = "WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.month=:fmonth and w.year=:fyear")})
-public class WeekComment {
+public class WeekComment implements IModel {
 
     @Id
     @GeneratedValue
@@ -92,4 +92,5 @@ public class WeekComment {
     public void setYear(int year) {
         this.year = year;
     }
+
 }

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NamedQueries({@NamedQuery(name = "Activity.FIND_ALL", query = "SELECT a from Activity a order by a.name"),
         @NamedQuery(name = "Activity.FIND_BY_NAME_BC", query = "SELECT a from Activity a where a.name=:fname and a.businessCase=:fbc"),
         @NamedQuery(name = "Activity.REMOVE_BC", query = "UPDATE Activity SET businessCase=NULL where businessCase.id=:fBusinessCaseId")})
-public class Activity {
+public class Activity implements IModel {
 
     @Id
     @GeneratedValue

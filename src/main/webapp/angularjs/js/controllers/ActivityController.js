@@ -37,7 +37,7 @@ teamagApp.controller('ActivityController', ['$scope', '$http', '$location', '$ro
             var total = 0;
             angular.forEach($scope.filteredActivities, function (activity) {
                 total += activity.amount;
-            })
+            });
             return total;
         };
 

@@ -3,7 +3,6 @@ package com.oltruong.teamag.rest;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.WeekCommentService;
-import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -24,7 +23,6 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
 
     private WeekCommentEndPoint weekCommentEndPoint;
 
-    private int currentWeekNumber;
 
     @Mock
     private WeekCommentService mockWeekCommentService;
@@ -36,10 +34,9 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         weekCommentEndPoint = new WeekCommentEndPoint();
 
         TestUtils.setPrivateAttribute(weekCommentEndPoint, mockWeekCommentService, "weekCommentService");
-        currentWeekNumber = CalendarUtils.getCurrentWeekNumber();
     }
 
-    private void testGetWeekComment(int weekNumber, int weekArgument) {
+    private void testGet(int weekNumber, int weekArgument) {
 
         int year = DateTime.now().getYear();
         int month = DateTime.now().getMonthOfYear();
@@ -47,7 +44,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         WeekComment weekComment = EntityFactory.createWeekComment();
         when(mockWeekCommentService.findWeekComment(eq(randomId), eq(weekNumber), eq(month), eq(year))).thenReturn(weekComment);
 
-        Response response = weekCommentEndPoint.getWeekComment(randomId, randomId, weekArgument, month, year);
+        Response response = weekCommentEndPoint.get(randomId, randomId, weekArgument, month, year);
 
         checkResponseOK(response);
 
@@ -59,22 +56,22 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetWeekComment_null() {
+    public void testGet_null() {
         int weekNumber = 33;
         int year = DateTime.now().getYear();
         int month = DateTime.now().getMonthOfYear();
 
-        Response response = weekCommentEndPoint.getWeekComment(randomId, randomId, weekNumber, month, year);
+        Response response = weekCommentEndPoint.get(randomId, randomId, weekNumber, month, year);
 
-        checkResponseNotFound(response);
+        checkResponseNoContent(response);
 
         verify(mockWeekCommentService).findWeekComment(eq(randomId), eq(weekNumber), eq(month), eq(year));
     }
 
     @Test
-    public void testGetWeekComment() {
+    public void testGet() {
         int weekNumber = 33;
-        testGetWeekComment(weekNumber, weekNumber);
+        testGet(weekNumber, weekNumber);
     }
 
 

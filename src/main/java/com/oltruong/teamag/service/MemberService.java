@@ -40,6 +40,10 @@ public class MemberService extends AbstractService<Member> {
         return memberMap;
     }
 
+    public static Member getMember(Long id) {
+        return memberMap.get(id);
+    }
+
     public static List<Member> getMemberList() {
         return memberList;
     }

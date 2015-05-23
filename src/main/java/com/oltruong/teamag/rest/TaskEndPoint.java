@@ -21,10 +21,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -37,9 +34,6 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
 
     @Inject
     private Logger LOGGER;
-
-    @Context
-    private UriInfo uriInfo;
 
     @Inject
     TaskService taskService;
@@ -69,9 +63,7 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
             DateTime theMonth = new DateTime(year, month, 1, 0, 0);
             try {
                 taskService.persist(theMonth, memberService.find(memberId), task);
-
-                URI taskURI = uriInfo.getAbsolutePathBuilder().path(task.getId().toString()).build();
-                return Response.created(taskURI).build();
+                return created(task.getId());
             } catch (EntityExistsException e) {
                 LOGGER.info("trying to add an already existing task", e);
                 return badRequest();

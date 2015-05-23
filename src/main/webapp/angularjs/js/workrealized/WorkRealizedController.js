@@ -25,13 +25,13 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             loadWeekComment();
         });
 
-
         function initData() {
             $scope.tasks = [];
             var taskIndex = "";
 
             for (var i = 0; i < $scope.works.length; i++) {
                 var work = $scope.works[i];
+                work.toto = work.amount;
                 if (taskIndex.indexOf(work.taskBean.id) === -1) {
                     $scope.tasks.push(work.taskBean);
                     taskIndex = taskIndex + ";" + work.taskBean.id + ";";
@@ -176,6 +176,12 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
 
         $scope.update = function () {
 
+            updateWorks();
+            updateWeekComment();
+        };
+
+
+        function updateWorks() {
             var updatedWorks = [];
             var updatedWorkList = [];
             for (var i = 0; i < $scope.works.length; i++) {
@@ -204,7 +210,32 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             } else {
                 console.log("no change");
             }
-        };
+        }
+
+        function updateWeekComment() {
+            if ($scope.weekcomment.comment !== $scope.weekcomment.original) {
+                console.log("changement week comment");
+                if ($scope.weekcomment.comment === '') {
+                    console.log("delete week comment");
+                    WeekComment.delete({id: $scope.weekcomment.id});
+                } else if ($scope.weekcomment.original === '') {
+                    console.log("ajout week comment");
+                    $scope.weekcomment.month = $scope.month;
+                    $scope.weekcomment.weekYear = $scope.beginWeek;
+                    $scope.weekcomment.year = $scope.year;
+                    WeekComment.save($scope.weekcomment);
+
+                    loadWeekComment();
+
+                } else {
+                    console.log("update week comment");
+                    WeekComment.patch({id: $scope.weekcomment.id}, $scope.weekcomment);
+                }
+                $scope.weekcomment.original = $scope.weekcomment.comment;
+            } else {
+                console.log("Aucun changement week comment");
+            }
+        }
 
         $scope.addTask = function () {
             $http.post('../resources/tasks?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
@@ -218,7 +249,7 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                     }
                     $scope.tasks.push(newWorks[0].taskBean);
                 });
-                console.log("yay");
+
 
             }).error(function (data, status, headers, config) {
                 console.log('ERROR ' + status);

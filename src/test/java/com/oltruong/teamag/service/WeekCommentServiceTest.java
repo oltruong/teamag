@@ -55,7 +55,8 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
     }
 
     private void checkCallFind() {
-        checkCreateTypedQuery("WeekComment.FIND_BY_MEMBER_MONTH_WEEK_YEAR");
+        verify(mockEntityManager).createNamedQuery(eq("WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR"), eq(WeekComment.class));
+
         checkParameter("fmemberId", randomLong);
         checkParameter("fweekYear", week);
         checkParameter("fyear", year);

@@ -31,7 +31,7 @@ import javax.persistence.Transient;
         @NamedQuery(name = "Work.COUNT_BY_TASK", query = "SELECT count(w) FROM Work w WHERE w.task.id=:fTaskId"),
         @NamedQuery(name = "Work.FIND_ABSENCE_BY_MEMBER", query = "SELECT w FROM Work w WHERE (w.member.id=:fmemberId and w.day=:fday and w.task.name='Absence') order by w.task.id"),
         @NamedQuery(name = "Work.SUM_BY_MONTH_MEMBER", query = "SELECT SUM(w.total) FROM Work w WHERE (w.month=:fmonth AND w.member.id=:fmemberId )")})
-public class Work {
+public class Work implements IModel {
 
     @Id
     @GeneratedValue

@@ -54,8 +54,9 @@ public class AbsenceEndPoint extends AbstractEndPoint<Absence> {
     public Response createAbsence(@HeaderParam("userid") Long memberId, AbsenceWebBean absenceWebBean) {
         Response response;
         try {
-            absenceService.addAbsence(AbsenceWebBeanTransformer.transformWebBean(absenceWebBean), memberId);
-            response = created();
+            Absence absence = AbsenceWebBeanTransformer.transformWebBean(absenceWebBean);
+            absence = absenceService.addAbsence(absence, memberId);
+            response = created(absence.getId());
         } catch (DateOverlapException e) {
             LOGGER.warn("Creating absence with DateOverLap", e);
             response = forbidden();

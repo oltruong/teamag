@@ -46,8 +46,10 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         taskEndPoint = new TaskEndPoint();
         TestUtils.setPrivateAttribute(taskEndPoint, mockTaskService, "taskService");
         TestUtils.setPrivateAttribute(taskEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
-        task = EntityFactory.createTask();
+        TestUtils.setPrivateAttribute(taskEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
+        task = EntityFactory.createTask();
+        when(mockTaskService.persist(eq(task))).thenReturn(task);
 
     }
 
