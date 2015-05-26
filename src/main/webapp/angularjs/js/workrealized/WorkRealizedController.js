@@ -9,9 +9,9 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
         var today = new Date();
         $scope.month = today.getMonth() + 1;
         $scope.year = today.getFullYear();
-        $scope.minWeek = 52;
+        $scope.minWeek = 53;
         $scope.maxWeek = 0;
-        $scope.beginWeek = 52;
+        $scope.beginWeek = 53;
         $scope.weekdays = [];
         $scope.days = [];
         $scope.worktasks = [];
@@ -23,6 +23,9 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             $scope.works = works;
             initData();
             loadWeekComment();
+        }, function (error) {
+            console.log('ERROR retrieving works');
+            console.log(error);
         });
 
         function initData() {
@@ -31,7 +34,7 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
 
             for (var i = 0; i < $scope.works.length; i++) {
                 var work = $scope.works[i];
-                work.toto = work.amount;
+                work.original = work.amount;
                 if (taskIndex.indexOf(work.taskBean.id) === -1) {
                     $scope.tasks.push(work.taskBean);
                     taskIndex = taskIndex + ";" + work.taskBean.id + ";";
@@ -62,6 +65,11 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                     }
                 }
             }
+
+            if ($scope.beginWeek > $scope.maxWeek) {
+                $scope.beginWeek = $scope.maxWeek;
+            }
+
             initWeekDays();
 
 
@@ -106,12 +114,9 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
         };
 
         $scope.removetask = function ($task) {
-            console.log("removing task" + $task.id);
-
             $http.delete('../resources/tasks/' + $task.id + '?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
-                console.log("Response " + status);
             }).error(function (data, status, headers, config) {
-                console.log('ERROR ' + status);
+                console.log('ERROR deleting task' + status);
             });
 
 
@@ -191,65 +196,51 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                 }
 
                 if (work.amount !== work.original) {
-
-                    console.log('nouveau [' + work.amount + ']');
                     updatedWorks.push({id: work.id, total: work.amount});
                     updatedWorkList.push(work);
                 }
             }
             if (updatedWorkList.length > 0) {
                 $http.patch('../resources/works', updatedWorks).success(function (data) {
-                    console.log('ok mis a jour');
                 }).error(function (data, status, headers, config) {
-                    console.log('ERROR');
+                    console.log('ERROR patch work');
                 });
                 for (var i = 0; i < updatedWorkList.length; i++) {
                     updatedWorkList[i].original = updatedWorkList[i].amount;
                 }
 
-            } else {
-                console.log("no change");
             }
         }
 
         function updateWeekComment() {
+
             if ($scope.weekcomment.comment !== $scope.weekcomment.original) {
-                console.log("changement week comment");
                 if ($scope.weekcomment.comment === '') {
-                    console.log("delete week comment");
                     WeekComment.delete({id: $scope.weekcomment.id});
-                    $scope.weekcomment.id = null;
+                    $scope.weekcomment = {comment: '', original: ''};
+
                 } else if ($scope.weekcomment.original === '') {
-                    console.log("ajout week comment");
-                    console.log("weekcomment.id" + $scope.weekcomment.id);
                     $scope.weekcomment.month = $scope.month;
                     $scope.weekcomment.weekYear = $scope.beginWeek;
                     $scope.weekcomment.year = $scope.year;
-                    WeekComment.save($scope.weekcomment, function (u, putResponseHeaders) {
-                        var taskId = putResponseHeaders('Location').substring(putResponseHeaders('Location').lastIndexOf('/') + 1);
-                        console.log("weekcomment function " + taskId);
-                        //u => saved user object
-                        //putResponseHeaders => $http header getter
+                    WeekComment.save($scope.weekcomment, function (data, headers) {
+                        var weekCommentId = headers('Location').substring(headers('Location').lastIndexOf('/') + 1);
+                        $scope.weekcomment.id = weekCommentId;
                     });
-                    console.log("weekcomment.id" + $scope.weekcomment.id);
 
-                    loadWeekComment();
 
                 } else {
-                    console.log("update week comment");
                     WeekComment.patch({id: $scope.weekcomment.id}, $scope.weekcomment);
                 }
                 $scope.weekcomment.original = $scope.weekcomment.comment;
-            } else {
-                console.log("Aucun changement week comment");
             }
         }
 
         $scope.addTask = function () {
             $http.post('../resources/tasks?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
-                console.log("Response " + status);
+
                 var taskId = headers('Location').substring(headers('Location').lastIndexOf('/') + 1);
-                console.log("taskId " + taskId);
+
                 Work.query({month: $scope.month, year: $scope.year, taskId: taskId}).$promise.then(function (newWorks) {
                     for (var index = 0; index < newWorks.length; index++) {
                         $scope.works.push(newWorks[index]);
@@ -295,10 +286,8 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             }).$promise.then(function (data) {
                     $scope.weekcomment = data;
                     if ($scope.weekcomment.comment) {
-                        console.log('weekcomment');
                         $scope.weekcomment.original = $scope.weekcomment.comment;
                     } else {
-                        console.log('No weekComment');
                         $scope.weekcomment = {comment: '', original: ''};
                     }
                 });

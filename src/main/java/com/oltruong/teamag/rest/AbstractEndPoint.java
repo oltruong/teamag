@@ -111,6 +111,10 @@ public abstract class AbstractEndPoint<T extends IModel> {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
+    protected Response notAllowed() {
+        return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
+    }
+
     protected Response noContent() {
         return Response.status(Response.Status.NO_CONTENT).build();
     }

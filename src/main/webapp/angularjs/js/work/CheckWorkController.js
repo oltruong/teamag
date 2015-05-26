@@ -2,8 +2,11 @@
 
 teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'CheckWork', 'WeekComment',
     function ($scope, $http, Member, CheckWork, WeekComment) {
+        $scope.months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         var today = new Date();
+
+        $scope.selectedTab = "week";
 
         $scope.weekNumber = getWeekNumber(today);
         $scope.month = today.getMonth() + 1;
@@ -78,6 +81,31 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
         $scope.increaseWeek = function () {
             $scope.weekNumber++;
             $scope.findWorks();
+        };
+
+
+        $scope.setTab = function (value) {
+            $scope.selectedTab = value;
+        };
+
+        $scope.isSelectedTab = function (value) {
+            return $scope.selectedTab === value;
+        };
+
+        $scope.showclass = function (value) {
+            if ($scope.isSelectedTab(value)) {
+                return "active";
+            } else {
+                return "";
+            }
+        };
+
+        $scope.showtabclass = function (value) {
+            if ($scope.isSelectedTab(value)) {
+                return "tab-pane fade active";
+            } else {
+                return "tab-pane fade";
+            }
         };
 
         function getWeekNumber(d) {

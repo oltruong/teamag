@@ -2,6 +2,7 @@ package com.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
+import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.MemberService;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 @Path("tasks")
 @Stateless
-@AdminChecked
+@SecurityChecked
 public class TaskEndPoint extends AbstractEndPoint<Task> {
 
     @Inject
@@ -43,16 +44,10 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
 
     @Override
     @GET
+    @AdminChecked
     public Response getAll() {
         return get(() -> buildTask(getService().findAll()));
     }
-
-    @GET
-    @Path("/nonadmin")
-    public Response getNonAdmin() {
-        return get(() -> buildTask(taskService.findAllNonAdminTasks()));
-    }
-
 
     @POST
     public Response create(@HeaderParam("userid") Long memberId, @QueryParam("month") Integer month, @QueryParam("year") Integer year, Task task) {
@@ -62,8 +57,8 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
         } else {
             DateTime theMonth = new DateTime(year, month, 1, 0, 0);
             try {
-                taskService.persist(theMonth, memberService.find(memberId), task);
-                return created(task.getId());
+                Task taskCreated = taskService.persist(theMonth, memberService.find(memberId), task);
+                return created(taskCreated.getId());
             } catch (EntityExistsException e) {
                 LOGGER.info("trying to add an already existing task", e);
                 return badRequest();
@@ -78,7 +73,11 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
     public Response delete(@HeaderParam("userid") Long memberId, @PathParam("id") Long id, @QueryParam("month") Integer month, @QueryParam("year") Integer year) {
 
         if (month == null || year == null) {
-            return super.delete(id);
+            if (!memberService.find(memberId).isAdministrator()) {
+                return forbidden();
+            } else {
+                return super.delete(id);
+            }
         } else {
             DateTime theMonth = new DateTime(year, month, 1, 0, 0);
             taskService.remove(id, memberId, theMonth);
@@ -102,6 +101,14 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
         return taskWebBeanList;
     }
 
+    @PUT
+    @Path("/{id}")
+    @AdminChecked
+    public Response updateTask(@PathParam("id") Long taskId, Task task) {
+        task.setId(taskId);
+        taskService.merge(task);
+        return ok();
+    }
 
     private TaskWebBean transformTask(Task task) {
         TaskWebBean taskWebBean = new TaskWebBean();
@@ -120,14 +127,6 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
         }
 
         return taskWebBean;
-    }
-
-    @PUT
-    @Path("/{id}")
-    public Response updateTask(@PathParam("id") Long taskId, Task task) {
-        task.setId(taskId);
-        taskService.merge(task);
-        return ok();
     }
 
 

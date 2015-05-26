@@ -1,34 +1,73 @@
 <div class="row">
     <div class="col-md-2 leftcolumn">
         <userselector></userselector>
-        <br/>
-        <weekselector></weekselector>
+
         <br/>
         Macro t&acirc;che&nbsp;<input type="checkbox" ng-model="macroTask" ng-change="findWorks()"/>
     </div>
     <div class="col-md-10">
 
-        <h1 class="text-center">Suivi de r&eacute;alis&eacute; {{selectedMember.name}} - Semaine {{weekNumber}}</h1>
-        <br/>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>T&acirc;che</th>
-                <th ng-repeat="day in days">{{day}}</th>
-            </tr>
-            </thead>
-            <tbody>
 
-            <tr ng-repeat="task in tasks">
-                <td>{{task}}</td>
-                <td ng-repeat="day in days">{{findAmount(task,day)}}
-                </th>
-            </tr>
+        <div role="tabpanel">
+            <h1 class="text-center">Suivi de r&eacute;alis&eacute; {{selectedMember.name}}</h1>
 
-            </tbody>
-        </table>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ng-class="showclass('week')"><a role="tab" data-toggle="tab"
+                                                                        ng-click="setTab('week')">Par semaine</a></li>
+                <li role="presentation" ng-class="showclass('month')"><a role="tab" data-toggle="tab"
+                                                                         ng-click="setTab('month')">Par mois</a></li>
+            </ul>
 
-        <weekcomment disabled="true" comment="weekcomment" hide="!weekcomment.comment"></weekcomment>
+            <div class="tab-content">
+                <div role="tabpanel" ng-show="isSelectedTab('week')">
+                    <h2 class="text-center">
+
+                        <button class="btn btn-sm btn-info weekselector-button" ng-click="decreaseWeek()"
+                                ng-show="weekNumber>1"><span
+                                class="glyphicon glyphicon-chevron-left"></span>&nbsp;Semaine
+                            {{weekNumber-1}}
+                        </button>
+
+                        Semaine {{weekNumber}}
+
+                        <button class="btn btn-sm btn-info  weekselector-button" ng-click="increaseWeek()"
+                                ng-show="weekNumber<53">Semaine
+                            {{weekNumber+1}}&nbsp;<span
+                                    class="glyphicon glyphicon-chevron-right"/></button>
+                    </h2>
+                    <br/>
+                    <table class="table table-striped" ng-show="tasks.length>0">
+                        <thead>
+                        <tr>
+                            <th>T&acirc;che</th>
+                            <th ng-repeat="day in days">{{day}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="task in tasks">
+                            <td>{{task}}</td>
+                            <td ng-repeat="day in days">{{findAmount(task,day)}}
+                            </th>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-info" role="alert" ng-show="tasks.length<=0">Aucun réalisé</div>
+
+                    <weekcomment disabled="true" comment="weekcomment" hide="!weekcomment.comment"></weekcomment>
+                </div>
+                <div role="tabpanel" ng-show="isSelectedTab('month')">
+
+                    <h2 class="text-center">{{months[month-1]}}</h2>
+
+
+                </div>
+            </div>
+
+        </div>
+
 
     </div>
 </div>

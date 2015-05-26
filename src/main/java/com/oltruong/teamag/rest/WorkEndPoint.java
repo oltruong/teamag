@@ -1,10 +1,12 @@
 package com.oltruong.teamag.rest;
 
 import com.google.common.collect.Lists;
-import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.interfaces.PATCH;
+import com.oltruong.teamag.interfaces.SecurityChecked;
+import com.oltruong.teamag.model.IModel;
 import com.oltruong.teamag.model.Work;
 import com.oltruong.teamag.service.AbstractService;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.webbean.TaskWebBean;
 import com.oltruong.teamag.webbean.WorkPatch;
@@ -16,6 +18,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -25,17 +28,25 @@ import java.util.List;
  */
 @Path("works")
 @Stateless
-@AdminChecked
+@SecurityChecked
 public class WorkEndPoint extends AbstractEndPoint {
 
     @Inject
     WorkService workService;
 
+    @Inject
+    MemberService memberService;
+
+
     @GET
     public Response getWorksBySearchCriteria(@HeaderParam("userid") Long memberId, @QueryParam("taskId") Long taskId, @QueryParam("month") Integer month, @QueryParam("year") Integer year) {
         List<Work> workList;
         if (taskId != null && month == null && year == null) {
-            workList = workService.findWorkByTask(taskId);
+            if (!memberService.find(memberId).isAdministrator()) {
+                return forbidden();
+            } else {
+                workList = workService.findWorkByTask(taskId);
+            }
         } else {
             DateTime monthDateTime = new DateTime(year, month, 1, 0, 0);
             workList = workService.findWorkListByMemberMonth(memberId, monthDateTime);
@@ -69,6 +80,21 @@ public class WorkEndPoint extends AbstractEndPoint {
 
         workService.mergeList(workList);
         return ok();
+    }
+
+    @Override
+    public Response delete(@PathParam("id") Long id) {
+        return notAllowed();
+    }
+
+    @Override
+    public Response getSingle(@PathParam("id") Long id) {
+        return notAllowed();
+    }
+
+    @Override
+    public Response create(IModel entity) {
+        return notAllowed();
     }
 
     protected boolean workDoesNotBelongToMember(Work work, Long memberId) {

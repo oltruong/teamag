@@ -54,12 +54,13 @@ public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
 
 
     @PATCH
+    @Path("/{id}")
     public Response patch(@HeaderParam("userid") Long userId, @PathParam("id") Long id, WeekComment weekComment) {
         WeekComment weekCommentDb = weekCommentService.find(id);
         if (weekCommentDb == null) {
             return notFound();
         } else {
-            if (!weekComment.getMember().getId().equals(userId)) {
+            if (!weekCommentDb.getMember().getId().equals(userId)) {
                 return forbidden();
             } else {
                 weekCommentDb.setComment(weekComment.getComment());

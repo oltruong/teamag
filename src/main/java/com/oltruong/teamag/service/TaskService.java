@@ -58,7 +58,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     @Transactional
-    public void persist(DateTime month, Member member, Task task) {
+    public Task persist(DateTime month, Member member, Task task) {
         TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", entityProvider());
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
@@ -92,6 +92,7 @@ public class TaskService extends AbstractService<Task> {
         for (DateTime day : workingDayList) {
             workService.createWork(member, month, taskDB, day);
         }
+        return taskDB;
 
     }
 
