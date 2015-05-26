@@ -116,7 +116,7 @@ public class MemberService extends AbstractService<Member> {
 
         Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(member);
-        taskService.persist(absenceTask);
+        taskService.merge(absenceTask);
         workLoadService.createFromMember(member, businessCaseService.findAll());
 
         buildList();

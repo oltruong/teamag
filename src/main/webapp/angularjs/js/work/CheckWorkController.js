@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'CheckWork', 'WeekComment',
-    function ($scope, $http, Member, CheckWork, WeekComment) {
+teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Work', 'WeekComment',
+    function ($scope, $http, Member, Work, WeekComment) {
         $scope.months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
         var today = new Date();
@@ -22,7 +22,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
 
         $scope.findAmount = function ($task, $day) {
             for (var i = 0; i < $scope.works.length; i++) {
-                if ($scope.works[i].task === $task && $scope.works[i].day === $day) {
+                if (getTaskDescription($scope.works[i].taskBean) === $task && $scope.works[i].day === $day) {
                     if ($scope.works[i].amount === 0) {
                         return '';
                     } else {
@@ -35,41 +35,43 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
         };
 
         $scope.findWorks = function () {
-            CheckWork.query({
-                memberId: $scope.selectedMember.id,
-                weekNumber: $scope.weekNumber,
-                macroTask: $scope.macroTask
-            }, function (data) {
+            Work.query({
+                month: $scope.month,
+                year: $scope.year,
+                week: $scope.weekNumber,
+                notnull: true,
+                memberId: $scope.selectedMember.id
+            }).$promise.then(function (works) {
 
-                $scope.works = data;
-                $scope.days = new Array();
-                for (var i = 0; i < $scope.works.length; i++) {
-                    if ($scope.days.indexOf($scope.works[i].day) === -1) {
-                        $scope.days.push($scope.works[i].day);
+                    $scope.works = works;
+                    $scope.days = new Array();
+                    for (var i = 0; i < $scope.works.length; i++) {
+                        if ($scope.days.indexOf($scope.works[i].day) === -1) {
+                            $scope.days.push($scope.works[i].day);
+                        }
                     }
-                }
 
-                $scope.tasks = new Array();
-                for (var i = 0; i < $scope.works.length; i++) {
-                    if ($scope.tasks.indexOf($scope.works[i].task) === -1) {
-                        $scope.tasks.push($scope.works[i].task);
+                    $scope.tasks = new Array();
+                    for (var i = 0; i < $scope.works.length; i++) {
+                        if ($scope.tasks.indexOf(getTaskDescription($scope.works[i].taskBean)) === -1) {
+                            $scope.tasks.push(getTaskDescription($scope.works[i].taskBean));
+                        }
                     }
-                }
 
 
-                WeekComment.get({
-                    memberId: $scope.selectedMember.id,
-                    weekNumber: $scope.weekNumber,
-                    month: $scope.month,
-                    year: $scope.year
-                }).$promise.then(function (data) {
-                        $scope.weekcomment = data;
+                    WeekComment.get({
+                        memberId: $scope.selectedMember.id,
+                        weekNumber: $scope.weekNumber,
+                        month: $scope.month,
+                        year: $scope.year
+                    }).$promise.then(function (data) {
+                            $scope.weekcomment = data;
 
-                    });
+                        });
 
-            }, function (error) {
-                $scope.error = 'Erreur HTTP ' + error.status;
-            });
+                }, function (error) {
+                    $scope.error = 'Erreur HTTP ' + error.status;
+                });
 
         };
 
@@ -107,6 +109,10 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'Member', 'Check
                 return "tab-pane fade";
             }
         };
+
+        function getTaskDescription(taskBean) {
+            return taskBean.project + "-" + taskBean.name;
+        }
 
         function getWeekNumber(d) {
             d = new Date(+d);

@@ -39,7 +39,12 @@ public class WorkEndPoint extends AbstractEndPoint {
 
 
     @GET
-    public Response getWorksBySearchCriteria(@HeaderParam("userid") Long memberId, @QueryParam("taskId") Long taskId, @QueryParam("month") Integer month, @QueryParam("year") Integer year) {
+    public Response getWorksBySearchCriteria(@HeaderParam("userid") Long userId, @QueryParam("taskId") Long taskId, @QueryParam("memberId") Long memberId, @QueryParam("week") Integer week, @QueryParam("month") Integer month, @QueryParam("year") Integer year, @QueryParam("notnull") Boolean notnull) {
+
+        if (memberId == null) {
+            memberId = userId;
+        }
+
         List<Work> workList;
         if (taskId != null && month == null && year == null) {
             if (!memberService.find(memberId).isAdministrator()) {
@@ -54,6 +59,15 @@ public class WorkEndPoint extends AbstractEndPoint {
             if (taskId != null) {
                 workList.removeIf(w -> !taskId.equals(w.getTask().getId()));
             }
+
+            if (week != null) {
+                workList.removeIf(work -> work.getDay().getWeekOfWeekyear() != week.intValue());
+            }
+
+            if (notnull != null && notnull.booleanValue()) {
+                workList.removeIf(work -> work.getTotal().doubleValue() == 0d);
+            }
+
 
         }
 
