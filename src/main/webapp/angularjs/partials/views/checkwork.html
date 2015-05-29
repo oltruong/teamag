@@ -40,12 +40,12 @@
                         <thead>
                         <tr>
                             <th>T&acirc;che</th>
-                            <th ng-repeat="day in days">{{day}}</th>
+                            <th ng-repeat="day in weekdays">{{displayString(day)}}</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="task in tasks">
+                        <tr ng-repeat="task in weektasks">
                             <td>{{task}}</td>
                             <td ng-repeat="day in days">{{findAmount(task,day)}}
                             </th>
