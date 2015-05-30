@@ -1,40 +1,128 @@
-<h1 class="text-center">Réalisé {{months[month]+" "+year}} </h1>
 <div class="row">
+    <h1 class="text-center">Mon Réalisé - {{months[month-1]+" "+year}}</h1>
+
+    <h2 class="text-center">
+        <button type="button" class="btn btn-info"
+                ng-disabled="!realizedForm.$valid" ng-show=" beginWeek>minWeek "
+                ng-click="update();decreaseWeek()"><span
+                class="glyphicon glyphicon-chevron-left"></span><span
+                class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Semaine {{beginWeek-1}}
+        </button>
+        Semaine {{beginWeek}}
+        <button type="button" class="btn btn-info"
+                ng-disabled="!realizedForm.$valid" ng-show=" beginWeek<maxWeek " ng-click="update();increaseWeek()">
+            &nbsp;&nbsp;Semaine
+            {{beginWeek+1}}&nbsp;&nbsp;<span
+                class="glyphicon glyphicon-floppy-disk"></span><span
+                class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+    </h2>
+</div>
+<br/><br/>
+<div class="row">
+
+    <div class="col-md-3">
+
+        <a class="btn btn-primary" data-toggle="collapse" data-target="#addActivity" aria-expanded="false"
+           aria-controls="collapseExample">
+            Ajouter une tâche
+        </a>
+
+    </div>
+
+
+    <div class="col-md-6 text-center">
+
+        <button type="button" class="btn btn-success"
+                ng-disabled="!realizedForm.$valid || realizedForm.$pristine" ng-click="update()"><span
+                class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Sauvegarder
+        </button>
+        <button type="button" class="btn btn-warning" ng-disabled="realizedForm.$pristine"
+                ng-click="resetWorks()"><span
+                class="glyphicon glyphicon-repeat"></span>&nbsp;Annuler
+        </button>
+    </div>
+
+    <div class="col-md-12">
+        <br/>
+
+        <div class="collapse" id="addActivity">
+            <div class="well">
+                <form name="newForm" class="form-inline" ng-submit="newForm.$valid && addTask()">
+                    <div class="form-group">
+                        <label for="project">Projet</label>
+                        <input type="text" class="form-control" id="project" ng-model="newTask.project"
+                               placeholder="Projet/Application">
+                    </div>
+                    &nbsp;-&nbsp;
+                    <div class="form-group">
+                        <label for="task">Nom*</label>
+                        <input type="text" class="form-control" id="task" ng-model="newTask.name" placeholder="Tâche"
+                               required>
+                    </div>
+                    <button type="submit" class="btn btn-success"
+                            ng-disabled="!newForm.$valid || newForm.$pristine"><span
+                            class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="col-md-12">
 
-        <input type="text" ng-model="query" placeholder="Filtrer tâche">
 
         <form name="realizedForm" role="form" ng-submit="realizedForm.$valid && update()" novalidate>
 
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th colspan="2">T&acirc;che</th>
-                    <th ng-repeat="day in days" ng-class="displayClass(day)"><span
-                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}
+                    <th colspan="2">T&acirc;che&nbsp;&nbsp;<input type="text" ng-model="query" placeholder="Filtrer">
                     </th>
+                    <th>Total</th>
+
+                    <th ng-repeat="day in weekdays | orderBy:day" ng-class="displayClass(day)"><span
+                            ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}<br/>{{displayTotal(day)}}
+                    </th>
+
                 </tr>
                 </thead>
                 <tfoot>
-                <th colspan="2">Total</th>
-                <th ng-repeat="day in days">{{displayTotal(day)}}</th>
+                <th colspan="3">Total</th>
+                <th ng-repeat="day in weekdays  | orderBy:day">{{displayTotal(day)}}</th>
                 </tfoot>
                 <tbody>
-                <tr ng-repeat="task in tasks | filter:query">
-                    <td colspan="2">{{task.project}}-{{task.name}}</td>
-                    <td ng-repeat="day in days"><input type="number" step="0.1" min="0"
-                                                       ng-class="class(worktasks [task.id+day].amount)"
-                                                       ng-model="worktasks [task.id+day].amount">
-                    </th>
+                <tr ng-repeat="task in tasks | filter:query | orderBy:['project','name']">
+                    <td>{{task.project}}-{{task.name}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary"
+                                ng-show="sumTotal(task)===0" ng-click="removetask(task)"><span
+                                class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                    <td>{{sum(task)}}</td>
+                    <td ng-repeat="day in weekdays"><input type="number" step="0.1" min="0" max="1" size="4"
+                                                           ng-class="class(worktasks [task.id+day].amount)"
+                                                           ng-model="worktasks [task.id+day].amount">
+                    </td>
                 </tr>
                 </tbody>
 
             </table>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success"
+                        ng-disabled="!realizedForm.$valid || realizedForm.$pristine"><span
+                        class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Sauvegarder
+                </button>
+                <button type="button" class="btn btn-warning" ng-disabled="realizedForm.$pristine"
+                        ng-click="resetWorks()"><span
+                        class="glyphicon glyphicon-repeat"></span>&nbsp;Annuler
+                </button>
+            </div>
 
-            <button type="submit" class="btn btn-success"
-                    ng-disabled="!realizedForm.$valid || realizedForm.$pristine"><span
-                    class="glyphicon glyphicon-save"></span>&nbsp;Sauvegarder
-            </button>
+            <weekcomment disabled="false" comment="weekcomment" hide="false"></weekcomment>
+
         </form>
     </div>
 </div>

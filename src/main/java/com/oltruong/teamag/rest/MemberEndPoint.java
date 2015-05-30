@@ -72,7 +72,7 @@ public class MemberEndPoint extends AbstractEndPoint<Member> {
     @AdminChecked
     public Response createMember(Member member) {
         memberService.persist(member);
-        return created();
+        return created(member.getId());
     }
 
     @PUT

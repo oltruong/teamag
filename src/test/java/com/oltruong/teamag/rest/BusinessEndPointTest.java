@@ -30,6 +30,8 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         businessEndPoint = new BusinessCaseEndPoint();
         TestUtils.setPrivateAttribute(businessEndPoint, mockBusinessCaseService, "businessCaseService");
         TestUtils.setPrivateAttribute(businessEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
+        TestUtils.setPrivateAttribute(businessEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
+
 
     }
 
@@ -66,6 +68,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreate() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
+        businessCase.setId(randomId);
         when(mockBusinessCaseService.persist(eq(businessCase))).thenReturn(businessCase);
         Response response = businessEndPoint.create(businessCase);
 

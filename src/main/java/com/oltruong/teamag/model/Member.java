@@ -19,7 +19,7 @@ import java.util.Objects;
 @Table(name = "TM_MEMBER")
 @Entity
 @NamedQueries({@NamedQuery(name = "Member.FIND_ALL", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findActiveMembers", query = "SELECT m from Member m where m.active = true order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
-public class Member implements Serializable {
+public class Member implements Serializable, IModel {
 
     private static final long serialVersionUID = 1L;
 

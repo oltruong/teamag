@@ -34,8 +34,8 @@ teamagApp.config(['$routeProvider', function ($routeProvider) {
         templateUrl: 'partials/views/businesscasecreation.html',
         controller: 'BusinessController'
     });
-    $routeProvider.when('/checkWork', {
-        templateUrl: 'partials/views/checkWork.html',
+    $routeProvider.when('/checkwork', {
+        templateUrl: 'partials/views/checkwork.html',
         controller: 'CheckWorkController'
     });
     $routeProvider.when('/profile', {templateUrl: 'partials/views/profile.html', controller: 'ProfileController'});

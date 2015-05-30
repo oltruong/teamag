@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @NamedQueries({@NamedQuery(name = "findAllBC", query = "SELECT b from BusinessCase b order by b.identifier"), @NamedQuery(name = "findBCByNumber", query = "SELECT b FROM BusinessCase b WHERE b.identifier=:fidentifier")})
 
-public class BusinessCase {
+public class BusinessCase implements IModel {
 
 
     @Id

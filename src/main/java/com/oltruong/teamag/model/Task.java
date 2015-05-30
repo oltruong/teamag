@@ -21,7 +21,7 @@ import java.util.List;
         @NamedQuery(name = "Task.FIND_ALL_WITH_ACTIVITY", query = "SELECT t from Task t where t.activity is not null order by t.name, t.project"),
         @NamedQuery(name = "Task.FIND_BY_NAME", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)"), @NamedQuery(name = "Task.FIND_NONTYPE", query = "SELECT t from Task t JOIN t.members m WHERE m NOT IN (select m from Member where m.memberType=:memberType)"), @NamedQuery(name = "Task.FIND_MEMBER", query = "SELECT t from Task t JOIN t.members m WHERE m.id=:memberId")})
 @Entity
-public class Task {
+public class Task implements IModel {
     @Id
     @GeneratedValue
     private Long id;

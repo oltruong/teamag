@@ -1,14 +1,22 @@
 package com.oltruong.teamag.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * @author Olivier Truong
  */
 @Table(name = "TM_WEEK_COMMENT")
 @Entity
-@NamedQueries({@NamedQuery(name = "WeekComment.FIND_BY_MEMBER_WEEK_YEAR", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.year=:fyear")})
-public class WeekComment {
+@NamedQueries({@NamedQuery(name = "WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.month=:fmonth and w.year=:fyear")})
+public class WeekComment implements IModel {
 
     @Id
     @GeneratedValue
@@ -84,4 +92,5 @@ public class WeekComment {
     public void setYear(int year) {
         this.year = year;
     }
+
 }

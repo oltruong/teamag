@@ -39,7 +39,7 @@ public class AbsenceService extends AbstractService<Absence> {
         return query.getResultList();
     }
 
-    public void addAbsence(Absence absence, Long memberId) throws DateOverlapException, InconsistentDateException {
+    public Absence addAbsence(Absence absence, Long memberId) throws DateOverlapException, InconsistentDateException {
         List<Absence> absencesList = findAbsencesByMember(memberId);
         format(absence);
         AbsenceValidator.validate(absence, absencesList);
@@ -48,6 +48,7 @@ public class AbsenceService extends AbstractService<Absence> {
 
         registerAbsence(absence);
         emailService.sendEmailAdministrator(buildEmailAdd(absence, memberId));
+        return absence;
 
     }
 

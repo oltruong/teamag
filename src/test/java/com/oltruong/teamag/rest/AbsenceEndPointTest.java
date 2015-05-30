@@ -47,6 +47,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
         TestUtils.setPrivateAttribute(absenceEndPoint, mockAbsenceService, "absenceService");
         TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
+        TestUtils.setPrivateAttribute(absenceEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
     }
 
@@ -105,8 +106,15 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testCreateAbsence() throws Exception {
+        Absence absence = EntityFactory.createAbsence();
+
+        absence.setId(randomId);
+
+        when(mockAbsenceService.addAbsence(isA(Absence.class), eq(randomId))).thenReturn(absence);
+
         AbsenceWebBean absenceWebBean = AbsenceWebBeanTransformer.transform(EntityFactory.createAbsence());
         Response response = absenceEndPoint.createAbsence(randomId, absenceWebBean);
+
         verify(mockAbsenceService).addAbsence(isA(Absence.class), eq(randomId));
         checkResponseCreated(response);
     }

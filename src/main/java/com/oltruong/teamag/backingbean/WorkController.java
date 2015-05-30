@@ -149,7 +149,7 @@ public class WorkController extends Controller {
     public String deleteTask() {
         logger.info("Deleting task " + realizedBean.getSelectedTaskWeek().getTask().getName());
 
-        taskService.remove(realizedBean.getSelectedTaskWeek().getTask(), getMember(), realizedBean.getCurrentMonth());
+        taskService.remove(realizedBean.getSelectedTaskWeek().getTask().getId(), getMember().getId(), realizedBean.getCurrentMonth());
 
         initInformation(realizedBean.getDayCursor());
         return VIEWNAME;
@@ -267,7 +267,7 @@ public class WorkController extends Controller {
 
 
     private void initTaskWeek() {
-        weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getYear());
+        weekComment = weekCommentService.findWeekComment(memberInstance.get().getId(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());
 
         if (weekComment == null) {
             weekComment = new WeekComment(memberInstance.get(), realizedBean.getWeekNumber(), realizedBean.getCurrentMonth().getMonthOfYear(), realizedBean.getYear());

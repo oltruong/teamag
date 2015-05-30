@@ -40,6 +40,10 @@ public class MemberService extends AbstractService<Member> {
         return memberMap;
     }
 
+    public static Member getMember(Long id) {
+        return memberMap.get(id);
+    }
+
     public static List<Member> getMemberList() {
         return memberList;
     }
@@ -112,7 +116,7 @@ public class MemberService extends AbstractService<Member> {
 
         Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(member);
-        taskService.persist(absenceTask);
+        taskService.merge(absenceTask);
         workLoadService.createFromMember(member, businessCaseService.findAll());
 
         buildList();

@@ -1,9 +1,9 @@
 package com.oltruong.teamag.rest;
 
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
-import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +35,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         memberEndPoint = new MemberEndPoint();
         member = EntityFactory.createMember();
         TestUtils.setPrivateAttribute(memberEndPoint, mockMemberService, "memberService");
+        TestUtils.setPrivateAttribute(memberEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
     }
 
@@ -95,6 +96,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void testCreateMember() {
+        member.setId(randomId);
 
         Response response = memberEndPoint.createMember(member);
 

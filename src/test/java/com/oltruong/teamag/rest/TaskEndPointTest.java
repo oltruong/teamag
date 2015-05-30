@@ -8,6 +8,7 @@ import com.oltruong.teamag.webbean.TaskWebBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.slf4j.Logger;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -18,7 +19,9 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -28,6 +31,9 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
     @Mock
     private TaskService mockTaskService;
+
+    @Mock
+    private Logger mockLogger;
 
     private TaskEndPoint taskEndPoint;
 
@@ -39,8 +45,11 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
         taskEndPoint = new TaskEndPoint();
         TestUtils.setPrivateAttribute(taskEndPoint, mockTaskService, "taskService");
-        task = EntityFactory.createTask();
+        TestUtils.setPrivateAttribute(taskEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
+        TestUtils.setPrivateAttribute(taskEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
+        task = EntityFactory.createTask();
+        when(mockTaskService.persist(eq(task))).thenReturn(task);
 
     }
 
@@ -119,6 +128,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
         checkResponseNotAcceptable(response);
         verify(mockTaskService).persist(eq(task));
+        verify(mockLogger).warn(anyString(), isA(EntityExistsException.class));
 
     }
 

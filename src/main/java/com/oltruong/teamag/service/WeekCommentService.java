@@ -12,12 +12,13 @@ import java.util.List;
 @Stateless
 public class WeekCommentService extends AbstractService<WeekComment> {
 
-    public WeekComment findWeekComment(Long memberId, int weekYear, int year) {
+    public WeekComment findWeekComment(Long memberId, int weekYear, int month, int year) {
 
         WeekComment result = null;
-        TypedQuery<WeekComment> query = createTypedQuery("WeekComment.FIND_BY_MEMBER_WEEK_YEAR");
+        TypedQuery<WeekComment> query = createTypedQuery("WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR");
         query.setParameter("fmemberId", memberId);
         query.setParameter("fweekYear", weekYear);
+        query.setParameter("fmonth", month);
         query.setParameter("fyear", year);
         List<WeekComment> weekCommentList = query.getResultList();
         if (!weekCommentList.isEmpty()) {

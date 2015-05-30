@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "TM_PARAMETER")
 @Entity
 @NamedQuery(name = "Parameter.FIND_ALL", query = "SELECT p from Parameter p")
-public class Parameter {
+public class Parameter implements IModel {
 
     @Id
     @GeneratedValue

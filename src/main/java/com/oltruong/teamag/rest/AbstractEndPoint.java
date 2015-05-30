@@ -1,5 +1,6 @@
 package com.oltruong.teamag.rest;
 
+import com.oltruong.teamag.model.IModel;
 import com.oltruong.teamag.service.AbstractService;
 import org.slf4j.Logger;
 
@@ -13,8 +14,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -23,13 +27,16 @@ import java.util.function.Supplier;
  */
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
-public abstract class AbstractEndPoint<T> {
+public abstract class AbstractEndPoint<T extends IModel> {
 
 
     @Inject
     protected static Logger LOGGER;
 
-    abstract AbstractService getService();
+    @Context
+    private UriInfo uriInfo;
+
+    abstract AbstractService<T> getService();
 
     @GET
     public Response getAll() {
@@ -66,14 +73,15 @@ public abstract class AbstractEndPoint<T> {
     }
 
 
-    public Response create(Supplier supplier) {
+    public Response create(Supplier<T> supplier) {
+        IModel entity;
         try {
-            supplier.get();
+            entity = supplier.get();
         } catch (EntityExistsException e) {
             LOGGER.warn("Tyring to create an already existing entity", e);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        return created();
+        return created(entity.getId());
     }
 
     protected Response delete(Consumer<Long> deleter, Long id) {
@@ -94,12 +102,17 @@ public abstract class AbstractEndPoint<T> {
         return Response.ok().build();
     }
 
-    protected Response created() {
-        return Response.status(Response.Status.CREATED).build();
+    protected Response created(Long id) {
+        URI taskURI = uriInfo.getAbsolutePathBuilder().path(id.toString()).build();
+        return Response.created(taskURI).build();
     }
 
     protected Response notAcceptable() {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+    }
+
+    protected Response notAllowed() {
+        return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
     }
 
     protected Response noContent() {
@@ -117,6 +130,7 @@ public abstract class AbstractEndPoint<T> {
     protected Response badRequest() {
         return buildResponse(Response.Status.BAD_REQUEST);
     }
+
 
     private Response buildResponse(Response.Status status) {
         return Response.status(status).build();

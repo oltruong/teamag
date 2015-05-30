@@ -58,7 +58,7 @@ public class TaskService extends AbstractService<Task> {
     }
 
     @Transactional
-    public void persist(DateTime month, Member member, Task task) {
+    public Task persist(DateTime month, Member member, Task task) {
         TypedQuery<Task> query = createTypedQuery("Task.FIND_BY_NAME", entityProvider());
         query.setParameter("fname", task.getName());
         query.setParameter("fproject", task.getProject());
@@ -92,6 +92,7 @@ public class TaskService extends AbstractService<Task> {
         for (DateTime day : workingDayList) {
             workService.createWork(member, month, taskDB, day);
         }
+        return taskDB;
 
     }
 
@@ -111,11 +112,11 @@ public class TaskService extends AbstractService<Task> {
     }
 
     @Transactional
-    public void remove(Task task, Member member, DateTime month) {
-        deleteWorks(task, member, month);
+    public void remove(Long taskId, Long memberId, DateTime month) {
+        deleteWorks(taskId, memberId, month);
 
-        Task taskDb = find(task.getId());
-        Member memberDb = findOtherEntity(Member.class, member.getId());
+        Task taskDb = find(taskId);
+        Member memberDb = findOtherEntity(Member.class, memberId);
         taskDb.getMembers().remove(memberDb);
 
         if (taskDb.getMembers().isEmpty() && taskHasNoWorks(taskDb)) {
@@ -126,10 +127,10 @@ public class TaskService extends AbstractService<Task> {
         }
     }
 
-    private void deleteWorks(Task task, Member member, DateTime month) {
+    private void deleteWorks(Long taskId, Long memberId, DateTime month) {
         Query query = createNamedQuery("Work.DELETE_BY_MEMBERTaskMonth");
-        query.setParameter("fmemberId", member.getId());
-        query.setParameter("ftaskId", task.getId());
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("ftaskId", taskId);
         query.setParameter("fmonth", month);
 
         query.executeUpdate();

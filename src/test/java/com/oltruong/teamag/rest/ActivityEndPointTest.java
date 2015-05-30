@@ -33,6 +33,8 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
         activityEndPoint = new ActivityEndPoint();
         TestUtils.setPrivateAttribute(activityEndPoint, mockActivityService, "activityService");
         TestUtils.setPrivateAttribute(activityEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
+        TestUtils.setPrivateAttribute(activityEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
+
     }
 
 
@@ -69,6 +71,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     @Test
     public void testCreate() throws Exception {
         Activity activity = EntityFactory.createActivity();
+        activity.setId(randomId);
         when(mockActivityService.persist(eq(activity))).thenReturn(activity);
         Response response = activityEndPoint.create(activity);
 

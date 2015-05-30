@@ -20,6 +20,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
 
     private WeekComment weekComment;
     private int year = DateTime.now().getYear();
+    private int month = DateTime.now().getMonthOfYear();
     private int week = DateTime.now().getWeekOfWeekyear();
 
 
@@ -41,7 +42,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
         when(mockTypedQuery.getResultList()).thenReturn(weekCommentList);
 
 
-        WeekComment weekCommentReturned = weekCommentService.findWeekComment(randomLong, week, year);
+        WeekComment weekCommentReturned = weekCommentService.findWeekComment(randomLong, week, month, year);
 
         assertThat(weekCommentReturned).isEqualTo(weekComment);
         checkCallFind();
@@ -49,12 +50,13 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindWeekComment_empty() throws Exception {
-        assertThat(weekCommentService.findWeekComment(randomLong, week, year)).isNull();
+        assertThat(weekCommentService.findWeekComment(randomLong, week, month, year)).isNull();
         checkCallFind();
     }
 
     private void checkCallFind() {
-        checkCreateTypedQuery("WeekComment.FIND_BY_MEMBER_WEEK_YEAR");
+        verify(mockEntityManager).createNamedQuery(eq("WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR"), eq(WeekComment.class));
+
         checkParameter("fmemberId", randomLong);
         checkParameter("fweekYear", week);
         checkParameter("fyear", year);
