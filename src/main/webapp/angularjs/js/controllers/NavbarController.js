@@ -13,11 +13,12 @@ teamagApp.controller('NavbarController', ['$scope', '$location', '$routeParams',
         $scope.$watch(function () {
             $http.defaults.headers.common.Authorization = userInfo.password;
             $http.defaults.headers.common.userid = userInfo.id;
-            return  userInfo;
+            return userInfo;
         }, function (userInfoChanged) {
             $scope.loggedIn = userInfoChanged.loggedIn;
             $scope.name = userInfoChanged.name;
             $scope.admin = userInfoChanged.admin;
+            $scope.hash = userInfoChanged.hash;
             $scope.supervisor = userInfoChanged.supervisor;
             $http.defaults.headers.common.Authorization = userInfoChanged.password;
             $http.defaults.headers.common.userid = userInfoChanged.id;
@@ -31,6 +32,7 @@ teamagApp.controller('NavbarController', ['$scope', '$location', '$routeParams',
             userInfo.name = undefined;
             userInfo.id = undefined;
             userInfo.password = undefined;
+            userInfo.hash = undefined;
             $http.defaults.headers.common.Authorization = undefined;
             $http.defaults.headers.common.userid = undefined;
             $location.path('home');

@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login', 'userInfo',
-    function ($http, $scope, $location, Login, userInfo) {
+teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login', 'userInfo','md5',
+    function ($http, $scope, $location, Login, userInfo,md5) {
 
 
         $scope.login = function () {
@@ -16,6 +16,7 @@ teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login'
                 userInfo.admin = member.memberType === 'ADMINISTRATOR';
                 userInfo.supervisor = userInfo.admin || member.memberType === 'SUPERVISOR';
                 userInfo.id = member.id;
+                userInfo.hash= md5.createHash(member.email);
                 userInfo.password = member.password;
                 $http.defaults.headers.common.Authorization = member.password;
                 $http.defaults.headers.common.userid = member.id;

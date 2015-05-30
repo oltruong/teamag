@@ -32,6 +32,7 @@
             <thead>
             <tr>
                 <th>Id</th>
+                <th></th>
                 <th>Nom</th>
                 <th>Entreprise</th>
                 <th>E-mail</th>
@@ -49,8 +50,11 @@
             <tr ng-repeat="member in (filteredMembers=(members | filter:query | orderBy:orderProp))">
 
                 <td>{{member.id}}</td>
-                <td><span ng-show="!editing">{{member.name}}</span> <input ng-model="member.name"
-                                                                           ng-show="editing"/></td>
+                <td><img src="http://www.gravatar.com/avatar/{{ member.email | gravatar }}?s=20&d=blank"></td>
+                <td><span
+                        ng-show="!editing">{{member.name}}</span>
+                    <input ng-model="member.name"
+                           ng-show="editing"/></td>
                 <td><span ng-show="!editing">{{member.company}}</span> <input ng-model="member.company"
                                                                               ng-show="editing"/></td>
                 <td><span ng-show="!editing">{{member.email}}</span> <input ng-model="member.email"
@@ -91,7 +95,7 @@
                 <td class="text-right" colspan="5">Total&nbsp;:</td>
                 <td>{{totalDays()| number:1}}</td>
                 <td>{{totalDays()/21| number:2}}</td>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
             </tr>
 
             </tfoot>

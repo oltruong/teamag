@@ -5,9 +5,9 @@ teamagApp.controller('HomeController', ['$scope', 'userInfo',
         $scope.loggedIn = userInfo.loggedIn;
 
         $scope.name = userInfo.name;
-
+        $scope.hash = userInfo.hash;
         $scope.$watch(function () {
-            return  userInfo;
+            return userInfo;
         }, function (userInfoChanged) {
             $scope.loggedIn = userInfoChanged.loggedIn;
             $scope.name = userInfoChanged.name;

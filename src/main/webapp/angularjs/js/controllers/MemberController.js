@@ -1,7 +1,7 @@
 'use strict';
 
-teamagApp.controller('MemberController', ['$scope', '$http', '$location', 'Member',
-    function ($scope, $http, $location, Member) {
+teamagApp.controller('MemberController', ['$scope', '$http', '$location', 'Member','md5',
+    function ($scope, $http, $location, Member,md5) {
 
 
         $scope.types = ["BASIC", "ADMINISTRATOR"];
