@@ -1,13 +1,14 @@
 'use strict';
 
-teamagApp.controller('ProfileController', ['$scope', '$http',
-    function ($scope, $http) {
+teamagApp.controller('ProfileController', ['$scope', '$http', 'md5',
+    function ($scope, $http, md5) {
 
         $http.get('../resources/member/profile').success(function (member) {
             $scope.member = member;
             $scope.member.color = '#' + member.absenceHTMLColor;
             $scope.member.newPassword1 = '';
             $scope.member.newPassword2 = '';
+            $scope.member.hash = md5.createHash(member.email);
         });
 
         $scope.updateMember = function () {

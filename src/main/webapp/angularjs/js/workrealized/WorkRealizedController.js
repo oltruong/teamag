@@ -16,14 +16,11 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', '$http',
             buildDays();
         });
 
-        $http.get('../resources/task/nonadmin').success(function (data) {
-            $scope.tasks = data;
-        });
+        $scope.tasks = [];
 
 
         function buildDays() {
             $scope.days = [];
-            $scope.tasks = [];
             $scope.worktasks = [];
 
             var taskId = -1;
