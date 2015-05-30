@@ -81,7 +81,7 @@
                     </th>
                     <th>Total</th>
 
-                    <th ng-repeat="day in weekdays" ng-class="displayClass(day)"><span
+                    <th ng-repeat="day in weekdays | orderBy:day" ng-class="displayClass(day)"><span
                             ng-class="displayIcon(day)">&nbsp;</span>{{displayString(day)}}<br/>{{displayTotal(day)}}
                     </th>
 
@@ -89,7 +89,7 @@
                 </thead>
                 <tfoot>
                 <th colspan="3">Total</th>
-                <th ng-repeat="day in weekdays">{{displayTotal(day)}}</th>
+                <th ng-repeat="day in weekdays  | orderBy:day">{{displayTotal(day)}}</th>
                 </tfoot>
                 <tbody>
                 <tr ng-repeat="task in tasks | filter:query | orderBy:['project','name']">

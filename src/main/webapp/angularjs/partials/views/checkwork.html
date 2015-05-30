@@ -1,11 +1,11 @@
 <div class="row">
-    <div class="col-md-2 leftcolumn">
-        <userselector></userselector>
+    <div class="col-md-12">
+
 
         <br/>
-        Macro t&acirc;che&nbsp;<input type="checkbox" ng-model="macroTask" ng-change="findWorks()"/>
-    </div>
-    <div class="col-md-10">
+
+        <userselector ng-show="admin"></userselector>
+        <br/>
 
 
         <div role="tabpanel">
@@ -18,8 +18,12 @@
                                                                          ng-click="setTab('month')">Par mois</a></li>
             </ul>
 
+            <h2 class="text-center">{{months[month-1]}}</h2>
+
             <div class="tab-content">
                 <div role="tabpanel" ng-show="isSelectedTab('week')">
+
+
                     <h2 class="text-center">
 
                         <button class="btn btn-sm btn-info weekselector-button" ng-click="decreaseWeek()"
@@ -36,33 +40,61 @@
                                     class="glyphicon glyphicon-chevron-right"/></button>
                     </h2>
                     <br/>
-                    <table class="table table-striped" ng-show="tasks.length>0">
+
+                    <table class="table table-striped" ng-show="weektasks.length>0">
                         <thead>
                         <tr>
                             <th>T&acirc;che</th>
-                            <th ng-repeat="day in weekdays">{{displayString(day)}}</th>
+                            <th><em>Total</em></th>
+                            <th ng-repeat="day in weekdays | orderBy:day">{{displayString(day)}}</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <tr ng-repeat="task in weektasks">
-                            <td>{{task}}</td>
-                            <td ng-repeat="day in days">{{findAmount(task,day)}}
+                            <td>{{task.name}}</td>
+                            <td><em>{{task.total}}</em></td>
+                            <td ng-repeat="day in weekdays  | orderBy:day">{{findAmount(task.name,day)}}
                             </th>
                         </tr>
 
                         </tbody>
                     </table>
 
-                    <div class="alert alert-info" role="alert" ng-show="tasks.length<=0">Aucun réalisé</div>
+                    <div class="alert alert-info" role="alert" ng-show="weektasks.length<=0">Aucun réalisé</div>
 
                     <weekcomment disabled="true" comment="weekcomment" hide="!weekcomment.comment"></weekcomment>
                 </div>
                 <div role="tabpanel" ng-show="isSelectedTab('month')">
 
-                    <h2 class="text-center">{{months[month-1]}}</h2>
+                    <div class="col-md-3 col-md-offset-4">
 
+                        <table class="table table-striped" ng-show="tasks.length>0">
+                            <thead>
+                            <tr>
+                                <th ng-click="setOrderMonth('name')">T&acirc;che&nbsp;<span
+                                        ng-class="showOrderClass('name')"></span></th>
+                                <th ng-click="setOrderMonth('total')">Total&nbsp;<span
+                                        ng-class="showOrderClass('total')"></span></th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <th>Total</th>
+                            <th>{{totalTask()}}</th>
+                            </tfoot>
+                            <tbody>
 
+                            <tr ng-repeat="task in tasks | orderBy: ordermonth">
+                                <td>{{task.name}}</td>
+                                <td>{{task.total}}</td>
+                                </th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="alert alert-info" role="alert" ng-show="tasks.length<=0">Aucun réalisé</div>
+
+                    </div>
                 </div>
             </div>
 

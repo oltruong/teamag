@@ -1,3 +1,8 @@
-<select ng-model="selectedMember" ng-options="member.name for member in members"
-        ng-change="findWorks()"></select>
-
+<form class="form-inline">
+    <div class="form-group col-md-3">
+        <label for="userselector">Utilisateur</label>
+        <select id="userselector" ng-model="selectedMember" class="form-control"
+                ng-options="member.name for member in members"
+                ng-change="updateMember()"></select>
+    </div>
+</form>
