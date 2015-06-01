@@ -115,7 +115,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                     total += works[i].amount;
                 }
             }
-            return total;
+            return total.toFixed(1);
         }
 
         function initWeekDays() {
@@ -240,11 +240,11 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
 
         $scope.totalTask = function () {
             var total = 0;
-            for (var i = 0; i < $scope.tasks.length; i++) {
-                total += $scope.tasks[i].total;
+            for (var i = 0; i < $scope.works.length; i++) {
+                total += $scope.works[i].amount;
 
             }
-            return total;
+            return total.toFixed(1);
         };
 
         function getWeekNumber(d) {

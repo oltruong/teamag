@@ -192,7 +192,7 @@ public class MemberServiceTest extends AbstractServiceTest {
         verify(mockEntityManager).persist(eq(member));
         verify(mockWorkLoadService).createFromMember(eq(member), eq(businessCaseList));
         verify(mockTaskService).getOrCreateAbsenceTask();
-        verify(mockTaskService).persist(refEq(absenceTask));
+        verify(mockTaskService).merge(refEq(absenceTask));
         verify(mockBusinessCaseService).findAll();
     }
 

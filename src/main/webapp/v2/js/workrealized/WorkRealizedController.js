@@ -109,7 +109,12 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             for (var i = 0; i < $scope.weekdays.length; i++) {
                 total += $scope.worktasks [$task.id + $scope.weekdays[i]].amount;
             }
-            return total;
+
+            if (total == 0) {
+                return "";
+            } else {
+                return total.toFixed(1);
+            }
 
         };
 
@@ -151,11 +156,20 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
 
         };
 
+        $scope.displayTotalStr = function ($day) {
+            var total = $scope.displayTotal($day);
+            if (total == 0) {
+                return "";
+            } else {
+                return total.toFixed(1);
+            }
+        };
+
         $scope.displayClass = function ($day) {
 
             var total = $scope.displayTotal($day);
 
-            if (total === 1) {
+            if (total === 1.0) {
                 return "text-success";
             } else if (total > 1) {
                 return "text-danger";
