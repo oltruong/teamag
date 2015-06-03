@@ -158,6 +158,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>angular-animate</artifactId>
+            <version>${version.webjars.angularjs}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angular-ui-calendar</artifactId>
             <version>${angular-ui-calendar.version}</version>
