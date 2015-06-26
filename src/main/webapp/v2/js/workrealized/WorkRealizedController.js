@@ -113,7 +113,7 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             if (total == 0) {
                 return "";
             } else {
-                return total.toFixed(1);
+                return total.toFixed(2);
             }
 
         };
@@ -152,7 +152,7 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                     total += $scope.works[i].amount;
                 }
             }
-            return total;
+            return (Math.round(total * 100) / 100);
 
         };
 
@@ -161,8 +161,22 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             if (total == 0) {
                 return "";
             } else {
-                return total.toFixed(1);
+                return total.toFixed(2);
             }
+        };
+
+
+        $scope.displayTotalWeekStr = function () {
+            var total = 0;
+            for (var i = 0; i < $scope.weekdays.length; i++) {
+                total += $scope.displayTotal($scope.weekdays[i]);
+            }
+            if (total === 0) {
+                return "";
+            } else {
+                return total.toFixed(2);
+            }
+
         };
 
         $scope.displayClass = function ($day) {
@@ -222,7 +236,6 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                 for (var i = 0; i < updatedWorkList.length; i++) {
                     updatedWorkList[i].original = updatedWorkList[i].amount;
                 }
-
             }
         }
 
@@ -232,7 +245,6 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                 if ($scope.weekcomment.comment === '') {
                     WeekComment.delete({id: $scope.weekcomment.id});
                     $scope.weekcomment = {comment: '', original: ''};
-
                 } else if ($scope.weekcomment.original === '') {
                     $scope.weekcomment.month = $scope.month;
                     $scope.weekcomment.weekYear = $scope.beginWeek;
