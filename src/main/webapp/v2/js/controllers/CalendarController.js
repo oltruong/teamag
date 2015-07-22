@@ -5,6 +5,7 @@ teamagApp.controller('CalendarController', ['$scope', '$http',
         $scope.uiConfig = {
             calendar: {
                 weekNumbers: true,
+                weekends: false,
                 firstDay: 1
             }
         };
