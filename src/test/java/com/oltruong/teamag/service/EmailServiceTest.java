@@ -52,6 +52,7 @@ public class EmailServiceTest {
 
 
         when(mockParameterService.getSmtpHost()).thenReturn("");
+        when(mockParameterService.getSmtpPort()).thenReturn("9999");
         when(mockParameterService.getAdministratorEmail()).thenReturn(adminEmail);
         emailService.sendEmailAdministrator(email);
         verify(mockLogger).error(anyString());
@@ -64,6 +65,7 @@ public class EmailServiceTest {
     public void testSendEmailCopyBlindAdministrator() throws Exception {
 
         when(mockParameterService.getSmtpHost()).thenReturn("");
+        when(mockParameterService.getSmtpPort()).thenReturn("9999");
         when(mockParameterService.getAdministratorEmail()).thenReturn(adminEmail);
 
         emailService.sendEmailCopyBlindAdministrator(email);

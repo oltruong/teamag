@@ -22,6 +22,7 @@ import java.util.Map;
 @Singleton
 public class ParameterService extends AbstractService<Parameter> {
 
+    public static final String DEFAULT_PORT = "25";
     private Map<ParameterName, Parameter> parameterMap;
 
 
@@ -72,6 +73,12 @@ public class ParameterService extends AbstractService<Parameter> {
         parameterMap.put(ParameterName.ADMINISTRATOR_EMAIL, administratorEmailParameter);
 
     }
+
+
+    public String getSmtpPort() {
+        return DEFAULT_PORT;
+    }
+
 
     @Lock(LockType.READ)
     public String getSmtpHost() {

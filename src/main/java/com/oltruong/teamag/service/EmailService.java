@@ -51,9 +51,11 @@ public class EmailService {
 
     private void send(MailBean email) {
 
+
         Properties properties = System.getProperties();
 
         properties.setProperty("mail.smtp.host", parameterService.getSmtpHost());
+        properties.setProperty("mail.smtp.port", parameterService.getSmtpPort());
 
         Session session = Session.getDefaultInstance(properties);
 
