@@ -11,13 +11,40 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
         }, function (error) {
         });
 
+        $scope.unit = 'MHI';
+
         $scope.orderMember = 'name';
         $scope.orderContainerMember = 'member.name';
         $scope.orderProp = 'businessCase.identifier';
 
         $scope.nonFullBCOnly = false;
+        $scope.nonEmptyBCOnly = true;
 
         $scope.showRemaining = false;
+
+        $scope.changeUnit = function () {
+            if ($scope.unit === 'MHI') {
+                $scope.unit = 'JHI';
+            } else {
+                $scope.unit = 'MHI'
+            }
+        };
+
+        $scope.otherUnit = function () {
+            if ($scope.unit === 'MHI') {
+                return 'JHI';
+            } else {
+                return 'MHI';
+            }
+        };
+
+        $scope.factor = function () {
+            if ($scope.unit === 'MHI') {
+                return 1;
+            } else {
+                return 21;
+            }
+        };
 
         $scope.totalMember = function ($member) {
             var total = 0;
@@ -250,6 +277,31 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
             } else {
                 return true;
             }
+        };
+
+        $scope.filterNonEmptyBC = function (workLoadContainer) {
+            console.log('begin filter');
+            if ($scope.nonEmptyBCOnly) {
+
+                for (var i = 0; i < $scope.filteredMembers.length; i++) {
+                    var member = $scope.filteredMembers[i];
+                    console.log('member!!' + member.name);
+                    for (var j = 0; j < workLoadContainer.workLoadList.length; j++) {
+                        var workload = workLoadContainer.workLoadList[j];
+                        console.log('workload!!' + workload);
+                        if (workload.member.name === member.name) {
+                            console.log('yahoooo' + workload.estimated + "-" + workload.realized);
+                            if (workload.estimated !== 0 || workload.realized !== 0) {
+                                console.log('truuuue');
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            return true;
+
         }
 
     }]);
