@@ -207,6 +207,18 @@ public class WorkService extends AbstractService<Work> {
         return sumOfPrice.intValue();
     }
 
+    public Map<Task, Double> findTaskByMemberMonth(Long memberId, DateTime month) {
+        Query query = createNamedQuery("Work.FIND_TASKS_BY_MEMBER_MONTH");
+        query.setParameter("fmemberId", memberId);
+        query.setParameter("fmonth", month);
+        List<Object[]> resultList = query.getResultList();
+
+        Map<Task, Double> map = Maps.newHashMap();
+        resultList.forEach(objects -> map.put(((Task) objects[0]), ((Double) objects[1])));
+
+        return map;
+    }
+
     private Map<Task, List<Work>> transformWorkList(List<Work> listWorks) {
 
         Map<Task, List<Work>> worksByTask = Maps.newHashMap();
@@ -302,6 +314,10 @@ public class WorkService extends AbstractService<Work> {
         return absenceDay.getDay().withDayOfMonth(2).withTimeAtStartOfDay().isAfter(DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay());
     }
 
+
+    public Map<Task, Double> getWorksByTask(Integer memberId, Integer year, Integer month) {
+        return null;
+    }
 
     @Override
     Class<Work> entityProvider() {

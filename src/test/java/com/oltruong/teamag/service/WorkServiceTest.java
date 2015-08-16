@@ -1,6 +1,7 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
@@ -302,6 +303,30 @@ public class WorkServiceTest extends AbstractServiceTest {
         assertThat(workListFound).isEqualTo(workList);
         verify(mockEntityManager).createNamedQuery(eq("Work.FIND_BY_TASK_MEMBER"), eq(Work.class));
         verify(mockTypedQuery).setParameter(eq("fTaskId"), eq(randomLong));
+    }
+
+
+    @Test
+    public void testFindTaskByMemberMonth() {
+        Integer randomInt = EntityFactory.createRandomInteger();
+        Double randomDouble = EntityFactory.createRandomDouble();
+        Map<Task, Double> mockMapResult = Maps.newHashMap();
+        mockMapResult.put(EntityFactory.createTask(), randomDouble);
+
+
+        List<Object[]> resultList = Lists.newArrayList();
+        Object[] array = {EntityFactory.createTask(), randomDouble};
+        resultList.add(array);
+
+        when(mockNamedQuery.getResultList()).thenReturn(resultList);
+        DateTime month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).withMonthOfYear(randomInt);
+        Map<Task, Double> mapResult = workService.findTaskByMemberMonth(randomLong, month);
+
+
+        assertThat(mapResult).hasSize(1).containsKey(((Task) array[0])).containsValue(((Double) array[1]));
+        verify(mockEntityManager).createNamedQuery(eq("Work.FIND_TASKS_BY_MEMBER_MONTH"));
+        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomLong));
+        verify(mockNamedQuery).setParameter(eq("fmonth"), eq(month));
     }
 
 

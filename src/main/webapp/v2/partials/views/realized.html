@@ -6,8 +6,8 @@
     <input type="checkbox" ng-model="nonEmptyTask"/> T&acirc;ches non vides
 
     <br/>
-    <input ng-model="queryActivity" placeholder="Filtrer Activité">
-    <input ng-model="queryMonth" placeholder="Filtrer Mois">
+    <cleanableinput model="queryActivity" placeholder="Filtrer Activité"></cleanableinput>
+    <cleanableinput model="queryMonth" placeholder="Filtrer Mois"></cleanableinput>
 
     <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
         <span class="glyphicon glyphicon-pencil"></span>&nbsp;&Eacute;diter

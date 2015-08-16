@@ -3,7 +3,17 @@ package com.oltruong.teamag.model.builder;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.hash.Hashing;
-import com.oltruong.teamag.model.*;
+import com.oltruong.teamag.model.Absence;
+import com.oltruong.teamag.model.AbsenceDay;
+import com.oltruong.teamag.model.Activity;
+import com.oltruong.teamag.model.BusinessCase;
+import com.oltruong.teamag.model.Member;
+import com.oltruong.teamag.model.Parameter;
+import com.oltruong.teamag.model.Task;
+import com.oltruong.teamag.model.WeekComment;
+import com.oltruong.teamag.model.Work;
+import com.oltruong.teamag.model.WorkLoad;
+import com.oltruong.teamag.model.WorkRealized;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.model.enumeration.ParameterName;
 import com.oltruong.teamag.utils.TestUtils;
@@ -39,6 +49,17 @@ public class EntityFactory {
 
     public static Integer createRandomInteger() {
         return Integer.valueOf(new Random().nextInt());
+    }
+
+    public static Integer createRandomInteger(int bound) {
+        return Integer.valueOf(new Random().nextInt(bound));
+    }
+
+
+    public static void main(String[] args) {
+
+
+        System.out.println(new Random().nextInt(12));
     }
 
     public static Member createMember() {

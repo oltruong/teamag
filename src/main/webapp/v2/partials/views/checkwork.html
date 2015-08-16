@@ -28,40 +28,39 @@
 
                         <button class="btn btn-sm btn-info weekselector-button" ng-click="decreaseWeek()"
                                 ng-show="weekNumber>1"><span
-                                class="glyphicon glyphicon-chevron-left"></span>&nbsp;Semaine
-                            {{weekNumber-1}}
+                                class="glyphicon glyphicon-chevron-left"></span>&nbsp;Pr&eacute;c&eacute;dente
+
                         </button>
 
                         Semaine {{weekNumber}}
 
                         <button class="btn btn-sm btn-info  weekselector-button" ng-click="increaseWeek()"
-                                ng-show="weekNumber<53">Semaine
-                            {{weekNumber+1}}&nbsp;<span
-                                    class="glyphicon glyphicon-chevron-right"/></button>
+                                ng-show="weekNumber<53">Suivante&nbsp;<span
+                                class="glyphicon glyphicon-chevron-right"/></button>
                     </h2>
                     <br/>
 
-                    <table class="table table-striped" ng-show="weektasks.length>0">
+                    <table class="table table-striped" ng-show="tasks.length>0">
                         <thead>
                         <tr>
                             <th>T&acirc;che</th>
                             <th><em>Total</em></th>
-                            <th ng-repeat="day in weekdays | orderBy:day">{{displayString(day)}}</th>
+                            <th ng-repeat="day in days | orderBy:day">{{displayString(day)}}</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="task in weektasks">
+                        <tr ng-repeat="task in tasks">
                             <td>{{task.name}}</td>
                             <td><em>{{task.total}}</em></td>
-                            <td ng-repeat="day in weekdays  | orderBy:day">{{findAmount(task.name,day)}}
+                            <td ng-repeat="day in days  | orderBy:day">{{findAmount(task.name,day)}}
                             </th>
                         </tr>
 
                         </tbody>
                     </table>
 
-                    <div class="alert alert-info" role="alert" ng-show="weektasks.length<=0">Aucun réalisé</div>
+                    <div class="alert alert-info" role="alert" ng-show="tasks.length<=0">Aucun réalisé</div>
 
                     <weekcomment disabled="true" comment="weekcomment" hide="!weekcomment.comment"></weekcomment>
                 </div>
@@ -84,7 +83,7 @@
                             </tfoot>
                             <tbody>
 
-                            <tr ng-repeat="task in tasks | orderBy: ordermonth">
+                            <tr ng-repeat="task in taskMonths | orderBy: ordermonth">
                                 <td>{{task.name}}</td>
                                 <td>{{task.total}}</td>
                                 </th>

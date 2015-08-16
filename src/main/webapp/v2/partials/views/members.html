@@ -1,7 +1,7 @@
 <h1 class="text-center">{{filteredMembers.length }} Membres</h1>
 <div class="row">
     <div class="col-md-2">
-        Filtrer&nbsp;: <input type="text" ng-model="query">
+        <cleanableinput model="query" placeholder="Filtrer"></cleanableinput>
         <br/><br/> Trier&nbsp;:
         <select ng-model="orderProp">
             <option value="name">Nom asc</option>

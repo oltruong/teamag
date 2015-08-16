@@ -1,21 +1,24 @@
 'use strict';
 
-teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Member', 'Work', 'WeekComment',
-    function ($scope, $http, userInfo, Member, Work, WeekComment) {
+teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Member', 'Work', 'WorkByTask', 'WeekComment',
+    function ($scope, $http, userInfo, Member, Work, WorkByTask, WeekComment) {
         $scope.months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
         $scope.daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
 
+        $scope.minWeek = 53;
+        $scope.maxWeek = 0;
 
         $scope.selectedTab = "week";
         var today = new Date();
         $scope.year = today.getFullYear();
-
         $scope.weekNumber = getWeekNumber(today);
-
         $scope.month = today.getMonth() + 1;
+        generateWeekBorder();
 
         $scope.ordermonth = "name";
+        $scope.taskMonths = [];
         $scope.tasks = [];
+        $scope.works = [];
 
         $scope.admin = userInfo.admin;
         if ($scope.admin) {
@@ -31,6 +34,23 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             findWorks();
         }
 
+        function generateWeekBorder() {
+
+            var firstDayOfMonth = new Date($scope.year, $scope.month - 1, 1);
+
+            while (firstDayOfMonth.getDay() == 0 || firstDayOfMonth.getDay() == 6) {
+                firstDayOfMonth = new Date(firstDayOfMonth.getTime() + 86400000);
+            }
+
+            $scope.firstWeekOfMonth = getWeekNumber(firstDayOfMonth);
+
+            var lastDayOfMonth = new Date($scope.year, $scope.month, 0);
+
+            while (lastDayOfMonth.getDay() == 0 || lastDayOfMonth.getDay() == 6) {
+                lastDayOfMonth = new Date(lastDayOfMonth.getTime() - 86400000);
+            }
+            $scope.lastWeekOfMonth = getWeekNumber(lastDayOfMonth);
+        };
 
         $scope.updateMember = function () {
             findWorks();
@@ -52,42 +72,29 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         };
 
         function findWorks() {
-            $scope.minWeek = 53;
-            $scope.maxWeek = 0;
+            findWorksWeek();
+            findWorksMonth();
+        }
+
+        function findWorksWeek() {
+            console.log('findWorksWeek');
+
             Work.query({
+                notnull: true,
+                week: $scope.weekNumber,
                 month: $scope.month,
                 year: $scope.year,
-                notnull: true,
                 memberId: $scope.selectedMember.id
             }).$promise.then(function (works) {
                     $scope.works = works;
                     $scope.days = new Array();
-
-                    if ($scope.works.length === 0) {
-                        $scope.minWeek = getMinWeek($scope.month);
-                        $scope.maxWeek = getMaxWeek($scope.month);
-                    }
-
+                    console.log('inside findWorksWeek');
+                    console.log($scope.works);
                     for (var i = 0; i < $scope.works.length; i++) {
                         if ($scope.days.indexOf($scope.works[i].daylong) === -1) {
                             $scope.days.push($scope.works[i].daylong);
-                            var weekDay = getWeekNumber(new Date($scope.works[i].daylong));
-                            if ($scope.minWeek > weekDay) {
-                                $scope.minWeek = weekDay;
-                            }
-                            if ($scope.maxWeek < weekDay) {
-                                $scope.maxWeek = weekDay;
-                            }
                         }
                     }
-
-                    if ($scope.weekNumber > $scope.maxWeek) {
-                        $scope.weekNumber = $scope.maxWeek;
-                    } else if ($scope.weekNumber < $scope.minWeek) {
-                        $scope.weekNumber = $scope.minWeek;
-                    }
-
-                    initWeekDays();
 
                     $scope.tasks = [];
                     var indextask = '';
@@ -101,10 +108,34 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                             indextask += ";" + getTaskDescription($scope.works[i].taskBean);
                         }
                     }
+
+
                     initWeekComment();
                 }, function (error) {
+                    console.log('error workweek');
+                    console.log(error);
                     $scope.error = 'Erreur HTTP ' + error.status;
                 });
+
+        };
+
+
+        function findWorksMonth() {
+            console.log('findWorksMonth');
+            WorkByTask.query({
+                month: $scope.month,
+                year: $scope.year,
+                memberId: $scope.selectedMember.id
+            }).$promise.then(function (tasks) {
+                    $scope.taskMonths = tasks;
+                }, function (error) {
+                    console.log('error work');
+                    console.log(error);
+
+                    $scope.error = 'Erreur HTTP ' + error.status;
+                }
+            )
+            ;
 
         };
 
@@ -118,35 +149,6 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             return total.toFixed(1);
         }
 
-        function initWeekDays() {
-            $scope.weekdays = [];
-            for (var d = 0; d < $scope.days.length; d++) {
-                if (getWeekNumber(new Date($scope.days[d])) === $scope.weekNumber) {
-                    $scope.weekdays.push(Number($scope.days[d]));
-                }
-            }
-
-            $scope.weekWorks = [];
-            for (var i = 0; i < $scope.works.length; i++) {
-                if (getWeekNumber(new Date($scope.works[i].daylong)) === $scope.weekNumber) {
-                    $scope.weekWorks.push($scope.works[i]);
-                }
-            }
-
-            $scope.weektasks = [];
-            var indexweetask = '';
-            for (var i = 0; i < $scope.weekWorks.length; i++) {
-                if (indexweetask.indexOf(getTaskDescription($scope.weekWorks[i].taskBean)) === -1) {
-
-                    $scope.weektasks.push({
-                        name: getTaskDescription($scope.weekWorks[i].taskBean),
-                        total: getTotal($scope.weekWorks[i].taskBean, $scope.weekWorks)
-                    });
-                    indexweetask += ";" + getTaskDescription($scope.weekWorks[i].taskBean);
-                }
-            }
-
-        }
 
         function initWeekComment() {
             WeekComment.get({
@@ -165,27 +167,41 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         };
 
         $scope.decreaseWeek = function () {
-            if ($scope.weekNumber <= $scope.minWeek) {
-                $scope.month--;
-                findWorks();
 
-            } else {
-                $scope.weekNumber--;
-                initWeekDays();
-                initWeekComment();
+            if ($scope.weekNumber === $scope.firstWeekOfMonth) {
+                var previousMonth = new Date($scope.year, $scope.month - 1, 0);
 
+                while (previousMonth.getDay() == 0 || previousMonth.getDay() == 6) {
+                    previousMonth = new Date(previousMonth.getTime() - 86400000);
+                }
+
+
+                $scope.year = previousMonth.getFullYear();
+                $scope.weekNumber = getWeekNumber(previousMonth);
+                $scope.month = previousMonth.getMonth() + 1;
+                generateWeekBorder();
             }
+            else {
+                $scope.weekNumber--;
+            }
+
+            findWorksWeek();
         };
 
         $scope.increaseWeek = function () {
-            if ($scope.weekNumber >= $scope.maxWeek) {
-                $scope.month++;
-                findWorks();
+            if ($scope.weekNumber === $scope.lastWeekOfMonth) {
+                var nextMonth = new Date($scope.year, $scope.month, 1);
+                while (nextMonth.getDay() == 0 || nextMonth.getDay() == 6) {
+                    nextMonth = new Date(nextMonth.getTime() + 86400000);
+                }
+                $scope.year = nextMonth.getFullYear();
+                $scope.weekNumber = getWeekNumber(nextMonth);
+                $scope.month = nextMonth.getMonth() + 1;
+                generateWeekBorder();
             } else {
                 $scope.weekNumber++;
-                initWeekDays();
-                initWeekComment();
             }
+            findWorksWeek();
         };
 
 
@@ -255,15 +271,9 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7)
         }
 
-        function getMinWeek(month) {
-            var d = new Date($scope.year, month - 1, 1, 0, 0, 0, 0);
-            return getWeekNumber(d.getTime());
-        }
 
-        function getMaxWeek(month) {
-            var d = new Date($scope.year, month, 1, 0, 0, 0, 0);
-            return getWeekNumber(d.getTime() - 1000 * 3600 * 24);
-        }
+    }
 
-    }]);
+])
+;
 
