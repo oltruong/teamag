@@ -211,6 +211,17 @@ public class WorkService extends AbstractService<Work> {
         Query query = createNamedQuery("Work.FIND_TASKS_BY_MEMBER_MONTH");
         query.setParameter("fmemberId", memberId);
         query.setParameter("fmonth", month);
+        return findTaskByMember(query);
+    }
+
+    public Map<Task, Double> findTaskByMember(Long memberId) {
+        Query query = createNamedQuery("Work.FIND_TASKS_BY_MEMBER");
+        query.setParameter("fmemberId", memberId);
+        return findTaskByMember(query);
+
+    }
+
+    private Map<Task, Double> findTaskByMember(Query query) {
         List<Object[]> resultList = query.getResultList();
 
         Map<Task, Double> map = Maps.newHashMap();

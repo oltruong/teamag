@@ -49,7 +49,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
     public void testGetWorksByTask() throws Exception {
 
         Long randomLong = EntityFactory.createRandomLong();
-        Integer randomIntegerMonth = EntityFactory.createRandomInteger(12);
+        Integer randomIntegerMonth = EntityFactory.createRandomMonth();
         Integer randomIntegerYear = EntityFactory.createRandomInteger(2055);
 
 
@@ -69,7 +69,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
         List<WorkByTaskBean> listResult = (List<WorkByTaskBean>) response.getEntity();
 
-        assertThat(listResult).hasSameSizeAs(map);
+        assertThat(listResult).hasSize(map.size());
         assertThat(listResult.get(0)).isEqualToComparingFieldByField(new WorkByTaskBean(task.getDescription(), total));
 
         verify(mockWorkService).findTaskByMemberMonth(eq(randomLong), eq(new DateTime(randomIntegerYear, randomIntegerMonth, 1, 0, 0)));

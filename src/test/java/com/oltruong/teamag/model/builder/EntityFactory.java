@@ -55,6 +55,10 @@ public class EntityFactory {
         return Integer.valueOf(new Random().nextInt(bound));
     }
 
+    public static Integer createRandomMonth() {
+        return createRandomInteger(12);
+    }
+
 
     public static void main(String[] args) {
 

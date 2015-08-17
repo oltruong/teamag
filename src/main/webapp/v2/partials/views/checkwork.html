@@ -16,13 +16,15 @@
                                                                         ng-click="setTab('week')">Par semaine</a></li>
                 <li role="presentation" ng-class="showclass('month')"><a role="tab" data-toggle="tab"
                                                                          ng-click="setTab('month')">Par mois</a></li>
+                <li role="presentation" ng-class="showclass('total')"><a role="tab" data-toggle="tab"
+                                                                         ng-click="setTab('total')">Total</a></li>
             </ul>
 
-            <h2 class="text-center">{{months[month-1]}}</h2>
 
             <div class="tab-content">
                 <div role="tabpanel" ng-show="isSelectedTab('week')">
 
+                    <h2 class="text-center">{{months[byWeekMonth-1]}}</h2>
 
                     <h2 class="text-center">
 
@@ -66,32 +68,33 @@
                 </div>
                 <div role="tabpanel" ng-show="isSelectedTab('month')">
 
-                    <div class="col-md-3 col-md-offset-4">
+                    <div class="col-md-10 col-md-offset-1">
+                        <h2 class="text-center">
 
-                        <table class="table table-striped" ng-show="tasks.length>0">
-                            <thead>
-                            <tr>
-                                <th ng-click="setOrderMonth('name')">T&acirc;che&nbsp;<span
-                                        ng-class="showOrderClass('name')"></span></th>
-                                <th ng-click="setOrderMonth('total')">Total&nbsp;<span
-                                        ng-class="showOrderClass('total')"></span></th>
-                            </tr>
-                            </thead>
-                            <tfoot>
-                            <th>Total</th>
-                            <th>{{totalTask()}}</th>
-                            </tfoot>
-                            <tbody>
+                            <button class="btn btn-sm btn-info weekselector-button" ng-click="decreaseMonth()"
+                                    ng-show="byMonthMonth>1"><span
+                                    class="glyphicon glyphicon-chevron-left"></span>{{months[byMonthMonth-2]}}
 
-                            <tr ng-repeat="task in taskMonths | orderBy: ordermonth">
-                                <td>{{task.name}}</td>
-                                <td>{{task.total}}</td>
-                                </th>
-                            </tr>
+                            </button>
 
-                            </tbody>
-                        </table>
-                        <div class="alert alert-info" role="alert" ng-show="tasks.length<=0">Aucun réalisé</div>
+                            {{months[byMonthMonth-1]}}
+
+                            <button class="btn btn-sm btn-info  weekselector-button" ng-click="increaseMonth()"
+                                    ng-show="byMonthMonth<12">{{months[byMonthMonth]}}&nbsp;<span
+                                    class="glyphicon glyphicon-chevron-right"/></button>
+                        </h2>
+
+                        <tasklist list="taskMonths"></tasklist>
+                    </div>
+                </div>
+                <div role="tabpanel" ng-show="isSelectedTab('total')">
+
+                    <div class="col-md-10 col-md-offset-1">
+                        <h2 class="text-center">
+                            {{year}}
+                        </h2>
+
+                        <tasklist list="taskTotal"></tasklist>
 
                     </div>
                 </div>

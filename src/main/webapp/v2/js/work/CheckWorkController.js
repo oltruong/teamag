@@ -9,14 +9,17 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         $scope.maxWeek = 0;
 
         $scope.selectedTab = "week";
-        var today = new Date();
-        $scope.year = today.getFullYear();
-        $scope.weekNumber = getWeekNumber(today);
-        $scope.month = today.getMonth() + 1;
+
+        generateByWeekValues(new Date());
         generateWeekBorder();
 
+        generateByMonthValues(new Date());
+
         $scope.ordermonth = "name";
+        $scope.ordertotal = "name";
+
         $scope.taskMonths = [];
+        $scope.taskTotal = [];
         $scope.tasks = [];
         $scope.works = [];
 
@@ -34,9 +37,20 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             findWorks();
         }
 
+
+        function generateByWeekValues(date) {
+            $scope.year = date.getFullYear();
+            $scope.weekNumber = getWeekNumber(date);
+            $scope.byWeekMonth = date.getMonth() + 1;
+        }
+
+        function generateByMonthValues(date) {
+            $scope.byMonthMonth = date.getMonth() + 1;
+        }
+
         function generateWeekBorder() {
 
-            var firstDayOfMonth = new Date($scope.year, $scope.month - 1, 1);
+            var firstDayOfMonth = new Date($scope.year, $scope.byWeekMonth - 1, 1);
 
             while (firstDayOfMonth.getDay() == 0 || firstDayOfMonth.getDay() == 6) {
                 firstDayOfMonth = new Date(firstDayOfMonth.getTime() + 86400000);
@@ -44,7 +58,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
 
             $scope.firstWeekOfMonth = getWeekNumber(firstDayOfMonth);
 
-            var lastDayOfMonth = new Date($scope.year, $scope.month, 0);
+            var lastDayOfMonth = new Date($scope.year, $scope.byWeekMonth, 0);
 
             while (lastDayOfMonth.getDay() == 0 || lastDayOfMonth.getDay() == 6) {
                 lastDayOfMonth = new Date(lastDayOfMonth.getTime() - 86400000);
@@ -74,31 +88,26 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         function findWorks() {
             findWorksWeek();
             findWorksMonth();
-        }
+            findWorksTotal();
+        };
 
         function findWorksWeek() {
-            console.log('findWorksWeek');
-
             Work.query({
                 notnull: true,
                 week: $scope.weekNumber,
-                month: $scope.month,
+                month: $scope.byWeekMonth,
                 year: $scope.year,
                 memberId: $scope.selectedMember.id
             }).$promise.then(function (works) {
                     $scope.works = works;
                     $scope.days = new Array();
-                    console.log('inside findWorksWeek');
-                    console.log($scope.works);
                     for (var i = 0; i < $scope.works.length; i++) {
                         if ($scope.days.indexOf($scope.works[i].daylong) === -1) {
                             $scope.days.push($scope.works[i].daylong);
                         }
                     }
-
                     $scope.tasks = [];
                     var indextask = '';
-
                     for (var i = 0; i < $scope.works.length; i++) {
                         if (indextask.indexOf(getTaskDescription($scope.works[i].taskBean)) === -1) {
                             $scope.tasks.push({
@@ -108,12 +117,8 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                             indextask += ";" + getTaskDescription($scope.works[i].taskBean);
                         }
                     }
-
-
                     initWeekComment();
                 }, function (error) {
-                    console.log('error workweek');
-                    console.log(error);
                     $scope.error = 'Erreur HTTP ' + error.status;
                 });
 
@@ -121,17 +126,26 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
 
 
         function findWorksMonth() {
-            console.log('findWorksMonth');
             WorkByTask.query({
-                month: $scope.month,
+                month: $scope.byMonthMonth,
                 year: $scope.year,
                 memberId: $scope.selectedMember.id
             }).$promise.then(function (tasks) {
                     $scope.taskMonths = tasks;
                 }, function (error) {
-                    console.log('error work');
-                    console.log(error);
+                    $scope.error = 'Erreur HTTP ' + error.status;
+                }
+            )
+            ;
 
+        };
+
+        function findWorksTotal() {
+            WorkByTask.query({
+                memberId: $scope.selectedMember.id
+            }).$promise.then(function (tasks) {
+                    $scope.taskTotal = tasks;
+                }, function (error) {
                     $scope.error = 'Erreur HTTP ' + error.status;
                 }
             )
@@ -154,7 +168,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             WeekComment.get({
                 memberId: $scope.selectedMember.id,
                 weekNumber: $scope.weekNumber,
-                month: $scope.month,
+                month: $scope.byWeekMonth,
                 year: $scope.year
             }).$promise.then(function (data) {
                     $scope.weekcomment = data;
@@ -169,16 +183,12 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         $scope.decreaseWeek = function () {
 
             if ($scope.weekNumber === $scope.firstWeekOfMonth) {
-                var previousMonth = new Date($scope.year, $scope.month - 1, 0);
+                var previousMonth = new Date($scope.year, $scope.byWeekMonth - 1, 0);
 
                 while (previousMonth.getDay() == 0 || previousMonth.getDay() == 6) {
                     previousMonth = new Date(previousMonth.getTime() - 86400000);
                 }
-
-
-                $scope.year = previousMonth.getFullYear();
-                $scope.weekNumber = getWeekNumber(previousMonth);
-                $scope.month = previousMonth.getMonth() + 1;
+                generateByWeekValues(previousMonth);
                 generateWeekBorder();
             }
             else {
@@ -190,18 +200,28 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
 
         $scope.increaseWeek = function () {
             if ($scope.weekNumber === $scope.lastWeekOfMonth) {
-                var nextMonth = new Date($scope.year, $scope.month, 1);
+                var nextMonth = new Date($scope.year, $scope.byWeekMonth, 1);
                 while (nextMonth.getDay() == 0 || nextMonth.getDay() == 6) {
                     nextMonth = new Date(nextMonth.getTime() + 86400000);
                 }
-                $scope.year = nextMonth.getFullYear();
-                $scope.weekNumber = getWeekNumber(nextMonth);
-                $scope.month = nextMonth.getMonth() + 1;
+                generateByWeekValues(nextMonth);
                 generateWeekBorder();
             } else {
                 $scope.weekNumber++;
             }
             findWorksWeek();
+        };
+
+
+        $scope.decreaseMonth = function () {
+            $scope.byMonthMonth--;
+            findWorksMonth();
+        };
+
+
+        $scope.increaseMonth = function () {
+            $scope.byMonthMonth++;
+            findWorksMonth();
         };
 
 
@@ -234,7 +254,6 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
         }
 
         $scope.setOrderMonth = function (value) {
-
             if (value === $scope.ordermonth) {
                 $scope.ordermonth = "-" + value;
             } else {
@@ -242,7 +261,16 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             }
         };
 
-        $scope.showOrderClass = function (value) {
+        $scope.setOrderTotal = function (value) {
+            if (value === $scope.ordertotal) {
+                $scope.ordertotal = "-" + value;
+            } else {
+                $scope.ordertotal = value;
+            }
+        };
+
+
+        $scope.showOrderMonthClass = function (value) {
 
             if (value === $scope.ordermonth) {
                 return "glyphicon glyphicon-chevron-up";
@@ -253,14 +281,25 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             }
         };
 
+        $scope.showOrderTotalClass = function (value) {
 
-        $scope.totalTask = function () {
+            if (value === $scope.ordertotal) {
+                return "glyphicon glyphicon-chevron-up";
+            } else if ("-" + value === $scope.ordertotal) {
+                return "glyphicon glyphicon-chevron-down";
+            } else {
+                return "hidden";
+            }
+        };
+
+
+        $scope.totalTask = function (tasks) {
             var total = 0;
-            for (var i = 0; i < $scope.works.length; i++) {
-                total += $scope.works[i].amount;
+            for (var i = 0; i < tasks.length; i++) {
+                total += tasks[i].total;
 
             }
-            return total.toFixed(1);
+            return total;
         };
 
         function getWeekNumber(d) {

@@ -82,16 +82,18 @@ public class WorkEndPoint extends AbstractEndPoint {
 
         if (memberId == null) {
             memberId = userId;
-        } else if (userId != memberId && !memberService.find(userId).isAdministrator()) {
+        } else if (!memberId.equals(userId) && !memberService.find(userId).isAdministrator()) {
             return forbidden();
         }
 
-        if (year == null) {
-            return badRequest();
-        }
+        Map<Task, Double> worksByTask;
 
-        DateTime monthDateTime = new DateTime(year, month, 1, 0, 0);
-        Map<Task, Double> worksByTask = workService.findTaskByMemberMonth(memberId, monthDateTime);
+        if (month != null && year != null) {
+            DateTime monthDateTime = new DateTime(year, month, 1, 0, 0);
+            worksByTask = workService.findTaskByMemberMonth(memberId, monthDateTime);
+        } else {
+            worksByTask = workService.findTaskByMember(memberId);
+        }
 
         List<WorkByTaskBean> workByTaskBeans = Lists.newArrayListWithExpectedSize(worksByTask.size());
         worksByTask.forEach((task, total) -> workByTaskBeans.add(new WorkByTaskBean(task.getDescription(), total)));
