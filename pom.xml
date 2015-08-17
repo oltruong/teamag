@@ -66,6 +66,7 @@
 
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <jersey-common.version>2.4.1</jersey-common.version>
+        <momentjs.version>2.10.6</momentjs.version>
     </properties>
 
 
@@ -162,7 +163,11 @@
             <artifactId>angular-ui-calendar</artifactId>
             <version>${angular-ui-calendar.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${momentjs.version}</version>
+        </dependency>
 
         <!-- Runtime -->
         <dependency>
