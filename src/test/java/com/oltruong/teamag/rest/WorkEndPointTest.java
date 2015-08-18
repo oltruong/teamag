@@ -74,4 +74,14 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
         verify(mockWorkService).findTaskByMemberMonth(eq(randomLong), eq(new DateTime(randomIntegerYear, randomIntegerMonth, 1, 0, 0)));
     }
+
+    @Test
+    public void testDelete() {
+        checkResponseNotAllowed(workEndPoint.delete(randomId));
+    }
+
+    @Test
+    public void testGetSingle() {
+        checkResponseNotAllowed(workEndPoint.getSingle(randomId));
+    }
 }

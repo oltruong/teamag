@@ -9,6 +9,7 @@ import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.transformer.AbsenceWebBeanTransformer;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.webbean.AbsenceWebBean;
+import org.slf4j.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -28,6 +29,8 @@ import javax.ws.rs.core.Response;
 @SecurityChecked
 public class AbsenceEndPoint extends AbstractEndPoint<Absence> {
 
+    @Inject
+    private Logger LOGGER;
 
     @Inject
     private AbsenceService absenceService;

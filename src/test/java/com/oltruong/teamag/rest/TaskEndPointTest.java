@@ -3,6 +3,7 @@ package com.oltruong.teamag.rest;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.TaskService;
+import com.oltruong.teamag.transformer.TaskWebBeanTransformer;
 import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.webbean.TaskWebBean;
 import org.junit.Before;
@@ -99,10 +100,10 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         Response response = taskEndPoint.getSingle(randomId);
         checkResponseOK(response);
 
-        Task taskReturned = (Task) response.getEntity();
+        TaskWebBean taskReturned = (TaskWebBean) response.getEntity();
 
 
-        assertThat(taskReturned).isEqualToIgnoringNullFields(task);
+        assertThat(taskReturned).isEqualToComparingFieldByField(TaskWebBeanTransformer.transformTask(task));
         verify(mockTaskService).find(eq(randomId));
     }
 
