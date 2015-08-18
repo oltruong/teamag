@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" ng-app="teamagApp">
+<head>
+    <meta charset="utf-8">
+    <title>Teamag-Team Management tool</title>
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/teamag.css"/>
+    <link rel="stylesheet" href="css/colorpicker.css"/>
+    <link rel="stylesheet" href="webjars/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="webjars/fullcalendar/1.6.4/fullcalendar.css"/>
+    <link rel="shortcut icon" href="img/table_sql_check.ico"/>
+</head>
+<body>
+<navbar></navbar>
+
+<div ng-view class="container-fluid"></div>
+<br/><br/>
+
+<div class="container text-center">&copy;&nbsp;Teamag-2015
+</div>
+<script src="webjars/momentjs/2.10.6/min/moment.min.js"></script>
+<script src="webjars/angularjs/1.3.13/angular.min.js"></script>
+<script src="webjars/angularjs/1.3.13/angular-route.min.js"></script>
+<script src="webjars/angularjs/1.3.13/angular-resource.min.js"></script>
+<script src="webjars/angularjs/1.3.13/angular-cookies.min.js"></script>
+<script src="webjars/angularjs/1.3.13/i18n/angular-locale_fr-fr.js"></script>
+<script src="webjars/jquery/2.1.0/jquery.min.js"></script>
+<script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<script src="webjars/angular-ui-calendar/0.9.0-beta.1/calendar.js"></script>
+<script src="webjars/fullcalendar/1.6.4/fullcalendar.min.js"></script>
+
+<script src="webjars/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="js/lib/bootstrap-colorpicker-module.js"></script>
+<script src="js/lib/angular-md5.js"></script>
+<script src="js/application.js"></script>
+<script src="js/services.js"></script>
+
+<script src="js/controllers/AbsenceController.js"></script>
+<script src="js/commons/NavbarDirective.js"></script>
+<script src="js/controllers/CalendarController.js"></script>
+<script src="js/controllers/LoginController.js"></script>
+<script src="js/controllers/MemberController.js"></script>
+<script src="js/controllers/BusinessController.js"></script>
+<script src="js/work/CheckWorkController.js"></script>
+<script src="js/work/WeekCommentDirective.js"></script>
+<script src="js/work/WeekSelectorDirective.js"></script>
+<script src="js/work/UserSelectorDirective.js"></script>
+<script src="js/controllers/TaskController.js"></script>
+<script src="js/controllers/WorkTaskController.js"></script>
+<script src="js/workload/WorkLoadController.js"></script>
+<script src="js/controllers/RealizedController.js"></script>
+<script src="js/controllers/ActivityController.js"></script>
+<script src="js/controllers/NavbarController.js"></script>
+<script src="js/controllers/HomeController.js"></script>
+<script src="js/controllers/ProfileController.js"></script>
+<script src="js/services/BusinessCase.js"></script>
+<script src="js/services/Absence.js"></script>
+<script src="js/services/Activity.js"></script>
+<script src="js/services/Member.js"></script>
+<script src="js/work/CheckWorkService.js"></script>
+<script src="js/work/TaskListDirective.js"></script>
+<script src="js/workrealized/WorkRealizedController.js"></script>
+<script src="js/services/Login.js"></script>
+<script src="js/services/Task.js"></script>
+<script src="js/workrealized/Work.js"></script>
+<script src="js/workrealized/WorkByTask.js"></script>
+<script src="js/services/WorkLoad.js"></script>
+<script src="js/services/WorkRealized.js"></script>
+<script src="js/services/localStorage.js"></script>
+<script src="js/services/userInfo.js"></script>
+<script src="js/commons/WeekCommentService.js"></script>
+<script src="js/commons/CleanableinputDirective.js"></script>
+
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
+
+</body>
+</html>

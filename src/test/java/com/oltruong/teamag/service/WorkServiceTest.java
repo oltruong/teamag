@@ -308,7 +308,31 @@ public class WorkServiceTest extends AbstractServiceTest {
 
     @Test
     public void testFindTaskByMemberMonth() {
-        Integer randomInt = EntityFactory.createRandomInteger();
+        Object[] array = prepareFindTaskByMember();
+
+        DateTime month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).withMonthOfYear(EntityFactory.createRandomMonth());
+        Map<Task, Double> mapResult = workService.findTaskByMemberMonth(randomLong, month);
+
+
+        assertThat(mapResult).hasSize(1).containsKey(((Task) array[0])).containsValue(((Double) array[1]));
+        verify(mockEntityManager).createNamedQuery(eq("Work.FIND_TASKS_BY_MEMBER_MONTH"));
+        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomLong));
+        verify(mockNamedQuery).setParameter(eq("fmonth"), eq(month));
+    }
+
+    @Test
+    public void testFindTaskByMember() {
+        Object[] array = prepareFindTaskByMember();
+        Map<Task, Double> mapResult = workService.findTaskByMember(randomLong);
+
+
+        assertThat(mapResult).hasSize(1).containsKey(((Task) array[0])).containsValue(((Double) array[1]));
+        verify(mockEntityManager).createNamedQuery(eq("Work.FIND_TASKS_BY_MEMBER"));
+        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomLong));
+    }
+
+
+    private Object[] prepareFindTaskByMember() {
         Double randomDouble = EntityFactory.createRandomDouble();
         Map<Task, Double> mockMapResult = Maps.newHashMap();
         mockMapResult.put(EntityFactory.createTask(), randomDouble);
@@ -319,14 +343,9 @@ public class WorkServiceTest extends AbstractServiceTest {
         resultList.add(array);
 
         when(mockNamedQuery.getResultList()).thenReturn(resultList);
-        DateTime month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).withMonthOfYear(randomInt);
-        Map<Task, Double> mapResult = workService.findTaskByMemberMonth(randomLong, month);
 
+        return array;
 
-        assertThat(mapResult).hasSize(1).containsKey(((Task) array[0])).containsValue(((Double) array[1]));
-        verify(mockEntityManager).createNamedQuery(eq("Work.FIND_TASKS_BY_MEMBER_MONTH"));
-        verify(mockNamedQuery).setParameter(eq("fmemberId"), eq(randomLong));
-        verify(mockNamedQuery).setParameter(eq("fmonth"), eq(month));
     }
 
 

@@ -72,6 +72,10 @@ public abstract class AbstractEndPointTest {
         checkResponse(response, Response.Status.NO_CONTENT);
     }
 
+    protected void checkResponseNotAllowed(Response response) {
+        checkResponse(response, Response.Status.METHOD_NOT_ALLOWED);
+    }
+
     protected void checkResponseNotFound(Response response) {
         checkResponse(response, Response.Status.NOT_FOUND);
     }

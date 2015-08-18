@@ -4,7 +4,7 @@
     <groupId>com.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.6.5-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
     <name>TEAMAG</name>
     <description>Team Management web application</description>
     <url>https://github.com/oltruong/teamag</url>
@@ -13,8 +13,6 @@
 
         <java.version>1.8</java.version>
         <version.javaee>7.0</version.javaee>
-        <version.primefaces>4.0</version.primefaces>
-        <version.primefaces-theme>1.0.10</version.primefaces-theme>
         <version.junit>4.12</version.junit>
         <version.assertj>3.0.0</version.assertj>
         <version.mockito>1.9.5</version.mockito>
@@ -66,6 +64,7 @@
 
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <jersey-common.version>2.4.1</jersey-common.version>
+        <momentjs.version>2.10.6</momentjs.version>
     </properties>
 
 
@@ -87,19 +86,6 @@
             <groupId>com.owlike</groupId>
             <artifactId>genson</artifactId>
             <version>${version.genson}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>${version.primefaces}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>all-themes</artifactId>
-            <version>${version.primefaces-theme}</version>
         </dependency>
 
         <dependency>
@@ -162,7 +148,11 @@
             <artifactId>angular-ui-calendar</artifactId>
             <version>${angular-ui-calendar.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${momentjs.version}</version>
+        </dependency>
 
         <!-- Runtime -->
         <dependency>
@@ -387,37 +377,7 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar-maven-plugin.version}</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>${version.maven-antrun-plugin}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <target>
 
-                                <tstamp>
-                                    <format property="now" pattern="dd/MM/yyyy - HH:mm"/>
-                                    <format property="year" pattern="yyyy"/>
-                                </tstamp>
-                                <property name="messageResources.path" value="target/classes/messages_fr.properties"/>
-
-                                <replace file="${messageResources.path}" token="REPLACE.VERSION"
-                                         value="${project.version}"/>
-                                <replace file="${messageResources.path}" token="REPLACE.YEAR"
-                                         value="${year}"/>
-                                <replace file="${messageResources.path}" token="REPLACE.TIMESTAMP"
-                                         value="${now}"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -428,15 +388,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>http://repository.primefaces.org</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
 
     <scm>
         <connection>scm:git:https://github.com/oltruong/teamag.git</connection>

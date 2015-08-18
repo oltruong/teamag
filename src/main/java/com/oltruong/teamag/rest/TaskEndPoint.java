@@ -1,13 +1,12 @@
 package com.oltruong.teamag.rest;
 
-import com.google.common.collect.Lists;
 import com.oltruong.teamag.interfaces.AdminChecked;
 import com.oltruong.teamag.interfaces.SecurityChecked;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.TaskService;
-import com.oltruong.teamag.webbean.TaskWebBean;
+import com.oltruong.teamag.transformer.TaskWebBeanTransformer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
@@ -23,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * @author Olivier Truong
@@ -46,7 +44,14 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
     @GET
     @AdminChecked
     public Response getAll() {
-        return get(() -> buildTask(getService().findAll()));
+        return get(() -> TaskWebBeanTransformer.transformTaskList(getService().findAll()));
+    }
+
+    @Override
+    @GET
+    @Path("/{id}")
+    public Response getSingle(@PathParam("id") Long id) {
+        return get(() -> TaskWebBeanTransformer.transformTask((Task) getService().find(id)));
     }
 
     @POST
@@ -88,18 +93,9 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
     @GET
     @Path("/withactivity")
     public Response getTasksWithActivity() {
-        return ok(buildTask(taskService.findTaskWithActivity()));
+        return ok(TaskWebBeanTransformer.transformTaskList(taskService.findTaskWithActivity()));
     }
 
-    private List<TaskWebBean> buildTask(List<Task> taskList) {
-
-
-        List<TaskWebBean> taskWebBeanList = Lists.newArrayListWithExpectedSize(taskList.size());
-
-        taskList.forEach(task -> taskWebBeanList.add(transformTask(task)));
-
-        return taskWebBeanList;
-    }
 
     @PUT
     @Path("/{id}")
@@ -108,25 +104,6 @@ public class TaskEndPoint extends AbstractEndPoint<Task> {
         task.setId(taskId);
         taskService.merge(task);
         return ok();
-    }
-
-    private TaskWebBean transformTask(Task task) {
-        TaskWebBean taskWebBean = new TaskWebBean();
-        taskWebBean.setActivity(task.getActivity());
-        taskWebBean.setAmount(task.getAmount());
-        taskWebBean.setComment(task.getComment());
-        taskWebBean.setDelegated(task.getDelegated());
-        taskWebBean.setId(task.getId());
-        taskWebBean.setName(task.getName());
-        taskWebBean.setProject(task.getProject());
-        taskWebBean.setTotal(task.getTotal());
-        taskWebBean.setDescription(task.getDescription());
-
-        if (task.getTask() != null) {
-            taskWebBean.setTask(transformTask(task.getTask()));
-        }
-
-        return taskWebBean;
     }
 
 

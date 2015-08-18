@@ -35,15 +35,12 @@ public class WorkLoadEndPoint extends AbstractEndPoint<WorkLoad> {
 
     @GET
     public Response getWorkLoad() {
-
         return ok(buildWorkLoadContainer());
     }
 
     private WorkLoadMemberContainer buildWorkLoadContainer() {
         WorkLoadMemberContainer workLoadContainer = new WorkLoadMemberContainer();
         workLoadContainer.setMemberList(MemberService.getMemberList());
-
-
         List<WorkLoad> workLoadList = workLoadService.findOrCreateAllWorkLoad(businessCaseService.findAll());
         BusinessCase businessCase = null;
         WorkLoadContainer currentContainer = null;
@@ -75,7 +72,6 @@ public class WorkLoadEndPoint extends AbstractEndPoint<WorkLoad> {
 
     @PUT
     public Response updateWorkLoad(List<WorkLoadContainer> workLoadContainerList) {
-
         if (workLoadContainerList != null) {
             workLoadContainerList.forEach(workLoadContainer -> workLoadService.mergeList(workLoadContainer.getWorkLoadList()));
         }

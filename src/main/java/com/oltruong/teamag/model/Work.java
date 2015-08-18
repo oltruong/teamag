@@ -25,6 +25,7 @@ import javax.persistence.Transient;
         @NamedQuery(name = "Work.FIND_BY_MEMBER_MONTH_NOT_NULL", query = "SELECT w FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth and w.task IN (SELECT w.task from Work w where w.member.id=:fmemberId and w.month=:fmonth and w.total<>0)  order by w.task.name, w.day"),
         @NamedQuery(name = "Work.FIND_WORKDAYS_BY_MEMBER_MONTH", query = "SELECT w.day, sum(w.total) FROM Work w WHERE w.member.id=:fmemberId and w.month=:fmonth group by w.day order by w.day"),
         @NamedQuery(name = "Work.FIND_TASKS_BY_MEMBER_MONTH", query = "SELECT w.task, sum(w.total) FROM Work w WHERE w.total<>0 and w.member.id=:fmemberId and w.month=:fmonth group by w.task order by w.task.id"),
+        @NamedQuery(name = "Work.FIND_TASKS_BY_MEMBER", query = "SELECT w.task, sum(w.total) FROM Work w WHERE w.total<>0 and w.member.id=:fmemberId group by w.task order by w.task.id"),
         @NamedQuery(name = "Work.DELETE_BY_MEMBERTaskMonth", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId and w.task.id=:ftaskId and w.month=:fmonth"),
         @NamedQuery(name = "Work.DELETE_BY_MEMBER", query = "DELETE FROM Work w WHERE w.member.id=:fmemberId"),
         @NamedQuery(name = "Work.FIND_BY_MONTH", query = "SELECT w FROM Work w WHERE (w.month=:fmonth AND w.total<>0 ) ORDER by w.member.name, w.member.company, w.task.project, w.task.name"),
