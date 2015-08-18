@@ -56,7 +56,7 @@ public class EntityFactory {
     }
 
     public static Integer createRandomMonth() {
-        return createRandomInteger(12);
+        return createRandomInteger(11) + 1;
     }
 
 
