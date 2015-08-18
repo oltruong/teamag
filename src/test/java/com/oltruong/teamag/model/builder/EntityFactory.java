@@ -59,13 +59,6 @@ public class EntityFactory {
         return createRandomInteger(11) + 1;
     }
 
-
-    public static void main(String[] args) {
-
-
-        System.out.println(new Random().nextInt(12));
-    }
-
     public static Member createMember() {
         Member member = new Member();
 
