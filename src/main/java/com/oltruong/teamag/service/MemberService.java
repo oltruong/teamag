@@ -69,7 +69,7 @@ public class MemberService extends AbstractService<Member> {
 
         Task absenceTask = taskService.getOrCreateAbsenceTask();
         absenceTask.addMember(adminMember);
-        taskService.persist(absenceTask);
+        taskService.merge(absenceTask);
 
         memberList = Lists.newArrayListWithExpectedSize(1);
         memberList.add(adminMember);

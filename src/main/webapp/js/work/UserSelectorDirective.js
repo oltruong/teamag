@@ -3,5 +3,5 @@ teamagApp.directive('userselector', function () {
         scope: '@',
         templateUrl: "partials/directives/userselector.html",
         restrict: "E"
-    }
+    };
 });

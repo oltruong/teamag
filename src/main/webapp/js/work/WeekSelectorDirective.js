@@ -3,5 +3,5 @@ teamagApp.directive('weekselector', function () {
         scope: '@',
         templateUrl: "partials/directives/weekselector.html",
         restrict: "E"
-    }
+    };
 });

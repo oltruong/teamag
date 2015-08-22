@@ -39,7 +39,6 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
         };
 
         $scope.refreshBc = function ($bc) {
-
             var oldbc = BusinessCase.get({id: $bc.id}, function () {
                 $bc.comment = oldbc.comment;
                 $bc.identifier = oldbc.identifier;
@@ -49,7 +48,7 @@ teamagApp.controller('BusinessController', ['$scope', '$http', '$location', '$ro
                 $scope.error = 'Erreur HTTP' + error.status;
             });
 
-        }
+        };
 
         $scope.create = function () {
             BusinessCase.save($scope.newbc, function () {

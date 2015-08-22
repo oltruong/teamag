@@ -307,7 +307,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             d.setHours(0, 0, 0);
             d.setDate(d.getDate() + 4 - (d.getDay() || 7));
             var yearStart = new Date(d.getFullYear(), 0, 1);
-            return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7)
+            return Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
         }
 
 

@@ -40,9 +40,7 @@ public class ParameterService extends AbstractService<Parameter> {
 
     @Lock(LockType.WRITE)
     private void saveParameters() {
-        for (Parameter parameter : parameterMap.values()) {
-            merge(parameter);
-        }
+        parameterMap.values().forEach(this::merge);
     }
 
     private void loadParameters() {

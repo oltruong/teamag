@@ -21,7 +21,8 @@ import java.util.List;
         @NamedQuery(name = "Task.FIND_ALL_WITH_ACTIVITY", query = "SELECT t from Task t where t.activity is not null order by t.name, t.project"),
         @NamedQuery(name = "Task.FIND_BY_NAME", query = "SELECT t from Task t where (t.name=:fname and t.project=:fproject)"), @NamedQuery(name = "Task.FIND_NONTYPE", query = "SELECT t from Task t JOIN t.members m WHERE m NOT IN (select m from Member where m.memberType=:memberType)"), @NamedQuery(name = "Task.FIND_MEMBER", query = "SELECT t from Task t JOIN t.members m WHERE m.id=:memberId")})
 @Entity
-public class Task implements IModel {
+public class Task extends Delegable {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -43,16 +44,9 @@ public class Task implements IModel {
     @JoinColumn(name = "ACTIVITY_FK")
     private Activity activity;
 
-    @Column(nullable = false)
-    private Boolean delegated = Boolean.FALSE;
-
-    private String comment;
-
-    private Double amount;
 
     @Transient
     private Double total;
-
 
     public Long getId() {
         return id;
@@ -136,7 +130,7 @@ public class Task implements IModel {
             return false;
         }
         Task task0 = (Task) otherTask;
-        return this.id.equals(task0.getId());
+        return getId().equals(task0.getId());
     }
 
     @Override
@@ -148,7 +142,7 @@ public class Task implements IModel {
     @Override
     public Task clone() {
         Task cloneTask = new Task();
-        cloneTask.setId(id);
+        cloneTask.setId(getId());
         cloneTask.setName(name);
         cloneTask.setProject(project);
         return cloneTask;
@@ -178,31 +172,6 @@ public class Task implements IModel {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
-    }
-
-    public Boolean getDelegated() {
-        return delegated;
-    }
-
-    public void setDelegated(Boolean delegated) {
-        this.delegated = delegated;
-    }
-
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
 

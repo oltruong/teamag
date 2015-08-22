@@ -73,7 +73,7 @@ public class Member implements Serializable, IModel {
     @Override
     public int hashCode() {
         return (id != null)
-                ? (this.getClass().hashCode() + id.hashCode())
+                ? this.getClass().hashCode() + id.hashCode()
                 : super.hashCode();
     }
 

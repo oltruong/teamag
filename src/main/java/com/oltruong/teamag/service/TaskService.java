@@ -180,7 +180,7 @@ public class TaskService extends AbstractService<Task> {
             Task newTask = new Task();
             newTask.setName("Absence");
             newTask.setProject("");
-            persist(newTask);
+            super.persist(newTask);
             task = newTask;
         }
         return task;

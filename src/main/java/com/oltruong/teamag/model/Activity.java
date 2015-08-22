@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NamedQueries({@NamedQuery(name = "Activity.FIND_ALL", query = "SELECT a from Activity a order by a.name"),
         @NamedQuery(name = "Activity.FIND_BY_NAME_BC", query = "SELECT a from Activity a where a.name=:fname and a.businessCase=:fbc"),
         @NamedQuery(name = "Activity.REMOVE_BC", query = "UPDATE Activity SET businessCase=NULL where businessCase.id=:fBusinessCaseId")})
-public class Activity implements IModel {
+public class Activity extends Delegable {
 
     @Id
     @GeneratedValue
@@ -27,15 +27,6 @@ public class Activity implements IModel {
     @ManyToOne
     @JoinColumn(name = "BC_FK")
     private BusinessCase businessCase;
-
-
-    @Column(nullable = false)
-    private Boolean delegated = Boolean.FALSE;
-
-
-    private Double amount;
-
-    private String comment;
 
     public Long getId() {
         return id;
@@ -60,28 +51,6 @@ public class Activity implements IModel {
     public void setBusinessCase(BusinessCase businessCase) {
         this.businessCase = businessCase;
     }
-
-    public Boolean getDelegated() {
-        return delegated;
-    }
-
-    public void setDelegated(Boolean delegated) {
-        this.delegated = delegated;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }
+
+

@@ -26,7 +26,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
             if ($scope.unit === 'MHI') {
                 $scope.unit = 'JHI';
             } else {
-                $scope.unit = 'MHI'
+                $scope.unit = 'MHI';
             }
         };
 
@@ -302,7 +302,7 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
             }
             return true;
 
-        }
+        };
 
     }]);
 
