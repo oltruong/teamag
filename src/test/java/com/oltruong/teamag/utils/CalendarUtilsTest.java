@@ -14,6 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CalendarUtilsTest {
 
 
+    public static final int YEAR = 2015;
+
     @Test
     public void testConstructorIsPrivate() {
         TestUtils.testConstructorIsPrivate(CalendarUtils.class);
@@ -25,62 +27,62 @@ public class CalendarUtilsTest {
 
         assertThat(daysOff).hasSize(11);
 
-        checkContains(daysOff, 1, 1, 2015);
-        checkContains(daysOff, 6, 4, 2015);
-        checkContains(daysOff, 1, 5, 2015);
-        checkContains(daysOff, 8, 5, 2015);
-        checkContains(daysOff, 14, 5, 2015);
-        checkContains(daysOff, 25, 5, 2015);
-        checkContains(daysOff, 14, 7, 2015);
-        checkContains(daysOff, 15, 8, 2015);
+        checkContains(daysOff, 1, 1, YEAR);
+        checkContains(daysOff, 6, 4, YEAR);
+        checkContains(daysOff, 1, 5, YEAR);
+        checkContains(daysOff, 8, 5, YEAR);
+        checkContains(daysOff, 14, 5, YEAR);
+        checkContains(daysOff, 25, 5, YEAR);
+        checkContains(daysOff, 14, 7, YEAR);
+        checkContains(daysOff, 15, 8, YEAR);
 
-        checkContains(daysOff, 1, 11, 2015);
-        checkContains(daysOff, 11, 11, 2015);
-        checkNotContains(daysOff, 3, 11, 2015);
-        checkContains(daysOff, 25, 12, 2015);
+        checkContains(daysOff, 1, 11, YEAR);
+        checkContains(daysOff, 11, 11, YEAR);
+        checkNotContains(daysOff, 3, 11, YEAR);
+        checkContains(daysOff, 25, 12, YEAR);
 
     }
 
 
     @Test
     public void testIsDayOff() {
-        assertThat(CalendarUtils.isDayOff(createDay(1, 1, 2015))).isTrue();
-        assertThat(CalendarUtils.isDayOff(createDay(2, 1, 2015))).isFalse();
-        assertThat(CalendarUtils.isDayOff(createDay(3, 1, 2015))).isTrue();
-        assertThat(CalendarUtils.isDayOff(createDay(4, 1, 2015))).isTrue();
-        assertThat(CalendarUtils.isDayOff(createDay(25, 5, 2015))).isTrue();
+        assertThat(CalendarUtils.isDayOff(createDay(1, 1, YEAR))).isTrue();
+        assertThat(CalendarUtils.isDayOff(createDay(2, 1, YEAR))).isFalse();
+        assertThat(CalendarUtils.isDayOff(createDay(3, 1, YEAR))).isTrue();
+        assertThat(CalendarUtils.isDayOff(createDay(4, 1, YEAR))).isTrue();
+        assertThat(CalendarUtils.isDayOff(createDay(25, 5, YEAR))).isTrue();
     }
 
     @Test
     public void testIsWorkingDay() {
-        assertThat(CalendarUtils.isWorkingDay(createDay(1, 1, 2015))).isFalse();
-        assertThat(CalendarUtils.isWorkingDay(createDay(2, 1, 2015))).isTrue();
-        assertThat(CalendarUtils.isWorkingDay(createDay(3, 1, 2015))).isFalse();
-        assertThat(CalendarUtils.isWorkingDay(createDay(4, 1, 2015))).isFalse();
-        assertThat(CalendarUtils.isWorkingDay(createDay(25, 5, 2015))).isFalse();
+        assertThat(CalendarUtils.isWorkingDay(createDay(1, 1, YEAR))).isFalse();
+        assertThat(CalendarUtils.isWorkingDay(createDay(2, 1, YEAR))).isTrue();
+        assertThat(CalendarUtils.isWorkingDay(createDay(3, 1, YEAR))).isFalse();
+        assertThat(CalendarUtils.isWorkingDay(createDay(4, 1, YEAR))).isFalse();
+        assertThat(CalendarUtils.isWorkingDay(createDay(25, 5, YEAR))).isFalse();
     }
 
     @Test
     public void testIsLastWorkingDayOfWeek() {
 
 
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, 2015));
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(7, 5, 2015), workingDays)).isTrue();
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(8, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(6, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(13, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(15, 5, 2015), workingDays)).isTrue();
-        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(24, 5, 2015), workingDays)).isFalse();
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, YEAR));
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(7, 5, YEAR), workingDays)).isTrue();
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(8, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(6, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(13, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(15, 5, YEAR), workingDays)).isTrue();
+        assertThat(CalendarUtils.isLastWorkingDayOfWeek(createDay(24, 5, YEAR), workingDays)).isFalse();
     }
 
     @Test
     public void testIsLastWorkingDayOfMonth() {
-        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, 2015));
-        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(29, 5, 2015), workingDays)).isTrue();
-        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(30, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(31, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(22, 5, 2015), workingDays)).isFalse();
-        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(8, 5, 2015), workingDays)).isFalse();
+        List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, YEAR));
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(29, 5, YEAR), workingDays)).isTrue();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(30, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(31, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(22, 5, YEAR), workingDays)).isFalse();
+        assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(8, 5, YEAR), workingDays)).isFalse();
     }
 
 
@@ -139,30 +141,30 @@ public class CalendarUtilsTest {
     @Test
     public void testIsInFirstWorkingWeekOfMonth() throws Exception {
 
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(31, 7, 2015))).isFalse();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(4, 8, 2015))).isTrue();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(15, 8, 2015))).isFalse();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 8, 2015))).isFalse();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 9, 2015))).isTrue();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(5, 9, 2015))).isTrue();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 10, 2015))).isTrue();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(6, 10, 2015))).isFalse();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 11, 2015))).isFalse();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(3, 11, 2015))).isTrue();
-        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 12, 2015))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(31, 7, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(4, 8, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(15, 8, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 8, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 9, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(5, 9, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 10, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(6, 10, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 11, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(3, 11, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(1, 12, YEAR))).isTrue();
 
     }
 
     @Test
     public void testIsInLastWorkingWeekOfMonth() throws Exception {
 
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 7, 2015))).isTrue();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(25, 7, 2015))).isFalse();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 8, 2015))).isTrue();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(26, 12, 2015))).isFalse();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(29, 12, 2015))).isTrue();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 12, 2015))).isTrue();
-        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(29, 5, 2015))).isTrue();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 7, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(25, 7, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 8, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(26, 12, YEAR))).isFalse();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(29, 12, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 12, YEAR))).isTrue();
+        assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(29, 5, YEAR))).isTrue();
 
     }
 
