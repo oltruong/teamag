@@ -49,7 +49,7 @@ public class ScheduleService {
     }
 
 
-    @Schedule(second = "0", minute = "0", hour = "15")
+    @Schedule(second = "0", minute = "0", hour = "13")
     public void sendReminderAfternoon() {
         final DateTime now = DateTime.now();
         if (CalendarUtils.isWorkingDay(now)) {
