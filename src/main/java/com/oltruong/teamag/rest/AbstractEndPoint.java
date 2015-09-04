@@ -107,6 +107,10 @@ public abstract class AbstractEndPoint<T extends IModel> {
         return Response.created(taskURI).build();
     }
 
+    protected Response internalError() {
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+    }
+
     protected Response notAcceptable() {
         return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }

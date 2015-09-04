@@ -100,16 +100,16 @@ public class ScheduleService {
     private MailBean buildEmailWeek(Member member) {
 
         MailBean mail = new MailBean();
-        mail.setSubject("Rappel : réalisé semaine");
-        mail.setContent("Bonjour " + member.getName() + ".\nComme c'est le dernier jour complet travaillé de la semaine, n'hésite pas à remplir ton réalisé si ça n'est pas déjà fait.\nMerci d'avance et bon week-end !\n\n----------------\nMessage généré automatiquement");
+        mail.setSubject("Rappel : realise semaine");
+        mail.setContent("Bonjour " + member.getName() + ".\nComme c'est le dernier jour complet travaille de la semaine, n'hesite pas a remplir ton realise si ca n'est pas deja fait.\nMerci d'avance et bon week-end !\n\n----------------\nMessage genere automatiquement");
         mail.addRecipient(member.getEmail());
         return mail;
     }
 
     private MailBean buildEmailMonth(Member member) {
         MailBean mail = new MailBean();
-        mail.setSubject("Rappel : réalisé du mois");
-        mail.setContent("Bonjour " + member.getName() + ".\nComme c'est le dernier jour complet travaillé du mois, merci de remplir ton réalisé si ça n'est pas déjà fait.\nMerci d'avance !\n\n----------------\nMessage généré automatiquement");
+        mail.setSubject("Rappel : realise du mois");
+        mail.setContent("Bonjour " + member.getName() + ".\nComme c'est le dernier jour complet travaille du mois, merci de remplir ton realise si ca n'est pas deja fait.\nMerci d'avance !\n\n----------------\nMessage genere automatiquement");
         mail.addRecipient(member.getEmail());
         return mail;
     }

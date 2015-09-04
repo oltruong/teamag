@@ -1,0 +1,26 @@
+<div class="col-md-6 col-md-offset-3">
+    <h1 class="text-center">Param&egrave;tres</h1>
+
+    <form role="form" name="adminForm">
+        <div class="form-group">
+            <label for="smtpserver">Serveur SMTP</label>
+            <input type="text" class="form-control" id="smtpserver" placeholder="smtp.host.com"
+                   ng-model="smtpserver.value">
+        </div>
+        <div class="form-group">
+            <label for="adminemail">E-mail administrateur</label>
+            <input type="email" class="form-control" id="adminemail" placeholder="admin@email.com"
+                   ng-model="adminemail.value">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" ng-disabled="!adminForm.$valid" ng-click="update();"><span
+                    class="glyphicon glyphicon-save"></span>&nbsp;Mettre &agrave; jour
+            </button>
+            <button type="submit" class="btn btn-warning" ng-click="testemail();"><span
+                    class="glyphicon glyphicon-envelope"></span>&nbsp;Test e-mail
+            </button>
+        </div>
+    </form>
+
+    {{message}}
+</div>

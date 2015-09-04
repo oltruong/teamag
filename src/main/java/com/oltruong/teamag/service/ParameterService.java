@@ -115,6 +115,6 @@ public class ParameterService extends AbstractService<Parameter> {
 
     @Override
     public List<Parameter> findAll() {
-        throw new UnsupportedOperationException();
+        return getTypedQueryList("Parameter.FIND_ALL");
     }
 }

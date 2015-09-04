@@ -12,6 +12,10 @@ teamagApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {templateUrl: 'partials/views/login.html', controller: 'LoginController'});
     $routeProvider.when('/members', {templateUrl: 'partials/views/members.html', controller: 'MemberController'});
     $routeProvider.when('/newMember', {templateUrl: 'partials/views/newmember.html', controller: 'MemberController'});
+    $routeProvider.when('/parameter', {
+        templateUrl: 'partials/views/parameter.html',
+        controller: 'ParameterController'
+    });
     $routeProvider.when('/works/:taskId', {templateUrl: 'partials/views/works.html', controller: 'WorkTaskController'});
     $routeProvider.when('/workload', {templateUrl: 'partials/views/workLoad.html', controller: 'WorkLoadController'});
     $routeProvider.when('/realized', {templateUrl: 'partials/views/realized.html', controller: 'RealizedController'});
