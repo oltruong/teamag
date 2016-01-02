@@ -27,7 +27,7 @@ public final class CalendarUtils {
     }
 
     public static boolean isDayOff(DateTime day) {
-        boolean verdict = false;
+        boolean verdict;
 
         int dayOfWeek = day.getDayOfWeek();
         if (dayOfWeek == DateTimeConstants.SUNDAY || dayOfWeek == DateTimeConstants.SATURDAY) {
@@ -46,11 +46,11 @@ public final class CalendarUtils {
             List<DateTime> daysOff = Lists.newArrayListWithExpectedSize(numberDaysOff);
 
             daysOff.add(buildDayOff(1, DateTimeConstants.JANUARY));
-            daysOff.add(buildDayOff(6, DateTimeConstants.APRIL));
+            daysOff.add(buildDayOff(28, DateTimeConstants.MARCH));
             daysOff.add(buildDayOff(1, DateTimeConstants.MAY));
             daysOff.add(buildDayOff(8, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(14, DateTimeConstants.MAY));
-            daysOff.add(buildDayOff(25, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(5, DateTimeConstants.MAY));
+            daysOff.add(buildDayOff(16, DateTimeConstants.MAY));
             daysOff.add(buildDayOff(14, DateTimeConstants.JULY));
             daysOff.add(buildDayOff(15, DateTimeConstants.AUGUST));
             daysOff.add(buildDayOff(1, DateTimeConstants.NOVEMBER));
