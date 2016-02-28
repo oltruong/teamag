@@ -10,6 +10,9 @@
 * [LogBack] (http://logback.qos.ch/): nice logger
 * [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
 
+## Build status
+[![Build Status](https://api.travis-ci.org/oltruong/teamag.png)](https://travis-ci.org/oltruong/teamag)
+
 ## Getting started
 
 ### Required software
