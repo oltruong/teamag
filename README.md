@@ -13,6 +13,9 @@
 ## Build status
 [![Build Status](https://api.travis-ci.org/oltruong/teamag.png)](https://travis-ci.org/oltruong/teamag)
 
+## Coverage status
+[![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.svg?branch=develop)](https://coveralls.io/github/oltruong/teamag?branch=develop)
+
 ## Getting started
 
 ### Required software
