@@ -2,7 +2,6 @@
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
 * Team management web application using Java8/JavaEE 7 to learn while getting a useful tool for my job :)
 
-
 ## Frameworks and librairies used
 
 * [JavaEE7] (http://www.oracle.com/technetwork/java/javaee/overview/index.html)
