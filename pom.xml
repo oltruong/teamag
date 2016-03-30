@@ -395,7 +395,6 @@
                <configuration>
                   <format>xml</format>
                   <maxmem>256m</maxmem>
-                  <!-- aggregated reports for multi-module projects -->
                   <aggregate>true</aggregate>
                </configuration>
             </plugin>
@@ -406,7 +405,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                   <repoToken>${env.coveralls_repo_token}</repoToken>
+                   <repoToken>${coveralls_repo_token}</repoToken>
                 </configuration>
             </plugin>
         </plugins>
