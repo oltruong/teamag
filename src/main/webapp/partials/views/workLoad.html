@@ -1,0 +1,115 @@
+<h1 class="text-center">Plan de charge<span ng-show="showRemaining"> - Reste &agrave; faire </span></h1>
+<div class="row">
+    <div class="col-md-12">
+        <cleanableinput model="queryBC" placeholder="Filtrer BC"></cleanableinput>
+        <cleanableinput model="queryMember" placeholder="Filtrer Nom"></cleanableinput>
+
+        <a ng-show="!showRemaining" ng-click="showRemaining=true;" ng-disabled="editing" class="btn btn-primary"
+           title="Afficher reste"> <span class="glyphicon glyphicon-folder-closee"></span>&nbsp;
+            Reste &agrave; faire
+        </a>
+        <a ng-show="showRemaining" ng-click="showRemaining=false;unit='MHI'" class="btn btn-primary"
+           title="Tout Afficher">
+            Afficher le plan
+        </a>
+        <a ng-show="!editing && !showRemaining" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
+            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&Eacute;diter
+        </a>
+        <a ng-show="editing" ng-click="editing=false;"
+           class="btn btn-warning btn"
+           title="Annuler la modification">
+            <span class="glyphicon glyphicon-remove"></span>&nbsp;Annuler la modification
+        </a>
+        <a ng-show="editing" ng-click="update();editing=false;"
+           class="btn btn-success btn"
+           title="Valider">
+            <span class="glyphicon glyphicon-ok"></span>&nbsp;Sauvegarder
+        </a>
+
+        <br/>
+        <input type="checkbox" ng-model="nonEmptyBCOnly"/> Afficher uniquement les BusinessCases avec imputation
+        <br/>
+        <input type="checkbox" ng-model="nonFullBCOnly"/> Afficher uniquement les BusinessCases avec reliquat
+
+        <h3 class="text-center" ng-show="showRemaining">Unité : <strong>{{unit}}</strong>&nbsp;&nbsp;<a
+                ng-click="changeUnit()"
+                class="btn btn-info">
+            <span class="glyphicon glyphicon-random"></span>&nbsp;&nbsp;{{otherUnit()}}
+        </a></h3>
+
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th ng-class="displayTotalClass()">Solde : {{(sumBC()-sumMember()/21)*factor()| number:2}}</th>
+                <th>Total</th>
+                <th>Reste</th>
+                <th ng-repeat="member in (workloadContainer.memberList  | filter:filterMemberName | orderBy:orderMember)">
+                    {{member.name}}
+                </th>
+            </tr>
+
+            <tr>
+                <th><span class="text-primary">Pr&eacute;visionnel</span><br/><br/>BusinessCase</th>
+                <th class="border-right"><span
+                        class="text-primary">{{sumMember()*factor()/21| number:2}}</span><br/><br/>{{sumBC()*factor()|
+                    number:2}}
+                </th>
+                <th><br/><span ng-class="displayMacroClassSum((sumMember()/21)-sumWorkLoad())">{{((sumMember()/21)-sumWorkLoad())*factor()| number:2}}</span><br/><span
+                        ng-class="displayClassSum(sumBC()-sumWorkLoad())">{{(sumBC()-sumWorkLoad())*factor()|
+                    number:2}}</span>
+                </th>
+
+                <th ng-repeat="member in (filteredMembers= (workloadContainer.memberList  | filter:filterMemberName | orderBy:orderMember))">
+                    <span ng-show="!showRemaining">
+                    <span class="text-primary">{{member.estimatedWorkDays/21| number:2}}</span><br/><span
+                            ng-class="displayClass(member)"
+                            >{{(member.estimatedWorkDays/21)- totalMember(member)|
+                number:2}}</span></span> <span ng-show="showRemaining"
+                                               ng-class="displayClassWorkLoad(member.estimatedWorkDays/21-totalRealizedMember(member))">{{((member.estimatedWorkDays/21-totalRealizedMember(member)))*factor()| number:2}}</span>
+                    <br/>&nbsp;
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="workLoadContainer in (workloadContainer.workLoadContainerList  | filter:queryBC| filter:filterNonFullBC |filter:filterNonEmptyBC | orderBy:orderProp)">
+
+                <td title="{{workLoadContainer.businessCase.comment}}"
+                    ng-class="displayClassText(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))"><span
+                        ng-class="displayClassGlyphicon(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))"></span>&nbsp;
+                    {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}
+                </td>
+                <td class="border-right"><span
+                        ng-show="!showRemaining">{{workLoadContainer.businessCase.amount}}<span
+                        ng-class="displayRealizedTotal(totalRealizedByBC(workLoadContainer))">
+                    ({{totalRealizedByBC(workLoadContainer)|number:2}})</span></span>
+                    <span ng-show="showRemaining"
+                          ng-class="displayClassWorkLoad(workLoadContainer.businessCase.amount-totalRealizedByBC(workLoadContainer))">{{(workLoadContainer.businessCase.amount-totalRealizedByBC(workLoadContainer))*factor() | number : 2}}</span>
+                </td>
+                <td><span
+                        ng-class="displayClassSum(workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer))">
+                    {{workLoadContainer.businessCase.amount-totalbyBC(workLoadContainer)|number:2}}</span>
+                </td>
+                <td ng-repeat="workload in (workLoadContainer.workLoadList  | filter:filterMember | orderBy:orderContainerMember)"
+                    title="charge de {{workload.member.name}} pour BC {{workLoadContainer.businessCase.identifier}}-{{workLoadContainer.businessCase.name}}">
+
+                   <span ng-show="!showRemaining">
+                    <span ng-show="!editing"
+                          ng-class="displayClassWorkLoad(workload.estimated)">{{workload.estimated| number:2}}</span><input
+                           type="number" step="0.1"
+                           ng-model="workload.estimated"
+                           ng-show="editing" size="3"> <span ng-class="displayRealizedClass(workload)">({{workload.realized| number:2}})</span></span>
+                        <span ng-show="showRemaining"
+                              ng-class="displayClassWorkLoad(workload.estimated-workload.realized)">{{(workload.estimated-workload.realized)*factor()| number:2}}</span>
+
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

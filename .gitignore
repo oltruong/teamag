@@ -9,3 +9,4 @@ teamag/.project
 *.idea
 .DS_Store
 **/*.log
+release.bat

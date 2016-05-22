@@ -1,0 +1,43 @@
+<div class="col-md-3">
+    <br/><br/>
+    <a href="#/members" class="btn btn-info"> <span
+            class="glyphicon glyphicon-arrow-left"></span>&nbsp;Retour &agrave;
+        la liste des Membres</a>
+</div>
+
+<div class="col-md-6">
+    <div class="bg-warning">{{warning}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+    <form role="form" name="newMemberForm">
+        <h2 class="text-center">Ajout de membre</h2>
+
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name" placeholder="Nom" ng-model="newMember.name">
+        </div>
+
+        <div class="form-group">
+            <label for="company">Entreprise</label>
+            <input type="text" class="form-control" id="company" placeholder="Entreprise" ng-model="newMember.company">
+        </div>
+        <div class="form-group">
+            <label for="email">Adresse &eacute;lectronique</label>
+            <input type="email" class="form-control" id="email" placeholder="nom@entreprise.com"
+                   ng-model="newMember.email">
+        </div>
+
+
+        <div class="form-group">
+            <label for="type">Type</label>&nbsp;
+            <select id="type" ng-model="newMember.memberType"
+                    ng-options="type for type in types"></select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" ng-disabled="!newMemberForm.$valid" ng-click="create();"><span
+                    class="glyphicon glyphicon-save"></span>&nbsp;Ajouter
+            </button>
+        </div>
+    </form>
+</div>

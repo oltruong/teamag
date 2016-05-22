@@ -1,0 +1,49 @@
+<h1 class="text-center">{{filteredWorks.length }} imputations</h1>
+<div class="row">
+    <div class="col-md-2  hidden-print">
+        <br/><br/>
+        <br/><br/><br/>
+        Filtrer&nbsp;: <input ng-model="query">
+        <br/><br/> Trier&nbsp;:
+        <select ng-model="orderProp">
+            <option value="member">Membre</option>
+            <option value="-member">Membre desc</option>
+            <option value="daylong">Jour</option>
+            <option value="-daylong">Jour desc</option>
+            <option value="amount">Montant</option>
+            <option value="-amount">Montant desc</option>
+        </select>
+
+    </div>
+    <div class="col-md-10">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>T&acirc;che</th>
+                <th>Membre</th>
+                <th>Jour</th>
+                <th>Montant</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="work in (filteredWorks= (works | filter:query | orderBy:orderProp))">
+
+                <td>{{work.task}}</td>
+                <td>{{work.member}}</td>
+                <td>{{work.day}}</td>
+                <td>{{work.amount}}</td>
+
+            </tr>
+            </tbody>
+            <tr class="success">
+                <td class="text-right" colspan="3">Total&nbsp;:</td>
+                <td>{{total() | number:2}}</td>
+            </tr>
+
+        </table>
+    </div>
+</div>

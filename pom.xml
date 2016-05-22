@@ -1,67 +1,91 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>fr.oltruong</groupId>
+    <groupId>com.oltruong</groupId>
     <artifactId>teamag</artifactId>
     <packaging>war</packaging>
-    <version>0.3.2-SNAPSHOT</version>
-    <name>TeamManagement</name>
+    <version>0.7.0-SNAPSHOT</version>
+    <name>TEAMAG</name>
     <description>Team Management web application</description>
-    <url>https://github.com/oltruong/TeaMag</url>
+    <url>https://github.com/oltruong/teamag</url>
 
     <properties>
 
-        <version.java>1.7</version.java>
+        <java.version>1.8</java.version>
         <version.javaee>7.0</version.javaee>
-        <version.glassfish>4.0</version.glassfish>
-        <version.primefaces>4.0</version.primefaces>
-        <version.primefaces-theme>1.0.10</version.primefaces-theme>
-        <version.junit>4.11</version.junit>
-        <version.assertj>1.4.0</version.assertj>
+        <version.junit>4.12</version.junit>
+        <version.assertj>3.0.0</version.assertj>
         <version.mockito>1.9.5</version.mockito>
-        <version.joda-time>2.3</version.joda-time>
+        <powermock.version>1.6.1</powermock.version>
+        <version.joda-time>2.7</version.joda-time>
 
         <version.commons-lang>3.1</version.commons-lang>
-        <version.commons-collections>3.2.1</version.commons-collections>
+        <version.commons-collections>3.2.2</version.commons-collections>
         <version.commons-fileupload>1.3</version.commons-fileupload>
         <version.commons-io>1.4</version.commons-io>
         <version.apache.poi>3.7</version.apache.poi>
-        <version.guava>15.0</version.guava>
-        <version.eclipselink>2.5.0</version.eclipselink>
-        <version.logback>1.0.13</version.logback>
-        <version.jacoco-plugin>0.6.3.201306030806</version.jacoco-plugin>
+        <version.guava>18.0</version.guava>
+        <version.logback>1.1.2</version.logback>
+        <version.genson>0.98</version.genson>
+        <version.jacoco-plugin>0.7.0.201403182114</version.jacoco-plugin>
+
+        <version.h2>1.4.177</version.h2>
+        <version.arquillian>1.1.4.Final</version.arquillian>
+
 
         <version.maven-project-info-reports-plugin>2.6</version.maven-project-info-reports-plugin>
-        <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
-        <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
-        <version.maven-failsafe-plugin>2.16</version.maven-failsafe-plugin>
-        <version.maven-war-plugin>2.3</version.maven-war-plugin>
-        <version.maven-surefire-plugin>2.14.1</version.maven-surefire-plugin>
-        <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
+        <version.maven-clean-plugin>2.6.1</version.maven-clean-plugin>
+        <version.maven-compiler-plugin>3.3</version.maven-compiler-plugin>
+        <version.maven-failsafe-plugin>2.18.1</version.maven-failsafe-plugin>
+        <version.maven-war-plugin>2.6</version.maven-war-plugin>
+        <version.maven-surefire-plugin>2.18.1</version.maven-surefire-plugin>
+        <version.maven-jar-plugin>2.6</version.maven-jar-plugin>
+        <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.maven-dependency-plugin>2.7</version.maven-dependency-plugin>
         <version.build-helper-maven-plugin>1.7</version.build-helper-maven-plugin>
-        <version.maven-antrun-plugin>1.7</version.maven-antrun-plugin>
-        <version.maven-site-plugin>3.2</version.maven-site-plugin>
+        <version.maven-antrun-plugin>1.8</version.maven-antrun-plugin>
+        <version.maven-site-plugin>3.4</version.maven-site-plugin>
+
+        <version.webjars.bootstrap>3.1.1</version.webjars.bootstrap>
+        <version.webjars.jquery>2.1.0-2</version.webjars.jquery>
+        <version.webjars.angularjs>1.3.13</version.webjars.angularjs>
+        <angular-ui-calendar.version>0.9.0-beta.1</angular-ui-calendar.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.jacoco.utReportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.utReportPath>
         <sonar.jacoco.itReportPath>${project.basedir}/target/jacoco-it.exec</sonar.jacoco.itReportPath>
 
+        <sonar.sources>src/main</sonar.sources>
 
+        <version.wildfly>8.2.0.Final</version.wildfly>
+        <version.hibernate>4.3.5.Final</version.hibernate>
+
+        <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
+        <jersey-common.version>2.4.1</jersey-common.version>
+        <momentjs.version>2.10.6</momentjs.version>
     </properties>
 
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>${version.primefaces}</version>
-        </dependency>
 
         <dependency>
-            <groupId>org.primefaces.themes</groupId>
-            <artifactId>all-themes</artifactId>
-            <version>${version.primefaces-theme}</version>
+            <groupId>com.owlike</groupId>
+            <artifactId>genson</artifactId>
+            <version>${version.genson}</version>
         </dependency>
 
         <dependency>
@@ -100,6 +124,36 @@
             <version>${version.logback}</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${version.webjars.bootstrap}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${version.webjars.jquery}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angularjs</artifactId>
+            <version>${version.webjars.angularjs}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-ui-calendar</artifactId>
+            <version>${angular-ui-calendar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${momentjs.version}</version>
+        </dependency>
+
         <!-- Runtime -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -118,24 +172,12 @@
         <!-- Provided dependencies -->
 
         <dependency>
-            <groupId>org.glassfish.main.extras</groupId>
-            <artifactId>glassfish-embedded-all</artifactId>
-            <version>${version.glassfish}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${version.javaee}</version>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>${version.eclipselink}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- TEST dependencies -->
 
@@ -161,6 +203,62 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${version.h2}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${version.hibernate}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-arquillian-container-embedded</artifactId>
+            <version>${version.wildfly}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <version>${jersey-common.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -181,16 +279,26 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.maven-compiler-plugin}</version>
                 <configuration>
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.maven-surefire-plugin}</version>
+                <configuration>
+                    <argLine>${jacoco.agent.ut.argLine}</argLine>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${version.maven-failsafe-plugin}</version>
                 <configuration>
-                    <argLine>${jacoco.agent.argLine}</argLine>
+                    <argLine>${jacoco.agent.it.argLine}</argLine>
                 </configuration>
                 <executions>
                     <execution>
@@ -207,31 +315,48 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${version.jacoco-plugin}</version>
-                <configuration>
-                    <propertyName>jacoco.agent.argLine</propertyName>
-                    <destFile>${sonar.jacoco.itReportPath}</destFile>
-                    <append>true</append>
-                </configuration>
+
                 <executions>
                     <execution>
-                        <id>agent</id>
+                        <id>prepare-ut-agent</id>
+                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <destFile>${sonar.jacoco.utReportPath}</destFile>
+                            <propertyName>jacoco.agent.ut.argLine</propertyName>
+                            <append>true</append>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>prepare-it-agent</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                            <propertyName>jacoco.agent.it.argLine</propertyName>
+                            <append>true</append>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${version.maven-war-plugin}</version>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${version.maven-surefire-plugin}</version>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${version.maven-install-plugin}</version>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -248,36 +373,11 @@
                 <version>${version.build-helper-maven-plugin}</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>${version.maven-antrun-plugin}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <target>
-
-                                <tstamp>
-                                    <format property="now" pattern="dd/MM/yyyy - HH:mm"/>
-                                    <format property="year" pattern="yyyy"/>
-                                </tstamp>
-                                <property name="messageResources.path" value="target/classes/messages_fr.properties"/>
-
-                                <replace file="${messageResources.path}" token="REPLACE.VERSION"
-                                         value="${project.version}"/>
-                                <replace file="${messageResources.path}" token="REPLACE.YEAR"
-                                         value="${year}"/>
-                                <replace file="${messageResources.path}" token="REPLACE.TIMESTAMP"
-                                         value="${now}"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -286,21 +386,53 @@
                     <locales>fr,en</locales>
                 </configuration>
             </plugin>
+            
+            <!-- cobertura -->
+            <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>cobertura-maven-plugin</artifactId>
+               <version>2.7</version>
+               <configuration>
+                  <format>xml</format>
+                  <maxmem>256m</maxmem>
+                  <aggregate>true</aggregate>
+               </configuration>
+            </plugin>
+ 
+            <!-- coveralls -->
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                   <repoToken>${coveralls_repo_token}</repoToken>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>glassfish-maven-repository.dev.java.net</id>
-            <name>GlassFish Maven Repository</name>
-            <url>http://download.java.net/maven/glassfish/</url>
-        </repository>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>http://repository.primefaces.org</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
+    <scm>
+        <connection>scm:git:https://github.com/oltruong/teamag.git</connection>
+        <developerConnection>scm:git:https://github.com/oltruong/teamag.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/oltruong/teamag</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>oltruong</id>
+            <name>Olivier Truong</name>
+            <email>olivier@oltruong.com</email>
+            <url>http://oltruong.com</url>
+        </developer>
+    </developers>
 
 </project>

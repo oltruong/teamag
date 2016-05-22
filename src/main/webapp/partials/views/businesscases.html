@@ -1,0 +1,92 @@
+<h1 class="text-center">{{filteredBC.length }} Business Case</h1>
+<div class="row">
+    <div class="col-md-2 hidden-print">
+        <br/><br/>
+        <a href="#/activities" class="btn btn-primary"><span class="glyphicon glyphicon-th-list"></span>&nbsp;Liste
+            des activit&eacute;s</a>
+        <br/><br/><br/>
+        <cleanableinput model="query" placeholder="Filtrer"></cleanableinput>
+        <br/><br/>
+
+        <div class="lead">
+            TOTAL&nbsp;:&nbsp;{{total()| number:2}}
+        </div>
+        <br/><br/>
+        Trier&nbsp;:
+        <select ng-model="orderProp">
+            <option value="identifier">Identifiant</option>
+            <option value="name">Nom</option>
+            <option value="-name">Nom desc</option>
+            <option value="amount">Montant asc</option>
+            <option value="-amount">Montant desc</option>
+        </select>
+        <br/><br/>
+        <a href="#/newBusinessCase" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter
+            un BC</a>
+
+
+    </div>
+    <div class="col-md-10">
+        <div class="bg-success">{{confirmation}}</div>
+        <div class="bg-danger">{{error}}</div>
+        <br/><br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Identifiant</th>
+                <th>Nom</th>
+                <th>MHI</th>
+                <th>Remarques</th>
+                <th class="hidden-print"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="businessCase in (filteredBC= (businesscases | filter:query | orderBy:orderProp))">
+
+                <td><span ng-show="!editing">{{businessCase.identifier}}</span><input ng-model="businessCase.identifier"
+                                                                                      ng-show="editing"/>
+                </td>
+                <td><span ng-show="!editing">{{businessCase.name}}</span> <input ng-model="businessCase.name"
+                                                                                 ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{businessCase.amount}}</span><input type="number" step="any"
+                                                                                  ng-model="businessCase.amount"
+                                                                                  ng-show="editing"/></td>
+                <td><span ng-show="!editing">{{businessCase.comment}}</span><input ng-model="businessCase.comment"
+                                                                                   ng-show="editing"/></td>
+                <td class="hidden-print">
+                    <a ng-show="editing" ng-click="updateBc(businessCase);editing=false;" class="btn btn-success btn-sm"
+                       title="Valider">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+
+                    <a ng-show="editing" ng-click="refreshBc(businessCase);editing=false;"
+                       class="btn btn-warning btn-sm"
+                       title="Annuler la modification">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+
+                    <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn-sm" title="Modifier">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a ng-show="!editing" ng-click="deleteBc(businessCase.id);" class="btn btn-danger btn-sm"
+                       title="Supprimer">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+
+            <tfoot>
+
+            <tr class="success">
+                <td class="text-right" colspan="2">Total&nbsp;:</td>
+                <td>{{total() | number:2}}</td>
+                <td colspan="2"></td>
+            </tr>
+
+            </tfoot>
+        </table>
+    </div>
+</div>

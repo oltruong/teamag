@@ -1,0 +1,60 @@
+body {
+    font-family: 'Oxygen' !important;
+    padding-top: 40px;
+}
+
+.bg-success, .bg-warning, .bg-danger {
+    /*border-top : 20 px;*/
+}
+
+#loginli {
+    margin-top: -14px !important;
+    margin-bottom: -26px !important;
+}
+
+.navbar-right {
+    margin-right: 10px !important;
+}
+
+.navbar-brand {
+    color: #FFFFFF !important;
+}
+
+.user {
+    color: #FFFFFF !important;
+}
+
+.leftcolumn {
+    margin-top: 100px;
+}
+
+.weekselector-button {
+    margin-top: 10px;
+}
+
+.border-right {
+    border-right-style: solid;
+    border-right-width: 2px;
+}
+
+.ng-invalid.ng-dirty {
+    border-color: #FF0000;
+}
+
+.ng-valid.ng-dirty {
+    border-color: #008000;
+}
+
+.white {
+    color: #FFFFFF;
+}
+
+.white:focus {
+    color: #000000;
+}
+
+.total {
+    color: #00008b;
+    font-size: 16px;
+}
+

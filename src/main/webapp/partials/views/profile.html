@@ -1,0 +1,88 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Mon Profil</h1>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <p class="lead">
+
+        <h2>{{member.name}}</h2>
+
+        <h3>{{member.company}}</h3>
+        <h4>{{member.email}}</h4>
+
+        <div class="well well-sm" style="color: white;background-color: {{member.color}};">Couleur&nbsp:
+            {{member.color}}
+        </div>
+        </p>
+    </div>
+
+    <div class="col-md-2">
+        <div>
+            <a href="https://gravatar.com" target="_blank"><img class="img-responsive"
+                                                                src="http://www.gravatar.com/avatar/{{ member.email | gravatar }}?s=200&d=identicon"
+                                                                alt="{{name}}"></a>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="color: white;background-color: {{member.color}};">
+                <h3 class="panel-title">Changer ma couleur</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+
+                    <div class="form-group">
+
+                        <input type="text" colorpicker class="form-control" id="color" ng-model="member.color">
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-click="updateColor()"><span
+                            class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Mettre &agrave; jour
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Changer mon mot de passe</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="newPassword" ng-model="member.newPassword1"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer mot de passe</label>
+                        <input type="password" class="form-control" id="confirmPassword" ng-model="member.newPassword2"
+                               required>
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-disabled="member.newPassword1!=member.newPassword2"
+                            ng-click="updatePassword()">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;Mettre &agrave;
+                        jour
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

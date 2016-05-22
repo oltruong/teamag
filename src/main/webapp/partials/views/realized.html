@@ -1,0 +1,67 @@
+<div class="col-md-12">
+    <h1 class="text-center">R&eacute;alis&eacute; de {{selectedMember.name}}</h1>
+
+    <select ng-model="selectedMember" ng-options="member.name for member in members"
+            ng-change="loadRealized()"></select>
+    <input type="checkbox" ng-model="nonEmptyTask"/> T&acirc;ches non vides
+
+    <br/>
+    <cleanableinput model="queryActivity" placeholder="Filtrer Activité"></cleanableinput>
+    <cleanableinput model="queryMonth" placeholder="Filtrer Mois"></cleanableinput>
+
+    <a ng-show="!editing" ng-click="editing=true;" class="btn btn-info btn" title="Modifier">
+        <span class="glyphicon glyphicon-pencil"></span>&nbsp;&Eacute;diter
+    </a>
+    <a ng-show="editing" ng-click="editing=false;"
+       class="btn btn-warning btn"
+       title="Annuler la modification">
+        <span class="glyphicon glyphicon-remove"></span>&nbsp;Annuler la modification
+    </a>
+    <a ng-show="editing" ng-click="save();editing=false;"
+       class="btn btn-success btn"
+       title="Valider">
+        <span class="glyphicon glyphicon-ok"></span>&nbsp;Sauvegarder
+    </a>
+    <br/>
+
+
+    <div class="bg-success">{{confirmation}}</div>
+    <div class="bg-danger">{{error}}</div>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Activit&eacute;</th>
+            <th>T&acirc;che</th>
+            <th></th>
+            <th ng-repeat="date in months | filter:filterMonth">{{date}}</th>
+        </tr>
+        <tr>
+            <th colspan="2"></th>
+            <th>{{displayTotal() | number:2}}<br/><span
+                    class="text-primary">{{displayTotalWorked() | number:2}}</span></th>
+            <th ng-repeat="value in months_number | filter:filterMonthNumber"><span
+                    ng-show="displayTotalMonth(value)!==0">{{displayTotalMonth(value) |
+                number:2}}<br/><span class="text-primary">{{displayTotalWorkedMonth(value) |    number:2}}</span></span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="workRealized in (worksRealized |  filter:filterNonEmptyTask | filter:filterActivity | orderBy:orderActivity)">
+            <td>{{workRealized.task.activity.name}}</td>
+            <td>{{workRealized.task.name}}</td>
+            <td class="border-right"><span ng-show="displayTotalRealized(workRealized)!==0"> {{displayTotalRealized(workRealized) | number:2}}</span>
+            </td>
+            <td ng-repeat="realizedMonth in workRealized.workRealizedList  | filter:filterMonthNumberRealized | orderBy: orderProp"
+                title="{{workRealized.task.activity.name}}-{{workRealized.task.name}}">
+
+                <span ng-show="!editing && displayRealized(realizedMonth.realized)">{{realizedMonth.realized}}</span>
+                <input type="number"
+                       step="0.1"
+                       ng-model="realizedMonth.realized" ng-show="editing"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

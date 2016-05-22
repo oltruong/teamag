@@ -3,19 +3,22 @@
              version="1.0">
 
     <persistence-unit name="ejbPU" transaction-type="JTA">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <jta-data-source>jdbc/teamag</jta-data-source>
-        <class>fr.oltruong.teamag.entity.Absence</class>
-        <class>fr.oltruong.teamag.entity.Activity</class>
-        <class>fr.oltruong.teamag.entity.BusinessCase</class>
-        <class>fr.oltruong.teamag.entity.Member</class>
-        <class>fr.oltruong.teamag.entity.Task</class>
-        <class>fr.oltruong.teamag.entity.WeekComment</class>
-        <class>fr.oltruong.teamag.entity.Work</class>
-        <class>fr.oltruong.teamag.entity.converter.DateConverter</class>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:/jdbc/teamag</jta-data-source>
+        <class>com.oltruong.teamag.model.Absence</class>
+        <class>com.oltruong.teamag.model.AbsenceDay</class>
+        <class>com.oltruong.teamag.model.Activity</class>
+        <class>com.oltruong.teamag.model.BusinessCase</class>
+        <class>com.oltruong.teamag.model.Member</class>
+        <class>com.oltruong.teamag.model.Task</class>
+        <class>com.oltruong.teamag.model.WeekComment</class>
+        <class>com.oltruong.teamag.model.Work</class>
+        <class>com.oltruong.teamag.model.WorkLoad</class>
+        <class>com.oltruong.teamag.model.WorkRealized</class>
+        <class>com.oltruong.teamag.model.converter.DateConverter</class>
         <properties>
-            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
-            <property name="eclipselink.logging.level" value="INFO"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 

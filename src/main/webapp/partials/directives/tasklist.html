@@ -1,0 +1,45 @@
+<div class="col-md-4">
+    <cleanableinput model="query" placeholder="Filtrer tâche"></cleanableinput>
+    <br/>
+
+    <div class="lead">
+        {{filteredTotal()|number:2}}&nbsp;JHI<br/>
+        <em>{{filteredTotal()/21|number:2}}&nbsp;MHI</em><br/>
+        {{(filteredTotal()/total())*100|number:0}}&nbsp;%
+    </div>
+
+</div>
+
+<div class="col-md-8">
+    <table class="table table-striped" ng-show="taskList.length>0">
+        <thead>
+        <tr>
+            <th ng-click="setOrder('name')">T&acirc;che&nbsp;<span
+                    ng-class="showOrderClass('name')"></span></th>
+            <th ng-click="setOrder('total')">JHI&nbsp;<span
+                    ng-class="showOrderClass('total')"></span></th>
+            <th ng-click="setOrder('total')"><em>MHI&nbsp;<span
+                    ng-class="showOrderClass('total')"></span></em></th>
+            <th ng-click="setOrder('total')">%&nbsp;<span
+                    ng-class="showOrderClass('total')"></span></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <th>Total</th>
+        <th>{{filteredTotal()|number:2}}</th>
+        <th><em>{{filteredTotal()/21|number:2}}</em></th>
+        <th>{{(filteredTotal()/total())*100|number:0}}</th>
+        </tfoot>
+        <tbody>
+        <tr ng-repeat="task in (filteredTaskList=(taskList  | filter:query | orderBy: order))">
+            <td>{{task.name}}</td>
+            <td>{{task.total | number:2}}</td>
+            <td><em>{{task.total/21 | number:2}}</em></td>
+            <td>{{(task.total/total())*100 | number:0}}</td>
+            </th>
+        </tr>
+
+        </tbody>
+    </table>
+    <div class="alert alert-info" role="alert" ng-show="taskList.length<=0">Aucune t&acirc;che</div>
+</div>
