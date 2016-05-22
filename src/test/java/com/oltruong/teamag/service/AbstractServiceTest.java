@@ -3,8 +3,10 @@ package com.oltruong.teamag.service;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -18,6 +20,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractServiceTest {
 
     protected Long idTest = Long.valueOf(123l);
@@ -41,7 +44,6 @@ public abstract class AbstractServiceTest {
     @Before
     public void setup() {
         randomLong = EntityFactory.createRandomLong();
-        MockitoAnnotations.initMocks(this);
         when(mockEntityManager.createNamedQuery(isA(String.class))).thenReturn(mockNamedQuery);
         when(mockEntityManager.createNamedQuery(isA(String.class), any())).thenReturn(mockTypedQuery);
         when(mockTypedQuery.setParameter(anyString(), any())).thenReturn(mockTypedQuery);

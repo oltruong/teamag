@@ -3,8 +3,9 @@ package com.oltruong.teamag.service;
 import com.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,6 +13,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EmailServiceTest {
 
 
@@ -28,7 +30,6 @@ public class EmailServiceTest {
 
     @Before
     public void prepare() {
-        MockitoAnnotations.initMocks(this);
         email = new MailBean();
         email.addRecipient("foo@bar.com");
         email.setContent("content");

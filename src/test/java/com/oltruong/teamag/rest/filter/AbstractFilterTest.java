@@ -6,8 +6,10 @@ import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TestUtils;
 import com.oltruong.teamag.model.Member;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -18,6 +20,7 @@ import java.util.Map;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractFilterTest {
 
 
@@ -31,7 +34,6 @@ public abstract class AbstractFilterTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
         securityFilter = getSecurityFilter();
 
         MultivaluedMap<String, String> headersMap = new MultivaluedHashMap<>();

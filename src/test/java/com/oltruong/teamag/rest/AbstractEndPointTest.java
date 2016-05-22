@@ -1,8 +1,10 @@
 package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.model.builder.EntityFactory;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
 import javax.ws.rs.core.Response;
@@ -18,6 +20,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olivier Truong
  */
+@RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractEndPointTest {
 
 
@@ -34,7 +37,6 @@ public abstract class AbstractEndPointTest {
 
 
     public void setup() {
-        MockitoAnnotations.initMocks(this);
 
         when(mockUriInfo.getAbsolutePathBuilder()).thenReturn(mockUriBuilder);
         when(mockUriBuilder.path(anyString())).thenReturn(mockUriBuilder);
