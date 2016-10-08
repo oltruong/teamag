@@ -24,5 +24,5 @@
 * JavaEE 7 server: for example [WildFly] (http://www.wildfly.org/)
 
 ### Default configuration
-* Datasource : java:/jdbc/teamag
 * Default user login : admin. Default password is blank
+Please set Database in persistence.xml file
