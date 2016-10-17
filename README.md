@@ -10,7 +10,7 @@
 * [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
 
 ## Build status
-[![Build Status](https://api.travis-ci.org/oltruong/teamag.png)](https://travis-ci.org/oltruong/teamag)
+[![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
 
 ## Coverage status
 [![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.png?branch=develop)](https://coveralls.io/github/oltruong/teamag?branch=develop)
