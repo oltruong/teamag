@@ -15,6 +15,9 @@
 ## Coverage status
 [![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.svg?branch=develop)](https://coveralls.io/github/oltruong/teamag?branch=develop)
 
+## CodeBeat status
+[![codebeat badge](https://codebeat.co/badges/65219467-fba0-4d80-beaf-ff4644cb7659)](https://codebeat.co/projects/github-com-oltruong-teamag)
+
 ## Getting started
 
 ### Required software
