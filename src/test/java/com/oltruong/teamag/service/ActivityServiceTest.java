@@ -31,7 +31,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindAll() throws Exception {
+    public void findAll() throws Exception {
 
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(mockTypedQuery.getResultList()).thenReturn(activityList);
@@ -44,7 +44,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindActivity() {
+    public void findActivity() {
 
 
         Activity activity = EntityFactory.createActivity();
@@ -82,7 +82,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateActivity() throws Exception {
+    public void createActivity() throws Exception {
         Activity activity = EntityFactory.createActivity();
         Activity activityCreated = activityService.persist(activity);
 
@@ -96,7 +96,7 @@ public class ActivityServiceTest extends AbstractServiceTest {
 
 
     @Test(expected = EntityExistsException.class)
-    public void testCreateActivity_existingData() throws Exception {
+    public void createActivity_existingData() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(mockTypedQuery.getResultList()).thenReturn(activityList);
 

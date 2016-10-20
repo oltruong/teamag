@@ -15,7 +15,7 @@ public class ActivityIT extends AbstractEntityIT {
 
 
     @Test
-    public void testCreateAndFind() {
+    public void createAndFind() {
         Activity activity = createActivity();
 
         assertThat(activity.getId()).isNotNull();
@@ -25,7 +25,7 @@ public class ActivityIT extends AbstractEntityIT {
     }
 
     @Test
-    public void test_NamedQuery_FindAllActivities() {
+    public void namedQueryFindAllActivities() {
 
         List<Activity> activityList = createActivities();
 
@@ -60,7 +60,7 @@ public class ActivityIT extends AbstractEntityIT {
 
 
     @Test
-    public void test_NamedQuery_FindActivity() {
+    public void namedQueryFindActivity() {
 
         List<Activity> activityList = createActivities();
         Activity firstActivity = activityList.get(0);
@@ -76,25 +76,6 @@ public class ActivityIT extends AbstractEntityIT {
         assertThat(activityListResult).containsExactly(firstActivity);
     }
 
-    //FIXME
-    @Ignore
-    public void test_NamedQuery_RemoveBC() {
-        List<Activity> activityList = createActivities();
 
-
-        transaction.begin();
-        Query query = entityManager.createNamedQuery("Activity.REMOVE_BC");
-        query.setParameter("fBusinessCaseId", activityList.get(0).getBusinessCase().getId());
-        int result = query.executeUpdate();
-        assertThat(result).isEqualTo(1);
-        transaction.commit();
-
-
-        List<Activity> activityListFound = entityManager.createNamedQuery("Activity.FIND_ALL", Activity.class).getResultList();
-
-        assertThat(activityListFound.get(0).getBusinessCase()).isNull();
-        assertThat(activityListFound.get(1).getBusinessCase()).isNotNull();
-
-    }
 
 }

@@ -18,31 +18,31 @@ public class AbsenceWebBeanTransformerTest {
 
 
     @Test
-    public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(AbsenceWebBeanTransformer.class);
+    public void constructorIsPrivate() {
+        TestUtils.constructorIsPrivate(AbsenceWebBeanTransformer.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testTransformNull() throws Exception {
+    public void transformNull() throws Exception {
         AbsenceWebBeanTransformer.transform(null);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testTransformWebBeanNull() throws Exception {
+    public void transformWebBeanNull() throws Exception {
         AbsenceWebBeanTransformer.transformWebBean(null);
 
     }
 
     @Test
-    public void testTransformWebBean() throws Exception {
+    public void transformWebBean() throws Exception {
         AbsenceWebBean absenceWebBean = buildAbsenceWebBean();
         Absence absence = AbsenceWebBeanTransformer.transformWebBean(absenceWebBean);
         compare(absenceWebBean, absence);
     }
 
     @Test
-    public void testTransform() throws Exception {
+    public void transform() throws Exception {
         Absence absence = EntityFactory.createAbsence();
         AbsenceWebBean absenceWebBean = AbsenceWebBeanTransformer.transform(absence);
         compare(absenceWebBean, absence);
@@ -50,7 +50,7 @@ public class AbsenceWebBeanTransformerTest {
     }
 
     @Test
-    public void testTransformList() throws Exception {
+    public void transformList() throws Exception {
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
         List<AbsenceWebBean> absenceWebBeanList = AbsenceWebBeanTransformer.transformList(absenceList);
 
@@ -61,7 +61,7 @@ public class AbsenceWebBeanTransformerTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testTransformList_null() throws Exception {
+    public void transformListNull() throws Exception {
 
         AbsenceWebBeanTransformer.transformList(null);
     }

@@ -20,7 +20,7 @@ public class AdminFilterTest extends SecurityFilterTest {
 
 
     @Test
-    public void testFilter_notAdmin() throws IOException {
+    public void filterNotAdmin() throws IOException {
         member.setMemberType(MemberType.BASIC);
         filter_notAllowed();
     }

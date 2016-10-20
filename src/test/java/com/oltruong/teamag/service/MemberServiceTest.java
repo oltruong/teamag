@@ -91,7 +91,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindActiveMembers() {
+    public void findActiveMembers() {
 
         List<Member> memberList = memberService.findActiveMembers();
 
@@ -101,7 +101,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindAll() {
+    public void findAll() {
 
         List<Member> memberList = memberService.findAll();
 
@@ -110,7 +110,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindMember() {
+    public void findMember() {
         Member newMember = EntityFactory.createMember();
         Long id = Long.valueOf(365l);
 
@@ -125,7 +125,7 @@ public class MemberServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindActiveNonAdminMembers() {
+    public void findActiveNonAdminMembers() {
 
         int numberAdminMembers = 3;
         for (int i = 0; i < numberAdminMembers; i++) {
@@ -143,7 +143,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindMemberForAuthentication() throws UserNotFoundException {
+    public void findMemberForAuthentication() throws UserNotFoundException {
 
         String name = "FOOONAME";
         String password = "PASSWORD";
@@ -162,7 +162,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void testFindMemberForAuthentication_null() throws UserNotFoundException {
+    public void findMemberForAuthenticationNull() throws UserNotFoundException {
 
         String name = "FOOONAME";
         String password = "PASSWORD";
@@ -177,7 +177,7 @@ public class MemberServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateMember() {
+    public void createMember() {
 
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
 

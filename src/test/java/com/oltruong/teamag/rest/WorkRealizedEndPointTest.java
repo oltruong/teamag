@@ -49,7 +49,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetAll() {
+    public void getAll() {
 
         List<WorkRealized> workRealizedList = EntityFactory.createList(EntityFactory::createWorkRealized);
 
@@ -121,7 +121,7 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetWorkRealized_member() {
+    public void getWorkRealized_member() {
 
 
         List<WorkRealized> workRealizedList = EntityFactory.createList(EntityFactory::createWorkRealized);

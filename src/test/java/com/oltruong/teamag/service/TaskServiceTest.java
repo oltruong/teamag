@@ -50,14 +50,14 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindAllTasks() {
+    public void findAllTasks() {
         testFindTasks("Task.FIND_ALL", taskService::findAll);
 
     }
 
 
     @Test
-    public void testFindAllTasksWithActivity() {
+    public void findAllTasksWithActivity() {
         testFindTasks("Task.FIND_ALL_WITH_ACTIVITY", taskService::findTaskWithActivity);
 
     }
@@ -74,7 +74,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindTasksForMember() {
+    public void findTasksForMember() {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         when(mockTypedQuery.getResultList()).thenReturn(taskList);
         Member member = EntityFactory.createMember();
@@ -88,7 +88,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindTasksForMember_empty() {
+    public void findTasksForMember_empty() {
         Task absenceTask = EntityFactory.createTask();
         absenceTask.setId(randomLong);
         when(mockEntityManager.find(eq(Task.class), eq(1L))).thenReturn(absenceTask);
@@ -106,7 +106,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindAllNonAdminTasks() {
+    public void findAllNonAdminTasks() {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         when(mockTypedQuery.getResultList()).thenReturn(taskList);
 
@@ -120,7 +120,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindTask() {
+    public void findTask() {
         Task task = setupTask();
 
         Task taskFound = taskService.find(randomLong);
@@ -145,7 +145,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void testDeleteTask_null() {
+    public void testDeleteTaskNull() {
         taskService.remove(randomLong);
         verify(mockEntityManager).find(eq(Task.class), eq(randomLong));
         verify(mockEntityManager, never()).remove(any(Task.class));
@@ -185,7 +185,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateTask() {
+    public void createTask() {
         task.setId(randomLong);
         taskService.persist(task);
         verify(mockEntityManager).persist(eq(task));
@@ -196,7 +196,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = EntityExistsException.class)
-    public void testCreateTask_existing() {
+    public void createTask_existing() {
         task.setId(randomLong);
 
         when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList(task));
@@ -279,7 +279,7 @@ public class TaskServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testCreateTask_member() {
+    public void createTask_member() {
         task.setId(randomLong);
         task.getMembers().clear();
         Member member = EntityFactory.createMember();
@@ -305,7 +305,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateTask_member_existing() {
+    public void createTask_member_existing() {
         task.setId(randomLong);
         Member member = EntityFactory.createMember();
         Long randomId = EntityFactory.createRandomLong();
@@ -343,7 +343,7 @@ public class TaskServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = EntityExistsException.class)
-    public void testCreateTask_member_existing_exception() {
+    public void createTask_member_existing_exception() {
         task.setId(randomLong);
         Member member = EntityFactory.createMember();
         Long randomId = EntityFactory.createRandomLong();

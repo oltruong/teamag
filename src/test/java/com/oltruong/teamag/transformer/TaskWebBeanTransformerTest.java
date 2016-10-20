@@ -16,12 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TaskWebBeanTransformerTest {
     @Test
-    public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(TaskWebBeanTransformer.class);
+    public void constructorIsPrivate() {
+        TestUtils.constructorIsPrivate(TaskWebBeanTransformer.class);
     }
 
     @Test
-    public void testTransformTask() {
+    public void transformTask() {
         Task task = EntityFactory.createTask();
         TaskWebBean taskWebBean = TaskWebBeanTransformer.transformTask(task);
         testEquals(task, taskWebBean);
@@ -40,7 +40,7 @@ public class TaskWebBeanTransformerTest {
     }
 
     @Test
-    public void testTransformTaskSubTask() {
+    public void transformTaskSubTask() {
         Task task = EntityFactory.createTask();
         task.setTask(EntityFactory.createTask());
         TaskWebBean taskWebBean = TaskWebBeanTransformer.transformTask(task);
@@ -49,7 +49,7 @@ public class TaskWebBeanTransformerTest {
 
 
     @Test
-    public void testTransformTaskList() {
+    public void transformTaskList() {
 
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         List<TaskWebBean> taskWebBeanList = TaskWebBeanTransformer.transformTaskList(taskList);

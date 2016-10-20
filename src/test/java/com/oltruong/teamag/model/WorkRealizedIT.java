@@ -12,7 +12,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
 
 
     @Test
-    public void testCreateAndFind() {
+    public void createAndFind() {
         WorkRealized workRealized = createWorkRealized();
 
 
@@ -36,7 +36,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
 
 
     @Test(expected = PersistenceException.class)
-    public void testCreate_taskNull() {
+    public void create_taskNull() {
         WorkRealized workRealized = EntityFactory.createWorkRealized();
         workRealized.setTaskId(null);
         persist(workRealized);
@@ -44,7 +44,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
     }
 
     @Test
-    public void test_namedQuery_FindAllWorkRealized() throws Exception {
+    public void namedQueryFindAllWorkRealized() throws Exception {
 
         WorkRealized workRealized = createWorkRealized();
         transaction.begin();
@@ -57,7 +57,7 @@ public class WorkRealizedIT extends AbstractEntityIT {
 
 
     @Test
-    public void test_namedQuery_FindAllWorkRealizedByMember() throws Exception {
+    public void namedQueryFindAllWorkRealizedByMember() throws Exception {
 
         WorkRealized workRealized = createWorkRealized();
         transaction.begin();

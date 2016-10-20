@@ -25,14 +25,14 @@ public class WorkIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testCreation() {
+    public void creation() {
         transaction.commit();
         assertThat(work.getId()).isNotNull();
     }
 
 
     @Test
-    public void testNamedQuery() {
+    public void namedQuery() {
         transaction.commit();
 
         Query query = entityManager.createNamedQuery("Work.FIND_BY_MEMBER_MONTH");
@@ -49,7 +49,7 @@ public class WorkIT extends AbstractEntityIT {
 
 
     @Test
-    public void testNamedQuery_findWorkdaysByMemberMonth() {
+    public void namedQueryFindWorkdaysByMemberMonth() {
         transaction.commit();
 
         Query query = entityManager.createNamedQuery("Work.FIND_WORKDAYS_BY_MEMBER_MONTH");
@@ -68,7 +68,7 @@ public class WorkIT extends AbstractEntityIT {
 
 
     @Test
-    public void testNamedQuery_findTaskByMemberMonth() {
+    public void namedQueryFindTaskByMemberMonth() {
         Work work2 = EntityFactory.createWork();
         work2.setTask(work.getTask());
         work2.setMember(work.getMember());
@@ -102,7 +102,7 @@ public class WorkIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery_findTaskByMemberMonth_empty() {
+    public void namedQueryFindTaskByMemberMonth_empty() {
         Work work2 = EntityFactory.createWork();
         work2.setTask(work.getTask());
         work2.setMember(work.getMember());
@@ -130,7 +130,7 @@ public class WorkIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery_findTaskByMember() {
+    public void namedQueryFindTaskByMember() {
         Work work2 = EntityFactory.createWork();
         work2.setTask(work.getTask());
         work2.setMember(work.getMember());

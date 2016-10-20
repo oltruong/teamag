@@ -21,7 +21,7 @@ public class MemberTest {
     }
 
     @Test
-    public void testIsSupervisor() {
+    public void isSupervisor() {
         member.setMemberType(MemberType.ADMINISTRATOR);
         assertThat(member.isSupervisor()).isTrue();
         member.setMemberType(MemberType.SUPERVISOR);

@@ -1,10 +1,10 @@
 package com.oltruong.teamag.rest;
 
-import com.oltruong.teamag.service.MemberService;
-import com.oltruong.teamag.utils.TeamagUtils;
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.builder.EntityFactory;
+import com.oltruong.teamag.service.MemberService;
+import com.oltruong.teamag.utils.TeamagUtils;
 import com.oltruong.teamag.utils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +16,7 @@ import javax.ws.rs.core.Response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LoginEndPointTest extends AbstractEndPointTest {
 
@@ -39,7 +37,7 @@ public class LoginEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testLogin_null() throws Exception {
+    public void loginNull() throws Exception {
         Response response = loginEndPoint.login(null);
 
         checkResponseNotFound(response);
@@ -49,7 +47,7 @@ public class LoginEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testLogin_notFound() throws Exception {
+    public void loginNotFound() throws Exception {
 
         when(mockMemberService.findMemberForAuthentication(any(), any())).thenThrow(new UserNotFoundException());
 
@@ -61,7 +59,7 @@ public class LoginEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testLogin() throws Exception {
+    public void login() throws Exception {
 
         String username = "hi";
         String password = "password";

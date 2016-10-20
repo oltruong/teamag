@@ -51,7 +51,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindWorksNotNullByMonth() {
+    public void findWorksNotNullByMonth() {
         Map<Task, List<Work>> worksByTask = workService.findWorksNotNullByMonth(member, month);
 
 
@@ -69,7 +69,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindWorksNotNullByWeek() {
+    public void findWorksNotNullByWeek() {
         int currentWeek = DateTime.now().getWeekOfWeekyear();
 
 
@@ -95,7 +95,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindOrCreateWorks_empty() {
+    public void findOrCreateWorks_empty() {
         List<Task> taskList = EntityFactory.createList(EntityFactory::createTask);
         taskList.forEach(t -> t.setId(EntityFactory.createRandomLong()));
         Task absenceTask = EntityFactory.createTask();
@@ -139,7 +139,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindOrCreateWorks() {
+    public void findOrCreateWorks() {
         List<Task> taskList = Lists.newArrayList();
 
         Task absenceTask = EntityFactory.createTask();
@@ -180,7 +180,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindOrCreateWorks_duplicate() {
+    public void findOrCreateWorks_duplicate() {
         List<Task> taskList = Lists.newArrayList();
 
         Task absenceTask = EntityFactory.createTask();
@@ -227,7 +227,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testCreateWork() {
+    public void createWork() {
 
         Member member = EntityFactory.createMember();
         Task task = EntityFactory.createTask();
@@ -259,7 +259,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testGetWorksMonth() {
+    public void getWorksMonth() {
 
         List<Work> workListReturned = workService.getWorksMonth(month);
 
@@ -270,7 +270,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindWorkDays() {
+    public void findWorkDays() {
         DateTime month = DateTime.now();
 
 
@@ -297,7 +297,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindWorkByTask() {
+    public void findWorkByTask() {
         List<Work> workListFound = workService.findWorkByTask(randomLong);
 
         assertThat(workListFound).isEqualTo(workList);
@@ -307,7 +307,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindTaskByMemberMonth() {
+    public void findTaskByMemberMonth() {
         Object[] array = prepareFindTaskByMember();
 
         DateTime month = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1).withMonthOfYear(EntityFactory.createRandomMonth());
@@ -321,7 +321,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindTaskByMember() {
+    public void findTaskByMember() {
         Object[] array = prepareFindTaskByMember();
         Map<Task, Double> mapResult = workService.findTaskByMember(randomLong);
 
@@ -350,7 +350,7 @@ public class WorkServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testGetSumWorks() {
+    public void getSumWorks() {
 
         Integer randomInt = EntityFactory.createRandomInteger();
 
@@ -412,7 +412,7 @@ public class WorkServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testRemoveWorkAbsence_null() {
+    public void testRemoveWorkAbsenceNull() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
         when(mockTypedQuery.getResultList()).thenReturn(null);
         workService.removeWorkAbsence(absenceDay);

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AbsenceIT extends AbstractEntityIT {
 
     @Test
-    public void testCreation() {
+    public void creation() {
         Absence absence = EntityFactory.createAbsence();
 
         assertThat(absence.getId()).isNull();
@@ -32,7 +32,7 @@ public class AbsenceIT extends AbstractEntityIT {
     }
 
     @Test(expected = PersistenceException.class)
-    public void testCreationMissingEndDate() {
+    public void creationMissingEndDate() {
         Absence absence = EntityFactory.createAbsence();
         absence.setEndDate(null);
         entityManager.persist(absence.getMember());
@@ -41,7 +41,7 @@ public class AbsenceIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testFindMemberById() {
+    public void findMemberById() {
         Absence absence = EntityFactory.createAbsence();
 
         Absence absence2 = EntityFactory.createAbsence();

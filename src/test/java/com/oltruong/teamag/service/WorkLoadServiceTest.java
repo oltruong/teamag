@@ -43,7 +43,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindOrCreateAllWorkLoad_find() {
+    public void findOrCreateAllWorkLoad_find() {
         List<WorkLoad> workLoadList = EntityFactory.createList(EntityFactory::createWorkLoad);
 
 
@@ -77,13 +77,13 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindOrCreateAllWorkLoad_create_null() {
+    public void findOrCreateAllWorkLoad_createNull() {
         when(mockTypedQuery.getResultList()).thenReturn(null);
         testFindOrCreateAllWorkLoad_create();
     }
 
     @Test
-    public void testFindOrCreateAllWorkLoad_create_empty() {
+    public void findOrCreateAllWorkLoad_create_empty() {
         when(mockTypedQuery.getResultList()).thenReturn(Lists.newArrayList());
 
         testFindOrCreateAllWorkLoad_create();
@@ -123,13 +123,13 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testUpdateWorkLoad_null() {
+    public void testUpdateWorkLoadNull() {
         workLoadService.mergeList(null);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateWorkLoadWithRealized_null() {
+    public void updateWorkLoadWithRealizedNull() {
         workLoadService.updateWorkLoadWithRealized(null, null);
     }
 
@@ -186,7 +186,7 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateFromBusinessCase() {
+    public void createFromBusinessCase() {
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
         TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
 
@@ -207,14 +207,14 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateFromBusinessCase_noMember() {
+    public void createFromBusinessCase_noMember() {
         TestUtils.setPrivateAttribute(new MemberService(), null, "memberList");
         workLoadService.createFromBusinessCase(EntityFactory.createBusinessCase());
         verify(mockEntityManager, never()).persist(any());
     }
 
     @Test
-    public void testCreateFromMember() {
+    public void createFromMember() {
 
     }
 

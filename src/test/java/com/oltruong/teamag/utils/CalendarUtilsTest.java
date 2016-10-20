@@ -17,12 +17,12 @@ public class CalendarUtilsTest {
     public static final int YEAR = 2016;
 
     @Test
-    public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(CalendarUtils.class);
+    public void constructorIsPrivate() {
+        TestUtils.constructorIsPrivate(CalendarUtils.class);
     }
 
     @Test
-    public void testGetListDaysOff() {
+    public void getListDaysOff() {
 
         List<DateTime> daysOff = CalendarUtils.getListDaysOff();
 
@@ -46,7 +46,7 @@ public class CalendarUtilsTest {
 
 
     @Test
-    public void testIsDayOff() {
+    public void isDayOff() {
         assertThat(CalendarUtils.isDayOff(createDay(1, 1, YEAR))).isTrue();
         assertThat(CalendarUtils.isDayOff(createDay(2, 1, YEAR))).isTrue();
         assertThat(CalendarUtils.isDayOff(createDay(3, 1, YEAR))).isTrue();
@@ -54,7 +54,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testIsWorkingDay() {
+    public void isWorkingDay() {
         assertThat(CalendarUtils.isWorkingDay(createDay(1, 1, YEAR))).isFalse();
         assertThat(CalendarUtils.isWorkingDay(createDay(3, 1, YEAR))).isFalse();
         assertThat(CalendarUtils.isWorkingDay(createDay(4, 1, YEAR))).isTrue();
@@ -62,7 +62,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testIsLastWorkingDayOfWeek() {
+    public void isLastWorkingDayOfWeek() {
 
 
         List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, YEAR));
@@ -75,7 +75,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testIsLastWorkingDayOfMonth() {
+    public void isLastWorkingDayOfMonth() {
         List<DateTime> workingDays = CalendarUtils.getWorkingDays(createDay(1, 5, YEAR));
         assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(29, 5, YEAR), workingDays)).isFalse();
         assertThat(CalendarUtils.isLastWorkingDayOfMonth(createDay(30, 5, YEAR), workingDays)).isFalse();
@@ -110,7 +110,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testGetWorkingDays() {
+    public void getWorkingDays() {
 
         testWorkingDays(1, Lists.newArrayList(1));
         testWorkingDays(2, Lists.newArrayList(0));
@@ -137,7 +137,7 @@ public class CalendarUtilsTest {
 
 
     @Test
-    public void testIsInFirstWorkingWeekOfMonth() throws Exception {
+    public void isInFirstWorkingWeekOfMonth() throws Exception {
 
         assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(31, 7, YEAR))).isFalse();
         assertThat(CalendarUtils.isInFirstWorkingWeekOfMonth(createDay(4, 8, YEAR))).isTrue();
@@ -154,7 +154,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testIsInLastWorkingWeekOfMonth() throws Exception {
+    public void isInLastWorkingWeekOfMonth() throws Exception {
 
         assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(31, 7, YEAR))).isTrue();
         assertThat(CalendarUtils.isInLastWorkingWeekOfMonth(createDay(25, 7, YEAR))).isTrue();
@@ -163,7 +163,7 @@ public class CalendarUtilsTest {
     }
 
     @Test
-    public void testGetCurrentWeek() {
+    public void getCurrentWeek() {
         assertThat(CalendarUtils.getCurrentWeekNumber()).isEqualTo(LocalDate.now().get(ChronoField.ALIGNED_WEEK_OF_YEAR));
     }
 }

@@ -22,7 +22,7 @@ public class WorkTest {
 
 
     @Test
-    public void testSetTotalStr() {
+    public void setTotalStr() {
 
         TestUtils.setPrivateAttribute(work, LoggerFactory.getLogger(Work.class.getName()), "logger");
 
@@ -42,14 +42,14 @@ public class WorkTest {
     }
 
     @Test
-    public void testGetTotalEdit() {
+    public void getTotalEdit() {
         work.setTotal(3d);
         work.setTotalEdit(null);
         assertThat(work.getTotalEdit()).isEqualTo(3d);
     }
 
     @Test
-    public void testGetTotalStr() {
+    public void getTotalStr() {
         work.setTotalEdit(0d);
         assertThat(work.getTotalEditStr()).isEqualTo("");
         work.setTotalEdit(0.5d);
@@ -57,7 +57,7 @@ public class WorkTest {
     }
 
     @Test
-    public void testHasChanged() {
+    public void hasChanged() {
         work.setTotal(1d);
         assertThat(work.hasChanged()).isFalse();
         work.setTotalEdit(19.29d);
@@ -65,7 +65,7 @@ public class WorkTest {
     }
 
     @Test
-    public void testGetDay() {
+    public void getDay() {
         DateTime day = DateTime.now();
         work.setDay(day);
         assertThat(work.getDayStr()).isEqualTo(work.getDay().toString("E mmm dd"));

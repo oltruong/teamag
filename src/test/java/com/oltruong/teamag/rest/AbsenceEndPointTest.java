@@ -23,10 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AbsenceEndPointTest extends AbstractEndPointTest {
 
@@ -53,7 +50,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetAllAbsences() throws Exception {
+    public void getAllAbsences() throws Exception {
 
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
@@ -73,7 +70,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetDaysOff() {
+    public void getDaysOff() {
         Response response = absenceEndPoint.getDaysOff();
         checkResponseOK(response);
 
@@ -84,7 +81,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetAbsences() throws Exception {
+    public void getAbsences() throws Exception {
 
 
         List<Absence> absenceList = EntityFactory.createList(EntityFactory::createAbsence);
@@ -105,7 +102,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreateAbsence() throws Exception {
+    public void createAbsence() throws Exception {
         Absence absence = EntityFactory.createAbsence();
 
         absence.setId(randomId);
@@ -120,17 +117,17 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testCreateAbsence_overlap() throws Exception {
-        testCreateAbsence_exception(new DateOverlapException(), (response) -> checkResponseForbidden(response));
+    public void createAbsence_overlap() throws Exception {
+        createAbsenceException(new DateOverlapException(), (response) -> checkResponseForbidden(response));
     }
 
     @Test
-    public void testCreateAbsence_badRequest() throws Exception {
-        testCreateAbsence_exception(new InconsistentDateException(), (response) -> checkResponseBadRequest(response));
+    public void createAbsence_badRequest() throws Exception {
+        createAbsenceException(new InconsistentDateException(), (response) -> checkResponseBadRequest(response));
     }
 
 
-    private void testCreateAbsence_exception(Exception exception, Consumer<Response> consumer) throws Exception {
+    private void createAbsenceException(Exception exception, Consumer<Response> consumer) throws Exception {
         AbsenceWebBean absenceWebBean = AbsenceWebBeanTransformer.transform(EntityFactory.createAbsence());
 
         doThrow(exception).when(mockAbsenceService).addAbsence(isA(Absence.class), anyLong());
@@ -143,7 +140,7 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testDeleteAbsence() throws Exception {
+    public void deleteAbsence() throws Exception {
 
         Absence absence = EntityFactory.createAbsence();
         Long memberId = EntityFactory.createRandomLong();
@@ -156,14 +153,14 @@ public class AbsenceEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDeleteAbsence_null() throws Exception {
+    public void deleteAbsenceNull() throws Exception {
         Response response = absenceEndPoint.deleteAbsence(randomId, randomId);
         verify(mockAbsenceService, never()).remove(isA(Long.class));
         checkResponseNotFound(response);
     }
 
     @Test
-    public void testDeleteAbsence_notauthorized() throws Exception {
+    public void deleteAbsenceNotAuthorized() throws Exception {
 
         Absence absence = EntityFactory.createAbsence();
         Long memberId = EntityFactory.createRandomLong();

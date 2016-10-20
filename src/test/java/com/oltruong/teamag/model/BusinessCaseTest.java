@@ -12,7 +12,7 @@ public class BusinessCaseTest {
 
 
     @Test
-    public void testGetSummary() {
+    public void getSummary() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         assertThat(businessCase.getSummary()).isEqualTo(businessCase.getIdentifier() + "-" + businessCase.getName());
     }

@@ -41,7 +41,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetMembers() {
+    public void getMembers() {
         List<Member> memberList = EntityFactory.createList(EntityFactory::createMember);
         when(mockMemberService.findAll()).thenReturn(memberList);
 
@@ -54,27 +54,27 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetCurrentMember() {
-        testGetMemberById(() -> memberEndPoint.getCurrentMember(randomId));
+    public void getCurrentMember() {
+        getMemberById(() -> memberEndPoint.getCurrentMember(randomId));
     }
 
     @Test
-    public void testGetCurrentMember_notFound() {
-        testGetMemberById_notFound(() -> memberEndPoint.getCurrentMember(randomId));
+    public void getCurrentMemberNotFound() {
+        getMemberByIdNotFound(() -> memberEndPoint.getCurrentMember(randomId));
     }
 
     @Test
-    public void testGetMember() {
-        testGetMemberById(() -> memberEndPoint.getMember(randomId));
+    public void getMember() {
+        getMemberById(() -> memberEndPoint.getMember(randomId));
     }
 
     @Test
-    public void testGetMember_notFound() {
-        testGetMemberById_notFound(() -> memberEndPoint.getMember(randomId));
+    public void getMemberNotFound() {
+        getMemberByIdNotFound(() -> memberEndPoint.getMember(randomId));
     }
 
 
-    private void testGetMemberById(Supplier<Response> supplier) {
+    private void getMemberById(Supplier<Response> supplier) {
         when(mockMemberService.find(any())).thenReturn(member);
 
         Response response = supplier.get();
@@ -87,7 +87,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
 
-    private void testGetMemberById_notFound(Supplier<Response> supplier) {
+    private void getMemberByIdNotFound(Supplier<Response> supplier) {
         Response response = supplier.get();
         checkResponseNotFound(response);
         verify(mockMemberService).find(eq(randomId));
@@ -95,7 +95,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreateMember() {
+    public void createMember() {
         member.setId(randomId);
 
         Response response = memberEndPoint.createMember(member);
@@ -105,7 +105,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateAnotherMember() {
+    public void updateAnotherMember() {
 
 
         assertThat(member.getId()).isNull();
@@ -120,7 +120,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateCurrentMember() {
+    public void updateCurrentMember() {
         assertThat(member.getId()).isNull();
 
         Response response = memberEndPoint.updateCurrentMember(randomId, member);
@@ -133,7 +133,7 @@ public class MemberEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateCurrentMember_newPassword() {
+    public void updateCurrentMemberNewPassword() {
 
         member.setNewPassword("newPassword");
 

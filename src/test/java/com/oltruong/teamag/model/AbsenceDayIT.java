@@ -24,7 +24,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testCreateAndFind() {
+    public void createAndFind() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
 
         assertThat(absenceDay.getId()).isNull();
@@ -39,7 +39,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
     }
 
     @Test(expected = PersistenceException.class)
-    public void testCreate_memberNull() {
+    public void createMemberNull() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
         absenceDay.setMember(null);
         createWithCommit(absenceDay);
@@ -47,7 +47,7 @@ public class AbsenceDayIT extends AbstractEntityIT {
 
 
     @Test
-    public void testNamedQuery_findAbsenceDayByMemberAndMonth() {
+    public void namedQueryFindAbsenceDayByMemberAndMonth() {
         AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
 
         assertThat(absenceDay.getId()).isNull();
@@ -72,18 +72,5 @@ public class AbsenceDayIT extends AbstractEntityIT {
     }
 
 
-    @Ignore("TODO")
-    public void testNamedQuery_getAbsenceValuePerWeek() {
-        AbsenceDay absenceDay = EntityFactory.createAbsenceDay();
 
-        assertThat(absenceDay.getId()).isNull();
-
-        createWithoutCommit(absenceDay.getAbsence().getMember());
-        absenceDay.setMember(absenceDay.getAbsence().getMember());
-        createWithoutCommit(absenceDay.getAbsence());
-        absenceDay = (AbsenceDay) createWithCommit(absenceDay);
-        List<Object[]> objects = entityManager.createQuery("SELECT SUM(a.value), a.week, a.member from AbsenceDay a GROUP BY a.week, a.member ORDER BY a.week").getResultList();
-
-        assertThat(objects).isNotNull().isNotEmpty();
-    }
 }

@@ -44,7 +44,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindAll() throws Exception {
+    public void findAll() throws Exception {
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(mockTypedQuery.getResultList()).thenReturn(businessCaseList);
 
@@ -56,7 +56,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void create() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         BusinessCase businessCaseCreated = businessCaseService.persist(businessCase);
 
@@ -79,7 +79,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = EntityExistsException.class)
-    public void testCreate_existingData() throws Exception {
+    public void create_existingData() throws Exception {
 
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(mockTypedQuery.getResultList()).thenReturn(businessCaseList);
@@ -89,7 +89,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testCreateBusinessCase_noIdentifier() throws Exception {
+    public void createBusinessCase_noIdentifier() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setIdentifier(null);
         BusinessCase businessCaseCreated = businessCaseService.persist(businessCase);
@@ -126,7 +126,7 @@ public class BusinessCaseServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindSingle() {
+    public void findSingle() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         when(mockEntityManager.find(eq(BusinessCase.class), anyLong())).thenReturn(businessCase);
 

@@ -12,7 +12,7 @@ public class WorkLoadIT extends AbstractEntityIT {
 
 
     @Test
-    public void testCreation() {
+    public void creation() {
         WorkLoad workLoad = EntityFactory.createWorkLoad();
         assertThat(workLoad.getId()).isNull();
 

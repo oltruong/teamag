@@ -36,7 +36,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetBC() throws Exception {
+    public void getBC() throws Exception {
         List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
         when(mockBusinessCaseService.findAll()).thenReturn(businessCaseList);
         Response response = businessEndPoint.getAll();
@@ -50,7 +50,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetBC_byId() throws Exception {
+    public void getBCbyId() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         when(mockBusinessCaseService.find(eq(randomId))).thenReturn(businessCase);
 
@@ -66,7 +66,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreate() throws Exception {
+    public void create() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setId(randomId);
         when(mockBusinessCaseService.persist(eq(businessCase))).thenReturn(businessCase);
@@ -79,7 +79,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreate_existing() throws Exception {
+    public void createExisting() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         when(mockBusinessCaseService.persist(eq(businessCase))).thenThrow(new EntityExistsException());
         Response response = businessEndPoint.create(businessCase);
@@ -90,7 +90,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateBC() throws Exception {
+    public void updateBC() throws Exception {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         assertThat(businessCase.getId()).isNull();
 
@@ -102,7 +102,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDeleteBC() throws Exception {
+    public void deleteBC() throws Exception {
         Response response = businessEndPoint.delete(randomId);
         checkResponseNoContent(response);
 

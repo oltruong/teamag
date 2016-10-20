@@ -60,7 +60,7 @@ public class TestUtils {
         return method.invoke(object, arguments);
     }
 
-    public static void testConstructorIsPrivate(Class<?> clazz) {
+    public static void constructorIsPrivate(Class<?> clazz) {
         try {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();

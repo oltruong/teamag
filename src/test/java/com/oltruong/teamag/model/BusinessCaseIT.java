@@ -13,7 +13,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
 
 
     @Test
-    public void testCreateAndFind() {
+    public void createAndFind() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
 
         entityManager.persist(businessCase);
@@ -27,7 +27,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
 
 
     @Test(expected = PersistenceException.class)
-    public void testException() {
+    public void exception() {
         BusinessCase businessCase = EntityFactory.createBusinessCase();
         businessCase.setName(null);
 
@@ -37,7 +37,7 @@ public class BusinessCaseIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery() {
+    public void namedQuery() {
 
         BusinessCase businessCase = EntityFactory.createBusinessCase();
 

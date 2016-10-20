@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MemberIT extends AbstractEntityIT {
 
     @Test
-    public void testCreation() {
+    public void creation() {
         Member member = EntityFactory.createMember();
         entityManager.persist(member);
         assertThat(member.getId()).isNotNull();
@@ -26,7 +26,7 @@ public class MemberIT extends AbstractEntityIT {
     }
 
     @Test(expected = PersistenceException.class)
-    public void testException() {
+    public void exception() {
         Member member = EntityFactory.createMember();
         member.setEmail(null);
         entityManager.persist(member);
@@ -34,7 +34,7 @@ public class MemberIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testFindMembers() {
+    public void findMembers() {
 
         Member member = EntityFactory.createMember();
         entityManager.persist(member);
@@ -49,7 +49,7 @@ public class MemberIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testFindMemberByNameAndPassword() throws Exception {
+    public void findMemberByNameAndPassword() throws Exception {
         Member member = EntityFactory.createMember();
         entityManager.persist(member);
         transaction.commit();

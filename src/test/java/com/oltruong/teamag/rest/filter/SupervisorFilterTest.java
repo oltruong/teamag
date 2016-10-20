@@ -20,7 +20,7 @@ public class SupervisorFilterTest extends SecurityFilterTest {
 
 
     @Test
-    public void testFilter_notSupervisor() throws IOException {
+    public void filterNotSupervisor() throws IOException {
         member.setMemberType(MemberType.BASIC);
         filter_notAllowed();
     }

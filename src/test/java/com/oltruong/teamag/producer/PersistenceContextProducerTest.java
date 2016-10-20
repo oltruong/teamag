@@ -16,7 +16,7 @@ public class PersistenceContextProducerTest {
     protected EntityManager mockEntityManager;
 
     @Test
-    public void testBuild() {
+    public void build() {
         PersistenceContextProducer persistenceContextProducer = new PersistenceContextProducer();
         TestUtils.setPrivateAttribute(persistenceContextProducer, mockEntityManager, "entityManager");
     }

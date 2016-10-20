@@ -17,24 +17,24 @@ public class AbsenceValidatorTest {
 
 
     @Test
-    public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(AbsenceValidator.class);
+    public void constructorIsPrivate() {
+        TestUtils.constructorIsPrivate(AbsenceValidator.class);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testValidate_null() throws DateOverlapException, InconsistentDateException {
+    public void validateNull() throws DateOverlapException, InconsistentDateException {
         AbsenceValidator.validate(null, null);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testValidate_beginDatenull() throws DateOverlapException, InconsistentDateException {
+    public void validateBeginDatenull() throws DateOverlapException, InconsistentDateException {
         AbsenceValidator.validate(new Absence(), null);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testValidate_endDatenull() throws DateOverlapException, InconsistentDateException {
+    public void validateEndDatenull() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
         AbsenceValidator.validate(absence, null);
@@ -42,7 +42,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_DateNonChronological() throws DateOverlapException, InconsistentDateException {
+    public void validateDateNonChronological() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -52,7 +52,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_DateNonChronologicalSameDay() throws DateOverlapException, InconsistentDateException {
+    public void validateDateNonChronologicalSameDay() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -64,7 +64,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_InconsistentDate_gapAfternoon() throws DateOverlapException, InconsistentDateException {
+    public void validateInconsistentDate_gapAfternoon() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -76,7 +76,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_InconsistentDate_gapMorning() throws DateOverlapException, InconsistentDateException {
+    public void validateInconsistentDate_gapMorning() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -88,7 +88,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_DateNonChronologicalSameDay2() throws DateOverlapException, InconsistentDateException {
+    public void validateDateNonChronologicalSameDay2() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -101,7 +101,7 @@ public class AbsenceValidatorTest {
 
 
     @Test(expected = InconsistentDateException.class)
-    public void testValidate_DateNonChronologicalSameDay3() throws DateOverlapException, InconsistentDateException {
+    public void validateDateNonChronologicalSameDay3() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -113,7 +113,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test
-    public void testValidate() throws DateOverlapException, InconsistentDateException {
+    public void validate() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -130,7 +130,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = DateOverlapException.class)
-    public void testValidate_DateOverlap() throws DateOverlapException, InconsistentDateException {
+    public void validate_DateOverlap() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -150,7 +150,7 @@ public class AbsenceValidatorTest {
 
 
     @Test(expected = DateOverlapException.class)
-    public void testValidate_DateOverlapSameDay() throws DateOverlapException, InconsistentDateException {
+    public void validate_DateOverlapSameDay() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -165,7 +165,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test(expected = DateOverlapException.class)
-    public void testValidate_DateOverlapInclude() throws DateOverlapException, InconsistentDateException {
+    public void validate_DateOverlapInclude() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginDate(new DateTime(2013, 11, 22, 16, 40, 0));
@@ -189,7 +189,7 @@ public class AbsenceValidatorTest {
 
 
     @Test(expected = DateOverlapException.class)
-    public void testValidate_DateOverlap2() throws DateOverlapException, InconsistentDateException {
+    public void validate_DateOverlap2() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginType(Absence.AFTERNOON_ONLY);
@@ -212,7 +212,7 @@ public class AbsenceValidatorTest {
     }
 
     @Test
-    public void testValidate_NoOverlap() throws DateOverlapException, InconsistentDateException {
+    public void validate_NoOverlap() throws DateOverlapException, InconsistentDateException {
         Absence absence = new Absence();
 
         absence.setBeginType(Absence.AFTERNOON_ONLY);

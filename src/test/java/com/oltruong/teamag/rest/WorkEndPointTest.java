@@ -50,7 +50,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetWorksByTask_forbidden() throws Exception {
+    public void getWorksByTask_forbidden() throws Exception {
 
         Member member = EntityFactory.createMember();
         member.setMemberType(MemberType.BASIC);
@@ -61,12 +61,12 @@ public class WorkEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetWorksByTask_noMemberId() throws Exception {
+    public void getWorksByTask_noMemberId() throws Exception {
         testGetWorksByTask(null);
     }
 
     @Test
-    public void testGetWorksByTask_sameMemberId() throws Exception {
+    public void getWorksByTask_sameMemberId() throws Exception {
 
         testGetWorksByTask(randomId);
     }
@@ -81,7 +81,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetWorksByTask_all() throws Exception {
+    public void getWorksByTask_all() throws Exception {
 
 
         Map<Task, Double> map = buildMap();
@@ -118,12 +118,12 @@ public class WorkEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGetSingle() {
+    public void getSingle() {
         checkResponseNotAllowed(workEndPoint.getSingle(randomId));
     }
 
     @Test
-    public void testCreate() {
+    public void create() {
         checkResponseNotAllowed(workEndPoint.create(EntityFactory.createWork()));
     }
 }

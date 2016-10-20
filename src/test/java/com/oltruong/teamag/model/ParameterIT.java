@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ParameterIT extends AbstractEntityIT {
 
     @Test
-    public void testCreation() {
+    public void creation() {
         Parameter parameter = EntityFactory.createParameter();
         assertThat(parameter.getId()).isNull();
         entityManager.persist(parameter);

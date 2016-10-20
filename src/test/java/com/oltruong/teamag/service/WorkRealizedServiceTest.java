@@ -55,7 +55,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindAll() throws Exception {
+    public void findAll() throws Exception {
         List<WorkRealized> workRealizedServiceReturned = workRealizedService.findAll();
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
@@ -64,7 +64,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testGetWorkRealizedbyMember() throws Exception {
+    public void getWorkRealizedbyMember() throws Exception {
         List<WorkRealized> workRealizedServiceReturned = workRealizedService.getWorkRealizedbyMember(idTest);
 
         assertThat(workRealizedServiceReturned).isEqualTo(workRealizedList);
@@ -75,7 +75,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void createOrUpdate() throws Exception {
 
         Task task = EntityFactory.createTask();
         Task parentTask = EntityFactory.createTask();
@@ -108,7 +108,7 @@ public class WorkRealizedServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreateOrUpdate_null() throws Exception {
+    public void createOrUpdateNull() throws Exception {
         workRealizedService.createOrUpdate(null);
         verify(mockEntityManager, never()).persist(any());
         verify(mockEntityManager, never()).merge(any());

@@ -60,14 +60,14 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindAll() {
+    public void findAll() {
         List<Absence> allAbsenceList = absenceService.findAll();
         assertThat(allAbsenceList).isEqualTo(absenceList);
         checkCreateTypedQuery("Absence.FIND_ALL");
     }
 
     @Test
-    public void testFind() {
+    public void find() {
         Absence absence = EntityFactory.createAbsence();
 
         when(mockEntityManager.find(any(), any())).thenReturn(absence);
@@ -98,7 +98,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testAddAbsence_formatBegin() throws Exception {
+    public void testAddAbsenceFormatBegin() throws Exception {
 
         Absence absence = EntityFactory.createAbsence();
         absence.setBeginDate(null);
@@ -113,7 +113,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testAddAbsence_formatEnd() throws Exception {
+    public void testAddAbsenceFormatEnd() throws Exception {
 
         Absence absence = EntityFactory.createAbsence();
         absence.setBeginType(Absence.ALL_DAY);
@@ -140,7 +140,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindAbsencesByMemberId() {
+    public void findAbsencesByMemberId() {
         List<Absence> absences = absenceService.findAbsencesByMember(idTest);
         assertThat(absences).isEqualTo(absenceList);
         checkCreateTypedQuery("Absence.FIND_BY_MEMBER");
@@ -148,7 +148,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFindAbsencesByMemberId_null() {
+    public void findAbsencesByMemberIdNull() {
         absenceService.findAbsencesByMember(null);
     }
 
@@ -166,7 +166,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testRegisterAbsence_null() {
+    public void testRegisterAbsenceNull() {
         absenceService.registerAbsence(null);
     }
 
@@ -185,7 +185,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testReloadAllAbsenceDay_Null() {
+    public void testReloadAllAbsenceDayNull() {
         Query mockTypedQueryAbsenceDay = mock(Query.class);
         Query mockTypedQueryAbsence = mock(Query.class);
 

@@ -18,19 +18,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AbsenceDayTransformerTest {
 
     @Test
-    public void testConstructorIsPrivate() {
-        TestUtils.testConstructorIsPrivate(AbsenceDayTransformer.class);
+    public void constructorIsPrivate() {
+        TestUtils.constructorIsPrivate(AbsenceDayTransformer.class);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testTransformAbsenceNull() throws Exception {
+    public void transformAbsenceNull() throws Exception {
         AbsenceDayTransformer.transformAbsence(null);
 
     }
 
     @Test
-    public void testTransformAbsence_singleDay() throws Exception {
+    public void transformAbsenceSingleDay() throws Exception {
         DateTime now = getNextDateTimeNotOff();
 
         Absence absence = EntityFactory.createAbsence(now, Absence.ALL_DAY, now, Absence.ALL_DAY);
@@ -48,7 +48,7 @@ public class AbsenceDayTransformerTest {
     }
 
     @Test
-    public void testTransformAbsence_dayOff() throws Exception {
+    public void transformAbsenceDayOff() throws Exception {
         DateTime now = getNextDateTimeOff();
 
         Absence absence = EntityFactory.createAbsence(now, Absence.ALL_DAY, now, Absence.ALL_DAY);
@@ -60,7 +60,7 @@ public class AbsenceDayTransformerTest {
 
 
     @Test
-    public void testTransformAbsence_halfDay() throws Exception {
+    public void transformAbsenceHalfDay() throws Exception {
         DateTime now = getNextDateTimeNotOff();
 
 
@@ -76,7 +76,7 @@ public class AbsenceDayTransformerTest {
 
 
     @Test
-    public void testTransformAbsence_threeDays() throws Exception {
+    public void transformAbsenceThreeDays() throws Exception {
         DateTime beginDate = DateTime.now();
 
         while (next3daysOff(beginDate)) {//Make sure this is not a day off !

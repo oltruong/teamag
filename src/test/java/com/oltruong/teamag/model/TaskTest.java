@@ -37,7 +37,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testAddTotal() {
+    public void addTotal() {
         task.setTotal(null);
         task.addTotal(Double.valueOf(1.85d));
         assertThat(task.getTotal()).isEqualTo(1.85d);
@@ -46,19 +46,19 @@ public class TaskTest {
     }
 
     @Test
-    public void testIsNonAdmin_noMember() {
+    public void isNonAdminNoMember() {
         task.setMembers(null);
         assertThat(task.isNonAdmin()).isFalse();
     }
 
     @Test
-    public void testIsAdmin_noMember() {
+    public void isAdminNoMember() {
         task.getMembers().clear();
         assertThat(task.isAdmin()).isTrue();
     }
 
     @Test
-    public void testIsAdmin() {
+    public void isAdmin() {
         task.getMembers().clear();
         Member member = EntityFactory.createMember();
         member.setMemberType(MemberType.BASIC);
@@ -68,7 +68,7 @@ public class TaskTest {
 
 
     @Test
-    public void testIsAbsence() {
+    public void isAbsence() {
 
         assertThat(testTaskAdmin(null, null)).isFalse();
         assertThat(testTaskAdmin(null, "Absence")).isFalse();

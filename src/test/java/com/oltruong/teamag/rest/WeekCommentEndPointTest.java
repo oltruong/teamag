@@ -56,7 +56,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGet_null() {
+    public void getNull() {
         int weekNumber = 33;
         int year = DateTime.now().getYear();
         int month = DateTime.now().getMonthOfYear();
@@ -69,7 +69,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testGet() {
+    public void get() {
         int weekNumber = 33;
         testGet(weekNumber, weekNumber);
     }

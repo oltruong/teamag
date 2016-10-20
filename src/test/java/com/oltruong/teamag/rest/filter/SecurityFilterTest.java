@@ -13,17 +13,17 @@ public class SecurityFilterTest extends AbstractFilterTest {
 
 
     @Test
-    public void testFilter_allowed() throws IOException {
+    public void filter_allowed() throws IOException {
         securityFilter.filter(mockContainerRequestContext);
     }
 
     @Test
-    public void testFilter_notAllowed() throws IOException {
+    public void filter_notAllowed() throws IOException {
         member.setPassword("NOK");
-        filter_notAllowed();
+        filterNotAllowed();
     }
 
-    protected void filter_notAllowed() throws IOException {
+    private void filterNotAllowed() throws IOException {
         try {
             securityFilter.filter(mockContainerRequestContext);
             fail("an exception should have been raised");

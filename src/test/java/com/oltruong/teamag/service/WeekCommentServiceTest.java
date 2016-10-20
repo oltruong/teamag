@@ -35,7 +35,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testFindWeekComment() throws Exception {
+    public void findWeekComment() throws Exception {
 
         List<WeekComment> weekCommentList = Lists.newArrayListWithExpectedSize(1);
         weekCommentList.add(weekComment);
@@ -49,7 +49,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindWeekComment_empty() throws Exception {
+    public void findWeekComment_empty() throws Exception {
         assertThat(weekCommentService.findWeekComment(randomLong, week, month, year)).isNull();
         checkCallFind();
     }
@@ -63,7 +63,7 @@ public class WeekCommentServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void create() throws Exception {
         WeekComment weekCommentCreated = weekCommentService.persist(weekComment);
 
         assertThat(weekCommentCreated).isEqualTo(weekComment);

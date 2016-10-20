@@ -19,13 +19,13 @@ public class DateConverterTest {
     }
 
     @Test
-    public void testConvertToDatabaseColumn() throws Exception {
+    public void convertToDatabaseColumn() throws Exception {
         DateTime dateTime = DateTime.now();
         assertThat(dateConverter.convertToDatabaseColumn(dateTime)).isEqualTo(dateTime.withTimeAtStartOfDay().toDate());
     }
 
     @Test
-    public void testConvertToEntityAttribute() throws Exception {
+    public void convertToEntityAttribute() throws Exception {
         DateTime dateTime = DateTime.now();
         assertThat(dateConverter.convertToEntityAttribute(dateTime.toDate())).isEqualTo(dateTime);
     }

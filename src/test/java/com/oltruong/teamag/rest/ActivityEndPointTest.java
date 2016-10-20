@@ -39,7 +39,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetAll() throws Exception {
+    public void getAll() throws Exception {
         List<Activity> activityList = EntityFactory.createList(EntityFactory::createActivity);
         when(mockActivityService.findAll()).thenReturn(activityList);
         Response response = activityEndPoint.getAll();
@@ -54,7 +54,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetActivity() throws Exception {
+    public void getActivity() throws Exception {
 
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.find(eq(randomId))).thenReturn(activity);
@@ -69,7 +69,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void create() throws Exception {
         Activity activity = EntityFactory.createActivity();
         activity.setId(randomId);
         when(mockActivityService.persist(eq(activity))).thenReturn(activity);
@@ -82,7 +82,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreate_existing() throws Exception {
+    public void createExisting() throws Exception {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.persist(eq(activity))).thenThrow(new EntityExistsException());
 
@@ -94,7 +94,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateActivity() throws Exception {
+    public void updateActivity() throws Exception {
 
         Activity activity = EntityFactory.createActivity();
         assertThat(activity.getId()).isNull();
@@ -107,7 +107,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void delete() throws Exception {
         Activity activity = EntityFactory.createActivity();
         when(mockActivityService.find(randomId)).thenReturn(activity);
         Response response = activityEndPoint.delete(randomId);
@@ -118,7 +118,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testDeleteActivity_notFound() throws Exception {
+    public void deleteActivityNotFound() throws Exception {
 
 
         doThrow(new EntityNotFoundException()).when(mockActivityService).remove(eq(randomId));

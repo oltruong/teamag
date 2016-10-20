@@ -56,13 +56,13 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGetTasks() throws Exception {
+    public void getTasks() throws Exception {
         testFindTasks(mockTaskService::findAll, taskEndPoint::getAll);
         verify(mockTaskService, atLeastOnce()).findAll();
     }
 
     @Test
-    public void testGetTasksWithActivity() throws Exception {
+    public void getTasksWithActivity() throws Exception {
         testFindTasks(mockTaskService::findTaskWithActivity, taskEndPoint::getTasksWithActivity);
         verify(mockTaskService, atLeastOnce()).findTaskWithActivity();
 
@@ -92,7 +92,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testGet() throws Exception {
+    public void get() throws Exception {
 
 
         when(mockTaskService.find(any())).thenReturn(task);
@@ -108,7 +108,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    public void create() throws Exception {
         task.setId(randomId);
 
         Response response = taskEndPoint.create(task);
@@ -120,7 +120,7 @@ public class TaskEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testCreate_existing() throws Exception {
+    public void create_existing() throws Exception {
 
         task.setId(randomId);
         doThrow(new EntityExistsException()).when(mockTaskService).persist(eq(task));

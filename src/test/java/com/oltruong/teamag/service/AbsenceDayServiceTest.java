@@ -37,7 +37,7 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testFindAll() throws Exception {
+    public void findAll() throws Exception {
         List<AbsenceDay> absenceDayListReturned = absenceDayService.findAll();
 
         Assertions.assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
@@ -78,24 +78,24 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testRemoveAbsence_null() {
+    public void testRemoveAbsenceNull() {
         absenceDayService.remove((Long) null);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFindAbsenceDayList_noMemberId() throws Exception {
+    public void findAbsenceDayList_noMemberId() throws Exception {
         absenceDayService.findByMemberAndMonth(null, Integer.valueOf(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testFindAbsenceDayList_noMonthId() throws Exception {
+    public void findAbsenceDayList_noMonthId() throws Exception {
         absenceDayService.findByMemberAndMonth(EntityFactory.createRandomLong(), null);
     }
 
 
     @Test
-    public void testFindAbsenceDayList() throws Exception {
+    public void findAbsenceDayList() throws Exception {
 
         Long randomLong = EntityFactory.createRandomLong();
         Integer randomInteger = EntityFactory.createRandomInteger();
@@ -110,7 +110,7 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void testRemoveAll_null() {
+    public void testRemoveAllNull() {
         when(mockTypedQuery.getResultList()).thenReturn(null);
 
         absenceDayService.removeAll();

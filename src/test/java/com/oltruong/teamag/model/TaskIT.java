@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TaskIT extends AbstractEntityIT {
     @Test
-    public void testCreation() {
+    public void creation() {
         Task task = EntityFactory.createTask();
         entityManager.persist(task.getMembers().get(0));
         entityManager.persist(task);
@@ -26,7 +26,7 @@ public class TaskIT extends AbstractEntityIT {
 
 
     @Test
-    public void testNamedQuery_findAllTasks() {
+    public void namedQueryFindAllTasks() {
 
         Task task = EntityFactory.createTask();
 
@@ -44,7 +44,7 @@ public class TaskIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery_findByName() {
+    public void namedQueryFindByName() {
 
         String name = "myName" + Calendar.getInstance().getTimeInMillis();
 
@@ -83,7 +83,7 @@ public class TaskIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery_findMember() {
+    public void namedQueryFindMember() {
 
 
         Task task1 = EntityFactory.createTask();
@@ -107,7 +107,7 @@ public class TaskIT extends AbstractEntityIT {
     }
 
     @Test
-    public void testNamedQuery_findNonAdmin() {
+    public void namedQueryFindNonAdmin() {
 
         Task task1 = EntityFactory.createTask();
         Task task2 = EntityFactory.createTask();

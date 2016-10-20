@@ -29,7 +29,7 @@ public class WorkLoadEndPointTest extends AbstractEndPointTest {
     }
 
     @Test
-    public void testUpdateWorkLoad_null() {
+    public void testUpdateWorkLoadNull() {
         checkResponseOK(workLoadEndPoint.updateWorkLoad(null));
     }
 }
