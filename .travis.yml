@@ -1,8 +1,6 @@
 language: java
-
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 after_success:
 - mvn cobertura:cobertura coveralls:report
 
@@ -14,3 +12,12 @@ env:
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarQube analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.login=$SONAR_TOKEN
+deploy:
+  provider: openshift
+  user: oltruong
+  password:
+    secure: WnfVLpBE4MoB2gvM88dUWGQJAagTaJvbsm4EqfDp87qn2dtPChYbwHd1+24ooRN7VK8M8j5RmLsw7mIgK8wwdzY0vxpbSPD3cfTZIpYF5ojvn+Lxiq4tPoQ8IPXm9+cq/vPwT6Otu+zku5On9p/WZ7S8iKJ+jVoiD4cEmZxxyB6SN5xjqh1bWto4zRrWfJJdo1wqnhbvmcmQwc/wXuEbfP2PRunw7uxjiTBFrthTYDztz4+UutiA3uK3XWRwFxAOUDhNMG0CSPBMwVyivI/HHnM+V1/0PpajRHjjS4CVcDEP6UwQbh0AmrmGiItM6IUBS2yrZUFoKHHzzpxN+oeQwJpqFhe7fKgpmyfelrfnMPUSicOOI3fkVUuCpcTnAmzQFCZ5s/xxp3+IMv8qYYf7VZoKzkiwankFIpa+jKC4TRCmBMeZ8H0Lus/d8tHASQAmtMUdCrM51T8RyIvPzJ71t1HbOhhECVCEFNKC3RVFfQS48CIfnM0askvPlbA6tv+nG/9gG8Tr2286LBB+KuFXgvp3ceHCjB+VGsggWE+TTlduJW1/YHjmOBEA1Zq/ZqpC7ViQrL5rWANVKFaZeOfGOIxt8YuYjHZoQFdf2GcpyoXidcHxKapgge/81XfNoVmv2U0ZT3RmsMQ3udP0wSXjQJq3sd4AqGp0GXLOMkVkc0g=
+  app: teamag
+  domain: nadeva
+  on:
+    repo: oltruong/teamag
