@@ -3,14 +3,14 @@ package com.oltruong.teamag.service;
 import com.oltruong.teamag.model.AbsenceDay;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
-import org.assertj.core.api.Assertions;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -40,7 +40,7 @@ public class AbsenceDayServiceTest extends AbstractServiceTest {
     public void findAll() throws Exception {
         List<AbsenceDay> absenceDayListReturned = absenceDayService.findAll();
 
-        Assertions.assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
+        assertThat(absenceDayList).isEqualTo(absenceDayListReturned);
 
         checkCreateTypedQuery("findAllAbsenceDays");
 
