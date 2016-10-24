@@ -1,1 +1,1 @@
-web: java -jar target/teamag-swarm.jar
+web: java -jar -Dswarm.http.port=$PORT target/teamag-swarm.jar
