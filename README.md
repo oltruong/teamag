@@ -1,10 +1,11 @@
 # TEAMAG
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
-* Team management web application using Java8/JavaEE 7 to learn while getting a useful tool for my job :)
+* Team management web application using Java8 /JavaEE7 to learn while getting a useful tool for my job :)
 
 ## Frameworks and librairies used
 
 * [JavaEE7] (http://www.oracle.com/technetwork/java/javaee/overview/index.html)
+* [Wildfly Swarm] (http://wildfly-swarm.io/): forget about having a server for deployment.
 * [Guava] (https://code.google.com/p/guava-libraries/): Google core librairies
 * [LogBack] (http://logback.qos.ch/): nice logger
 * [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
@@ -21,7 +22,16 @@
 
 * [Java8] (http://www.oracle.com/technetwork/java/index.html)
 * [Maven] (http://maven.apache.org)
-* JavaEE 7 server: for example [WildFly] (http://www.wildfly.org/)
+
+### Build
+
+mvn clean install
+
+### Run
+
+java -jar target/teamag-swarm.jar
+
+
 
 ### Default configuration
 * Default user login : admin. Default password is blank
