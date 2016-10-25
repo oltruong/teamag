@@ -2,6 +2,17 @@
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
 * Team management web application using Java8 /JavaEE7 to learn while getting a useful tool for my job :)
 
+## Demo
+teamag.herokuapp.com
+
+(default login: admin, password: leave blank)
+
+
+
+## Build info
+[![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
+[![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.svg?branch=master)](https://coveralls.io/github/oltruong/teamag?branch=master)
+
 ## Frameworks and librairies used
 
 * [JavaEE7] (http://www.oracle.com/technetwork/java/javaee/overview/index.html)
@@ -10,11 +21,6 @@
 * [LogBack] (http://logback.qos.ch/): nice logger
 * [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
 
-## Build status
-[![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
-
-## Coverage status
-[![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.svg?branch=develop)](https://coveralls.io/github/oltruong/teamag?branch=develop)
 
 ## Getting started
 
@@ -30,8 +36,6 @@ mvn clean install
 ### Run
 
 java -jar target/teamag-swarm.jar
-
-
 
 ### Default configuration
 * Default user login : admin. Default password is blank
