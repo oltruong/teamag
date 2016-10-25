@@ -90,7 +90,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
         verify(mockWorkService).findTaskByMember(eq(randomId));
     }
 
-    protected Map<Task, Double> buildMap() {
+    private Map<Task, Double> buildMap() {
         Map<Task, Double> map = Maps.newHashMap();
         final Task task = EntityFactory.createTask();
         final Double total = EntityFactory.createRandomDouble();
@@ -98,7 +98,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
         return map;
     }
 
-    protected void checkResponseGetWorksByTask(Map<Task, Double> map, Supplier<Map<Task, Double>> mapSupplier, Supplier<Response> supplier) {
+    private void checkResponseGetWorksByTask(Map<Task, Double> map, Supplier<Map<Task, Double>> mapSupplier, Supplier<Response> supplier) {
 
         when(mapSupplier.get()).thenReturn(map);
         Response response = supplier.get();
@@ -113,7 +113,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
 
     @Test
-    public void testDelete() {
+    public void delete() {
         checkResponseNotAllowed(workEndPoint.delete(randomId));
     }
 

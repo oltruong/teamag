@@ -2,8 +2,10 @@ package com.oltruong.teamag.rest;
 
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.builder.EntityFactory;
+import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WeekCommentService;
 import com.oltruong.teamag.utils.TestUtils;
+
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +38,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(weekCommentEndPoint, mockWeekCommentService, "weekCommentService");
     }
 
-    private void testGet(int weekNumber, int weekArgument) {
+    private void get(int weekNumber, int weekArgument) {
 
         int year = DateTime.now().getYear();
         int month = DateTime.now().getMonthOfYear();
@@ -61,7 +63,7 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         int year = DateTime.now().getYear();
         int month = DateTime.now().getMonthOfYear();
 
-        Response response = weekCommentEndPoint.get(randomId, randomId, weekNumber, month, year);
+        Response response = weekCommentEndPoint.get(randomId, null, weekNumber, month, year);
 
         checkResponseNoContent(response);
 
@@ -71,8 +73,10 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
     @Test
     public void get() {
         int weekNumber = 33;
-        testGet(weekNumber, weekNumber);
+        get(weekNumber, weekNumber);
     }
+
+
 
 
 }
