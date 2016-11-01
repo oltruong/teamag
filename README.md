@@ -3,7 +3,7 @@
 * Team management web application using Java8 /JavaEE7 to learn while getting a useful tool for my job :)
 
 ## Demo
-[teamag.herokuapp.com](teamag.herokuapp.com)
+[teamag.herokuapp.com](https://teamag.herokuapp.com)
 
 (default login: admin, password: leave blank)
 
