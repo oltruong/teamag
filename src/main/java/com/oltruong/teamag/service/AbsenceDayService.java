@@ -8,9 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 @Stateless
 public class AbsenceDayService extends AbstractService<AbsenceDay> {
 

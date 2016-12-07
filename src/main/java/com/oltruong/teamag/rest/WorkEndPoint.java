@@ -26,9 +26,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("works")
 @Stateless
 @SecurityChecked

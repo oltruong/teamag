@@ -11,9 +11,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Olivier Truong
- */
+
 public class TaskWebBeanTransformerTest {
     @Test
     public void constructorIsPrivate() {

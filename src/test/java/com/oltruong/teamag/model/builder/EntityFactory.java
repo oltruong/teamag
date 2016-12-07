@@ -25,9 +25,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-/**
- * @author Olivier Truong
- */
+
 public class EntityFactory {
 
     private static final int MINIMUM = 3;

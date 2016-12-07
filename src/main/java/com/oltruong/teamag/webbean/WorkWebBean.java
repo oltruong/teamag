@@ -2,9 +2,7 @@ package com.oltruong.teamag.webbean;
 
 import java.util.Date;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkWebBean {
 
 

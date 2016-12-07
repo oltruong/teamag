@@ -7,9 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkLoadEndPointTest extends AbstractEndPointTest {
 
     private WorkLoadEndPoint workLoadEndPoint;

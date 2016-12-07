@@ -19,9 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("workload")
 @Stateless
 @AdminChecked

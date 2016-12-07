@@ -8,9 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-/**
- * @author Olivier Truong
- */
+
 public abstract class AbstractEntityIT {
 
     protected EntityManagerFactory entityManagerFactory;

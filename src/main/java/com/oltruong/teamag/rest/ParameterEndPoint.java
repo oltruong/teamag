@@ -20,9 +20,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("parameter")
 @Stateless
 @AdminChecked

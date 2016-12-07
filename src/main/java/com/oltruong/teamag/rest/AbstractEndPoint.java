@@ -22,9 +22,7 @@ import java.net.URI;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * @author Olivier Truong
- */
+
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 public abstract class AbstractEndPoint<T extends IModel> {

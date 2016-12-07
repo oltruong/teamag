@@ -7,9 +7,7 @@ import javax.persistence.PersistenceException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Olivier Truong
- */
+
 public class WeekCommentIT extends AbstractEntityIT {
 
     @Test

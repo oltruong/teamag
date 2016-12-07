@@ -6,9 +6,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
 
-/**
- * @author Olivier Truong
- */
+
 public class AbsenceWebBean {
 
 

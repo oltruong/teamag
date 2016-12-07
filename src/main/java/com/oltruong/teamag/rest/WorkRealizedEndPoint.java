@@ -20,9 +20,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("workrealized")
 @Stateless
 public class WorkRealizedEndPoint extends AbstractEndPoint<WorkRealized> {

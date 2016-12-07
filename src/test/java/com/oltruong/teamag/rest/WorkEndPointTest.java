@@ -26,9 +26,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkEndPointTest extends AbstractEndPointTest {
 
     private WorkEndPoint workEndPoint;

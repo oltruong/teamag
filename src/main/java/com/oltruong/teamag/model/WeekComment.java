@@ -10,9 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
- * @author Olivier Truong
- */
+
 @Table(name = "TM_WEEK_COMMENT")
 @Entity
 @NamedQueries({@NamedQuery(name = "WeekComment.FIND_BY_MEMBER_WEEK_MONTH_YEAR", query = "SELECT w from WeekComment w  where w.member.id=:fmemberId and w.weekYear=:fweekYear and w.month=:fmonth and w.year=:fyear")})

@@ -13,9 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
-/**
- * @author Olivier Truong
- */
+
 @SecurityChecked
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {

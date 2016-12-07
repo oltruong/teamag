@@ -5,9 +5,7 @@ import com.oltruong.teamag.model.WorkLoad;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkLoadContainer {
 
 

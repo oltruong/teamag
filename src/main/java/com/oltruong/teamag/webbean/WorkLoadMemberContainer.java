@@ -5,9 +5,7 @@ import com.oltruong.teamag.model.Member;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkLoadMemberContainer {
 
     private List<Member> memberList;

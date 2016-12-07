@@ -5,9 +5,7 @@ import com.oltruong.teamag.service.MemberService;
 
 import javax.ws.rs.ext.Provider;
 
-/**
- * @author Olivier Truong
- */
+
 @Provider
 @SupervisorChecked
 public class SupervisorFilter extends SecurityFilter {

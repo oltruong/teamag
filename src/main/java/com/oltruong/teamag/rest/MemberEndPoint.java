@@ -18,9 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("member")
 @Stateless
 public class MemberEndPoint extends AbstractEndPoint<Member> {

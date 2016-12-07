@@ -8,9 +8,7 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public final class AbsenceWebBeanTransformer {
 
     private AbsenceWebBeanTransformer() {

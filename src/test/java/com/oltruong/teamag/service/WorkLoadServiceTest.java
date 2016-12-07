@@ -27,9 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkLoadServiceTest extends AbstractServiceTest {
 
     private WorkLoadService workLoadService;

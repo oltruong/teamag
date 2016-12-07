@@ -15,9 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class TaskService extends AbstractService<Task> {
 
 

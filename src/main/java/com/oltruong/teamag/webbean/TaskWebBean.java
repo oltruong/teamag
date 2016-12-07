@@ -2,9 +2,7 @@ package com.oltruong.teamag.webbean;
 
 import com.oltruong.teamag.model.Activity;
 
-/**
- * @author Olivier Truong
- */
+
 public class TaskWebBean {
 
     private Long id;

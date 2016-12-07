@@ -16,9 +16,7 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Olivier Truong
- */
+
 @Stateless
 public class WorkRealizedService extends AbstractService<WorkRealized> {
 

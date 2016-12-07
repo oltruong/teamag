@@ -6,9 +6,7 @@ import com.oltruong.teamag.webbean.TaskWebBean;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class TaskWebBeanTransformer {
 
     private TaskWebBeanTransformer() {

@@ -16,9 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Olivier Truong
- */
+
 @Singleton
 public class ParameterService extends AbstractService<Parameter> {
 
