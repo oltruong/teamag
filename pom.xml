@@ -68,7 +68,6 @@
         <version.wildfly>8.2.0.Final</version.wildfly>
         <version.hibernate>4.3.5.Final</version.hibernate>
 
-        <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <jersey-common.version>2.4.1</jersey-common.version>
         <momentjs.version>2.10.6</momentjs.version>
     </properties>
@@ -408,12 +407,6 @@
                 <version>${version.build-helper-maven-plugin}</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar-maven-plugin.version}</version>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${version.maven-site-plugin}</version>
@@ -431,16 +424,6 @@
                     <format>xml</format>
                     <maxmem>256m</maxmem>
                     <aggregate>true</aggregate>
-                </configuration>
-            </plugin>
-
-            <!-- coveralls -->
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <repoToken>${coveralls_repo_token}</repoToken>
                 </configuration>
             </plugin>
 
