@@ -3,6 +3,9 @@ package com.oltruong.teamag.model;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.TeamagConstants;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,12 +16,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.Objects;
 
 @Table(name = "TM_MEMBER")
 @Entity
-@NamedQueries({@NamedQuery(name = "Member.FIND_ALL", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findActiveMembers", query = "SELECT m from Member m where m.active = true order by m.name"), @NamedQuery(name = "findByNamePassword", query = "SELECT m from Member m where m.name=:fname and m.password=:fpassword")})
+@NamedQueries({@NamedQuery(name = "Member.FIND_ALL", query = "SELECT m from Member m order by m.name"), @NamedQuery(name = "findActiveMembers", query = "SELECT m from Member m where m.active = true order by m.name")})
 public class Member implements Serializable, IModel {
 
     private static final long serialVersionUID = 1L;
@@ -77,6 +78,7 @@ public class Member implements Serializable, IModel {
                 : super.hashCode();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -167,7 +169,6 @@ public class Member implements Serializable, IModel {
         this.newPassword = newPassword;
     }
 
-    //FIXME REMOVE with JSF
     public Double getEstimatedWorkMonths() {
         return estimatedWorkDays / TeamagConstants.MONTH_DAYS_RATIO;
     }

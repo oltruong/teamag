@@ -74,8 +74,6 @@ public class AbsenceWebBean {
     }
 
 
-    //Methods used by JSF component
-
     public Date getEndDate() {
         Date endDate = null;
         if (endDateTime != null) {

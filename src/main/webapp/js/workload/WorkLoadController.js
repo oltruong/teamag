@@ -285,14 +285,10 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
 
                 for (var i = 0; i < $scope.filteredMembers.length; i++) {
                     var member = $scope.filteredMembers[i];
-                    console.log('member!!' + member.name);
                     for (var j = 0; j < workLoadContainer.workLoadList.length; j++) {
                         var workload = workLoadContainer.workLoadList[j];
-                        console.log('workload!!' + workload);
                         if (workload.member.name === member.name) {
-                            console.log('yahoooo' + workload.estimated + "-" + workload.realized);
                             if (workload.estimated !== 0 || workload.realized !== 0) {
-                                console.log('truuuue');
                                 return true;
                             }
                         }

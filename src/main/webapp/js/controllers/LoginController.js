@@ -24,10 +24,10 @@ teamagApp.controller('LoginController', ['$http', '$scope', '$location', 'Login'
                 $location.path('home');
 
             }, function (error) {
-                if (error.status === "404") {
+                if (error.status === 404) {
                     $scope.error = 'Utilisateur ou mot de passe incorrect';
                 } else {
-                    $scope.error = 'Error HTTP ' + error.status;
+                    $scope.error = 'Erreur technique';
                 }
             });
 

@@ -1,1 +1,0 @@
-jboss-cli --connect --controller=%1:9990 --user=%2 --password=%3 --command="deploy target/teamag.war --force"

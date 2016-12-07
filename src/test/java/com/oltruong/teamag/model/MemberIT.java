@@ -48,25 +48,6 @@ public class MemberIT extends AbstractEntityIT {
 
     }
 
-    @Test
-    public void findMemberByNameAndPassword() throws Exception {
-        Member member = EntityFactory.createMember();
-        entityManager.persist(member);
-        transaction.commit();
-
-        Query query = entityManager.createNamedQuery("findByNamePassword");
-        query.setParameter("fname", member.getName());
-        query.setParameter("fpassword", Hashing.sha256().hashString("toto", Charsets.UTF_8).toString());
-
-        List<Member> memberList = query.getResultList();
-        Assertions.assertThat(memberList).isNotEmpty().hasSize(1).contains(member);
-
-        query.setParameter("fpassword", "sss");
-
-        assertThat(query.getResultList()).isEmpty();
-
-
-    }
 
 
 }

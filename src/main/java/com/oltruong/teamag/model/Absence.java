@@ -53,6 +53,7 @@ public class Absence implements IModel {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
