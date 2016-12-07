@@ -1,15 +1,22 @@
 language: java
+
 jdk:
 - oraclejdk8
+
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
 addons:
   sonarqube: true
       token:
-        secure: IoO8MKOB3cH2TWyxqtAHlXsgW0Znh3KffLdcAhur6qLoRCbvRQLp2jD6LiMu1Oxjr/KSHjfZenGaeLqmOcn42a+LEUkXGhjblq0e5KCMJhS/UKtgl6rzY6bog2qF057YhffLyTBj1sdXA5ATIEMijkuQtPPuiWkN5M7Pfu6gkO0mR2MbONjwa/4mrWhp7EVJ39bGQ8vqdZUDJvlmSCTclW57zgQ0y/wNgji9nxCvS6QF/RwBnz0/6XKCFaRPJa9o6hN41JPL8YCGFht2qSQMHO/1srdsy7gyCgDx/UqjnOxrpg5CUmGLO15RVG1alxQiuQ5GEp1e9K9P8iOpNm9T4rwKv3RRF5ZBuNxz2tkl9aYxp/B6N87Jv9Y5lytKXn+G33nttRSp1Zy6X4j7by0Lb+afRWN7AtuzvRGy+cixlQ0+nDWqHf18UHVPAbufL4sDPEaUn6DYDTubnLSDHJm8lMjXN3GwgCOYPE/cfPdJ9lAcRyH9YqjX7AWcncvBf0QRUACdwhJsb2G4cG22f35UK9EFrbI3OyxMyHr4EEweVtgraNySFeEB1oUjpmu5Ys1JOC5dmUq3rAKVFR6Ee2psfoeiyQEfxWNzbESV6ET7WXjKjHhrN151iFu/YZjEy4XIVCnBBMxCnZ33iBypJCrOz4qxpe2atv4yCSI65b82K7M=
+        secure: "qLjSFGq42Agb3VvUYvQKEYMFKqG23vHDWQaM1J8bOSHzH/2basT8YflxRO6G2bH/+o8JAr/649UdZ6tAwqb+70CCdRV6686xjGdQzu5fYitkZfDkUF3AE1bY2yN8vu7FeW4klweVvBstjjbqVYgNd/aOkk7tFTZq8W/KcfKlQVGk3GjqKXYLmL44Ucl28ICnLTAh+Xq49cZ3gKuXmW8LQyxVpnPj/rvbTbSP3+/CUUPmbtGSZ7bENzVCDLVq5w+PAHu+1Imu5dIDDszvxcxR4ESRADFugpkDoY7d2SWm1FTAZwEReBmOAj/McGtOBKPSxIw9BQdVanK5bVv9emJnIovhl6IQeniFj2dP9AxGxjhAldzZiDu+BEnclyEZ7VxEW1cCp/VUL02bBrdjhXZxPStmU6IxPyL48RP/1yIQa10JwT5kCaHaKg68TUMw+V9U4s/LC9maU1I70MEmt4m8IJtCuisYOC8pT5aotF8I3lgCS90AMfovcuqt3CnMl1m2a94s9S0RxNtGTq2Xfvg7XWzjkAqTxDu34iGM3lzV3gPg0cGs1AuM9xq5qCk56WFhlZMN0lWEZdkHWCUbt/maYSxYrn6zilLTCJF+Hf/n944wwRL/ra9Sly1ZR23L0zoEhj6+1y6tvBvFZyAryVuesqg5dT2Fz1Ekd3GMn4g05O4="
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
 
 deploy:
   provider: heroku
