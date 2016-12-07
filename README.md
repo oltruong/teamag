@@ -1,6 +1,6 @@
 # TEAMAG
 * [Team Management Web Application] (https://github.com/oltruong/TeaMag)
-* Team management web application using Java8 /JavaEE7 to learn while getting a useful tool for my job :)
+* Team management web application using Java8 /JavaEE7 to learn while getting a useful tool as a manager :)
 
 ## Demo
 [teamag.herokuapp.com](https://teamag.herokuapp.com)
