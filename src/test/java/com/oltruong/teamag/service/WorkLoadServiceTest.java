@@ -3,29 +3,27 @@ package com.oltruong.teamag.service;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
+
 import com.oltruong.teamag.model.BusinessCase;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.WorkLoad;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.utils.TestUtils;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import javax.persistence.Query;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 
 public class WorkLoadServiceTest extends AbstractServiceTest {
@@ -131,51 +129,32 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
         workLoadService.updateWorkLoadWithRealized(null, null);
     }
 
-    //FIXME
-    @Ignore
+    @Test
     public void updateWorkLoadWithRealized() {
 
         final double newRealized = 365d;
 
-        Query mockQueryBC = mock(Query.class);
-        when(mockEntityManager.createNamedQuery(eq("findAllBC"))).thenReturn(mockQueryBC);
-
-
         List<WorkLoad> workLoadList = EntityFactory.createList(EntityFactory::createWorkLoad);
-
-
-        when(mockTypedQuery.getResultList()).thenReturn(workLoadList);
-
-        List<BusinessCase> businessCaseList = Lists.newArrayListWithCapacity(workLoadList.size());
-        businessCaseList.forEach(bc -> bc.setId(EntityFactory.createRandomLong()));
-
         List<Member> memberList = Lists.newArrayListWithCapacity(workLoadList.size());
-        memberList.forEach(member -> member.setId(EntityFactory.createRandomLong()));
-        workLoadList.forEach(workLoad -> {
 
-            workLoad.getBusinessCase().setId(EntityFactory.createRandomLong());
-            workLoad.getMember().setId(EntityFactory.createRandomLong());
+        TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
 
-            if (!businessCaseList.contains(workLoad.getBusinessCase())) {
-                businessCaseList.add(workLoad.getBusinessCase());
-            }
-
-            if (!memberList.contains(workLoad.getMember())) {
-                memberList.add(workLoad.getMember());
-            }
-        });
 
         when(mockTypedQuery.getResultList()).thenReturn(workLoadList);
 
         Table<Member, BusinessCase, Double> values = HashBasedTable.create();
 
-        TestUtils.setPrivateAttribute(new MemberService(), memberList, "memberList");
         workLoadList.forEach(workLoad -> {
             values.put(workLoad.getMember(), workLoad.getBusinessCase(), newRealized);
         });
 
+        List<BusinessCase> businessCaseList = Lists.newArrayListWithCapacity(workLoadList.size());
 
         workLoadService.updateWorkLoadWithRealized(values, businessCaseList);
+
+
+        verify(mockTypedQuery).getResultList();
+        verify(mockEntityManager).createNamedQuery("WorkLoad.FIND_ALL", WorkLoad.class);
 
         workLoadList.forEach(workLoad -> {
             assertThat(workLoad.getRealized()).isEqualTo(newRealized);
@@ -205,15 +184,29 @@ public class WorkLoadServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void createFromBusinessCase_noMember() {
+    public void createFromBusinessCaseNoMember() {
         TestUtils.setPrivateAttribute(new MemberService(), null, "memberList");
         workLoadService.createFromBusinessCase(EntityFactory.createBusinessCase());
         verify(mockEntityManager, never()).persist(any());
     }
 
     @Test
+    public void createFromMemberNoBusinessCase() {
+        workLoadService.createFromMember(null, null);
+        verify(mockEntityManager, never()).persist(any());
+    }
+
+    @Test
     public void createFromMember() {
 
+        List<BusinessCase> businessCaseList = EntityFactory.createList(EntityFactory::createBusinessCase);
+        workLoadService.createFromMember(null, businessCaseList);
+        verify(mockEntityManager, times(businessCaseList.size())).persist(isA(WorkLoad.class));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void findAll() {
+        workLoadService.findAll();
     }
 
     @Test
