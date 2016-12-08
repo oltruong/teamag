@@ -5,9 +5,7 @@ import com.oltruong.teamag.model.WorkRealized;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkRealizedWrapper {
 
     private TaskWebBean task;

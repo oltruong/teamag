@@ -8,9 +8,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
- * @author Olivier Truong
- */
+
 @Table(name = "TM_WORK_REALIZED")
 @Entity
 @NamedQueries({@NamedQuery(name = "WorkRealized.FIND_ALL", query = "SELECT w FROM WorkRealized w order by w.year, w.month, w.taskId, w.memberId"),

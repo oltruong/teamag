@@ -10,9 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public class AbsenceValidatorTest {
 
 

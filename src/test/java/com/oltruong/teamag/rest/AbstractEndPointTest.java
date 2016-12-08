@@ -17,9 +17,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olivier Truong
- */
+
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractEndPointTest {
 

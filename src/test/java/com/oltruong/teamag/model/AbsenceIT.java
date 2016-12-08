@@ -10,9 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Olivier Truong
- */
+
 public class AbsenceIT extends AbstractEntityIT {
 
     @Test

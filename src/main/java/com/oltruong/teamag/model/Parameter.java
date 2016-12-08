@@ -28,6 +28,7 @@ public class Parameter implements IModel {
     private String value;
 
     public Parameter() {
+        //Default constructor required
     }
 
     public Parameter(ParameterName name) {
@@ -38,6 +39,7 @@ public class Parameter implements IModel {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
         return this.id;
     }

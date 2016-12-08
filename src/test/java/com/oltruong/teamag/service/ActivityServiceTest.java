@@ -14,9 +14,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olivier Truong
- */
+
 public class ActivityServiceTest extends AbstractServiceTest {
 
 

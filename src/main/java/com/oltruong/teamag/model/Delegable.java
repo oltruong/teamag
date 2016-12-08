@@ -2,9 +2,7 @@ package com.oltruong.teamag.model;
 
 import javax.persistence.Column;
 
-/**
- * @author Olivier Truong
- */
+
 
 public abstract class Delegable implements IModel {
 

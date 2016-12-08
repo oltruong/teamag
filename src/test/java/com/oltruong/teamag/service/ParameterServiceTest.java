@@ -14,9 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olivier Truong
- */
+
 public class ParameterServiceTest extends AbstractServiceTest {
 
     @Test

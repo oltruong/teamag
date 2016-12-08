@@ -33,7 +33,6 @@ public class AbsenceDay implements IModel {
 
 
     @Column(nullable = false)
-    // @Temporal(TemporalType.DATE)
     @Convert(converter = DateConverter.class)
     private DateTime day;
 

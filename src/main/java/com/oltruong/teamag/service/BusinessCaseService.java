@@ -9,9 +9,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * @author oltruong
- */
+
 public class BusinessCaseService extends AbstractService<BusinessCase> {
 
 

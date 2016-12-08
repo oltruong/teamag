@@ -5,6 +5,9 @@ import com.oltruong.teamag.model.Parameter;
 import com.oltruong.teamag.service.AbstractService;
 import com.oltruong.teamag.service.ParameterService;
 
+import java.util.List;
+import java.util.Properties;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.Message;
@@ -17,12 +20,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Properties;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("parameter")
 @Stateless
 @AdminChecked
@@ -39,7 +38,7 @@ public class ParameterEndPoint extends AbstractEndPoint<Parameter> {
 
     @PUT
     public Response update(List<Parameter> parameterList) {
-        parameterList.forEach(p -> parameterService.merge(p));
+        parameterList.forEach(parameterService::merge);
         return ok();
     }
 
@@ -82,7 +81,6 @@ public class ParameterEndPoint extends AbstractEndPoint<Parameter> {
 
 
         } catch (MessagingException messagingException) {
-            System.out.println("Error when sending message [" + messagingException.getMessage() + "]");
             return internalError();
         }
         return ok();

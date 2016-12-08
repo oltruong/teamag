@@ -6,9 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-/**
- * @author Olivier Truong
- */
+
 public class AdminFilterTest extends SecurityFilterTest {
 
 

@@ -9,9 +9,7 @@ import org.joda.time.Interval;
 
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 public final class AbsenceValidator {
     private AbsenceValidator() {
 

@@ -2,6 +2,7 @@ package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import com.oltruong.teamag.exception.UserNotFoundException;
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
@@ -9,12 +10,13 @@ import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.TeamagConstants;
 import com.oltruong.teamag.utils.TeamagUtils;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Map;
 
 @Singleton
 @Startup
@@ -87,7 +89,7 @@ public class MemberService extends AbstractService<Member> {
 
     public List<Member> findActiveNonAdminMembers() {
         List<Member> activeMemberList = findActiveMembers();
-        activeMemberList.removeIf(member -> member.isAdministrator());
+        activeMemberList.removeIf(Member::isAdministrator);
         return activeMemberList;
     }
 
@@ -142,7 +144,7 @@ public class MemberService extends AbstractService<Member> {
     }
 
     private String getDefaultPasswordHashed() {
-        return TeamagUtils.hashPassword(TeamagConstants.DEFAULT_PASSWORD);
+        return TeamagUtils.hashPassword(TeamagConstants.DEFAULT_VALUE);
     }
 
 }

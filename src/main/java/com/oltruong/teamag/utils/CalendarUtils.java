@@ -11,9 +11,7 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author Olivier Truong
- */
+
 public final class CalendarUtils {
 
     private CalendarUtils() {

@@ -12,9 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-/**
- * @author Olivier Truong
- */
+
 @Path("business")
 @Stateless
 @AdminChecked

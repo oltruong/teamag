@@ -18,9 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-/**
- * @author Olivier Truong
- */
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LoggerFactory.class})
 public class LoggingProducerTest {

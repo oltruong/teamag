@@ -11,9 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 @Stateless
 public class WorkLoadService extends AbstractService<WorkLoad> {
 

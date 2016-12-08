@@ -6,9 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-/**
- * @author Olivier Truong
- */
+
 @Stateless
 public class WeekCommentService extends AbstractService<WeekComment> {
 

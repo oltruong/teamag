@@ -27,9 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-/**
- * @author Olivier Truong
- */
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DateTime.class})
 public class ScheduleServiceTest {

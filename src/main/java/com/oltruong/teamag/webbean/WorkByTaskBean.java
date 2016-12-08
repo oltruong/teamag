@@ -1,8 +1,6 @@
 package com.oltruong.teamag.webbean;
 
-/**
- * @author Olivier Truong
- */
+
 public class WorkByTaskBean {
 
     private String name;

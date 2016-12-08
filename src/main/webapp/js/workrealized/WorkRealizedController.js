@@ -23,9 +23,6 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             $scope.works = works;
             initData();
             loadWeekComment();
-        }, function (error) {
-            console.log('ERROR retrieving works');
-            console.log(error);
         });
 
         function initData() {
@@ -120,8 +117,6 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
 
         $scope.removetask = function ($task) {
             $http.delete('resources/tasks/' + $task.id + '?month=' + $scope.month + '&year=' + $scope.year, $scope.newTask).success(function (data, status, headers, config) {
-            }).error(function (data, status, headers, config) {
-                console.log('ERROR deleting task' + status);
             });
 
 
@@ -230,11 +225,9 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
             }
             if (updatedWorkList.length > 0) {
                 $http.patch('resources/works', updatedWorks).success(function (data) {
-                }).error(function (data, status, headers, config) {
-                    console.log('ERROR patch work');
                 });
-                for (var i = 0; i < updatedWorkList.length; i++) {
-                    updatedWorkList[i].original = updatedWorkList[i].amount;
+                for (var index = 0; index < updatedWorkList.length; index++) {
+                    updatedWorkList[index].original = updatedWorkList[index].amount;
                 }
             }
         }
@@ -276,9 +269,6 @@ teamagApp.controller('WorkRealizedController', ['$scope', 'Work', 'WeekComment',
                 });
 
 
-            }).error(function (data, status, headers, config) {
-                console.log('ERROR ' + status);
-                console.log(status);
             });
         };
 
