@@ -1,8 +1,8 @@
 package com.oltruong.teamag.rest;
 
+import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.WeekComment;
 import com.oltruong.teamag.model.builder.EntityFactory;
-import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WeekCommentService;
 import com.oltruong.teamag.utils.TestUtils;
 
@@ -18,9 +18,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author oltruong
- */
+
 public class WeekCommentEndPointTest extends AbstractEndPointTest {
 
     private WeekCommentEndPoint weekCommentEndPoint;
@@ -76,7 +74,75 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         get(weekNumber, weekNumber);
     }
 
+    @Test
+    public void delete() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+        final Member member = EntityFactory.createMember();
+        member.setId(randomId);
+        weekComment.setMember(member);
+        when(mockWeekCommentService.find(randomId)).thenReturn(weekComment);
+        final Response response = weekCommentEndPoint.delete(randomId, randomId);
+        checkResponseNoContent(response);
+        verify(mockWeekCommentService).remove(randomId);
+    }
 
+    @Test
+    public void deleteNotFound() throws Exception {
+        final Response response = weekCommentEndPoint.delete(randomId, randomId);
+        checkResponseNotFound(response);
+        verify(mockWeekCommentService).find(randomId);
+    }
+
+    @Test
+    public void deleteForbidden() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+        final Member member = EntityFactory.createMember();
+        member.setId(randomId + 1);
+        weekComment.setMember(member);
+        when(mockWeekCommentService.find(randomId)).thenReturn(weekComment);
+        final Response response = weekCommentEndPoint.delete(randomId, randomId);
+        checkResponseForbidden(response);
+        verify(mockWeekCommentService).find(randomId);
+    }
+
+    @Test
+    public void patch() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+        final Member member = EntityFactory.createMember();
+        member.setId(randomId);
+        weekComment.setMember(member);
+        when(mockWeekCommentService.find(randomId)).thenReturn(weekComment);
+
+        WeekComment weekCommentArgument = EntityFactory.createWeekComment();
+        weekCommentArgument.setComment("comment");
+        final Response response = weekCommentEndPoint.patch(randomId, randomId, weekCommentArgument);
+        checkResponseOK(response);
+        verify(mockWeekCommentService).merge(weekComment);
+        assertThat(weekCommentArgument.getComment()).isEqualTo("comment");
+    }
+
+
+    @Test
+    public void patchNotFound() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+        final Response response = weekCommentEndPoint.patch(randomId, randomId, weekComment);
+        checkResponseNotFound(response);
+        verify(mockWeekCommentService).find(randomId);
+
+    }
+
+    @Test
+    public void patchForbidden() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+        final Member member = EntityFactory.createMember();
+        member.setId(randomId + 1);
+        weekComment.setMember(member);
+        when(mockWeekCommentService.find(randomId)).thenReturn(weekComment);
+        final Response response = weekCommentEndPoint.patch(randomId, randomId, weekComment);
+        checkResponseForbidden(response);
+        verify(mockWeekCommentService).find(randomId);
+
+    }
 
 
 }
