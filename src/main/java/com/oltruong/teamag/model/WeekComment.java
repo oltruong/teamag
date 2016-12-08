@@ -38,6 +38,7 @@ public class WeekComment implements IModel {
 
 
     public WeekComment() {
+        //An empty constructor is required
     }
 
     public WeekComment(Member theMember, int theWeekYear, int theMonth, int theYear) {
@@ -47,8 +48,13 @@ public class WeekComment implements IModel {
         year = theYear;
     }
 
+    @Override
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getComment() {

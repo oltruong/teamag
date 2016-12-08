@@ -35,6 +35,7 @@ public class ParameterEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(parameterEndPoint, mockParameterService, "parameterService");
         TestUtils.setPrivateAttribute(parameterEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
         TestUtils.setPrivateAttribute(parameterEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
+        assertThat(parameterEndPoint.getService()).isEqualTo(mockParameterService);
 
     }
 

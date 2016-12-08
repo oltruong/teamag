@@ -52,6 +52,9 @@ public class TaskEndPointTest extends AbstractEndPointTest {
         task = EntityFactory.createTask();
         when(mockTaskService.persist(eq(task))).thenReturn(task);
 
+        assertThat(taskEndPoint.getService()).isEqualTo(mockTaskService);
+
+
     }
 
 

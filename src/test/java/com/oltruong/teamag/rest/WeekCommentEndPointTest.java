@@ -34,6 +34,10 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         weekCommentEndPoint = new WeekCommentEndPoint();
 
         TestUtils.setPrivateAttribute(weekCommentEndPoint, mockWeekCommentService, "weekCommentService");
+        TestUtils.setPrivateAttribute(weekCommentEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
+
+        assertThat(weekCommentEndPoint.getService()).isEqualTo(mockWeekCommentService);
+
     }
 
     private void get(int weekNumber, int weekArgument) {
@@ -141,7 +145,18 @@ public class WeekCommentEndPointTest extends AbstractEndPointTest {
         final Response response = weekCommentEndPoint.patch(randomId, randomId, weekComment);
         checkResponseForbidden(response);
         verify(mockWeekCommentService).find(randomId);
+    }
 
+    @Test
+    public void create() throws Exception {
+        WeekComment weekComment = EntityFactory.createWeekComment();
+
+        weekComment.setId(randomId);
+        when(mockWeekCommentService.persist(weekComment)).thenReturn(weekComment);
+        final Response response = weekCommentEndPoint.create(randomId, weekComment);
+        checkResponseCreated(response);
+
+        verify(mockWeekCommentService).persist(weekComment);
     }
 
 

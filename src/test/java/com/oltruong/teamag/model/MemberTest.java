@@ -28,5 +28,12 @@ public class MemberTest {
         assertThat(member.isSupervisor()).isFalse();
     }
 
+    @Test
+    public void getEstimatedWorkMonths() throws Exception {
+
+        member.setEstimatedWorkDays(42d);
+        assertThat(member.getEstimatedWorkMonths()).isEqualTo(2d);
+    }
+
 
 }

@@ -5,4 +5,8 @@ public final class TeamagConstants {
 
     public static final int MONTH_DAYS_RATIO = 21;
     public static final String DEFAULT_VALUE = "";
+
+    private TeamagConstants() {
+        //Private constructor for utilities classes
+    }
 }

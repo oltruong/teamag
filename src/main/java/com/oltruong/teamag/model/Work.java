@@ -67,6 +67,7 @@ public class Work implements IModel {
     @Inject
     private Logger logger;
 
+    @Override
     public Long getId() {
         return id;
     }

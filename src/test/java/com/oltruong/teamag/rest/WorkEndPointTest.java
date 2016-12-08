@@ -50,6 +50,9 @@ public class WorkEndPointTest extends AbstractEndPointTest {
         workEndPoint = new WorkEndPoint();
         TestUtils.setPrivateAttribute(workEndPoint, mockWorkService, "workService");
         TestUtils.setPrivateAttribute(workEndPoint, mockMemberService, "memberService");
+
+        assertThat(workEndPoint.getService()).isEqualTo(mockWorkService);
+
     }
 
 

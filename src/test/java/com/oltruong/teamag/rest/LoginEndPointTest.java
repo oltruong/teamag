@@ -34,6 +34,9 @@ public class LoginEndPointTest extends AbstractEndPointTest {
         loginEndPoint = new LoginEndPoint();
 
         TestUtils.setPrivateAttribute(loginEndPoint, mockMemberService, "memberService");
+
+        assertThat(loginEndPoint.getService()).isEqualTo(mockMemberService);
+
     }
 
     @Test
