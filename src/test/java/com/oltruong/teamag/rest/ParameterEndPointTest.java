@@ -9,10 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import static javax.ws.rs.core.Response.ok;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -22,9 +24,9 @@ public class ParameterEndPointTest extends AbstractEndPointTest {
 
 
     @Mock
-    ParameterService mockParameterService;
+    private ParameterService mockParameterService;
 
-    ParameterEndPoint parameterEndPoint;
+    private ParameterEndPoint parameterEndPoint;
 
     @Before
     public void prepare() {
@@ -65,6 +67,17 @@ public class ParameterEndPointTest extends AbstractEndPointTest {
 
         assertThat(parameterReturned).isEqualTo(parameter);
         verify(mockParameterService).find(eq(randomId));
+    }
+
+
+    @Test
+    public void update() throws Exception {
+        List<Parameter> parameterList = EntityFactory.createList(EntityFactory::createParameter);
+        final Response response = parameterEndPoint.update(parameterList);
+
+        checkResponseOK(response);
+
+        parameterList.forEach(parameter-> verify(mockParameterService).merge(parameter));
     }
 
 
