@@ -29,9 +29,10 @@ public class AbsenceWebBeanTest {
         absenceWebBean.setBeginDateString(string);
         assertThat(absenceWebBean.getBeginDateString()).isEqualTo(string);
         assertThat(absenceWebBean.getBeginDateTime()).isEqualTo(dateTime);
+        assertThat(absenceWebBean.getBeginDate()).isEqualTo(dateTime.toDate());
     }
 
-   @Test
+    @Test
     public void getEndDateTime() throws Exception {
 
 
@@ -51,6 +52,8 @@ public class AbsenceWebBeanTest {
         absenceWebBean.setEndDateString(string);
         assertThat(absenceWebBean.getEndDateString()).isEqualTo(string);
         assertThat(absenceWebBean.getEndDateTime()).isEqualTo(dateTime);
+        assertThat(absenceWebBean.getEndDate()).isEqualTo(dateTime.toDate());
+
     }
 
 }

@@ -171,7 +171,10 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
         assertThat(listResult).hasSize(map.size());
         Task task = map.keySet().iterator().next();
-        assertThat(listResult.get(0)).isEqualToComparingFieldByField(new WorkByTaskBean(task.getDescription(), map.get(task)));
+        final WorkByTaskBean workByTaskBean = listResult.get(0);
+        final WorkByTaskBean other = new WorkByTaskBean(task.getDescription(), map.get(task));
+        assertThat(workByTaskBean.getName()).isEqualTo(other.getName());
+        assertThat(workByTaskBean.getTotal()).isEqualTo(other.getTotal());
     }
 
 
