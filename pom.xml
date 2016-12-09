@@ -70,6 +70,7 @@
 
         <jersey-common.version>2.4.1</jersey-common.version>
         <momentjs.version>2.10.6</momentjs.version>
+        <subethasmtp.version>3.1.7</subethasmtp.version>
     </properties>
 
 
@@ -292,6 +293,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.subethamail</groupId>
+            <artifactId>subethasmtp</artifactId>
+            <version>${subethasmtp.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
