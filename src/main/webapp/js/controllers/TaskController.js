@@ -58,7 +58,6 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
         $scope.updateTask = function ($task) {
             if ($task.task !== null && $task.id === $task.task.id) {
-                alert('vous ne pouvez assigner la même tâche en parente!');
                 $task.task = null;
             } else {
                 Task.update({id: $task.id}, $task, function () {
@@ -73,9 +72,7 @@ teamagApp.controller('TaskController', ['$scope', '$http', '$location', '$routeP
 
         $scope.mergeTask = function ($task) {
             if ($task.task !== null && $task.id === $task.task.id) {
-                alert('vous ne pouvez fusionner la même tâche en parente!');
                 $task.task = null;
-            } else {
             }
         };
 

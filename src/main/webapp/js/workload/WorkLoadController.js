@@ -280,7 +280,6 @@ teamagApp.controller('WorkLoadController', ['$scope', '$http',
         };
 
         $scope.filterNonEmptyBC = function (workLoadContainer) {
-            console.log('begin filter');
             if ($scope.nonEmptyBCOnly) {
 
                 for (var i = 0; i < $scope.filteredMembers.length; i++) {
