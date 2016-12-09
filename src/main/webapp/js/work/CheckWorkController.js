@@ -64,7 +64,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                 lastDayOfMonth = new Date(lastDayOfMonth.getTime() - 86400000);
             }
             $scope.lastWeekOfMonth = getWeekNumber(lastDayOfMonth);
-        };
+        }
 
         $scope.updateMember = function () {
             findWorks();
@@ -89,7 +89,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             findWorksWeek();
             findWorksMonth();
             findWorksTotal();
-        };
+        }
 
         function findWorksWeek() {
             Work.query({
@@ -100,7 +100,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                 memberId: $scope.selectedMember.id
             }).$promise.then(function (works) {
                     $scope.works = works;
-                    $scope.days = new Array();
+                    $scope.days = [];
                     for (var i = 0; i < $scope.works.length; i++) {
                         if ($scope.days.indexOf($scope.works[i].daylong) === -1) {
                             $scope.days.push($scope.works[i].daylong);
@@ -108,13 +108,13 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                     }
                     $scope.tasks = [];
                     var indextask = '';
-                    for (var i = 0; i < $scope.works.length; i++) {
-                        if (indextask.indexOf(getTaskDescription($scope.works[i].taskBean)) === -1) {
+                    for (var index = 0; index < $scope.works.length; index++) {
+                        if (indextask.indexOf(getTaskDescription($scope.works[index].taskBean)) === -1) {
                             $scope.tasks.push({
-                                name: getTaskDescription($scope.works[i].taskBean),
-                                total: getTotal($scope.works[i].taskBean, $scope.works)
+                                name: getTaskDescription($scope.works[index].taskBean),
+                                total: getTotal($scope.works[index].taskBean, $scope.works)
                             });
-                            indextask += ";" + getTaskDescription($scope.works[i].taskBean);
+                            indextask += ";" + getTaskDescription($scope.works[index].taskBean);
                         }
                     }
                     initWeekComment();
@@ -122,7 +122,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
                     $scope.error = 'Erreur HTTP ' + error.status;
                 });
 
-        };
+        }
 
 
         function findWorksMonth() {
@@ -138,7 +138,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             )
             ;
 
-        };
+        }
 
         function findWorksTotal() {
             WorkByTask.query({
@@ -151,7 +151,7 @@ teamagApp.controller('CheckWorkController', ['$scope', '$http', 'userInfo', 'Mem
             )
             ;
 
-        };
+        }
 
         function getTotal(task, works) {
             var total = 0;
