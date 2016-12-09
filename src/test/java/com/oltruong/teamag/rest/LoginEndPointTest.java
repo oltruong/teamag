@@ -6,6 +6,7 @@ import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.utils.TeamagUtils;
 import com.oltruong.teamag.utils.TestUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -16,7 +17,9 @@ import javax.ws.rs.core.Response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class LoginEndPointTest extends AbstractEndPointTest {
 
@@ -41,13 +44,22 @@ public class LoginEndPointTest extends AbstractEndPointTest {
 
     @Test
     public void loginNull() throws Exception {
-        Response response = loginEndPoint.login(null);
+        loginInvalid(null);
+    }
+
+
+    @Test
+    public void loginIncomplete() throws Exception {
+        loginInvalid("login");
+    }
+
+    private void loginInvalid(String loginInformation) throws UserNotFoundException {
+        Response response = loginEndPoint.login(loginInformation);
 
         checkResponseNotFound(response);
 
         verify(mockMemberService, never()).findMemberForAuthentication(any(), any());
     }
-
 
     @Test
     public void loginNotFound() throws Exception {
