@@ -31,6 +31,7 @@ public class BusinessEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(businessEndPoint, mockBusinessCaseService, "businessCaseService");
         TestUtils.setPrivateAttribute(businessEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
         TestUtils.setPrivateAttribute(businessEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
+        assertThat(businessEndPoint.getService()).isEqualTo(mockBusinessCaseService);
 
 
     }

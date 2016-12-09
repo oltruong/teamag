@@ -37,6 +37,8 @@ public class MemberEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(memberEndPoint, mockMemberService, "memberService");
         TestUtils.setPrivateAttribute(memberEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
+        assertThat(memberEndPoint.getService()).isEqualTo(mockMemberService);
+
     }
 
 

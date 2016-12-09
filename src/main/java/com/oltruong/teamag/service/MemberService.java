@@ -10,6 +10,7 @@ import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.TeamagConstants;
 import com.oltruong.teamag.utils.TeamagUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class MemberService extends AbstractService<Member> {
     private static final String DEFAULT_ADMIN = "admin";
 
     private static List<Member> memberList;
-    private static Map<Long, Member> memberMap;
+    private static Map<Long, Member> memberMap=new HashMap<>();
 
 
     @Inject

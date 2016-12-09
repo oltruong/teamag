@@ -29,6 +29,7 @@ public class ParameterEndPoint extends AbstractEndPoint<Parameter> {
     @Inject
     ParameterService parameterService;
 
+    private int smtpPort = 2500;
 
     @Override
     AbstractService<Parameter> getService() {
@@ -54,6 +55,7 @@ public class ParameterEndPoint extends AbstractEndPoint<Parameter> {
 
         // Setup mail server
         properties.setProperty("mail.smtp.host", parameterService.getSmtpHost());
+        properties.setProperty("mail.smtp.port", String.valueOf(smtpPort));
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance(properties);

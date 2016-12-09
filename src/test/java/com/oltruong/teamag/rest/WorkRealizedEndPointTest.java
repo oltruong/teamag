@@ -45,6 +45,9 @@ public class WorkRealizedEndPointTest extends AbstractEndPointTest {
 
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockWorkRealizedService, "workRealizedService");
         TestUtils.setPrivateAttribute(workRealizedEndPoint, mockTaskService, "taskService");
+
+        assertThat(workRealizedEndPoint.getService()).isEqualTo(mockWorkRealizedService);
+
     }
 
 

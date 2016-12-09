@@ -10,8 +10,10 @@ import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.service.MemberService;
 import com.oltruong.teamag.service.WorkService;
 import com.oltruong.teamag.utils.TestUtils;
+import com.oltruong.teamag.webbean.TaskWebBean;
 import com.oltruong.teamag.webbean.WorkByTaskBean;
 import com.oltruong.teamag.webbean.WorkPatch;
+import com.oltruong.teamag.webbean.WorkWebBean;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -50,6 +52,63 @@ public class WorkEndPointTest extends AbstractEndPointTest {
         workEndPoint = new WorkEndPoint();
         TestUtils.setPrivateAttribute(workEndPoint, mockWorkService, "workService");
         TestUtils.setPrivateAttribute(workEndPoint, mockMemberService, "memberService");
+        assertThat(workEndPoint.getService()).isEqualTo(mockWorkService);
+    }
+
+
+    @Test
+    public void getWorksBySearchCriteriaForbidden() throws Exception {
+        getWorksBySearchCriteriaForbidden(null);
+        getWorksBySearchCriteriaForbidden(randomId);
+    }
+
+
+    private void getWorksBySearchCriteriaForbidden(Long memberId) {
+        Member member = EntityFactory.createMember();
+        member.setMemberType(MemberType.BASIC);
+        when(mockMemberService.find(randomId)).thenReturn(member);
+        Response response = workEndPoint.getWorksBySearchCriteria(randomId, randomId, memberId, null, null, null, false);
+        checkResponseForbidden(response);
+    }
+
+    @Test
+    public void getWorksBySearchCriteriaNoFilter() {
+        Member member = EntityFactory.createMember();
+        member.setMemberType(MemberType.ADMINISTRATOR);
+        when(mockMemberService.find(randomId)).thenReturn(member);
+
+
+        List<Work> workList = EntityFactory.createList(EntityFactory::createWork);
+
+        when(mockWorkService.findWorkByTask(randomId)).thenReturn(workList);
+
+        Response response = workEndPoint.getWorksBySearchCriteria(randomId, randomId, null, null, null, null, false);
+        checkResponseOK(response);
+        verify(mockWorkService).findWorkByTask(eq(randomId));
+
+        final List<WorkWebBean> workWebBeanList = (List<WorkWebBean>) response.getEntity();
+
+        assertThat(workWebBeanList).hasSameSizeAs(workList);
+
+
+        for (int index = 0; index < workWebBeanList.size(); index++) {
+            Work work = workList.get(index);
+
+            WorkWebBean workWebBean = workWebBeanList.get(index);
+            assertThat(workWebBean.getAmount()).isEqualTo(work.getTotal());
+            assertThat(workWebBean.getDay()).isEqualTo(work.getDay().toDate());
+            assertThat(workWebBean.getMember()).isEqualTo(work.getMember().getName());
+            assertThat(workWebBean.getId()).isEqualTo(work.getId());
+
+            TaskWebBean taskWebBean = workWebBean.getTaskBean();
+
+            final Task task = work.getTask();
+            assertThat(taskWebBean.getId()).isEqualTo(task.getId());
+            assertThat(taskWebBean.getName()).isEqualTo(task.getName());
+            assertThat(taskWebBean.getProject()).isEqualTo(task.getProject());
+
+        }
+
     }
 
 
@@ -75,7 +134,7 @@ public class WorkEndPointTest extends AbstractEndPointTest {
         testGetWorksByTask(randomId);
     }
 
-    protected void testGetWorksByTask(Long memberId) {
+    private void testGetWorksByTask(Long memberId) {
         Integer randomIntegerMonth = EntityFactory.createRandomMonth();
         Integer randomIntegerYear = EntityFactory.createRandomInteger(2055);
         Map<Task, Double> map = buildMap();
@@ -112,7 +171,10 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
         assertThat(listResult).hasSize(map.size());
         Task task = map.keySet().iterator().next();
-        assertThat(listResult.get(0)).isEqualToComparingFieldByField(new WorkByTaskBean(task.getDescription(), map.get(task)));
+        final WorkByTaskBean workByTaskBean = listResult.get(0);
+        final WorkByTaskBean other = new WorkByTaskBean(task.getDescription(), map.get(task));
+        assertThat(workByTaskBean.getName()).isEqualTo(other.getName());
+        assertThat(workByTaskBean.getTotal()).isEqualTo(other.getTotal());
     }
 
 

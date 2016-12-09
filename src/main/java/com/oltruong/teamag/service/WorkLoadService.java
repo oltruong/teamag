@@ -22,8 +22,6 @@ public class WorkLoadService extends AbstractService<WorkLoad> {
         if (noWorkLoadList(workLoadList)) {
             workLoadList = createWorkLoads(businessCaseList);
         } else {
-
-
             List<Member> memberList = MemberService.getMemberList();
             if (workLoadList.size() != businessCaseList.size() * memberList.size()) {
                 for (Member member : memberList) {

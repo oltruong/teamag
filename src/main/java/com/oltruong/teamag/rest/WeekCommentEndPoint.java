@@ -46,7 +46,6 @@ public class WeekCommentEndPoint extends AbstractEndPoint<WeekComment> {
     @POST
     public Response create(@HeaderParam("userid") Long userId, WeekComment weekComment) {
         weekComment.setMember(MemberService.getMember(userId));
-        weekCommentService.persist(weekComment);
         return create(weekComment);
     }
 

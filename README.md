@@ -1,6 +1,9 @@
 # TEAMAG
-* [Team Management Web Application] (https://github.com/oltruong/TeaMag)
-* Team management web application using Java8 /JavaEE7 to learn while getting a useful tool as a manager :)
+[Team Management Web Application] (https://github.com/oltruong/teamag)
+
+The purpose of this app was twofold:
+* get a useful tool as a manager to make paperwork faster
+* experiment JavaEE7, AngularJS
 
 ## Demo
 [teamag.herokuapp.com](https://teamag.herokuapp.com)
@@ -8,18 +11,16 @@
 (default login: admin, password: leave blank)
 
 
-
 ## Build info
 [![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
-[![Coverage Status](https://coveralls.io/repos/github/oltruong/teamag/badge.svg?branch=master)](https://coveralls.io/github/oltruong/teamag?branch=master)
+[![Coverage Status](https://codecov.io/github/oltruong/teamag/coverage.svg?branch=master)](https://codecov.io/github/oltruong/teamag/)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.oltruong:teamag)](https://sonarqube.com/dashboard/index/com.oltruong:teamag)
 
-## Frameworks and librairies used
+## Frameworks used
 
 * [JavaEE7] (http://www.oracle.com/technetwork/java/javaee/overview/index.html)
+* [AngularJS] (https://angularjs.org/)
 * [Wildfly Swarm] (http://wildfly-swarm.io/): forget about having a server for deployment.
-* [Guava] (https://code.google.com/p/guava-libraries/): Google core librairies
-* [LogBack] (http://logback.qos.ch/): nice logger
-* [AssertJ] (https://github.com/joel-costigliola/assertj-core): powerful assertions for testing
 
 
 ## Getting started

@@ -4,14 +4,16 @@ import com.oltruong.teamag.model.Activity;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.service.ActivityService;
 import com.oltruong.teamag.utils.TestUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.List;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
@@ -35,6 +37,7 @@ public class ActivityEndPointTest extends AbstractEndPointTest {
         TestUtils.setPrivateAttribute(activityEndPoint, AbstractEndPoint.class, mockLogger, "LOGGER");
         TestUtils.setPrivateAttribute(activityEndPoint, AbstractEndPoint.class, mockUriInfo, "uriInfo");
 
+        assertThat(activityEndPoint.getService()).isEqualTo(mockActivityService);
     }
 
 

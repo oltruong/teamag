@@ -49,6 +49,10 @@ public abstract class AbstractEndPointTest {
         checkResponse(response, Response.Status.OK);
     }
 
+    protected void checkResponseInternalError(Response response) {
+        checkResponse(response, Response.Status.INTERNAL_SERVER_ERROR);
+    }
+
     protected void checkResponseCreated(Response response) {
         checkResponse(response, Response.Status.CREATED);
         verify(mockUriInfo).getAbsolutePathBuilder();
