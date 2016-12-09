@@ -5,16 +5,15 @@ The purpose of this app was twofold:
 * get a useful tool as a manager to make paperwork faster
 * experiment JavaEE7, AngularJS
 
-## Demo
-[teamag.herokuapp.com](https://teamag.herokuapp.com)
-
-(default login: admin, password: leave blank)
-
-
 ## Build info
 [![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
 [![Coverage Status](https://codecov.io/github/oltruong/teamag/coverage.svg?branch=master)](https://codecov.io/github/oltruong/teamag/)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.oltruong:teamag)](https://sonarqube.com/dashboard/index/com.oltruong:teamag)
+
+## Demo
+[teamag.herokuapp.com](https://teamag.herokuapp.com)
+
+(default login: admin, password: leave blank)
 
 ## Frameworks used
 
@@ -31,8 +30,9 @@ The purpose of this app was twofold:
 * [Maven] (http://maven.apache.org)
 
 ### Build
-
+```bash
 mvn clean install
+```
 
 ### Run
 
