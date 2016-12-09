@@ -1,12 +1,14 @@
 package com.oltruong.teamag.service;
 
 import com.google.common.collect.Lists;
+
 import com.oltruong.teamag.model.Member;
 import com.oltruong.teamag.model.Task;
 import com.oltruong.teamag.model.builder.EntityFactory;
 import com.oltruong.teamag.model.enumeration.MemberType;
 import com.oltruong.teamag.utils.CalendarUtils;
 import com.oltruong.teamag.utils.TestUtils;
+
 import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -15,10 +17,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.function.Supplier;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -361,6 +364,14 @@ public class TaskServiceTest extends AbstractServiceTest {
 
         taskService.persist(month, member, task);
 
+    }
+
+    @Test
+    public void getOrCreateAbsenceTask() throws Exception {
+
+        final Task task = taskService.getOrCreateAbsenceTask();
+
+        assertThat(task.getName()).isEqualTo("Absence");
     }
 
 }

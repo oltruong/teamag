@@ -34,7 +34,7 @@ public class WorkRealizedEndPoint extends AbstractEndPoint<WorkRealized> {
 
 
     private Response getResponse(List workRealizedList) {
-        Response response = null;
+        Response response;
         if (workRealizedList == null || workRealizedList.isEmpty()) {
             response = noContent();
         } else {

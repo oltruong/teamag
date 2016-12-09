@@ -77,7 +77,7 @@ public class AbsenceServiceTest extends AbstractServiceTest {
 
 
     @Test
-    public void testDeleteAbsence() throws Exception {
+    public void deleteAbsence() throws Exception {
 
         Absence absence = EntityFactory.createAbsence();
         when(mockEntityManager.find(eq(Absence.class), anyLong())).thenReturn(absence);
@@ -85,6 +85,18 @@ public class AbsenceServiceTest extends AbstractServiceTest {
         Long absenceId = randomLong;
         absence.setId(absenceId);
         absenceService.remove(absence);
+        verify(mockEntityManager).remove(eq(absence));
+    }
+
+    @Test
+    public void removeAbsenceId() throws Exception {
+
+        Absence absence = EntityFactory.createAbsence();
+        when(mockEntityManager.find(eq(Absence.class), anyLong())).thenReturn(absence);
+
+        Long absenceId = randomLong;
+        absence.setId(absenceId);
+        absenceService.remove(randomLong);
         verify(mockEntityManager).remove(eq(absence));
     }
 

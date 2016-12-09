@@ -111,6 +111,31 @@ public class WorkEndPointTest extends AbstractEndPointTest {
 
     }
 
+    @Test
+    public void getWorksBySearchCriteriaWithFilter() {
+        Member member = EntityFactory.createMember();
+        member.setMemberType(MemberType.ADMINISTRATOR);
+        when(mockMemberService.find(randomId)).thenReturn(member);
+
+
+        List<Work> workList = EntityFactory.createList(EntityFactory::createWork);
+
+        DateTime monthDateTime = new DateTime(2015, 10, 1, 0, 0);
+        when(mockWorkService.findWorkListByMemberMonth(randomId,monthDateTime)).thenReturn(workList);
+
+        Response response = workEndPoint.getWorksBySearchCriteria(randomId, randomId, null, null, 10, 2015, false);
+        checkResponseOK(response);
+
+
+        verify(mockWorkService).findWorkListByMemberMonth(eq(randomId), eq(monthDateTime));
+
+        final List<WorkWebBean> workWebBeanList = (List<WorkWebBean>) response.getEntity();
+
+        assertThat(workWebBeanList).hasSameSizeAs(workList);
+
+
+    }
+
 
     @Test
     public void getWorksByTaskForbidden() throws Exception {
