@@ -32,7 +32,7 @@
         <version.guava>18.0</version.guava>
         <version.logback>1.1.2</version.logback>
         <version.genson>0.98</version.genson>
-        <version.jacoco-plugin>0.7.0.201403182114</version.jacoco-plugin>
+        <version.jacoco-plugin>0.7.8</version.jacoco-plugin>
 
         <version.h2>1.4.177</version.h2>
         <version.arquillian>1.1.4.Final</version.arquillian>
@@ -374,13 +374,20 @@
                         <id>prepare-it-agent</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>prepare-agent</goal>
+                            <goal>prepare-agent-integration</goal>
                         </goals>
                         <configuration>
                             <destFile>${sonar.jacoco.itReportPath}</destFile>
                             <propertyName>jacoco.agent.it.argLine</propertyName>
                             <append>true</append>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -421,19 +428,6 @@
                     <locales>fr,en</locales>
                 </configuration>
             </plugin>
-
-            <!-- cobertura -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <format>xml</format>
-                    <maxmem>256m</maxmem>
-                    <aggregate>true</aggregate>
-                </configuration>
-            </plugin>
-
 
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>

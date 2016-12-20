@@ -10,10 +10,9 @@ addons:
       token:
         secure: "qLjSFGq42Agb3VvUYvQKEYMFKqG23vHDWQaM1J8bOSHzH/2basT8YflxRO6G2bH/+o8JAr/649UdZ6tAwqb+70CCdRV6686xjGdQzu5fYitkZfDkUF3AE1bY2yN8vu7FeW4klweVvBstjjbqVYgNd/aOkk7tFTZq8W/KcfKlQVGk3GjqKXYLmL44Ucl28ICnLTAh+Xq49cZ3gKuXmW8LQyxVpnPj/rvbTbSP3+/CUUPmbtGSZ7bENzVCDLVq5w+PAHu+1Imu5dIDDszvxcxR4ESRADFugpkDoY7d2SWm1FTAZwEReBmOAj/McGtOBKPSxIw9BQdVanK5bVv9emJnIovhl6IQeniFj2dP9AxGxjhAldzZiDu+BEnclyEZ7VxEW1cCp/VUL02bBrdjhXZxPStmU6IxPyL48RP/1yIQa10JwT5kCaHaKg68TUMw+V9U4s/LC9maU1I70MEmt4m8IJtCuisYOC8pT5aotF8I3lgCS90AMfovcuqt3CnMl1m2a94s9S0RxNtGTq2Xfvg7XWzjkAqTxDu34iGM3lzV3gPg0cGs1AuM9xq5qCk56WFhlZMN0lWEZdkHWCUbt/maYSxYrn6zilLTCJF+Hf/n944wwRL/ra9Sly1ZR23L0zoEhj6+1y6tvBvFZyAryVuesqg5dT2Fz1Ekd3GMn4g05O4="
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn clean install sonar:sonar
 
 after_success:
-- mvn cobertura:cobertura
 - bash <(curl -s https://codecov.io/bash)
 
 cache:
