@@ -9,12 +9,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.List;
 
+import static com.oltruong.teamag.utils.CalendarUtils.YEAR;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarUtilsTest {
 
-
-    public static final int YEAR = 2016;
 
     @Test
     public void constructorIsPrivate() {
@@ -125,7 +124,7 @@ public class CalendarUtilsTest {
     }
 
     private void testWorkingDays(int monthNumber, Iterable<Integer> values) {
-        DateTime month = DateTime.now().withMonthOfYear(monthNumber);
+        DateTime month = DateTime.now().withMonthOfYear(monthNumber).withYear(YEAR);
         List<DateTime> workingDays = CalendarUtils.getWorkingDays(month);
         assertThat(workingDays).isNotNull();
         for (DateTime day : workingDays) {

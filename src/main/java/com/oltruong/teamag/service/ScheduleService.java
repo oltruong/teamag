@@ -90,7 +90,7 @@ public class ScheduleService {
 
         List<DateTime> workingDays = CalendarUtils.getWorkingDays(now);
 
-        workingDays.removeIf(day -> absenceDays.contains(day));
+        workingDays.removeIf(absenceDays::contains);
 
         return tester.test(now, workingDays);
     }

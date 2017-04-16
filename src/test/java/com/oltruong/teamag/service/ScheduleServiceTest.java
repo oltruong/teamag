@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
+import static com.oltruong.teamag.utils.CalendarUtils.YEAR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -97,12 +98,12 @@ public class ScheduleServiceTest {
 
     @Test
     public void sendReminder_week_warning() throws Exception {
-        sendReminder_warning(CalendarUtilsTest.createDay(7, 5, 2015), "semaine", "mois");
+        sendReminder_warning(CalendarUtilsTest.createDay(6, 5, YEAR), "semaine", "mois");
     }
 
     @Test
     public void sendReminder_month_warning() throws Exception {
-        sendReminder_warning(CalendarUtilsTest.createDay(29, 5, 2015), "mois", "semaine");
+        sendReminder_warning(CalendarUtilsTest.createDay(31, 5, YEAR), "mois", "semaine");
     }
 
 
@@ -133,7 +134,7 @@ public class ScheduleServiceTest {
     @Test
     public void sendReminder_nowarningDayOff() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
-        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(2015).withMonthOfYear(5).withDayOfMonth(8);
+        DateTime date = DateTime.now().withTimeAtStartOfDay().withYear(YEAR).withMonthOfYear(5).withDayOfMonth(8);
 
         sendReminder(date);
         verify(mockAbsenceDayService, never()).findByMemberAndMonth(eq(randomLong), eq(date.getMonthOfYear()));

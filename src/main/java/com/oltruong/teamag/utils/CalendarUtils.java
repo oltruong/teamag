@@ -14,6 +14,10 @@ import java.util.function.Function;
 
 public final class CalendarUtils {
 
+
+    public static final int YEAR = 2016;
+
+
     private CalendarUtils() {
     }
 
@@ -64,7 +68,7 @@ public final class CalendarUtils {
     }
 
     private static DateTime buildDayOff(int day, int month) {
-        return DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day);
+        return DateTime.now().withTimeAtStartOfDay().withMonthOfYear(month).withDayOfMonth(day).withYear(2016);
     }
 
     public static List<DateTime> getWorkingDays(DateTime month) {
@@ -139,6 +143,7 @@ public final class CalendarUtils {
     private static DateTime findLastWorkingDayMonth(int monthOfYear) {
 
         MutableDateTime dayOfMonth = MutableDateTime.now();
+        dayOfMonth.setYear(YEAR);
         dayOfMonth.setDayOfMonth(1);
         if (monthOfYear == 12) {
             dayOfMonth.addYears(1);
