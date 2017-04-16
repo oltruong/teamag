@@ -1,27 +1,25 @@
 language: java
 sudo: false
-
 jdk:
 - oraclejdk8
-
-
 addons:
   sonarqube:
-      token:
-        secure: "qLjSFGq42Agb3VvUYvQKEYMFKqG23vHDWQaM1J8bOSHzH/2basT8YflxRO6G2bH/+o8JAr/649UdZ6tAwqb+70CCdRV6686xjGdQzu5fYitkZfDkUF3AE1bY2yN8vu7FeW4klweVvBstjjbqVYgNd/aOkk7tFTZq8W/KcfKlQVGk3GjqKXYLmL44Ucl28ICnLTAh+Xq49cZ3gKuXmW8LQyxVpnPj/rvbTbSP3+/CUUPmbtGSZ7bENzVCDLVq5w+PAHu+1Imu5dIDDszvxcxR4ESRADFugpkDoY7d2SWm1FTAZwEReBmOAj/McGtOBKPSxIw9BQdVanK5bVv9emJnIovhl6IQeniFj2dP9AxGxjhAldzZiDu+BEnclyEZ7VxEW1cCp/VUL02bBrdjhXZxPStmU6IxPyL48RP/1yIQa10JwT5kCaHaKg68TUMw+V9U4s/LC9maU1I70MEmt4m8IJtCuisYOC8pT5aotF8I3lgCS90AMfovcuqt3CnMl1m2a94s9S0RxNtGTq2Xfvg7XWzjkAqTxDu34iGM3lzV3gPg0cGs1AuM9xq5qCk56WFhlZMN0lWEZdkHWCUbt/maYSxYrn6zilLTCJF+Hf/n944wwRL/ra9Sly1ZR23L0zoEhj6+1y6tvBvFZyAryVuesqg5dT2Fz1Ekd3GMn4g05O4="
+    token:
+      secure: qLjSFGq42Agb3VvUYvQKEYMFKqG23vHDWQaM1J8bOSHzH/2basT8YflxRO6G2bH/+o8JAr/649UdZ6tAwqb+70CCdRV6686xjGdQzu5fYitkZfDkUF3AE1bY2yN8vu7FeW4klweVvBstjjbqVYgNd/aOkk7tFTZq8W/KcfKlQVGk3GjqKXYLmL44Ucl28ICnLTAh+Xq49cZ3gKuXmW8LQyxVpnPj/rvbTbSP3+/CUUPmbtGSZ7bENzVCDLVq5w+PAHu+1Imu5dIDDszvxcxR4ESRADFugpkDoY7d2SWm1FTAZwEReBmOAj/McGtOBKPSxIw9BQdVanK5bVv9emJnIovhl6IQeniFj2dP9AxGxjhAldzZiDu+BEnclyEZ7VxEW1cCp/VUL02bBrdjhXZxPStmU6IxPyL48RP/1yIQa10JwT5kCaHaKg68TUMw+V9U4s/LC9maU1I70MEmt4m8IJtCuisYOC8pT5aotF8I3lgCS90AMfovcuqt3CnMl1m2a94s9S0RxNtGTq2Xfvg7XWzjkAqTxDu34iGM3lzV3gPg0cGs1AuM9xq5qCk56WFhlZMN0lWEZdkHWCUbt/maYSxYrn6zilLTCJF+Hf/n944wwRL/ra9Sly1ZR23L0zoEhj6+1y6tvBvFZyAryVuesqg5dT2Fz1Ekd3GMn4g05O4=
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
-
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 after_success:
 - mvn cobertura:cobertura
 - bash <(curl -s https://codecov.io/bash)
-
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
-
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
 deploy:
   provider: heroku
   api_key:
     secure: TjmeulSiSHVgTZmKT81wesQWyqklYDGXE35mxhm8MUQW58OwznMGRPE5G3tNjltEyoYbBJSWObw7C96s3x484nCY3AuWUJO5p9u5N6RPSBhQ5RS5lZkqAz/PT0eJkc4PzN7EC0X608Z0u5tAaEdTyzLJZ6alxxsRSGoXy7Z+6jSP3x1Hyb9xokw7aO1cizpItjzZPGJ9gunaifQIVZuFYQeS5LzsrdaM6UVXBlFXR8lC/82ZyaqxHY+Rx4j1ShxO4pW4yfmjqdnM3DzozfxUkU8sZaToSTSy0DA1Syuq8TpkiMa458L7EOFdoH5nZve+Iagkm9UWgzBaDxpZ1lJ+uYvVDF6v3zbn6T9uwhd2lcVwZpmor+BbtaL0g86BBe49tgEHXYDtfYa3eU2rw8ZF0mb+4EujTqnDLLN6yThcPhlESi8INsBg3TvRR5BN1SkWeFTze3dJSJD5AnSAd+zySPQNfJvIGELeGPUJl9ixUDpMgUh1J9KUSENkjVAVamCZdFr/kQ/NMC60TuumZZYpSdXJITSc+eJEoEC4a0SMzIeUX6o+187/9iyLk8wPlyknB3hCkUxtkSaAIkDplVPfRuB1N9JuB9o+MX/svQrXBpv36Rbu4ExKeJnJ6yCU+LYPwF6SGehdkyxpB9Ne40V5pGpRNg0DKfP20GgDWAxqWqg=
+notifications:
+  slack:
+    on_success: change
+    secure: Zw6srDt2+DZFlagNw4RFok5ONhnMP37Ks3Zi0DVc9i7j6mFoG0es/NE9r/SsAi2nAjd3V6MBMb6IpmF3yJyxJz7v7ghyw/h4VGkiwfj+oCuCg/cwaxcJgpJV0YmH6uN662+fdIASzSmG5Aj0Wv02uczy5INQdFoS9psvLf5nGixFklVEgsEUEBjKLh/ZkKdQ88HMCrjoqaQoDMjDZvgfa8GgiG81Ugze3Tri7kgxLkZwsUbjp361DVDJIfcgftKiC1oJMe3ksyGScAtCKdskdHM3p0Hts+YgMokbW72QOt41iYpEgKKdI4z6Rrz+TihKGlSqQgrNMMfWBd9GYY+YeO3A9ZNquBJ+LCISyF9d+1jFKvms/kgs+dFMWGEAW5V2qOjPXgEib9TaRPcAFQl5YbCPCBnRSnNEzQVjIcMBserdp5S62OqhtPEJzwhTgCkvmvQYYGXE/ELKZnoeO3PTG8LzmJsuu4DKQG0k0pBBH6gJDXqiZXvW9GySRvBLjU3sAi1Q1rXVpcgMXxBJo37dSjRZBAwk+DIDiorjt7QzqjVpDX4Pj7OBND8sNON1sjcirA8bVwKOKuEv7FC8M3n1SOAXF0XkYvjVyhWw4jWGL/GH3/hM7LzpK4yp/b1dVmpeLa6KdyeEbWvY7ISzICRBB8xnM/eWcbFMEjzFmRK+xs4=
