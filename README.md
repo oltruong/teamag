@@ -14,6 +14,7 @@ The purpose of this app was twofold:
 [teamag.herokuapp.com](https://teamag.herokuapp.com)
 
 (default login: admin, password: leave blank)
+Data is reset everyday.
 
 ## Frameworks used
 
