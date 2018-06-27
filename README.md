@@ -8,7 +8,8 @@ The purpose of this app was twofold:
 ## Build info
 [![Build Status](https://travis-ci.org/oltruong/teamag.svg?branch=master)](https://travis-ci.org/oltruong/teamag)
 [![Coverage Status](https://codecov.io/github/oltruong/teamag/coverage.svg?branch=master)](https://codecov.io/github/oltruong/teamag/)
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=com.oltruong:teamag)](https://sonarqube.com/dashboard/index/com.oltruong:teamag)
+
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.oltruong%3Ateamag&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.oltruong%3Ateamag)
 
 ## Demo
 [teamag.herokuapp.com](https://teamag.herokuapp.com)
