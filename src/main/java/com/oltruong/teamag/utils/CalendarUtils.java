@@ -116,15 +116,16 @@ public final class CalendarUtils {
     public static boolean isInFirstWorkingWeekOfMonth(DateTime day) {
 
 
-        DateTime firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthOfYear());
+        DateTime firstWorkingDayOfMonth = findFirstWorkingDayMonth(day.getMonthOfYear(), day.getYear());
         return firstWorkingDayOfMonth.getWeekOfWeekyear() == day.getWeekOfWeekyear();
 
 
     }
 
-    public static DateTime findFirstWorkingDayMonth(int monthOfYear) {
+    public static DateTime findFirstWorkingDayMonth(int monthOfYear, int year) {
 
         MutableDateTime dayOfMonth = MutableDateTime.now();
+        dayOfMonth.setYear(year);
         dayOfMonth.setDayOfMonth(1);
         dayOfMonth.setMonthOfYear(monthOfYear);
 
